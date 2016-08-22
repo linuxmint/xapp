@@ -62,12 +62,17 @@ create_blanking_window (GdkScreen *screen, int monitor)
 {
   GdkRectangle fullscreen;
   gdk_screen_get_monitor_geometry(screen, monitor, &fullscreen);
-  GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  GtkWidget *window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
   gtk_window_set_skip_pager_hint (GTK_WINDOW (window), TRUE);
   gtk_window_resize (GTK_WINDOW (window), fullscreen.width, fullscreen.height);
   gtk_window_move (GTK_WINDOW (window), fullscreen.x, fullscreen.y);
   gtk_widget_set_visible (window, TRUE);
+  GdkColor color;
+  color.red = 0x00C0;
+  color.green = 0x00DE;
+  color.blue = 0x00ED;
+  gtk_widget_modify_bg(window, GTK_STATE_NORMAL, &color);
   return window;
 }
 
@@ -87,12 +92,12 @@ xapp_display_blank_other_monitors (XAppDisplay *self, GtkWindow *window)
   self->priv->windows = g_new (GtkWidget *, self->priv->num_outputs);
 
   for (i = 0; i < self->priv->num_outputs; i++) {
-  	if (i != active_monitor) { 
-    	self->priv->windows[i] = create_blanking_window (screen, i);
+    if (i != active_monitor) {
+      self->priv->windows[i] = create_blanking_window (screen, i);
     }
     else {
-    	// initialize at NULL so it gets properly skipped when windows get destroyed
-    	self->priv->windows[i] = NULL;
+      // initialize at NULL so it gets properly skipped when windows get destroyed
+      self->priv->windows[i] = NULL;
     }
   }
 }
