@@ -20,7 +20,7 @@ struct _XAppDisplayPrivate
 
 G_DEFINE_TYPE (XAppDisplay, xapp_display, G_TYPE_OBJECT);
 
-GtkWidget * create_blanking_window (void);
+GtkWidget * create_blanking_window (GdkScreen *screen, int monitor);
 
 static void
 xapp_display_init (XAppDisplay *self)
@@ -58,9 +58,15 @@ xapp_display_new (void)
 }
 
 GtkWidget *
-create_blanking_window (void)
+create_blanking_window (GdkScreen *screen, int monitor)
 {
+  GdkRectangle fullscreen;
+  gdk_screen_get_monitor_geometry(screen, monitor, &fullscreen);
   GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
+  gtk_window_set_skip_pager_hint (GTK_WINDOW (window), TRUE);
+  gtk_window_resize (GTK_WINDOW (window), fullscreen.width, fullscreen.height);
+  gtk_window_move (GTK_WINDOW (window), fullscreen.x, fullscreen.y);
   gtk_widget_set_visible (window, TRUE);
   return window;
 }
@@ -75,15 +81,19 @@ xapp_display_blank_other_monitors (XAppDisplay *self, GtkWindow *window)
   if (self->priv->windows != NULL)
     return;
 
-  GdkScreen *active_screen = gtk_window_get_screen (window);
-  int active_monitor = gdk_screen_get_number (active_screen);
-
-  GdkScreen *screen = gdk_screen_get_default ();
+  GdkScreen *screen = gtk_window_get_screen (window);
+  int active_monitor = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window(window));
   self->priv->num_outputs = gdk_screen_get_n_monitors (screen);
   self->priv->windows = g_new (GtkWidget *, self->priv->num_outputs);
 
   for (i = 0; i < self->priv->num_outputs; i++) {
-    self->priv->windows[i] = create_blanking_window ();
+  	if (i != active_monitor) { 
+    	self->priv->windows[i] = create_blanking_window (screen, i);
+    }
+    else {
+    	// initialize at NULL so it gets properly skipped when windows get destroyed
+    	self->priv->windows[i] = NULL;
+    }
   }
 }
 
