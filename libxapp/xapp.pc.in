@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: xapp
+Description: Utility library for loading .desktop files
+Requires: gtk+-3.0
+Requires.private: xkbfile
+Version: @VERSION@
+Libs: -L${libdir} -lxapp
+Cflags: -I${includedir}/xapp

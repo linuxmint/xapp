@@ -1,0 +1,4 @@
+usr/include/xapp/libxapp
+usr/lib/*/libxapp.so
+usr/lib/*/pkgconfig/xapp.pc
+usr/share/gir-1.0/XApp-1.0.gir

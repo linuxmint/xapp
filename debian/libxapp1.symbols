@@ -1,0 +1,5 @@
+libxapp.so.1 libxapp1 #MINVER#
+ xapp_display_blank_other_monitors@Base 1.0.1
+ xapp_display_get_type@Base 1.0.1
+ xapp_display_new@Base 1.0.1
+ xapp_display_unblank_monitors@Base 1.0.1
