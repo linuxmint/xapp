@@ -35,6 +35,7 @@ GType           xapp_display_get_type          (void);
 XAppDisplay    *xapp_display_new               (void);
 void            xapp_display_blank_other_monitors (XAppDisplay *self, GtkWindow *window);
 void            xapp_display_unblank_monitors (XAppDisplay *self);
+gboolean        xapp_display_are_monitors_blanked (XAppDisplay *self);
 
 G_END_DECLS
 

@@ -15,6 +15,7 @@
 struct _XAppDisplayPrivate
 {
   int num_outputs;
+  gboolean blanked;
   GtkWidget **windows;
 };
 
@@ -26,6 +27,9 @@ static void
 xapp_display_init (XAppDisplay *self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_DISPLAY, XAppDisplayPrivate);
+  self->priv->num_outputs = 0;
+  self->priv->blanked = FALSE;
+  self->priv->windows = NULL;
 }
 
 static void
@@ -100,6 +104,7 @@ xapp_display_blank_other_monitors (XAppDisplay *self, GtkWindow *window)
       self->priv->windows[i] = NULL;
     }
   }
+  self->priv->blanked = TRUE;
 }
 
 void
@@ -107,6 +112,7 @@ xapp_display_unblank_monitors (XAppDisplay *self)
 {
   int i;
   g_return_if_fail (XAPP_IS_DISPLAY (self));
+
   if (self->priv->windows == NULL)
     return;
 
@@ -118,4 +124,11 @@ xapp_display_unblank_monitors (XAppDisplay *self)
   }
   g_free (self->priv->windows);
   self->priv->windows = NULL;
+  self->priv->blanked = FALSE;
+}
+
+gboolean
+xapp_display_are_monitors_blanked (XAppDisplay *self)
+{
+  return self->priv->blanked;
 }
