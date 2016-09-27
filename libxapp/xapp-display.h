@@ -21,21 +21,22 @@ typedef struct _XAppDisplayClass XAppDisplayClass;
 
 struct _XAppDisplay
 {
-  GObject parent_object;
+    GObject parent_object;
 
-  XAppDisplayPrivate *priv;
+    XAppDisplayPrivate *priv;
 };
 
 struct _XAppDisplayClass
 {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 };
 
-GType           xapp_display_get_type          (void);
-XAppDisplay    *xapp_display_new               (void);
-void            xapp_display_blank_other_monitors (XAppDisplay *self, GtkWindow *window);
-void            xapp_display_unblank_monitors (XAppDisplay *self);
-gboolean        xapp_display_are_monitors_blanked (XAppDisplay *self);
+GType        xapp_display_get_type             (void);
+XAppDisplay *xapp_display_new                  (void);
+void         xapp_display_blank_other_monitors (XAppDisplay *self,
+                                                GtkWindow   *window);
+void         xapp_display_unblank_monitors     (XAppDisplay *self);
+gboolean     xapp_display_are_monitors_blanked (XAppDisplay *self);
 
 G_END_DECLS
 
