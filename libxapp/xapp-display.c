@@ -102,7 +102,7 @@ xapp_display_blank_other_monitors (XAppDisplay *self,
         return;
 
     screen = gtk_window_get_screen (window);
-    active_monitor = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window(window));
+    active_monitor = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window (GTK_WIDGET (window)));
     self->priv->num_outputs = gdk_screen_get_n_monitors (screen);
     self->priv->windows = g_new (GtkWidget *, self->priv->num_outputs);
 
