@@ -94,6 +94,7 @@ xapp_display_blank_other_monitors (XAppDisplay *self,
 {
     GdkScreen *screen;
     int active_monitor;
+    int i;
 
     g_return_if_fail (XAPP_IS_DISPLAY (self));
 
@@ -105,7 +106,7 @@ xapp_display_blank_other_monitors (XAppDisplay *self,
     self->priv->num_outputs = gdk_screen_get_n_monitors (screen);
     self->priv->windows = g_new (GtkWidget *, self->priv->num_outputs);
 
-    for (int i = 0; i < self->priv->num_outputs; i++)
+    for (i = 0; i < self->priv->num_outputs; i++)
     {
         if (i != active_monitor)
         {
@@ -124,12 +125,13 @@ xapp_display_blank_other_monitors (XAppDisplay *self,
 void
 xapp_display_unblank_monitors (XAppDisplay *self)
 {
+    int i;
     g_return_if_fail (XAPP_IS_DISPLAY (self));
 
     if (self->priv->windows == NULL)
         return;
 
-    for (int i = 0; i < self->priv->num_outputs; i++)
+    for (i = 0; i < self->priv->num_outputs; i++)
     {
         if (self->priv->windows[i] != NULL)
         {
