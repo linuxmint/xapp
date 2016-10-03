@@ -18,7 +18,8 @@ Build-Depends: debhelper (>= 9),
                libgtk-3-dev (>= 3.3.16),
                libx11-dev,
                python,
-               yelp-tools
+               yelp-tools,
+               libgnomekbd-dev
 Standards-Version: 3.9.6
 
 Package: xapps-common
@@ -35,6 +36,7 @@ Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: xapps-common (>= ${source:Version}),
+         libgnomekbd8,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: XApp library for loading .desktop files
