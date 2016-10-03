@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: xapp
 Description: Utility library for loading .desktop files
-Requires: gtk+-3.0
+Requires: gtk+-3.0 clutter-1.0
 Requires.private: xkbfile
 Version: @VERSION@
 Libs: -L${libdir} -lxapp

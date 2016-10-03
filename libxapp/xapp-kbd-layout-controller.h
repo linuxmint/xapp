@@ -1,0 +1,54 @@
+#ifndef __XAPP_KBD_LAYOUT_CONTROLLER_H__
+#define __XAPP_KBD_LAYOUT_CONTROLLER_H__
+
+#include <stdio.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <clutter/clutter.h>
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+#define XAPP_TYPE_KBD_LAYOUT_CONTROLLER            (xapp_kbd_layout_controller_get_type ())
+#define XAPP_KBD_LAYOUT_CONTROLLER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), XAPP_TYPE_KBD_LAYOUT_CONTROLLER, XAppKbdLayoutController))
+#define XAPP_KBD_LAYOUT_CONTROLLER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  XAPP_TYPE_KBD_LAYOUT_CONTROLLER, XAppKbdLayoutControllerClass))
+#define XAPP_IS_KBD_LAYOUT_CONTROLLER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), XAPP_TYPE_KBD_LAYOUT_CONTROLLER))
+#define XAPP_IS_KBD_LAYOUT_CONTROLLER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  XAPP_TYPE_KBD_LAYOUT_CONTROLLER))
+#define XAPP_KBD_LAYOUT_CONTROLLER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  XAPP_TYPE_KBD_LAYOUT_CONTROLLER, XAppKbdLayoutControllerClass))
+
+typedef struct _XAppKbdLayoutControllerPrivate XAppKbdLayoutControllerPrivate;
+typedef struct _XAppKbdLayoutController XAppKbdLayoutController;
+typedef struct _XAppKbdLayoutControllerClass XAppKbdLayoutControllerClass;
+
+struct _XAppKbdLayoutController
+{
+    GObject parent_object;
+
+    XAppKbdLayoutControllerPrivate *priv;
+};
+
+struct _XAppKbdLayoutControllerClass
+{
+    GObjectClass parent_class;
+};
+
+GType                    xapp_kbd_layout_controller_get_type                 (void);
+XAppKbdLayoutController *xapp_kbd_layout_controller_new                      (void);
+gboolean                 xapp_kbd_layout_controller_get_enabled              (XAppKbdLayoutController *controller);
+guint                    xapp_kbd_layout_controller_get_current_group        (XAppKbdLayoutController *controller);
+void                     xapp_kbd_layout_controller_set_current_group        (XAppKbdLayoutController *controller,
+                                                                              guint                    group);
+void                     xapp_kbd_layout_controller_next_group               (XAppKbdLayoutController *controller);
+void                     xapp_kbd_layout_controller_previous_group           (XAppKbdLayoutController *controller);
+gchar                   *xapp_kbd_layout_controller_get_current_name         (XAppKbdLayoutController *controller);
+gchar                  **xapp_kbd_layout_controller_get_all_names            (XAppKbdLayoutController *controller);
+gchar                   *xapp_kbd_layout_controller_get_current_icon_name    (XAppKbdLayoutController *controller);
+gchar                   *xapp_kbd_layout_controller_get_icon_name_for_group  (XAppKbdLayoutController *controller,
+                                                                              guint                    group);
+gchar                   *xapp_kbd_layout_controller_get_short_name           (XAppKbdLayoutController *controller);
+gchar                   *xapp_kbd_layout_controller_get_short_name_for_group (XAppKbdLayoutController *controller,
+                                                                              guint                    group);
+
+G_END_DECLS
+
+#endif  /* __XAPP_KBD_LAYOUT_CONTROLLER_H__ */

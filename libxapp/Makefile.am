@@ -14,7 +14,8 @@ AM_CPPFLAGS =							\
 AM_CFLAGS = $(WARN_CFLAGS)
 
 introspection_sources = 		\
-	xapp-display.c
+	xapp-display.c \
+    xapp-kbd-layout-controller.c
 
 libxapp_la_SOURCES = 	\
 	$(introspection_sources)
@@ -34,7 +35,8 @@ pkgconfig_DATA = xapp.pc
 
 libxappdir = $(includedir)/xapp/libxapp
 libxapp_HEADERS = \
-	xapp-display.h
+	xapp-display.h \
+    xapp-kbd-layout-controller.h
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
@@ -44,8 +46,8 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 if HAVE_INTROSPECTION
 
 XApp-1.0.gir: libxapp.la
-XApp_1_0_gir_INCLUDES = GObject-2.0 Gtk-3.0
-XApp_1_0_gir_PACKAGES = gdk-pixbuf-2.0 glib-2.0 gobject-2.0 gio-2.0 gtk+-3.0
+XApp_1_0_gir_INCLUDES = GObject-2.0 Gtk-3.0 Clutter-1.0
+XApp_1_0_gir_PACKAGES = gdk-pixbuf-2.0 glib-2.0 gobject-2.0 gio-2.0 gtk+-3.0 clutter-1.0
 XApp_1_0_gir_EXPORT_PACKAGES = xapp
 XApp_1_0_gir_CFLAGS = -DGNOME_DESKTOP_USE_UNSTABLE_API -I$(top_srcdir)
 XApp_1_0_gir_LIBS = libxapp.la

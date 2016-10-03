@@ -47,6 +47,7 @@ dnl it too, or it will never make it into the spec file!
 GDK_PIXBUF_REQUIRED=2.22.0
 GTK_REQUIRED=3.3.16
 GLIB_REQUIRED=2.37.3
+CLUTTER_REQUIRED=1.10
 
 AC_SUBST(GTK_REQUIRED)
 AC_SUBST(GLIB_REQUIRED)
@@ -69,9 +70,12 @@ AC_SUBST(XLIB_LIBS)
 dnl pkg-config dependency checks
 
 PKG_CHECK_MODULES(XAPP, gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED
-                                    gtk+-3.0 >= $GTK_REQUIRED
-                                    glib-2.0 >= $GLIB_REQUIRED
-                                    gio-2.0 >= $GLIB_REQUIRED)
+                        gtk+-3.0 >= $GTK_REQUIRED
+                        glib-2.0 >= $GLIB_REQUIRED
+                        gio-2.0 >= $GLIB_REQUIRED
+                        cairo
+                        libgnomekbdui
+                        clutter-1.0 >= CLUTTER_REQUIRED)
 
 dnl Language Support
 

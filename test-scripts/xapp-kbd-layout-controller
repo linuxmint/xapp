@@ -1,0 +1,103 @@
+#! /usr/bin/python3
+
+"""
+A demo/test script for the XAppKbdLayoutController class
+"""
+import sys, os
+import signal
+import gettext
+
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('XApp', '1.0')
+
+from gi.repository import Gtk, XApp, GObject
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+class Main:
+    def __init__(self):
+        win = Gtk.Window()
+        frame = Gtk.Frame()
+        frame.set_margin_start(6)
+        frame.set_margin_end(6)
+        frame.set_margin_top(6)
+        frame.set_margin_bottom(6)
+
+        win.add(frame)
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        frame.add(box)
+
+        self.show_flags = False
+        self.use_caps = False
+
+        self.controller = XApp.KbdLayoutController()
+        self.controller.connect("layout-changed", self.on_layout_changed)
+        self.controller.connect("config-changed", self.on_config_changed)
+
+        hbox = Gtk.HBox()
+        box.pack_start(hbox, True, True, 4)
+
+        self.button = Gtk.Button()
+        self.button.set_size_request(48, 48)
+        self.button.connect("clicked", self.on_button_clicked)
+        hbox.pack_start(self.button, False, False, 4)
+
+        self.label = Gtk.Label()
+        self.label.set_text(self.controller.get_current_name())
+        hbox.pack_start(self.label, True, True, 4)
+
+        check = Gtk.CheckButton.new_with_label("Show flags")
+        check.connect("toggled", self.on_flag_toggled)
+        box.pack_start(check, True, True, 4)
+
+        check = Gtk.CheckButton.new_with_label("Use caps")
+        check.connect("toggled", self.on_caps_toggled)
+        box.pack_start(check, True, True, 4)
+
+        frame.show_all()
+
+        win.connect("delete-event", lambda w, e: Gtk.main_quit())
+
+        self.on_layout_changed(self.controller)
+
+        win.present()
+
+        Gtk.main()
+
+    def on_flag_toggled(self, widget):
+        self.show_flags = widget.get_active()
+        self.on_layout_changed(self.controller)
+
+    def on_caps_toggled(self, widget):
+        self.use_caps = widget.get_active()
+        self.on_layout_changed(self.controller)
+
+    def on_button_clicked(self, widget, data=None):
+        self.controller.next_group()
+
+    def on_layout_changed(self, controller, group=None):
+        handled = False
+        if self.show_flags:
+            name = self.controller.get_current_icon_name()
+            if name != None:
+                image = Gtk.Image.new_from_icon_name(name, Gtk.IconSize.DIALOG)
+                self.button.set_image(image)
+                handled = True
+
+        if not handled:
+            name = self.controller.get_short_name()
+            if self.use_caps:
+                name = name.upper()
+            label = Gtk.Label(name)
+            label.show()
+            self.button.set_image(label)
+
+        self.label.set_text(self.controller.get_current_name())
+
+    def on_config_changed(self, controller):
+        GObject.idle_add(self.on_layout_changed, controller)
+
+if __name__ == "__main__":
+    main = Main()
