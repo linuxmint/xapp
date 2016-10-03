@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <clutter/clutter.h>
 
 #include <glib-object.h>
 

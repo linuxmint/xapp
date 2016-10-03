@@ -46,14 +46,13 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 if HAVE_INTROSPECTION
 
 XApp-1.0.gir: libxapp.la
-XApp_1_0_gir_INCLUDES = GObject-2.0 Gtk-3.0 Clutter-1.0
-XApp_1_0_gir_PACKAGES = gdk-pixbuf-2.0 glib-2.0 gobject-2.0 gio-2.0 gtk+-3.0 clutter-1.0
+XApp_1_0_gir_INCLUDES = GObject-2.0 Gtk-3.0
+XApp_1_0_gir_PACKAGES = gdk-pixbuf-2.0 glib-2.0 gobject-2.0 gio-2.0 gtk+-3.0
 XApp_1_0_gir_EXPORT_PACKAGES = xapp
-XApp_1_0_gir_CFLAGS = -DGNOME_DESKTOP_USE_UNSTABLE_API -I$(top_srcdir)
+XApp_1_0_gir_CFLAGS = -I$(top_srcdir) -DWITH_INTROSPECTION
 XApp_1_0_gir_LIBS = libxapp.la
 XApp_1_0_gir_FILES = $(introspection_sources) $(libxapp_HEADERS)
 XApp_1_0_gir_SCANNERFLAGS = --identifier-prefix=XApp --symbol-prefix=xapp_
-INTROSPECTION_SCANNER_ARGS += $(patsubst %,--c-include='libxapp/%',$(libxapp_HEADERS))
 INTROSPECTION_GIRS += XApp-1.0.gir
 
 girdir = $(datadir)/gir-1.0
