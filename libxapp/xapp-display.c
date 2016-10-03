@@ -69,7 +69,8 @@ create_blanking_window (GdkScreen *screen,
 {
     GdkRectangle fullscreen;
     GtkWidget *window;
-    GdkColor color;
+    GtkStyleContext *context;
+    GtkCssProvider *provider;
 
     gdk_screen_get_monitor_geometry(screen, monitor, &fullscreen);
 
@@ -80,10 +81,13 @@ create_blanking_window (GdkScreen *screen,
     gtk_window_move (GTK_WINDOW (window), fullscreen.x, fullscreen.y);
     gtk_widget_set_visible (window, TRUE);
 
-    color.red = 0x00C0;
-    color.green = 0x00DE;
-    color.blue = 0x00ED;
-    gtk_widget_modify_bg(window, GTK_STATE_NORMAL, &color);
+    context = gtk_widget_get_style_context (GTK_WIDGET (window));
+    gtk_style_context_add_class (context, "xapp-blanking-window");
+    provider = gtk_css_provider_new ();
+    gtk_css_provider_load_from_data (provider,
+                                     ".xapp-blanking-window { background-color: rgb(0, 0, 0); }",
+                                     -1, NULL);
+    gtk_style_context_add_provider (context, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     return window;
 }
