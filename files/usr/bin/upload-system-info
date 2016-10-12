@@ -1,0 +1,11 @@
+#!/usr/bin/python3
+
+import subprocess
+
+inxi = subprocess.Popen(['inxi', '-Fxxrzc0'], stdout=subprocess.PIPE)
+gist = subprocess.Popen(['gist-paste'], stdin=inxi.stdout, stdout=subprocess.PIPE)
+inxi.stdout.close()
+output = gist.communicate()[0]
+gist.wait()
+
+subprocess.call(['xdg-open', output])
