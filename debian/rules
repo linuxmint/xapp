@@ -18,6 +18,9 @@ override_dh_auto_configure:
 override_dh_strip:
 	dh_strip --dbg-package=libxapp-dbg
 
+override_dh_scour:
+	# disabled
+
 override_dh_install:
 	sed 's@DEB_PKG_CONFIG_LIBDIR@${DEB_PKG_CONFIG_LIBDIR}@' debian/gir1.2-xapp-1.0.install.in > debian/gir1.2-xapp-1.0.install
 	dh_install --list-missing

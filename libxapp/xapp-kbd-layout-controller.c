@@ -9,7 +9,6 @@
 #include <glib/gstdio.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
-#include <cairo.h>
 
 #include <libgnomekbd/gkbd-configuration.h>
 
@@ -19,8 +18,7 @@ enum
 {
   PROP_0,
 
-  PROP_ENABLED,
-  PROP_USE_CAPS,
+  PROP_ENABLED
 };
 
 enum
@@ -33,16 +31,39 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
+typedef struct
+{
+    gchar *group_name;
+    gchar *variant_name;
+
+    gchar *group_label;
+    gint   group_dupe_id;
+
+    gchar *variant_label;
+    gint   variant_dupe_id;
+} GroupData;
+
+#define GROUP_DATA(ptr, idx) ((GroupData *) g_ptr_array_index (ptr, idx))
+
+static void
+group_data_free (GroupData *data)
+{
+    g_clear_pointer (&data->group_name, g_free);
+    g_clear_pointer (&data->group_label, g_free);
+    g_clear_pointer (&data->variant_label, g_free);
+    data->group_dupe_id = 0;
+    data->variant_dupe_id = 0;
+
+    g_slice_free (GroupData, data);
+}
+
 struct _XAppKbdLayoutControllerPrivate
 {
     GkbdConfiguration *config;
 
     gint num_groups;
-    gchar *flag_dir;
-    gchar *temp_flag_theme_dir;
 
-    gchar *icon_names[4];
-    gchar *text_store[4];
+    GPtrArray *group_data;
 
     gulong changed_id;
     gulong group_changed_id;
@@ -54,78 +75,17 @@ struct _XAppKbdLayoutControllerPrivate
 G_DEFINE_TYPE (XAppKbdLayoutController, xapp_kbd_layout_controller, G_TYPE_OBJECT);
 
 static void
-initialize_flag_dir (XAppKbdLayoutController *controller)
-{
-    XAppKbdLayoutControllerPrivate *priv = controller->priv;
-    gint i;
-
-    const char * const * data_dirs;
-
-    data_dirs = g_get_system_data_dirs ();
-
-    for (i = 0; data_dirs[i] != NULL; i++)
-    {
-        gchar *try_path = g_build_filename (data_dirs[i], "xapps", "flags", NULL);
-
-        if (g_file_test (try_path, G_FILE_TEST_EXISTS))
-        {
-            priv->flag_dir = g_strdup (try_path);
-            break;
-        }
-
-        g_free (try_path);
-    }
-}
-
-static void
-initialize_icon_theme (XAppKbdLayoutController *controller)
-{
-    XAppKbdLayoutControllerPrivate *priv = controller->priv;
-
-    const gchar *cache_dir = g_get_user_cache_dir ();
-
-    gchar *path = g_build_filename (cache_dir, "xapp-kbd-layout-controller", NULL);
-
-    g_mkdir_with_parents (path, 0700);
-
-    priv->temp_flag_theme_dir = path;
-
-    gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (), path);
-}
-
-static void
 clear_stores (XAppKbdLayoutController *controller)
 {
     XAppKbdLayoutControllerPrivate *priv = controller->priv;
 
-    gint i;
-
-    for (i = 0; i < 4; i++)
-    {
-        g_clear_pointer (&priv->text_store[i], g_free);
-        g_clear_pointer (&priv->icon_names[i], g_free);
-    }
-}
-
-typedef struct
-{
-    gchar *group;
-    gint id;
-} GroupData;
-
-static void
-group_data_free (GroupData *data)
-{
-    g_clear_pointer (&data->group, g_free);
-    data->id = 0;
-
-    g_slice_free (GroupData, data);
+    g_clear_pointer (&priv->group_data, g_ptr_array_unref);
 }
 
 static gchar *
-create_text (XAppKbdLayoutController *controller,
-             const gchar             *name,
-             gint                     id)
+create_label (XAppKbdLayoutController *controller,
+              const gchar             *name,
+              gint                     dupe_id)
 {
     if (g_utf8_validate (name, -1, NULL))
     {
@@ -140,136 +100,15 @@ create_text (XAppKbdLayoutController *controller,
 
         g_free (utf8_cased);
 
-        if (id > 0)
+        if (dupe_id > 0)
         {
-            string = g_string_append_unichar (string, 0x2080 + id);
+            string = g_string_append_unichar (string, 0x2080 + dupe_id);
         }
 
         return g_string_free (string, FALSE);
     }
 
     return NULL;
-}
-
-static GdkPixbuf *
-add_notation (GdkPixbuf *original, gint id)
-{
-    gint width, height;
-    cairo_surface_t *surface;
-    cairo_t *cr;
-
-    width = gdk_pixbuf_get_width (original);
-    height = gdk_pixbuf_get_height (original);
-
-    surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
-    
-    if (surface == NULL)
-    {
-        return original;
-    }
-
-    cr = cairo_create (surface);
-
-    gdk_cairo_set_source_pixbuf (cr, original, 0, 0);
-    cairo_paint (cr);
-
-    gint rx, ry, rw, rh;
-
-    rx = rw = width / 2;
-    ry = rh = height / 2;
-
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, .5);
-    cairo_rectangle (cr, rx, ry, rw, rh);
-    cairo_fill (cr);
-
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, .8);
-    cairo_rectangle (cr, rx - 1, ry - 1, rw, rh);
-    cairo_fill (cr);
-
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
-
-    gchar *num_string = g_strdup_printf ("%d", id);
-    cairo_select_font_face (cr, "sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-    cairo_set_font_size (cr, height / 2);
-
-    cairo_text_extents_t ext;
-    cairo_text_extents (cr, num_string, &ext);
-
-    cairo_move_to (cr, rx + (rw / 2) - (ext.width / 2) - 1, ry + (rh / 2) + (ext.height / 2) - 1);
-
-    cairo_show_text (cr, num_string);
-    g_free (num_string);
-
-    GdkPixbuf *ret = gdk_pixbuf_get_from_surface (surface, 0, 0, width, height);
-
-    cairo_surface_destroy (surface);
-    cairo_destroy (cr);
-
-    if (ret == NULL)
-    {
-        return original;
-    }
-
-    g_object_unref (original);
-
-    return ret;
-}
-
-static gchar *
-create_pixbuf (XAppKbdLayoutController *controller,
-               guint                    group,
-               const gchar             *name,
-               gint                     id)
-{
-    XAppKbdLayoutControllerPrivate *priv = controller->priv;
-    GdkPixbuf *pixbuf = NULL;
-
-    GdkPixbuf *flag_pixbuf;
-
-    gchar *filename = g_strdup_printf ("%s.png", name);
-    gchar *full_path = g_build_filename (priv->flag_dir, filename, NULL);
-
-    flag_pixbuf = gdk_pixbuf_new_from_file (full_path, NULL);
-
-    g_free (filename);
-    g_free (full_path);
-
-    if (flag_pixbuf != NULL)
-    {
-        if (id == 0)
-        {
-            pixbuf = flag_pixbuf;
-        }
-        else
-        {
-            pixbuf = add_notation (flag_pixbuf, id);
-        }
-    }
-
-    if (flag_pixbuf != NULL)
-    {
-        gchar *save_name = g_strdup_printf ("xapp-kbd-layout-%d.png", group);
-
-        gchar *path = g_build_filename (priv->temp_flag_theme_dir, save_name, NULL);
-        g_remove (path);
-
-        gdk_pixbuf_save (pixbuf,
-                         path,
-                         "png",
-                         NULL,
-                         NULL);
-
-        g_object_unref (pixbuf);
-
-        g_free (save_name);
-        g_free (path);
-    }
-    else
-    {
-        return NULL;
-    }
-
-    return g_strdup_printf ("xapp-kbd-layout-%d", group);
 }
 
 static void
@@ -289,52 +128,81 @@ load_stores (XAppKbdLayoutController *controller)
 
     priv->enabled = TRUE;
 
-    /* Make a list of [name, id] tuples, where name is the group/flag name,
-     * and id is either 0, or, if a flag name is duplicated, a 1, 2, 3, etc...
-     */
-    gint i, j, id;
+    /* Populate the GroupData pointer array */
+
+    gint i, j, group_dupe_id, variant_dupe_id;
     GPtrArray *list = g_ptr_array_new_with_free_func ((GDestroyNotify) group_data_free);
 
     for (i = 0; i < priv->num_groups; i++)
     {
         GroupData *data = g_slice_new0 (GroupData);
 
-        gchar *name = gkbd_configuration_get_group_name (priv->config, i);
-        id = 0;
+        /* Iterate through group names, figure out subscript values for duplicates */
+
+        gchar *group_name = gkbd_configuration_get_group_name (priv->config, i);
+        group_dupe_id = 0;
 
         for (j = 0; j < list->len; j++)
         {
             GroupData *iter = g_ptr_array_index (list, j);
 
-            if (g_strcmp0 (name, iter->group) == 0)
+            if (g_strcmp0 (group_name, iter->group_name) == 0)
             {
-                id++;
-                iter->id = id;
+                group_dupe_id++;
+                iter->group_dupe_id = group_dupe_id;
             }
         }
 
-        if (id > 0)
+        if (group_dupe_id > 0)
         {
-            id++;
+            group_dupe_id++;
         }
 
-        data->group = name;
-        data->id = id;
+        data->group_name = group_name;
+        data->group_dupe_id = group_dupe_id;
 
+        /* Iterate through layout/variant names, figure out subscript values for duplicates */
+
+        gchar *variant_name = gkbd_configuration_extract_layout_name (priv->config, i);
+        variant_dupe_id = 0;
+
+        for (j = 0; j < list->len; j++)
+        {
+            GroupData *iter = g_ptr_array_index (list, j);
+
+            if (g_strcmp0 (variant_name, iter->variant_name) == 0)
+            {
+                variant_dupe_id++;
+                iter->variant_dupe_id = variant_dupe_id;
+            }
+        }
+
+        if (variant_dupe_id > 0)
+        {
+            variant_dupe_id++;
+        }
+
+        data->variant_name = variant_name;
+        data->variant_dupe_id = variant_dupe_id;
+
+        /* Finally, add the GroupData slice to the array */
         g_ptr_array_add (list, data);
     }
 
-    for (i = 0; i < list->len; i++)
+    for (i = 0; i < priv->num_groups; i++)
     {
         GroupData *data = g_ptr_array_index (list, i);
 
-        priv->icon_names[i] = create_pixbuf (controller, i, data->group, data->id);
-        priv->text_store[i] = create_text (controller, data->group, data->id);
+        /* Now generate labels for group names and for variant names.  This is done
+         * in its own loop after the initial run, because previous dupe ids could have
+         * changed later in the loop.
+         */
+
+        data->group_label =  create_label (controller, data->group_name, data->group_dupe_id);
+        data->variant_label =  create_label (controller, data->variant_name, data->variant_dupe_id);
     }
 
-    gtk_icon_theme_rescan_if_needed (gtk_icon_theme_get_default ());
-
-    g_ptr_array_unref (list);
+    priv->group_data = list;
 }
 
 static gboolean
@@ -389,9 +257,9 @@ xapp_kbd_layout_controller_init (XAppKbdLayoutController *controller)
 
     priv->config = gkbd_configuration_get ();
     priv->enabled = FALSE;
-    priv->flag_dir = NULL;
-    priv->temp_flag_theme_dir = NULL;
     priv->idle_changed_id = 0;
+
+    priv->group_data = NULL;
 }
 
 static void
@@ -401,10 +269,6 @@ xapp_kbd_layout_controller_constructed (GObject *object)
 
     XAppKbdLayoutController *controller = XAPP_KBD_LAYOUT_CONTROLLER (object);
     XAppKbdLayoutControllerPrivate *priv = controller->priv;
-
-    initialize_flag_dir (controller);
-
-    initialize_icon_theme (controller);
 
     gkbd_configuration_start_listen (priv->config);
 
@@ -479,8 +343,6 @@ xapp_kbd_layout_controller_finalize (GObject *object)
     XAppKbdLayoutControllerPrivate *priv = controller->priv;
 
     g_clear_object (&priv->config);
-    g_clear_pointer (&priv->flag_dir, g_free);
-    g_clear_pointer (&priv->temp_flag_theme_dir, g_free);
 
     G_OBJECT_CLASS (xapp_kbd_layout_controller_parent_class)->finalize (object);
 }
@@ -622,7 +484,7 @@ xapp_kbd_layout_controller_get_all_names (XAppKbdLayoutController *controller)
 /**
  * xapp_kbd_layout_controller_get_current_icon_name:
  *
- * Returns the icon name to use for the current layout
+ * Returns the icon file name (no path or extension) to use for the current layout
  *
  * Returns: (transfer full): a new string with the icon name.
  */
@@ -635,37 +497,76 @@ xapp_kbd_layout_controller_get_current_icon_name (XAppKbdLayoutController *contr
 
     guint current = gkbd_configuration_get_current_group (priv->config);
 
-    return g_strdup (priv->icon_names[current]);
+    return g_strdup (GROUP_DATA (priv->group_data, current)->group_name);
 }
-
 
 /**
  * xapp_kbd_layout_controller_get_icon_name_for_group:
  *
- * Returns the icon name to use for the specified layout.
+ * Returns the icon file name (no path or extension) to use for the specified layout.
  *
  * Returns: (transfer full): a new string with the icon name.
  */
 gchar *
-xapp_kbd_layout_controller_get_icon_name_for_group (XAppKbdLayoutController *controller, guint group)
+xapp_kbd_layout_controller_get_icon_name_for_group (XAppKbdLayoutController *controller,
+                                                    guint                    group)
 {
     g_return_val_if_fail (controller->priv->enabled, NULL);
     g_return_val_if_fail (group <= controller->priv->num_groups, NULL);
 
     XAppKbdLayoutControllerPrivate *priv = controller->priv;
 
-    return g_strdup (priv->icon_names[group]);
+    return g_strdup (GROUP_DATA (priv->group_data, group)->group_name);
 }
 
 /**
- * xapp_kbd_layout_controller_get_current_short_name:
+ * xapp_kbd_layout_controller_get_current_flag_id:
  *
- * Returns the short name (and subscript, if any) of the current layout
+ * Returns the duplicate id for the current layout
+ *
+ * Returns: the id
+ */
+gint
+xapp_kbd_layout_controller_get_current_flag_id (XAppKbdLayoutController *controller)
+{
+    g_return_val_if_fail (controller->priv->enabled, 0);
+
+    XAppKbdLayoutControllerPrivate *priv = controller->priv;
+
+    guint current = gkbd_configuration_get_current_group (priv->config);
+
+    return GROUP_DATA (priv->group_data, current)->group_dupe_id;
+}
+
+
+/**
+ * xapp_kbd_layout_controller_flag_id_for_group:
+ *
+ * Returns the duplicate id for the specified layout
+ *
+ * Returns: the id
+ */
+gint
+xapp_kbd_layout_controller_get_flag_id_for_group (XAppKbdLayoutController *controller,
+                                                  guint                    group)
+{
+    g_return_val_if_fail (controller->priv->enabled, 0);
+    g_return_val_if_fail (group < controller->priv->num_groups, 0);
+
+    XAppKbdLayoutControllerPrivate *priv = controller->priv;
+
+    return GROUP_DATA (priv->group_data, group)->group_dupe_id;
+}
+
+/**
+ * xapp_kbd_layout_controller_get_current_short_group_label:
+ *
+ * Returns the short group label (and subscript, if any) of the current layout
  *
  * Returns: (transfer full): a new string or NULL.
  */
 gchar *
-xapp_kbd_layout_controller_get_short_name (XAppKbdLayoutController *controller)
+xapp_kbd_layout_controller_get_current_short_group_label (XAppKbdLayoutController *controller)
 {
     g_return_val_if_fail (controller->priv->enabled, NULL);
 
@@ -673,19 +574,58 @@ xapp_kbd_layout_controller_get_short_name (XAppKbdLayoutController *controller)
 
     guint current = gkbd_configuration_get_current_group (priv->config);
 
-    return g_strdup (priv->text_store[current]);
+    return g_strdup (GROUP_DATA (priv->group_data, current)->group_label);
 }
 
 /**
- * xapp_kbd_layout_controller_get_short_name_for_group:
+ * xapp_kbd_layout_controller_get_short_group_label_for_group:
  *
- * Returns the short name and subscript of the specified group.
+ * Returns the short group label and subscript of the specified layout.
  *
  * Returns: (transfer full): a new string or NULL.
  */
 gchar *
-xapp_kbd_layout_controller_get_short_name_for_group (XAppKbdLayoutController *controller,
-                                                     guint group)
+xapp_kbd_layout_controller_get_short_group_label_for_group (XAppKbdLayoutController *controller,
+                                                            guint                    group)
+{
+    g_return_val_if_fail (controller->priv->enabled, NULL);
+    g_return_val_if_fail (group < controller->priv->num_groups, NULL);
+
+    XAppKbdLayoutControllerPrivate *priv = controller->priv;
+
+
+    return g_strdup (GROUP_DATA (priv->group_data, group)->group_label);
+}
+
+/**
+ * xapp_kbd_layout_controller_get_current_variant_label:
+ *
+ * Returns the variant label (and subscript, if any) of the current layout
+ *
+ * Returns: (transfer full): a new string or NULL.
+ */
+gchar *
+xapp_kbd_layout_controller_get_current_variant_label (XAppKbdLayoutController *controller)
+{
+    g_return_val_if_fail (controller->priv->enabled, NULL);
+
+    XAppKbdLayoutControllerPrivate *priv = controller->priv;
+
+    guint current = gkbd_configuration_get_current_group (priv->config);
+
+    return g_strdup (GROUP_DATA (priv->group_data, current)->variant_label);
+}
+
+/**
+ * xapp_kbd_layout_controller_get_variant_label_for_group:
+ *
+ * Returns the variant label and subscript of the specified layout.
+ *
+ * Returns: (transfer full): a new string or NULL.
+ */
+gchar *
+xapp_kbd_layout_controller_get_variant_label_for_group (XAppKbdLayoutController *controller,
+                                                        guint                    group)
 {
     g_return_val_if_fail (controller->priv->enabled, NULL);
 
@@ -693,5 +633,44 @@ xapp_kbd_layout_controller_get_short_name_for_group (XAppKbdLayoutController *co
 
     g_return_val_if_fail (group < controller->priv->num_groups, NULL);
 
-    return g_strdup (priv->text_store[group]);
+    return g_strdup (GROUP_DATA (priv->group_data, group)->variant_label);
 }
+
+void
+xapp_kbd_layout_controller_render_cairo_subscript (cairo_t  *cr,
+                                                   gdouble   x,
+                                                   gdouble   y,
+                                                   gdouble   width,
+                                                   gdouble   height,
+                                                   gint      subscript)
+{
+    if (subscript == 0)
+    {
+        return;
+    }
+
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, .5);
+    cairo_rectangle (cr, x, y, width, height);
+    cairo_fill (cr);
+
+    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, .8);
+    cairo_rectangle (cr, x + 1, y + 1, width - 2, height - 2);
+    cairo_fill (cr);
+
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
+
+    gchar *num_string = g_strdup_printf ("%d", subscript);
+    cairo_select_font_face (cr, "sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+    cairo_set_font_size (cr, height - 2.0);
+
+    cairo_text_extents_t ext;
+    cairo_text_extents (cr, num_string, &ext);
+
+    cairo_move_to (cr,
+                   (x + (width / 2.0) - (ext.width / 2.0)),
+                   (y + (height / 2.0) + (ext.height / 2.0)));
+
+    cairo_show_text (cr, num_string);
+    g_free (num_string);
+}
+
