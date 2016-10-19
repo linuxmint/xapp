@@ -10,57 +10,57 @@
 
 #include <glib/gi18n-lib.h>
 
-#include "xapp-display.h"
+#include "xapp-monitor-blanker.h"
 
-struct _XAppDisplayPrivate
+struct _XAppMonitorBlankerPrivate
 {
     int num_outputs;
     gboolean blanked;
     GtkWidget **windows;
 };
 
-G_DEFINE_TYPE (XAppDisplay, xapp_display, G_TYPE_OBJECT);
+G_DEFINE_TYPE (XAppMonitorBlanker, xapp_monitor_blanker, G_TYPE_OBJECT);
 
 GtkWidget *create_blanking_window (GdkScreen *screen,
                                    int        monitor);
 
 static void
-xapp_display_init (XAppDisplay *self)
+xapp_monitor_blanker_init (XAppMonitorBlanker *self)
 {
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_DISPLAY, XAppDisplayPrivate);
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_MONITOR_BLANKER, XAppMonitorBlankerPrivate);
     self->priv->num_outputs = 0;
     self->priv->blanked = FALSE;
     self->priv->windows = NULL;
 }
 
 static void
-xapp_display_finalize (GObject *object)
+xapp_monitor_blanker_finalize (GObject *object)
 {
-    XAppDisplay *self = XAPP_DISPLAY (object);
+    XAppMonitorBlanker *self = XAPP_MONITOR_BLANKER (object);
 
     if (self->priv->windows != NULL)
     {
-        xapp_display_unblank_monitors (XAPP_DISPLAY(self));
+        xapp_monitor_blanker_unblank_monitors (XAPP_MONITOR_BLANKER(self));
         g_free (self->priv->windows);
     }
 
-    G_OBJECT_CLASS (xapp_display_parent_class)->finalize (object);
+    G_OBJECT_CLASS (xapp_monitor_blanker_parent_class)->finalize (object);
 }
 
 static void
-xapp_display_class_init (XAppDisplayClass *klass)
+xapp_monitor_blanker_class_init (XAppMonitorBlankerClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-    gobject_class->finalize = xapp_display_finalize;
+    gobject_class->finalize = xapp_monitor_blanker_finalize;
 
-    g_type_class_add_private (gobject_class, sizeof (XAppDisplayPrivate));
+    g_type_class_add_private (gobject_class, sizeof (XAppMonitorBlankerPrivate));
 }
 
-XAppDisplay *
-xapp_display_new (void)
+XAppMonitorBlanker *
+xapp_monitor_blanker_new (void)
 {
-    return g_object_new (XAPP_TYPE_DISPLAY, NULL);
+    return g_object_new (XAPP_TYPE_MONITOR_BLANKER, NULL);
 }
 
 GtkWidget *
@@ -93,14 +93,14 @@ create_blanking_window (GdkScreen *screen,
 }
 
 void
-xapp_display_blank_other_monitors (XAppDisplay *self,
+xapp_monitor_blanker_blank_other_monitors (XAppMonitorBlanker *self,
                                    GtkWindow   *window)
 {
     GdkScreen *screen;
     int active_monitor;
     int i;
 
-    g_return_if_fail (XAPP_IS_DISPLAY (self));
+    g_return_if_fail (XAPP_IS_MONITOR_BLANKER (self));
 
     if (self->priv->windows != NULL)
         return;
@@ -127,10 +127,10 @@ xapp_display_blank_other_monitors (XAppDisplay *self,
 }
 
 void
-xapp_display_unblank_monitors (XAppDisplay *self)
+xapp_monitor_blanker_unblank_monitors (XAppMonitorBlanker *self)
 {
     int i;
-    g_return_if_fail (XAPP_IS_DISPLAY (self));
+    g_return_if_fail (XAPP_IS_MONITOR_BLANKER (self));
 
     if (self->priv->windows == NULL)
         return;
@@ -149,7 +149,7 @@ xapp_display_unblank_monitors (XAppDisplay *self)
 }
 
 gboolean
-xapp_display_are_monitors_blanked (XAppDisplay *self)
+xapp_monitor_blanker_are_monitors_blanked (XAppMonitorBlanker *self)
 {
     return self->priv->blanked;
 }

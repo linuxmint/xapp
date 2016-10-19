@@ -14,7 +14,7 @@ AM_CPPFLAGS =							\
 AM_CFLAGS = $(WARN_CFLAGS)
 
 introspection_sources = 		\
-	xapp-display.c \
+	xapp-monitor-blanker.c \
     xapp-kbd-layout-controller.c
 
 libxapp_la_SOURCES = 	\
@@ -35,7 +35,7 @@ pkgconfig_DATA = xapp.pc
 
 libxappdir = $(includedir)/xapp/libxapp
 libxapp_HEADERS = \
-	xapp-display.h \
+	xapp-monitor-blanker.h \
     xapp-kbd-layout-controller.h
 
 -include $(INTROSPECTION_MAKEFILE)
