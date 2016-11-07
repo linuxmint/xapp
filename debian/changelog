@@ -1,3 +1,47 @@
+xapp (1.0.2) serena; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Implement window blanking
+  * Continued implementation of monitor blanking
+  * Display: properly initialize values and add a function to know if monitors are blanked
+
+  [ JosephMcc ]
+  * xapp-display.c: Add a missing cast
+
+  [ Clement Lefebvre ]
+  * Added some symbolic icons needed by Xed
+
+  [ JosephMcc ]
+  * icons: Redesign the xapp-searchbar icons
+  * formatting: Clean up code formatting
+
+  [ Emmanuel ]
+  * properly declare variable used in for loops
+
+  [ JosephMcc ]
+  * xapp-display: Add a missing cast
+  * xapp-display: Don't use deprecated gtk_widget_modify_bg
+
+  [ Michael Webster ]
+  * debian: Fix multiarch location of typelib file, don't strip debug symbols.
+  * Add XAppKbdLayoutController - this is a wrapper around libgnomekbd api to provide unique icons for each layout.
+  * Update debian/control
+  * Cleanup some leftover dependencies, some unneeded files, clean up gir scanning.
+
+  [ Clement Lefebvre ]
+  * Added /usr/bin/pastebin and /usr/bin/upload-system-info
+  * Pastebin: Added support for fpaste
+  * libxapp: Rename XAppDisplay -> XAppMonitorBlanker
+  * Create README.md
+
+  [ leigh123linux ]
+  * Fix Warnings
+
+  [ Michael Webster ]
+  * Rework XAppKbdLayoutController:
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 07 Nov 2016 15:56:44 +0000
+
 xapp (1.0.1) sarah; urgency=medium
 
   * Initial version

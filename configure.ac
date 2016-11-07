@@ -1,5 +1,5 @@
 
-AC_INIT(xapp, 1.0.0)
+AC_INIT(xapp, 1.0.2)
 AC_CONFIG_SRCDIR(libxapp)
 
 AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz tar-ustar])
