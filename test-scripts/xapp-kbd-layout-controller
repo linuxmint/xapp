@@ -11,13 +11,17 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('XApp', '1.0')
 
-from gi.repository import Gtk, XApp, GObject, Gkbd, GdkPixbuf
+from gi.repository import Gtk, XApp, GObject
+import cairo
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class Main:
     def __init__(self):
         win = Gtk.Window()
+
+        win.set_default_size(320, 200)
+
         frame = Gtk.Frame()
         frame.set_margin_start(2)
         frame.set_margin_end(2)
@@ -44,16 +48,19 @@ class Main:
         self.label.set_text(self.controller.get_current_name())
         box.pack_start(self.label, True, True, 4)
 
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box.pack_start(hbox, True, True, 4)
+
         self.flag_button = Gtk.Button()
-        box.pack_start(self.flag_button, True, True, 4)
+        hbox.pack_start(self.flag_button, True, True, 4)
         self.flag_button.connect("clicked", self.on_button_clicked)
 
         self.group_button = Gtk.Button()
-        box.pack_start(self.group_button, True, True, 4)
+        hbox.pack_start(self.group_button, True, True, 4)
         self.group_button.connect("clicked", self.on_button_clicked)
 
         self.variant_button = Gtk.Button()
-        box.pack_start(self.variant_button, True, True, 4)
+        hbox.pack_start(self.variant_button, True, True, 4)
         self.variant_button.connect("clicked", self.on_button_clicked)
 
         check = Gtk.CheckButton.new_with_label("Use caps")
@@ -82,18 +89,63 @@ class Main:
 
         name = self.controller.get_current_icon_name()
         if name != None:
-            filename = "/usr/share/flags/iso-4x3-svg/%s.svgz" % name
+            filename = "/usr/share/iso-flag-png/%s.png" % name
 
-            valid, width, height = Gtk.IconSize.lookup(Gtk.IconSize.BUTTON)
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(filename, -1, height)
+            if os.path.exists(filename):
+                valid, width, height = Gtk.IconSize.lookup(Gtk.IconSize.LARGE_TOOLBAR)
 
-            image = Gtk.Image.new_from_pixbuf(pixbuf)
-            self.flag_button.set_image(image)
-            handled = True
+                surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+                flag_surface = cairo.ImageSurface.create_from_png(filename)
+
+                cr = cairo.Context(surface)
+                cr.save()
+
+                factor = width / flag_surface.get_width()
+                true_width = flag_surface.get_width() * factor
+                true_height = flag_surface.get_height() * factor
+
+                x_offset = y_offset = 0
+
+                if flag_surface.get_width() >= flag_surface.get_height():
+                    x_offset = 0
+                    y_offset = ((height * (1 / factor)) - flag_surface.get_height()) / 2
+                else:
+                    x_offset = ((width * (1 / factor)) - flag_surface.get_width()) / 2
+                    y_offset = 0
+
+                true_x_offset = (width - true_width) / 2;
+                true_y_offset = (height - true_height) / 2;
+
+                cr.scale(factor, factor);
+
+                cr.set_source_surface(flag_surface, x_offset, y_offset);
+
+                cr.get_source().set_filter(cairo.FILTER_BEST);
+                cr.set_operator(cairo.OPERATOR_SOURCE);
+
+                cr.paint();
+                cr.restore()
+
+                XApp.KbdLayoutController.render_cairo_subscript(cr,
+                                                                true_x_offset + (true_width / 2),
+                                                                true_y_offset + (true_height / 2),
+                                                                true_width / 2,
+                                                                true_height / 2,
+                                                                self.controller.get_current_flag_id())
+
+                image = Gtk.Image.new_from_surface(cr.get_target())
+                self.flag_button.set_image(image)
+                handled = True
+            else:
+                print("Missing /usr/share/iso-flag-png flag image - text only")
 
         if not handled:
             name = self.controller.get_current_short_group_label()
-            self.flag_button.set_label(name.upper())
+            if self.use_caps:
+                self.flag_button.set_label(name.upper())
+            else:
+                self.flag_button.set_label(name)
+
             self.flag_button.set_image(None)
 
         self.label.set_text(self.controller.get_current_name())
