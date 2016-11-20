@@ -20,13 +20,3 @@ properties=$(xfconf-query -c xfce4-desktop -p /backdrop -l | grep -e "screen.*/m
 for property in $properties; do
         xfconf-query -c xfce4-desktop -p $property -s "$wallpaper"
 done
-
-
-
-
-
-
-
-
-
-
