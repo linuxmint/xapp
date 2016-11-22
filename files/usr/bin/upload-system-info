@@ -24,7 +24,7 @@ if isinstance(pastebin_output, dict):
     sys.exit(1)
 
 if pastebin_output:
-    pastebin_output = pastebin_output.strip().replace('snippets.', '')
+    pastebin_output = pastebin_output.strip()
 
     result = subprocess.call(['xdg-open', pastebin_output])
 

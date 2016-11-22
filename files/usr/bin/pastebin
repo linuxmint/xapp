@@ -23,7 +23,7 @@ try:
     response = request.urlopen(req)
     response = json.loads(response.read().decode('utf8'))
 
-    sys.stdout.write('{0}/{1}'.format(url, response['id']))
+    sys.stdout.write('{0}/{1}'.format(url.replace('snippets.', ''), response['id']))
 
     sys.exit(0)
 except Exception as err:
