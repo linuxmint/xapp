@@ -1,11 +1,31 @@
 #!/usr/bin/python3
 
-import subprocess, os
+import subprocess
+import sys
 
-inxi = subprocess.Popen(['inxi', '-Fxxrzc0'], stdout=subprocess.PIPE)
-pastebin = subprocess.Popen(['/usr/bin/pastebin'], stdin=inxi.stdout, stdout=subprocess.PIPE)
-inxi.stdout.close()
-output = pastebin.communicate()[0]
-output = output.split()[0] # if we have more than one URL, only use the first one
-pastebin.wait()
-subprocess.call(['xdg-open', output])
+inxi = ['/usr/bin/inxi', '-Fxxrzc0']
+pastebin = ['/usr/bin/pastebin']
+
+try:
+    inxi_output = subprocess.check_output(inxi, universal_newlines=True)
+    pb = subprocess.Popen(
+        pastebin,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        universal_newlines=True
+    )
+    pastebin_output, err = pb.communicate(input=inxi_output)
+except subprocess.CalledProcessError as err:
+    pastebin_output = dict(error=err.output)
+
+
+if isinstance(pastebin_output, dict):
+    sys.stderr.write(pastebin_output['error'])
+    sys.exit(1)
+
+if pastebin_output:
+    pastebin_output = pastebin_output.strip().replace('snippets.', '')
+
+    result = subprocess.call(['xdg-open', pastebin_output])
+
+sys.exit()
