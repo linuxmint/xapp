@@ -92,7 +92,7 @@ create_label (XAppKbdLayoutController *controller,
         gchar utf8[20];
         gchar *utf8_cased = NULL;
 
-        g_utf8_strncpy (utf8, name, 2);
+        g_utf8_strncpy (utf8, name, 3);
 
         utf8_cased = g_utf8_strdown (utf8, -1);
 
