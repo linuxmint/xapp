@@ -25,7 +25,7 @@ Standards-Version: 3.9.6
 Package: xapps-common
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${python:Depends}, python, python-gi, inxi, xdg-utils, gist
+Depends: ${misc:Depends}, ${python:Depends}, python3, python3-gi, inxi, xdg-utils, gist
 Description: Common files for XApp desktop apps
  This package includes files that are shared between several XApp
  apps (i18n files and configuration schemas).
