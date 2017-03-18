@@ -1,4 +1,4 @@
-SUBDIRS = libxapp po schemas files
+SUBDIRS = libxapp po schemas files docs
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
