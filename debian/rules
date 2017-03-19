@@ -6,7 +6,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 DEB_PKG_CONFIG_LIBDIR=$(shell pkg-config gobject-introspection-1.0 --variable libdir | sed -e 's/.//')
 
 %:
-	dh $@ --parallel --with=autoreconf,gir,gnome,python2
+	dh $@ --parallel --with=autoreconf,gir,gnome,python3
 
 override_dh_gnome_clean:
 	dh_gnome_clean --no-control
