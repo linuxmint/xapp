@@ -12,6 +12,16 @@
 
 #include "xapp-monitor-blanker.h"
 
+/**
+ * SECTION:xapp-monitor-blanker
+ * @Short_description: Blank and unblank unused monitors
+ * @Title: XAppMonitorBlanker
+ *
+ * The XAppMonitorBlanker widget that creates one or more
+ * POPUP type GtkWindows that are used to blank unused
+ * monitors in multiple monitor setups.
+ */
+
 struct _XAppMonitorBlankerPrivate
 {
     int num_outputs;
@@ -57,6 +67,14 @@ xapp_monitor_blanker_class_init (XAppMonitorBlankerClass *klass)
     g_type_class_add_private (gobject_class, sizeof (XAppMonitorBlankerPrivate));
 }
 
+/**
+ * xapp_monitor_blanker_new:
+ *
+ * Creates a new #XAppMonitorBlanker.
+ *
+ * Returns: a newly created #XAppMonitorBlanker
+ */
+
 XAppMonitorBlanker *
 xapp_monitor_blanker_new (void)
 {
@@ -92,6 +110,14 @@ create_blanking_window (GdkScreen *screen,
     return window;
 }
 
+/**
+ * xapp_monitor_blanker_blank_other_monitors:
+ * @self: a #XAppMonitorBlanker
+ * @window: a #GtkWindow
+ *
+ * Blanks monitors besides the one where the @window is.
+ */
+
 void
 xapp_monitor_blanker_blank_other_monitors (XAppMonitorBlanker *self,
                                    GtkWindow   *window)
@@ -126,6 +152,14 @@ xapp_monitor_blanker_blank_other_monitors (XAppMonitorBlanker *self,
     self->priv->blanked = TRUE;
 }
 
+/**
+ * xapp_monitor_blanker_unblank_monitors:
+ * @self: a #XAppMonitorBlanker
+ *
+ * Unblanks monitors that were blanked by
+ * xapp_monitor_blanker_blank_other_monitors();
+ */
+
 void
 xapp_monitor_blanker_unblank_monitors (XAppMonitorBlanker *self)
 {
@@ -147,6 +181,16 @@ xapp_monitor_blanker_unblank_monitors (XAppMonitorBlanker *self)
     self->priv->windows = NULL;
     self->priv->blanked = FALSE;
 }
+
+/**
+ * xapp_monitor_blanker_are_monitors_blanked:
+ * @self: a #XAppMonitorBlanker
+ *
+ * Returns whether monitors are currently blanked.
+ * See xapp_monitor_blanker_blank_other_monitors().
+ *
+ * Returns: %TRUE if monitors are blanked.
+ */
 
 gboolean
 xapp_monitor_blanker_are_monitors_blanked (XAppMonitorBlanker *self)

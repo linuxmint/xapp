@@ -17,7 +17,7 @@ Build-Depends: debhelper (>= 9),
                libglib2.0-dev (>= 2.37.3),
                libgtk-3-dev (>= 3.3.16),
                libx11-dev,
-               python,
+               python3,
                yelp-tools,
                libgnomekbd-dev
 Standards-Version: 3.9.6
@@ -25,7 +25,7 @@ Standards-Version: 3.9.6
 Package: xapps-common
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${python:Depends}, python3, python3-gi, inxi, xdg-utils, gist
+Depends: ${misc:Depends}, ${python3:Depends}, python3, python3-gi, inxi, xdg-utils, gist
 Description: Common files for XApp desktop apps
  This package includes files that are shared between several XApp
  apps (i18n files and configuration schemas).
@@ -69,3 +69,10 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: libxapp1 (= ${binary:Version}), ${misc:Depends}
 Description: XApp library - debug symbols
  This package contains the symbols files needed to debug the XApp library.
+
+Package: xapps-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}, devhelp
+Description: Libxapp documentation
+ This package contains documentation for xapp library
