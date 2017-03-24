@@ -5,8 +5,9 @@ lib_LTLIBRARIES = libxapp.la
 
 AM_CPPFLAGS =							\
 	-I$(top_srcdir)						\
-	$(XAPP_CFLAGS)					\
-	$(XLIB_CFLAGS)						\
+	$(XAPP_CFLAGS)					    \
+	$(XLIB_CFLAGS)					    \
+	$(WARN_CFLAGS)			            \
 	-DG_LOG_DOMAIN=\"XApp\"				\
 	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale\""	\
 	$(DISABLE_DEPRECATED_CFLAGS)
@@ -26,6 +27,7 @@ libxapp_la_LIBADD =	\
 	-lrt
 
 libxapp_la_LDFLAGS = \
+	$(WARN_LDFLAGS) \
 	-version-info $(LT_VERSION) \
 	-export-symbols-regex "^xapp_.*" \
 	-no-undefined
@@ -49,10 +51,10 @@ XApp-1.0.gir: libxapp.la
 XApp_1_0_gir_INCLUDES = GObject-2.0 Gtk-3.0
 XApp_1_0_gir_PACKAGES = gdk-pixbuf-2.0 glib-2.0 gobject-2.0 gio-2.0 gtk+-3.0
 XApp_1_0_gir_EXPORT_PACKAGES = xapp
-XApp_1_0_gir_CFLAGS = -I$(top_srcdir) -DWITH_INTROSPECTION
+XApp_1_0_gir_CFLAGS = $(WARN_CFLAGS) -I$(top_srcdir) -DWITH_INTROSPECTION
 XApp_1_0_gir_LIBS = libxapp.la
 XApp_1_0_gir_FILES = $(introspection_sources) $(libxapp_HEADERS)
-XApp_1_0_gir_SCANNERFLAGS = --identifier-prefix=XApp --symbol-prefix=xapp_
+XApp_1_0_gir_SCANNERFLAGS = $(WARN_SCANNERFLAGS) --identifier-prefix=XApp --symbol-prefix=xapp_
 INTROSPECTION_GIRS += XApp-1.0.gir
 
 girdir = $(datadir)/gir-1.0
