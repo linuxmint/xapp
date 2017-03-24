@@ -69,3 +69,10 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: libxapp1 (= ${binary:Version}), ${misc:Depends}
 Description: XApp library - debug symbols
  This package contains the symbols files needed to debug the XApp library.
+
+Package: xapps-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}, devhelp
+Description: Libxapp documentation
+ This package contains documentation for xapp library

@@ -28,6 +28,8 @@ IT_PROG_INTLTOOL([0.40.6])
 AC_PROG_CC
 PKG_PROG_PKG_CONFIG
 
+GTK_DOC_CHECK([1.0],[--flavour=no-tmpl])
+
 GNOME_COMPILE_WARNINGS([maximum])
 GNOME_MAINTAINER_MODE_DEFINES
 
@@ -66,6 +68,11 @@ AC_SUBST(X11_PACKAGE)
 AC_SUBST(XLIB_CFLAGS)
 AC_SUBST(XLIB_LIBS)
 
+AC_ARG_ENABLE([gtk-doc],
+    AC_HELP_STRING([--enable-gtk-doc],
+                  [use gtk-doc to build documentation [[default=yes]]]),,
+    enable_gtk_doc=yes)
+
 dnl pkg-config dependency checks
 
 PKG_CHECK_MODULES(XAPP, gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED
@@ -90,6 +97,8 @@ GOBJECT_INTROSPECTION_CHECK([0.9.7])
 
 AC_CONFIG_FILES([
 Makefile
+docs/Makefile
+docs/reference/Makefile
 libxapp/Makefile
 libxapp/xapp.pc
 libxapp/xapp-uninstalled.pc
