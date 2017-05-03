@@ -1,3 +1,33 @@
+xapp (1.0.3) sonya; urgency=medium
+
+  [ Michael Webster ]
+  * Fix build
+  * xapp-kbd-layout-controller - update test script to reflect current api/intent
+
+  [ Clement Lefebvre ]
+  * Review licensing
+  * Handle exceptions in usr/bin/upload-system-info
+
+  [ JosephMcc ]
+  * Add a couple of symbolic pane visibility icons
+  * icons: Add an icon for regex-search
+
+  [ leigh123linux ]
+  * switch to the correct python deps
+
+  [ Michael Webster ]
+  * xapp-kbd-layout-controller.c: Allow up to 3 character labels.
+
+  [ JosephMcc ]
+  * Complete our set of pane icons
+  * Add support for building gtk-doc
+
+  [ leigh123linux ]
+  * Migrate away from gnome-common deprecated vars and macros
+  * Use python3 as all scripts are in python3
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 03 May 2017 11:27:21 +0100
+
 xapp (1.0.2) serena; urgency=medium
 
   [ Clement Lefebvre ]
