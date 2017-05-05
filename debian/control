@@ -39,8 +39,8 @@ Depends: xapps-common (>= ${source:Version}),
          libgnomekbd8,
          ${misc:Depends},
          ${shlibs:Depends}
-Description: XApp library for loading .desktop files
- This library is used by XApp to load the .desktop files.
+Description: XApp library
+ This library is used by several Xapp apps.
 
 Package: libxapp-dev
 Section: libdevel
