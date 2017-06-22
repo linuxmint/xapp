@@ -74,8 +74,8 @@ on_gtk_window_realized (GtkWidget *widget,
  * icon, or %NULL to unset.
  */
 void
-xapp_gtk_window_set_icon_name                                                  (GtkWindow   *window,
-                                                                                const gchar *icon_name)
+xapp_gtk_window_set_icon_name (GtkWindow   *window,
+                               const gchar *icon_name)
 {
     g_return_if_fail (GTK_IS_WINDOW (window));
 
