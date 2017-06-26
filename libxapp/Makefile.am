@@ -17,7 +17,7 @@ AM_CFLAGS = $(WARN_CFLAGS)
 introspection_sources = 		\
 	xapp-monitor-blanker.c \
     xapp-kbd-layout-controller.c \
-    xapp-gtk-utils.c
+    xapp-gtk-window.c
 
 libxapp_la_SOURCES = 	\
 	$(introspection_sources)
@@ -40,7 +40,7 @@ libxappdir = $(includedir)/xapp/libxapp
 libxapp_HEADERS = \
 	xapp-monitor-blanker.h \
     xapp-kbd-layout-controller.h \
-    xapp-gtk-utils.h
+    xapp-gtk-window.h
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
