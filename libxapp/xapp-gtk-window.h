@@ -31,6 +31,7 @@ struct _XAppGtkWindowClass
     GtkWindowClass parent_class;
 };
 
+/* Class */
 GType                    xapp_gtk_window_get_type                        (void);
 XAppGtkWindow           *xapp_gtk_window_new                             (void);
 
@@ -40,6 +41,15 @@ void                     xapp_gtk_window_set_icon_name                   (XAppGt
 void                     xapp_gtk_window_set_icon_from_file              (XAppGtkWindow   *window,
                                                                           const gchar     *file_name,
                                                                           GError         **error);
+
+/* Wrappers (for GtkWindow subclasses like GtkDialog)*/
+
+void                     xapp_set_window_icon_name                       (XAppGtkWindow   *window,
+                                                                          const gchar     *icon_name);
+
+void                     xapp_set_window_icon_from_file                  (GtkWindow   *window,
+                                                                          const gchar *file_name,
+                                                                          GError     **error);
 
 G_END_DECLS
 
