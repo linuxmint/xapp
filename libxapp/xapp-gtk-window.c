@@ -266,7 +266,7 @@ on_gtk_window_realized (GtkWidget *widget,
  */
 
 void
-xapp_set_window_icon_name (XAppGtkWindow   *window,
+xapp_set_window_icon_name (GtkWindow       *window,
                            const gchar     *icon_name)
 {
     g_return_if_fail (GTK_IS_WINDOW (window));

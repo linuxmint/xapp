@@ -44,7 +44,7 @@ void                     xapp_gtk_window_set_icon_from_file              (XAppGt
 
 /* Wrappers (for GtkWindow subclasses like GtkDialog)*/
 
-void                     xapp_set_window_icon_name                       (XAppGtkWindow   *window,
+void                     xapp_set_window_icon_name                       (GtkWindow       *window,
                                                                           const gchar     *icon_name);
 
 void                     xapp_set_window_icon_from_file                  (GtkWindow   *window,
