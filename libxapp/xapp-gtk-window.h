@@ -41,7 +41,10 @@ void                     xapp_gtk_window_set_icon_name                   (XAppGt
 void                     xapp_gtk_window_set_icon_from_file              (XAppGtkWindow   *window,
                                                                           const gchar     *file_name,
                                                                           GError         **error);
-
+void                     xapp_gtk_window_set_progress                    (XAppGtkWindow   *window,
+                                                                          gint             progress);
+void                     xapp_gtk_window_set_progress_pulse              (XAppGtkWindow   *window,
+                                                                          gboolean         pulse);
 /* Wrappers (for GtkWindow subclasses like GtkDialog)*/
 
 void                     xapp_set_window_icon_name                       (GtkWindow       *window,
@@ -50,6 +53,10 @@ void                     xapp_set_window_icon_name                       (GtkWin
 void                     xapp_set_window_icon_from_file                  (GtkWindow   *window,
                                                                           const gchar *file_name,
                                                                           GError     **error);
+void                     xapp_set_window_progress                        (GtkWindow   *window,
+                                                                          gint         progress);
+void                     xapp_set_window_progress_pulse                  (GtkWindow   *window,
+                                                                          gboolean     pulse);
 
 G_END_DECLS
 

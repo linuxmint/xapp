@@ -1,0 +1,104 @@
+#! /usr/bin/python3
+
+"""
+A demo/test script for the XAppAppGtkWindow class
+"""
+import sys, os
+import signal
+import gettext
+
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('XApp', '1.0')
+
+from gi.repository import GLib, Gtk, XApp, GObject
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+class Main:
+    def __init__(self):
+        self.win = XApp.GtkWindow()
+
+        self.win.set_default_size(320, 200)
+
+        frame = Gtk.Frame()
+        frame.set_margin_start(2)
+        frame.set_margin_end(2)
+        frame.set_margin_top(2)
+        frame.set_margin_bottom(2)
+
+        self.win.add(frame)
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box.set_margin_start(2)
+        box.set_margin_end(2)
+        box.set_margin_top(2)
+        box.set_margin_bottom(2)
+
+        frame.add(box)
+
+        heading = Gtk.Label()
+        heading.set_markup("Use '<span font_family='mono' weight='bold'>xprop -spy</span>' to monitor changes")
+        box.pack_start(heading, True, True, 4)
+
+        hbox = Gtk.HBox()
+        self.icon_name_entry = Gtk.Entry()
+        self.icon_name_setter = Gtk.Button("Set icon name")
+        self.icon_name_setter.connect("clicked", self.on_icon_name_setter_clicked)
+        hbox.pack_start(self.icon_name_entry, True, True, 4)
+        hbox.pack_start(self.icon_name_setter, False, False, 4)
+        box.pack_start(hbox, True, True, 4)
+
+        hbox = Gtk.HBox()
+        self.icon_path_entry = Gtk.Entry()
+        self.icon_path_setter = Gtk.Button("Set icon path")
+        self.icon_path_setter.connect("clicked", self.on_icon_path_setter_clicked)
+        hbox.pack_start(self.icon_path_entry, True, True, 4)
+        hbox.pack_start(self.icon_path_setter, False, False, 4)
+        box.pack_start(hbox, True, True, 4)
+
+        hbox = Gtk.HBox()
+        self.progress_label = Gtk.Label("Progress:")
+        self.progress = Gtk.Scale()
+        self.progress.connect("value-changed", self.on_progress_value_changed)
+        self.progress.set_draw_value(True)
+        self.progress.set_digits(0)
+        self.progress.set_range(0, 100)
+
+        hbox.pack_start(self.progress_label, False, False, 4)
+        hbox.pack_start(self.progress, True, True, 4)
+        box.pack_start(hbox, True, True, 4)
+
+        hbox = Gtk.HBox()
+        self.pulse_label = Gtk.Label("Progress pulse:")
+        self.pulse_switch = Gtk.Switch()
+        self.pulse_switch.set_halign(Gtk.Align.CENTER)
+        self.pulse_switch.connect("notify::active", self.on_pulse_switch_changed)
+        hbox.pack_start(self.pulse_label, False, False, 4)
+        hbox.pack_start(self.pulse_switch, True, True, 4)
+        box.pack_start(hbox, True, True, 4)
+
+        frame.show_all()
+        self.win.connect("delete-event", lambda w, e: Gtk.main_quit())
+        self.win.present()
+
+        Gtk.main()
+
+    def on_icon_name_setter_clicked(self, button, data=None):
+        self.win.set_icon_name(self.icon_name_entry.get_text())
+
+    def on_icon_path_setter_clicked(self, button, data=None):
+        try:
+            self.win.set_icon_from_file(self.icon_path_entry.get_text())
+        except GLib.Error as e:
+            print(e.message)
+
+    def on_progress_value_changed(self, range, data=None):
+        self.win.set_progress(int(self.progress.get_value()))
+        self.pulse_switch.set_active(False)
+
+    def on_pulse_switch_changed(self, switch, pspec, data=None):
+        self.win.set_progress_pulse(self.pulse_switch.get_active())
+
+if __name__ == "__main__":
+    main = Main()
