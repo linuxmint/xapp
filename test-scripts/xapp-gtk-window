@@ -6,6 +6,7 @@ A demo/test script for the XAppAppGtkWindow class
 import sys, os
 import signal
 import gettext
+import time
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -18,6 +19,8 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 class Main:
     def __init__(self):
         self.win = XApp.GtkWindow()
+
+        self._animate_progress = 0
 
         self.win.set_default_size(320, 200)
 
@@ -78,11 +81,42 @@ class Main:
         hbox.pack_start(self.pulse_switch, True, True, 4)
         box.pack_start(hbox, True, True, 4)
 
+        hbox = Gtk.HBox()
+        self.animate_button = Gtk.Button("Simulate progress over time")
+        self.animate_button.connect("clicked", self.on_animate_progress_clicked)
+        hbox.pack_start(self.animate_button, True, True, 4)
+
+        box.pack_start(hbox, True, True, 4)
+
         frame.show_all()
         self.win.connect("delete-event", lambda w, e: Gtk.main_quit())
         self.win.present()
 
         Gtk.main()
+
+    def on_animate_progress_clicked(self, button, data=None):
+        self.progress.set_sensitive(False)
+        self.pulse_switch.set_sensitive(False)
+
+        self._animate_progress = 0
+        self.win.set_progress(0)
+
+        GObject.timeout_add(500, self.on_progress_tick)
+
+    def on_progress_tick(self):
+        self.win.set_progress(self._animate_progress)
+
+        if self._animate_progress == 100:
+            self.on_animate_complete()
+            return False
+        else:
+            self._animate_progress += 1
+            return True
+
+    def on_animate_complete(self):
+        self.progress.set_sensitive(True)
+        self.pulse_switch.set_sensitive(True)
+        self.progress.set_value(100)
 
     def on_icon_name_setter_clicked(self, button, data=None):
         self.win.set_icon_name(self.icon_name_entry.get_text())
