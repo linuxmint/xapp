@@ -53,6 +53,13 @@
  * to work with normal GtkWindows and descendants of GtkWindow.
  */
 
+struct _XAppGtkWindow
+{
+    GtkWindow parent_object;
+
+    XAppGtkWindowPrivate *priv;
+};
+
 struct _XAppGtkWindowPrivate
 {
     gchar   *icon_name;
@@ -353,7 +360,7 @@ xapp_gtk_window_class_init (XAppGtkWindowClass *klass)
  * Creates a new #XAppGtkWindow of type @type.  See gtk_window_new()
  * for more details.
  *
- * Returns: A new #XAppGtkWindow
+ * Returns: A new #XAppGtkWindow (transfer: full)
  */
 GtkWidget *
 xapp_gtk_window_new (GtkWindowType type)

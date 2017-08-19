@@ -8,31 +8,13 @@
 
 G_BEGIN_DECLS
 
-#define XAPP_TYPE_GTK_WINDOW            (xapp_gtk_window_get_type ())
-#define XAPP_GTK_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), XAPP_TYPE_GTK_WINDOW, XAppGtkWindow))
-#define XAPP_GTK_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  XAPP_TYPE_GTK_WINDOW, XAppGtkWindowClass))
-#define XAPP_IS_GTK_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), XAPP_TYPE_GTK_WINDOW))
-#define XAPP_IS_GTK_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  XAPP_TYPE_GTK_WINDOW))
-#define XAPP_GTK_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  XAPP_TYPE_GTK_WINDOW, XAppGtkWindowClass))
+#define XAPP_TYPE_GTK_WINDOW (xapp_gtk_window_get_type ())
+
+G_DECLARE_FINAL_TYPE (XAppGtkWindow, xapp_gtk_window, XAPP, GTK_WINDOW, GtkWindow)
 
 typedef struct _XAppGtkWindowPrivate XAppGtkWindowPrivate;
-typedef struct _XAppGtkWindow XAppGtkWindow;
-typedef struct _XAppGtkWindowClass XAppGtkWindowClass;
-
-struct _XAppGtkWindow
-{
-    GtkWindow parent_object;
-
-    XAppGtkWindowPrivate *priv;
-};
-
-struct _XAppGtkWindowClass
-{
-    GtkWindowClass parent_class;
-};
 
 /* Class */
-GType                    xapp_gtk_window_get_type                        (void);
 GtkWidget               *xapp_gtk_window_new                             (GtkWindowType type);
 
 void                     xapp_gtk_window_set_icon_name                   (XAppGtkWindow   *window,

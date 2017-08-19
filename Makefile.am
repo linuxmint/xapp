@@ -1,4 +1,7 @@
 SUBDIRS = libxapp po schemas files docs
+if ENABLE_PYTHON
+SUBDIRS += pygobject
+endif
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 

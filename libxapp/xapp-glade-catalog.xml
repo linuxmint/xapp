@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog name="xapp" library="xapp" depends="gtk+">
+  <init-function>xapp_glade_catalog_init</init-function>
+  <glade-widget-classes>
+    <glade-widget-class name="XAppGtkWindow" generic-name="xappgtkwindow"
+          title="XAppGtkWindow" parent="GtkWindow" />
+  </glade-widget-classes>
+
+  <glade-widget-group name="xapp-widgets" title="XApp Widgets">
+    <glade-widget-class-ref name="XAppGtkWindow" />
+  </glade-widget-group>
+</glade-catalog>

@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 9),
                libgtk-3-dev (>= 3.3.16),
                libx11-dev,
                python3,
+               python-gi-dev,
                yelp-tools,
                libgnomekbd-dev
 Standards-Version: 3.9.6

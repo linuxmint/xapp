@@ -22,4 +22,15 @@ override_dh_strip:
 
 override_dh_install:
 	sed 's@DEB_PKG_CONFIG_LIBDIR@${DEB_PKG_CONFIG_LIBDIR}@' debian/gir1.2-xapp-1.0.install.in > debian/gir1.2-xapp-1.0.install
-	dh_install --list-missing
+
+	# install the python3 gir override file as well
+	PYTHON=python3 ./configure --prefix=/usr
+	cd pygobject/ && DESTDIR=../debian/tmp make install && cd ..
+
+	rm debian/tmp/usr/lib/*/*.la
+	rm debian/tmp/usr/lib/python*/dist-packages/gi/overrides/*.pyc
+	rm debian/tmp/usr/lib/python*/dist-packages/gi/overrides/*.pyo
+	rm -rf debian/tmp/usr/lib/python3/dist-packages/gi/overrides/__pycache__/
+
+	dh_install --fail-missing
+	dh_python2 -pgir1.2-xapp-1.0

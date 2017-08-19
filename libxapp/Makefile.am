@@ -17,7 +17,8 @@ AM_CFLAGS = $(WARN_CFLAGS)
 introspection_sources = 		\
 	xapp-monitor-blanker.c \
     xapp-kbd-layout-controller.c \
-    xapp-gtk-window.c
+    xapp-gtk-window.c \
+    xapp-glade-catalog.c
 
 libxapp_la_SOURCES = 	\
 	$(introspection_sources)
@@ -35,6 +36,9 @@ libxapp_la_LDFLAGS = \
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xapp.pc
+
+catalogdir = $(prefix)/share/glade/catalogs/
+catalog_DATA = xapp-glade-catalog.xml
 
 libxappdir = $(includedir)/xapp/libxapp
 libxapp_HEADERS = \
