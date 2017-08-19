@@ -33,7 +33,7 @@ struct _XAppGtkWindowClass
 
 /* Class */
 GType                    xapp_gtk_window_get_type                        (void);
-XAppGtkWindow           *xapp_gtk_window_new                             (void);
+GtkWidget               *xapp_gtk_window_new                             (GtkWindowType type);
 
 void                     xapp_gtk_window_set_icon_name                   (XAppGtkWindow   *window,
                                                                           const gchar     *icon_name);

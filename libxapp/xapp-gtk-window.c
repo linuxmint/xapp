@@ -49,7 +49,7 @@
  * win = Gtk.Window()
  * XApp.set_window_icon_name(win, "foobar")
  *
- * These functions mirror those of the #XappGtkWindow class, but allow the properties
+ * These functions mirror those of the #XAppGtkWindow class, but allow the properties
  * to work with normal GtkWindows and descendants of GtkWindow.
  */
 
@@ -346,10 +346,19 @@ xapp_gtk_window_class_init (XAppGtkWindowClass *klass)
     g_type_class_add_private (gobject_class, sizeof (XAppGtkWindowPrivate));
 }
 
-XAppGtkWindow *
-xapp_gtk_window_new (void)
+/**
+ * xapp_gtk_window_new:
+ * @type: The #GtkWindowType to use
+ *
+ * Creates a new #XAppGtkWindow of type @type.  See gtk_window_new()
+ * for more details.
+ *
+ * Returns: A new #XAppGtkWindow
+ */
+GtkWidget *
+xapp_gtk_window_new (GtkWindowType type)
 {
-    return g_object_new (XAPP_TYPE_GTK_WINDOW, NULL);
+    return g_object_new (XAPP_TYPE_GTK_WINDOW, "type", type, NULL);
 }
 
 /**
