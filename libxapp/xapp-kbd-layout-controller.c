@@ -14,6 +14,17 @@
 
 #include "xapp-kbd-layout-controller.h"
 
+/**
+ * SECTION:xapp-kbd-layout-controller
+ * @Short_description: Keyboard layout selection UI element provider.
+ * @Title: XAppKbdLayoutController
+ *
+ * A GObject wrapper for Gkbd that provides additional UI element
+ * support for keyboard layout flags and abbreviations, as well as
+ * Wfacilities to distinguish regional and hardware-based variants
+ * which might otherwise appear identical in a layout list.
+ */
+
 enum
 {
   PROP_0,
@@ -61,7 +72,7 @@ struct _XAppKbdLayoutControllerPrivate
 {
     GkbdConfiguration *config;
 
-    gint num_groups;
+    guint num_groups;
 
     GPtrArray *group_data;
 
@@ -130,7 +141,9 @@ load_stores (XAppKbdLayoutController *controller)
 
     /* Populate the GroupData pointer array */
 
-    gint i, j, group_dupe_id, variant_dupe_id;
+    gint group_dupe_id, variant_dupe_id;
+    guint i, j;
+
     GPtrArray *list = g_ptr_array_new_with_free_func ((GDestroyNotify) group_data_free);
 
     for (i = 0; i < priv->num_groups; i++)
@@ -386,18 +399,37 @@ xapp_kbd_layout_controller_class_init (XAppKbdLayoutControllerClass *klass)
                                                 0, G_TYPE_NONE);
 }
 
+/**
+ * xapp_kbd_layout_controller_new
+ *
+ * Creates a new XAppKbdLayoutController instance.
+ *
+ * Returns: (transfer full): a new #XAppKbdLayoutController instance
+ */
 XAppKbdLayoutController *
 xapp_kbd_layout_controller_new (void)
 {
     return g_object_new (XAPP_TYPE_KBD_LAYOUT_CONTROLLER, NULL);
 }
 
+/**
+ * xapp_kbd_layout_controller_get_enabled:
+ * @controller: the #XAppKbdLayoutController
+ *
+ * Returns whether or not the layout controller is enabled
+ */
 gboolean
 xapp_kbd_layout_controller_get_enabled (XAppKbdLayoutController *controller)
 {
     return controller->priv->enabled;
 }
 
+/**
+ * xapp_kbd_layout_controller_get_current_group:
+ * @controller: the #XAppKbdLayoutController
+ *
+ * Selects the previous group in the group list.
+ */
 guint
 xapp_kbd_layout_controller_get_current_group (XAppKbdLayoutController *controller)
 {
@@ -406,6 +438,13 @@ xapp_kbd_layout_controller_get_current_group (XAppKbdLayoutController *controlle
     return gkbd_configuration_get_current_group (controller->priv->config);
 }
 
+/**
+ * xapp_kbd_layout_controller_set_current_group
+ * @controller: the #XAppKbdLayoutController
+ * @group: the group number to make active
+ *
+ * Selects the given group number as active.
+ */
 void
 xapp_kbd_layout_controller_set_current_group (XAppKbdLayoutController *controller,
                                               guint                    group)
@@ -421,6 +460,12 @@ xapp_kbd_layout_controller_set_current_group (XAppKbdLayoutController *controlle
     }
 }
 
+/**
+ * xapp_kbd_layout_controller_next_group
+ * @controller: the #XAppKbdLayoutController
+ *
+ * Selects the next group in the group list.
+ */
 void
 xapp_kbd_layout_controller_next_group (XAppKbdLayoutController *controller)
 {
@@ -429,6 +474,12 @@ xapp_kbd_layout_controller_next_group (XAppKbdLayoutController *controller)
     gkbd_configuration_lock_next_group (controller->priv->config);
 }
 
+/**
+ * xapp_kbd_layout_controller_previous_group
+ * @controller: the #XAppKbdLayoutController
+ *
+ * Selects the previous group in the group list.
+ */
 void
 xapp_kbd_layout_controller_previous_group (XAppKbdLayoutController *controller)
 {
@@ -452,6 +503,7 @@ xapp_kbd_layout_controller_previous_group (XAppKbdLayoutController *controller)
 
 /**
  * xapp_kbd_layout_controller_get_current_name:
+ * @controller: the #XAppKbdLayoutController
  *
  * Returns the full name of the current keyboard layout.
  *
@@ -468,6 +520,7 @@ xapp_kbd_layout_controller_get_current_name (XAppKbdLayoutController *controller
 
 /**
  * xapp_kbd_layout_controller_get_all_names:
+ * @controller: the #XAppKbdLayoutController
  *
  * Returns an array of all full layout names
  *
@@ -483,6 +536,7 @@ xapp_kbd_layout_controller_get_all_names (XAppKbdLayoutController *controller)
 
 /**
  * xapp_kbd_layout_controller_get_current_icon_name:
+ * @controller: the #XAppKbdLayoutController
  *
  * Returns the icon file name (no path or extension) to use for the current layout
  *
@@ -502,6 +556,8 @@ xapp_kbd_layout_controller_get_current_icon_name (XAppKbdLayoutController *contr
 
 /**
  * xapp_kbd_layout_controller_get_icon_name_for_group:
+ * @controller: the #XAppKbdLayoutController
+ * @group: a group number
  *
  * Returns the icon file name (no path or extension) to use for the specified layout.
  *
@@ -521,6 +577,7 @@ xapp_kbd_layout_controller_get_icon_name_for_group (XAppKbdLayoutController *con
 
 /**
  * xapp_kbd_layout_controller_get_current_flag_id:
+ * @controller: the #XAppKbdLayoutController
  *
  * Returns the duplicate id for the current layout
  *
@@ -541,6 +598,8 @@ xapp_kbd_layout_controller_get_current_flag_id (XAppKbdLayoutController *control
 
 /**
  * xapp_kbd_layout_controller_flag_id_for_group:
+ * @controller: the #XAppKbdLayoutController
+ * @group: a group number
  *
  * Returns the duplicate id for the specified layout
  *
@@ -560,6 +619,7 @@ xapp_kbd_layout_controller_get_flag_id_for_group (XAppKbdLayoutController *contr
 
 /**
  * xapp_kbd_layout_controller_get_current_short_group_label:
+ * @controller: the #XAppKbdLayoutController
  *
  * Returns the short group label (and subscript, if any) of the current layout
  *
@@ -579,6 +639,8 @@ xapp_kbd_layout_controller_get_current_short_group_label (XAppKbdLayoutControlle
 
 /**
  * xapp_kbd_layout_controller_get_short_group_label_for_group:
+ * @controller: the #XAppKbdLayoutController
+ * @group: a group number
  *
  * Returns the short group label and subscript of the specified layout.
  *
@@ -599,6 +661,7 @@ xapp_kbd_layout_controller_get_short_group_label_for_group (XAppKbdLayoutControl
 
 /**
  * xapp_kbd_layout_controller_get_current_variant_label:
+ * @controller: the #XAppKbdLayoutController
  *
  * Returns the variant label (and subscript, if any) of the current layout
  *
@@ -618,6 +681,8 @@ xapp_kbd_layout_controller_get_current_variant_label (XAppKbdLayoutController *c
 
 /**
  * xapp_kbd_layout_controller_get_variant_label_for_group:
+ * @controller: the #XAppKbdLayoutController
+ * @group: a group number
  *
  * Returns the variant label and subscript of the specified layout.
  *
@@ -636,6 +701,19 @@ xapp_kbd_layout_controller_get_variant_label_for_group (XAppKbdLayoutController 
     return g_strdup (GROUP_DATA (priv->group_data, group)->variant_label);
 }
 
+/**
+ * xapp_kbd_layout_controller_render_cairo_subscript:
+ * @cr: a #cairo_t
+ * @x: the x position of the drawing area
+ * @y: the y position of the drawing area
+ * @width: the width of the drawing area
+ * @height: the height of the drawing area
+ * @subscript: the number to render
+ *
+ * Renders a subscript number in the given work area.  This should
+ * be called from within a "draw" or "paint" widget/actor function,
+ * where a valid cairo_t is provided to draw with.
+ */
 void
 xapp_kbd_layout_controller_render_cairo_subscript (cairo_t  *cr,
                                                    gdouble   x,

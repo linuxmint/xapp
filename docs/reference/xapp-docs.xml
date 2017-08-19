@@ -8,7 +8,7 @@
 ]>
 <book id="index">
   <bookinfo>
-    <title>Xapp Reference Manual</title>
+    <title>XApp Reference Manual</title>
     <releaseinfo>
       for &package_string;.
     </releaseinfo>
@@ -16,8 +16,9 @@
 
   <chapter>
     <title>API reference</title>
-        <xi:include href="xml/xapp-kbd-layout-controller.xml"/>
+    <xi:include href="xml/xapp-kbd-layout-controller.xml"/>
     <xi:include href="xml/xapp-monitor-blanker.xml"/>
+    <xi:include href="xml/xapp-gtk-window.xml"/>
 
   </chapter>
   <chapter id="object-tree">

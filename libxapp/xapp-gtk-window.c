@@ -15,6 +15,44 @@
 #define PROGRESS_HINT  "_NET_WM_XAPP_PROGRESS"
 #define PROGRESS_PULSE_HINT  "_NET_WM_XAPP_PROGRESS_PULSE"
 
+/**
+ * SECTION:xapp-gtk-window
+ * @Short_description: A subclass of %GtkWindow that allows additional
+   communication with the window manager.
+ * @Title: XAppGtkWindow
+ *
+ * This widget is a simple subclass of GtkWindow that provides the following
+ * additional capabilities:
+ *
+ * - Ability to set an icon name or icon file path for the window manager to
+ *   make use of, rather than relying on a desktop file or fixed-size window-
+ *   backed icon that Gtk normally generates.  The window manager must support
+ *   the NET_WM_XAPP_ICON_NAME hint.
+ *
+ * - Ability to send progress info to the window manager, in the form of an integer,
+ *   0-100, which can then be used to display this progress in some manner in a task
+ *   manager or window list.  The window manager must support the NET_WM_XAPP_PROGRESS
+ *   hint.
+ *
+ * - Ability to signal a 'pulsing' progress state, of potentially indeterminate value,
+ *   in the form of a boolean, which can be passed on to a window list.  The window
+ *   manager must support the NET_WM_XAPP_PROGRESS_PULSE hint
+ *
+ * Wrappers:
+ *
+ * Also provided are corresponding wrapper functions for normal GtkWindows.
+ * They are not class methods - they are called with the target widget as their first
+ * argument.
+ *
+ * For example:
+ *
+ * win = Gtk.Window()
+ * XApp.set_window_icon_name(win, "foobar")
+ *
+ * These functions mirror those of the #XappGtkWindow class, but allow the properties
+ * to work with normal GtkWindows and descendants of GtkWindow.
+ */
+
 struct _XAppGtkWindowPrivate
 {
     gchar   *icon_name;
@@ -268,8 +306,6 @@ xapp_gtk_window_realize (GtkWidget *widget)
 static void
 xapp_gtk_window_unrealize (GtkWidget *widget)
 {
-    XAppGtkWindow *window = XAPP_GTK_WINDOW (widget);
-
     GTK_WIDGET_CLASS (xapp_gtk_window_parent_class)->unrealize (widget);
 }
 
@@ -468,7 +504,6 @@ get_xapp_struct (GtkWindow *window)
  * GtkDialogs.  Sets gtk_window_set_icon_name as well, to avoid needing
  * to have two calls each time.  Set to %NULL to unset.
  */
-
 void
 xapp_set_window_icon_name (GtkWindow       *window,
                            const gchar     *icon_name)

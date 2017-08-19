@@ -97,6 +97,8 @@ GLIB_GSETTINGS
 
 GOBJECT_INTROSPECTION_CHECK([0.9.7])
 
+CFLAGS="$CFLAGS -Wno-declaration-after-statement"
+
 AC_CONFIG_FILES([
 Makefile
 docs/Makefile
