@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
 #include <gdk/gdk.h>
@@ -53,6 +52,14 @@
  * to work with normal GtkWindows and descendants of GtkWindow.
  */
 
+typedef struct
+{
+    gchar   *icon_name;
+    gchar   *icon_path;
+    guint    progress;
+    gboolean progress_pulse;
+} XAppGtkWindowPrivate;
+
 struct _XAppGtkWindow
 {
     GtkWindow parent_object;
@@ -60,15 +67,7 @@ struct _XAppGtkWindow
     XAppGtkWindowPrivate *priv;
 };
 
-struct _XAppGtkWindowPrivate
-{
-    gchar   *icon_name;
-    gchar   *icon_path;
-    guint    progress;
-    gboolean progress_pulse;
-};
-
-G_DEFINE_TYPE (XAppGtkWindow, xapp_gtk_window, GTK_TYPE_WINDOW);
+G_DEFINE_TYPE_WITH_PRIVATE (XAppGtkWindow, xapp_gtk_window, GTK_TYPE_WINDOW)
 
 static void
 clear_icon_strings (XAppGtkWindowPrivate *priv)
@@ -78,27 +77,18 @@ clear_icon_strings (XAppGtkWindowPrivate *priv)
 }
 
 static void
-set_window_hint_utf8 (GtkWidget   *widget,
+set_window_hint_utf8 (Window       xid,
                       const gchar *atom_name,
                       const gchar *str)
 {
     GdkDisplay *display;
-    GdkWindow *window;
 
-    window = gtk_widget_get_window (widget);
-
-    if (gdk_window_get_effective_toplevel (window) != window)
-    {
-        g_warning ("Window is not toplevel");
-        return;
-    }
-
-    display = gdk_window_get_display (window);
+    display = gdk_display_get_default ();
 
     if (str != NULL)
     {
         XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-                         GDK_WINDOW_XID (window),
+                         xid,
                          gdk_x11_get_xatom_by_name_for_display (display, atom_name),
                          gdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING"), 8,
                          PropModeReplace, (guchar *) str, strlen (str));
@@ -106,33 +96,24 @@ set_window_hint_utf8 (GtkWidget   *widget,
     else
     {
         XDeleteProperty (GDK_DISPLAY_XDISPLAY (display),
-                         GDK_WINDOW_XID (window),
+                         xid,
                          gdk_x11_get_xatom_by_name_for_display (display, atom_name));
     }
 }
 
 static void
-set_window_hint_cardinal (GtkWidget   *widget,
+set_window_hint_cardinal (Window       xid,
                           const gchar *atom_name,
                           gulong       cardinal)
 {
     GdkDisplay *display;
-    GdkWindow *window;
 
-    window = gtk_widget_get_window (widget);
-
-    if (gdk_window_get_effective_toplevel (window) != window)
-    {
-        g_warning ("Window is not toplevel");
-        return;
-    }
-
-    display = gdk_window_get_display (window);
+    display = gdk_display_get_default ();
 
     if (cardinal > 0)
     {
         XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-                         GDK_WINDOW_XID (window),
+                         xid,
                          gdk_x11_get_xatom_by_name_for_display (display, atom_name),
                          XA_CARDINAL, 32,
                          PropModeReplace,
@@ -141,9 +122,25 @@ set_window_hint_cardinal (GtkWidget   *widget,
     else
     {
         XDeleteProperty (GDK_DISPLAY_XDISPLAY (display),
-                         GDK_WINDOW_XID (window),
+                         xid,
                          gdk_x11_get_xatom_by_name_for_display (display, atom_name));
     }
+}
+
+static Window
+get_window_xid (GtkWindow *window)
+{
+    GdkWindow *gdk_window;
+
+    gdk_window = gtk_widget_get_window (GTK_WIDGET (window));
+
+    if (gdk_window_get_effective_toplevel (gdk_window) != gdk_window)
+    {
+        g_warning ("Window is not toplevel");
+        return 0;
+    }
+
+    return GDK_WINDOW_XID (gdk_window);
 }
 
 static void
@@ -153,15 +150,21 @@ update_window_icon (GtkWindow            *window,
     /* Icon name/path */
     if (priv->icon_name != NULL)
     {
-        set_window_hint_utf8 (GTK_WIDGET (window), ICON_NAME_HINT, priv->icon_name);
+        set_window_hint_utf8 (get_window_xid (window),
+                              ICON_NAME_HINT,
+                              priv->icon_name);
     }
     else if (priv->icon_path != NULL)
     {
-        set_window_hint_utf8 (GTK_WIDGET (window), ICON_NAME_HINT, priv->icon_path);
+        set_window_hint_utf8 (get_window_xid (window),
+                              ICON_NAME_HINT,
+                              priv->icon_path);
     }
     else
     {
-        set_window_hint_utf8 (GTK_WIDGET (window), ICON_NAME_HINT, NULL);
+        set_window_hint_utf8 (get_window_xid (window),
+                              ICON_NAME_HINT,
+                              NULL);
     }
 }
 
@@ -170,8 +173,13 @@ update_window_progress (GtkWindow            *window,
                         XAppGtkWindowPrivate *priv)
 {
     /* Progress: 0 - 100 */
-    set_window_hint_cardinal (GTK_WIDGET (window), PROGRESS_HINT, (gulong) priv->progress);
-    set_window_hint_cardinal (GTK_WIDGET (window), PROGRESS_PULSE_HINT, (gulong) (priv->progress_pulse ? 1 : 0));
+    set_window_hint_cardinal (get_window_xid (window),
+                              PROGRESS_HINT,
+                              (gulong) priv->progress);
+
+    set_window_hint_cardinal (get_window_xid (window),
+                              PROGRESS_PULSE_HINT,
+                              (gulong) (priv->progress_pulse ? 1 : 0));
 }
 
 static void
@@ -349,8 +357,6 @@ xapp_gtk_window_class_init (XAppGtkWindowClass *klass)
     gobject_class->finalize = xapp_gtk_window_finalize;
     wclass->realize = xapp_gtk_window_realize;
     wclass->unrealize = xapp_gtk_window_unrealize;
-
-    g_type_class_add_private (gobject_class, sizeof (XAppGtkWindowPrivate));
 }
 
 /**
@@ -420,6 +426,10 @@ xapp_gtk_window_set_icon_from_file (XAppGtkWindow   *window,
  * in some operation. The value sent to the WM will be clamped to 
  * between 0 and 100.
  *
+ * Note: If a window will stick around after progress is complete, you will
+ * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * and window lists.
+ *
  * Setting progress will also cancel the 'pulsing' flag on the window as
  * well, if it has been set.
  */
@@ -440,6 +450,10 @@ xapp_gtk_window_set_progress (XAppGtkWindow   *window,
  * Sets the progress pulse hint hint for a window manager (like muffin)
  * to make available when applications want to display indeterminate or
  * ongoing progress in a task manager.
+ *
+ * Note: If a window will stick around after progress is complete, you will
+ * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * and window lists.  This will also remove the pulse state, if it is set.
  *
  * Setting an explicit progress value will unset this flag.
  */
@@ -574,11 +588,15 @@ xapp_set_window_icon_from_file (GtkWindow   *window,
  * xapp_set_window_progress:
  * @window: The #GtkWindow to set the progress for
  * @progress: The value to set for progress.
- * 
+ *
  * Sets the progress hint for a window manager (like muffin) to make
  * available when applications want to display the application's progress
- * in some operation. The value sent to the WM will be clamped to 
+ * in some operation. The value sent to the WM will be clamped to
  * between 0 and 100.
+ *
+ * Note: If a window will stick around after progress is complete, you will
+ * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * and window lists.
  *
  * Setting progress will also cancel the 'pulsing' flag on the window as
  * well, if it has been set.
@@ -610,6 +628,10 @@ xapp_set_window_progress (GtkWindow   *window,
  * to make available when applications want to display indeterminate or
  * ongoing progress in a task manager.
  *
+ * Note: If a window will stick around after progress is complete, you will
+ * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * and window lists.  This will also remove the pulse state, if it is set.
+ *
  * Setting an explicit progress value will unset this flag.
  */
 void
@@ -628,4 +650,101 @@ xapp_set_window_progress_pulse (GtkWindow   *window,
     }
 
     set_progress_pulse_internal (GTK_WINDOW (window), priv, pulse);
+}
+
+/**
+ * xapp_set_xid_icon_name:
+ * @xid: (type gulong): The #Window to set the icon name for
+ * @icon_name: (nullable): The icon name to set, or %NULL to unset.
+ *
+ * Sets the icon name hint for a window manager (like muffin) to make
+ * available when applications want to change their icons during runtime
+ * without having to resort to the internal low-res pixbufs that GdkWindow
+ * sets on the client side.  This is a function, not a method, for applying
+ * the icon name property for a given (possibly foreign) window, by passing
+ * the window's XID.  Set to %NULL to unset.
+ */
+void
+xapp_set_xid_icon_name (Window           xid,
+                        const gchar     *icon_name)
+{
+    g_return_if_fail (xid > 0);
+
+    set_window_hint_utf8 (xid, ICON_NAME_HINT, icon_name);
+}
+
+/**
+ * xapp_set_xid_icon_from_file:
+ * @xid: (type gulong): The #Window to set the icon name for
+ * @file_name: (nullable): The icon path to set, or %NULL to unset.
+ *
+ * Sets the icon name hint for a window manager (like muffin) to make
+ * available when applications want to change their icons during runtime
+ * without having to resort to the internal low-res pixbufs that GdkWindow
+ * sets on the client side.  This is a function, not a method, for applying
+ * the icon name property for a given (possibly foreign) window, by passing
+ * the window's XID.  Set to %NULL to unset.
+ */
+void
+xapp_set_xid_icon_from_file (Window       xid,
+                             const gchar *file_name)
+{
+
+    g_return_if_fail (xid > 0);
+
+    set_window_hint_utf8 (xid, ICON_NAME_HINT, file_name);
+}
+
+/**
+ * xapp_set_xid_progress:
+ * @xid: (type gulong): The #Window to set the progress for
+ * @progress: The value to set for progress.
+ *
+ * Sets the progress hint for a window manager (like muffin) to make
+ * available when applications want to display the application's progress
+ * in some operation. The value sent to the WM will be clamped to
+ * between 0 and 100.
+ *
+ * Setting progress will also cancel the 'pulsing' flag on the window as
+ * well, if it has been set.
+ *
+ * Note: If a window will stick around after progress is complete, you will
+ * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * and window lists.
+ *
+ * This is a function, not a method, for applying the progress property for
+ * a given (possibly foreign) window, by passing the window's XID.
+ */
+void
+xapp_set_xid_progress (Window       xid,
+                       gint         progress)
+{
+    g_return_if_fail (xid > 0);
+
+    set_window_hint_cardinal (xid, PROGRESS_HINT, (gulong) (CLAMP (progress, 0, 100)));
+    set_window_hint_cardinal (xid, PROGRESS_PULSE_HINT, (gulong) 0);
+}
+
+/**
+ * xapp_set_xid_progress_pulse:
+ * @xid: (type gulong): The #Window to set the progress for
+ * @pulse: Whether to have pulsing set or not.
+ *
+ * Sets the progress pulse hint hint for a window manager (like muffin)
+ * to make available when applications want to display indeterminate or
+ * ongoing progress in a task manager.
+ *
+ * Note: If a window will stick around after progress is complete, you will
+ * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * and window lists.
+ *
+ * Setting an explicit progress value will unset this flag.
+ */
+void
+xapp_set_xid_progress_pulse (Window       xid,
+                                gboolean     pulse)
+{
+    g_return_if_fail (xid > 0);
+
+    set_window_hint_cardinal (xid, PROGRESS_PULSE_HINT, (gulong) (pulse ? 1 : 0));
 }

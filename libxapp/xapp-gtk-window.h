@@ -5,14 +5,13 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <X11/Xlib.h>
 
 G_BEGIN_DECLS
 
 #define XAPP_TYPE_GTK_WINDOW (xapp_gtk_window_get_type ())
 
 G_DECLARE_FINAL_TYPE (XAppGtkWindow, xapp_gtk_window, XAPP, GTK_WINDOW, GtkWindow)
-
-typedef struct _XAppGtkWindowPrivate XAppGtkWindowPrivate;
 
 /* Class */
 GtkWidget               *xapp_gtk_window_new                             (GtkWindowType type);
@@ -32,13 +31,22 @@ void                     xapp_gtk_window_set_progress_pulse              (XAppGt
 void                     xapp_set_window_icon_name                       (GtkWindow       *window,
                                                                           const gchar     *icon_name);
 
-void                     xapp_set_window_icon_from_file                  (GtkWindow   *window,
-                                                                          const gchar *file_name,
-                                                                          GError     **error);
-void                     xapp_set_window_progress                        (GtkWindow   *window,
-                                                                          gint         progress);
-void                     xapp_set_window_progress_pulse                  (GtkWindow   *window,
-                                                                          gboolean     pulse);
+void                     xapp_set_window_icon_from_file                  (GtkWindow       *window,
+                                                                          const gchar     *file_name,
+                                                                          GError         **error);
+void                     xapp_set_window_progress                        (GtkWindow       *window,
+                                                                          gint             progress);
+void                     xapp_set_window_progress_pulse                  (GtkWindow       *window,
+                                                                          gboolean         pulse);
+/* Low level for X11 Window xid's */
+void                     xapp_set_xid_icon_name                          (Window           xid,
+                                                                          const gchar     *icon_name);
+void                     xapp_set_xid_icon_from_file                     (Window           xid,
+                                                                          const gchar     *file_name);
+void                     xapp_set_xid_progress                           (Window           xid,
+                                                                          gint             progress);
+void                     xapp_set_xid_progress_pulse                     (Window           xid,
+                                                                          gboolean         pulse);
 
 G_END_DECLS
 
