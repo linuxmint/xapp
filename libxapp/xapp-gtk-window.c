@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
 #include <gdk/gdk.h>
@@ -420,10 +421,10 @@ xapp_gtk_window_set_icon_from_file (XAppGtkWindow   *window,
  * xapp_gtk_window_set_progress:
  * @window: The #XAppGtkWindow to set the progress for
  * @progress: The value to set for progress.
- * 
+ *
  * Sets the progress hint for a window manager (like muffin) to make
  * available when applications want to display the application's progress
- * in some operation. The value sent to the WM will be clamped to 
+ * in some operation. The value sent to the WM will be clamped to
  * between 0 and 100.
  *
  * Note: If a window will stick around after progress is complete, you will
@@ -654,7 +655,7 @@ xapp_set_window_progress_pulse (GtkWindow   *window,
 
 /**
  * xapp_set_xid_icon_name:
- * @xid: (type gulong): The #Window to set the icon name for
+ * @xid: The Window to set the icon name for
  * @icon_name: (nullable): The icon name to set, or %NULL to unset.
  *
  * Sets the icon name hint for a window manager (like muffin) to make
@@ -665,7 +666,7 @@ xapp_set_window_progress_pulse (GtkWindow   *window,
  * the window's XID.  Set to %NULL to unset.
  */
 void
-xapp_set_xid_icon_name (Window           xid,
+xapp_set_xid_icon_name (gulong           xid,
                         const gchar     *icon_name)
 {
     g_return_if_fail (xid > 0);
@@ -675,7 +676,7 @@ xapp_set_xid_icon_name (Window           xid,
 
 /**
  * xapp_set_xid_icon_from_file:
- * @xid: (type gulong): The #Window to set the icon name for
+ * @xid: The Window to set the icon name for
  * @file_name: (nullable): The icon path to set, or %NULL to unset.
  *
  * Sets the icon name hint for a window manager (like muffin) to make
@@ -686,7 +687,7 @@ xapp_set_xid_icon_name (Window           xid,
  * the window's XID.  Set to %NULL to unset.
  */
 void
-xapp_set_xid_icon_from_file (Window       xid,
+xapp_set_xid_icon_from_file (gulong       xid,
                              const gchar *file_name)
 {
 
@@ -697,7 +698,7 @@ xapp_set_xid_icon_from_file (Window       xid,
 
 /**
  * xapp_set_xid_progress:
- * @xid: (type gulong): The #Window to set the progress for
+ * @xid: The Window to set the progress for
  * @progress: The value to set for progress.
  *
  * Sets the progress hint for a window manager (like muffin) to make
@@ -716,7 +717,7 @@ xapp_set_xid_icon_from_file (Window       xid,
  * a given (possibly foreign) window, by passing the window's XID.
  */
 void
-xapp_set_xid_progress (Window       xid,
+xapp_set_xid_progress (gulong       xid,
                        gint         progress)
 {
     g_return_if_fail (xid > 0);
@@ -727,7 +728,7 @@ xapp_set_xid_progress (Window       xid,
 
 /**
  * xapp_set_xid_progress_pulse:
- * @xid: (type gulong): The #Window to set the progress for
+ * @xid: The Window to set the progress for
  * @pulse: Whether to have pulsing set or not.
  *
  * Sets the progress pulse hint hint for a window manager (like muffin)
@@ -741,8 +742,8 @@ xapp_set_xid_progress (Window       xid,
  * Setting an explicit progress value will unset this flag.
  */
 void
-xapp_set_xid_progress_pulse (Window       xid,
-                                gboolean     pulse)
+xapp_set_xid_progress_pulse (gulong       xid,
+                             gboolean     pulse)
 {
     g_return_if_fail (xid > 0);
 

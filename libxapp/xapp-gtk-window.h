@@ -5,7 +5,6 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <X11/Xlib.h>
 
 G_BEGIN_DECLS
 
@@ -39,13 +38,13 @@ void                     xapp_set_window_progress                        (GtkWin
 void                     xapp_set_window_progress_pulse                  (GtkWindow       *window,
                                                                           gboolean         pulse);
 /* Low level for X11 Window xid's */
-void                     xapp_set_xid_icon_name                          (Window           xid,
+void                     xapp_set_xid_icon_name                          (gulong           xid,
                                                                           const gchar     *icon_name);
-void                     xapp_set_xid_icon_from_file                     (Window           xid,
+void                     xapp_set_xid_icon_from_file                     (gulong           xid,
                                                                           const gchar     *file_name);
-void                     xapp_set_xid_progress                           (Window           xid,
+void                     xapp_set_xid_progress                           (gulong           xid,
                                                                           gint             progress);
-void                     xapp_set_xid_progress_pulse                     (Window           xid,
+void                     xapp_set_xid_progress_pulse                     (gulong           xid,
                                                                           gboolean         pulse);
 
 G_END_DECLS
