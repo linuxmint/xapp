@@ -111,6 +111,8 @@ set_window_hint_cardinal (Window       xid,
 
     display = gdk_display_get_default ();
 
+    gdk_error_trap_push ();
+
     if (cardinal > 0)
     {
         XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
@@ -126,6 +128,8 @@ set_window_hint_cardinal (Window       xid,
                          xid,
                          gdk_x11_get_xatom_by_name_for_display (display, atom_name));
     }
+
+    gdk_error_trap_pop ();
 }
 
 static Window
