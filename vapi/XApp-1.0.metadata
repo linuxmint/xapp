@@ -1,0 +1,4 @@
+GtkWindow cheader_filename="libxapp/xapp-gtk-window.h"
+MonitorBlanker cheader_filename="libxapp/xapp-monitor-blanker.h"
+KbdLayoutController cheader_filename="libxapp/xapp-kbd-layout-controller.h"
+XApp cheader_filename="libxapp/xapp-gtk-window.h"

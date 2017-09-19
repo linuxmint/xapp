@@ -3,3 +3,4 @@ usr/lib/*/libxapp.so
 usr/lib/*/pkgconfig/xapp.pc
 usr/share/gir-1.0/XApp-1.0.gir
 usr/share/glade/catalogs/xapp-glade-catalog.xml
+usr/share/vala/vapi/xapp.vapi

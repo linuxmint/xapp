@@ -1,0 +1,2 @@
+#!/bin/bash
+vapigen --pkg glib-2.0 --pkg gio-unix-2.0 --pkg gtk+-3.0 --library xapp /usr/share/gir-1.0/XApp-1.0.gir --metadatadir . -d ../files/usr/share/vala/vapi/
