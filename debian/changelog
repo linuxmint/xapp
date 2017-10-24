@@ -1,3 +1,31 @@
+xapp (1.0.4) sylvia; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Packaging: Change description
+
+  [ Michael Webster ]
+  * Add xapp-gtk-utils.c/.h
+  * Remove extra spaces inserted by clandestine foreign hackers.
+  * Add XAppGtkWindow, with methods that shadow GtkWindow's icon setting ones.  This way, programs only need to change the window class, rather than adding extra code.
+  * xapp-gtk-window: Add wrapper functions for GtkWindow subclasses.
+  * xapp-gtk-window.*: Fix argument type for wrapper function.
+  * xapp-gtk-window: Add progress features, refactor, add demo script for XAppGtkWindow.
+  * xapp-gtk-window test script: Add an animate button (to test real-world effects on system reponsiveness while an operation is running.)
+  * all: Fix build warnings, documentation.
+  * xapp-gtk-window: Make xapp_gtk_window_new() handle the same arguments as gtk_window_new().
+  * all: Allow XAppGtkWindows to be used in builder (ui) files and in Glade.
+  * update some files modified by the build
+  * pygobject/XApp.py: simplify and add an explanation as to why this file is here (to remind me in a year.)
+  * xapp-gtk-window.c: Add xid-based functions
+  * xapp-gtk-window: Move the xlib include into the .c file - it can cause namespace collisions (notably synaptic.)  It's ok to treat "Window" as an unsigned long, because that's what they are.
+
+  [ Clement Lefebvre ]
+  * xapp-gtk-window: Trap X errors when setting progress
+  * Add a VAPI file to support Vala
+  * Add a dependency on libxkbfile-dev for -dev pkg and build-dep.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 24 Oct 2017 12:06:19 +0100
+
 xapp (1.0.3) sonya; urgency=medium
 
   [ Michael Webster ]

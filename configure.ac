@@ -1,5 +1,5 @@
 
-AC_INIT(xapp, 1.0.3)
+AC_INIT(xapp, 1.0.4)
 AC_CONFIG_SRCDIR(libxapp)
 m4_ifdef([AX_IS_RELEASE], [AX_IS_RELEASE([always])])
 
