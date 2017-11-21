@@ -18,6 +18,7 @@ introspection_sources = 		\
 	xapp-monitor-blanker.c \
     xapp-kbd-layout-controller.c \
     xapp-gtk-window.c \
+    xapp-preferences-window.c \
     xapp-glade-catalog.c
 
 libxapp_la_SOURCES = 	\
@@ -44,7 +45,8 @@ libxappdir = $(includedir)/xapp/libxapp
 libxapp_HEADERS = \
 	xapp-monitor-blanker.h \
     xapp-kbd-layout-controller.h \
-    xapp-gtk-window.h
+    xapp-gtk-window.h \
+    xapp-preferences-window.h
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
