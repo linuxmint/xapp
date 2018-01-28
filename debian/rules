@@ -1,36 +1,27 @@
 #!/usr/bin/make -f
 
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
-DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
-
-DEB_PKG_CONFIG_LIBDIR=$(shell pkg-config gobject-introspection-1.0 --variable libdir | sed -e 's/.//')
+# FIXME: much of this can be removed once we move off of xenial/mint 18 base support
+# meson support is baked in
 
 %:
-	dh $@ --parallel --with=autoreconf,gir,gnome,python3
-
-override_dh_gnome_clean:
-	dh_gnome_clean --no-control
-
-override_dh_autoreconf:
-	dh_autoreconf --as-needed ./autogen.sh
+	dh $@ --parallel --with=gir,python3
 
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-gtk-doc --enable-silent-rules
+	mkdir -p debian/build
+	meson debian/build \
+		--prefix=/usr \
+		--buildtype=plain \
+		-Ddeprecation_flags=true
 
 override_dh_strip:
 	dh_strip --dbg-package=libxapp-dbg
 
-override_dh_install:
-	sed 's@DEB_PKG_CONFIG_LIBDIR@${DEB_PKG_CONFIG_LIBDIR}@' debian/gir1.2-xapp-1.0.install.in > debian/gir1.2-xapp-1.0.install
+override_dh_auto_build:
+	ninja -C debian/build
 
-	# install the python3 gir override file as well
-	PYTHON=python3 ./configure --prefix=/usr
-	cd pygobject/ && DESTDIR=../debian/tmp make install && cd ..
+override_dh_auto_test:
+	ninja -C debian/build test
 
-	rm debian/tmp/usr/lib/*/*.la
-	rm debian/tmp/usr/lib/python*/dist-packages/gi/overrides/*.pyc
-	rm debian/tmp/usr/lib/python*/dist-packages/gi/overrides/*.pyo
-	rm -rf debian/tmp/usr/lib/python3/dist-packages/gi/overrides/__pycache__/
-
-	dh_install --fail-missing
-	dh_python2 -pgir1.2-xapp-1.0
+override_dh_auto_install:
+	DESTDIR=${CURDIR}/debian/tmp \
+	ninja -C debian/build install

@@ -1,0 +1,5 @@
+libxapp/xapp-gtk-window.c
+libxapp/xapp-kbd-layout-controller.c
+libxapp/xapp-monitor-blanker.c
+libxapp/xapp-preferences-window.c
+schemas/org.x.apps.gschema.xml.in.in

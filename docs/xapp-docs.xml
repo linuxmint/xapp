@@ -10,7 +10,7 @@
   <bookinfo>
     <title>XApp Reference Manual</title>
     <releaseinfo>
-      for &package_string;.
+      &package_string; &package_version;
     </releaseinfo>
   </bookinfo>
 
