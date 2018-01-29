@@ -10,5 +10,5 @@ gnome.gtkdoc('libxapp',
     gobject_typesfile: 'libxapp.types',
     main_xml: 'xapp-docs.xml',
     scan_args: ['--rebuild-types'],
-    mkdb_args: ['--xml-mode --output-format=xml'],
+    mkdb_args: ['--xml-mode', '--output-format=xml'],
 )
