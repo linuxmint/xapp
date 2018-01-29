@@ -57,7 +57,9 @@ gir = gnome.generate_gir(libxapp,
 )
 
 pkg.generate(
+    libraries: libxapp,
     name: 'xapp',
+    subdirs: 'xapp',
     description: 'Utility library',
     version: meson.project_version(),
     requires: 'gtk+-3.0',
