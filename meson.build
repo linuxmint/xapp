@@ -7,6 +7,15 @@ gnome = import('gnome')
 pkg = import('pkgconfig')
 i18n = import('i18n')
 
+build_docs = false
+if get_option('enable-doc')
+  if find_program('gtkdoc-scan', required: false).found()
+    build_docs = true
+  else
+    warning('gtkdoc not found, disabling documentation')
+  endif
+endif
+
 cdata = configuration_data()
 cdata.set('GETTEXT_PACKAGE', '"xapp"')
 
@@ -21,4 +30,6 @@ subdir('libxapp')
 subdir('pygobject')
 subdir('files')
 subdir('schemas')
-subdir('docs')
+if build_docs
+  subdir('docs')
+endif
