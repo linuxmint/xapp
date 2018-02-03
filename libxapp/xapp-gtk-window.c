@@ -129,7 +129,7 @@ set_window_hint_cardinal (Window       xid,
                          gdk_x11_get_xatom_by_name_for_display (display, atom_name));
     }
 
-    gdk_error_trap_pop ();
+    gdk_error_trap_pop_ignored ();
 }
 
 static Window
