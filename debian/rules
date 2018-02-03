@@ -11,7 +11,8 @@ override_dh_auto_configure:
 	meson debian/build \
 		--prefix=/usr \
 		--buildtype=plain \
-		-Ddeprecation_flags=true
+		-D docs=true \
+		-D deprecated_warnings=false
 
 override_dh_strip:
 	dh_strip --dbg-package=libxapp-dbg
