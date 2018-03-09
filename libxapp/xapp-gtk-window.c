@@ -192,6 +192,10 @@ set_icon_name_internal (GtkWindow            *window,
                         XAppGtkWindowPrivate *priv,
                         const gchar          *icon_name)
 {
+    if (!GDK_IS_X11_DISPLAY(gdk_display_get_default())) {
+        goto out;
+    }
+
     if (g_strcmp0 (icon_name, priv->icon_name) == 0)
     {
         gtk_window_set_icon_name (window, icon_name);
@@ -214,6 +218,7 @@ set_icon_name_internal (GtkWindow            *window,
         update_window_icon (window, priv);
     }
 
+out:
     /* Call the GtkWindow method for compatibility */
     gtk_window_set_icon_name (GTK_WINDOW (window), icon_name);
 }
@@ -224,6 +229,10 @@ set_icon_from_file_internal (GtkWindow            *window,
                              const gchar          *file_name,
                              GError              **error)
 {
+    if (!GDK_IS_X11_DISPLAY(gdk_display_get_default())) {
+        goto out;
+    }
+
     if (g_strcmp0 (file_name, priv->icon_path) == 0)
     {
         gtk_window_set_icon_from_file (window, file_name, error);
@@ -246,6 +255,7 @@ set_icon_from_file_internal (GtkWindow            *window,
         update_window_icon (window, priv);
     }
 
+out:
     gtk_window_set_icon_from_file (GTK_WINDOW (window), file_name, error);
 }
 
@@ -254,6 +264,10 @@ set_progress_internal (GtkWindow            *window,
                        XAppGtkWindowPrivate *priv,
                        gint                 progress)
 {
+    if (!GDK_IS_X11_DISPLAY(gdk_display_get_default())) {
+        return;
+    }
+
     gboolean update;
     guint clamped_progress;
 
@@ -289,6 +303,10 @@ set_progress_pulse_internal (GtkWindow            *window,
                              XAppGtkWindowPrivate *priv,
                              gboolean              pulse)
 {
+    if (!GDK_IS_X11_DISPLAY(gdk_display_get_default())) {
+        return;
+    }
+
     gboolean update;
 
     update = FALSE;
