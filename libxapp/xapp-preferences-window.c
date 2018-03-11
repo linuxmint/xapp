@@ -38,7 +38,6 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     XAppPreferencesWindowPrivate *priv = xapp_preferences_window_get_instance_private (window);
     GtkWidget *main_box;
     GtkWidget *secondary_box;
-    GtkWidget *separator;
 
     gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
@@ -54,9 +53,6 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     gtk_widget_set_size_request (priv->side_switcher, 100, -1);
     gtk_box_pack_start (GTK_BOX (secondary_box), priv->side_switcher, FALSE, FALSE, 0);
     gtk_widget_set_no_show_all (priv->side_switcher, TRUE);
-
-    separator = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
-    gtk_box_pack_start (GTK_BOX (secondary_box), separator, FALSE, FALSE, 0);
 
     priv->stack = gtk_stack_new ();
     gtk_stack_set_transition_type (GTK_STACK (priv->stack), GTK_STACK_TRANSITION_TYPE_CROSSFADE);
