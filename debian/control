@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 9),
                libxkbfile-dev,
                libx11-dev,
                meson,
+               python,
                python3,
                python-gi-dev,
                yelp-tools,
@@ -60,7 +61,7 @@ Description: XApp library - development files
 Package: gir1.2-xapp-1.0
 Section: introspection
 Architecture: any
-Depends: ${gir:Depends}, ${misc:Depends}
+Depends: ${gir:Depends}, ${misc:Depends}, ${python:Depends}, ${python3:Depends}, ${shlibs:Depends}
 Description: Introspection data for XApp
  This package contains the introspection data for XApp.
 
