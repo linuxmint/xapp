@@ -62,7 +62,7 @@ pkg.generate(
     subdirs: 'xapp',
     description: 'Utility library',
     version: meson.project_version(),
-    requires: 'gtk+-3.0',
+    requires: ['gtk+-3.0', 'gobject-2.0', 'cairo'],
     requires_private: 'xkbfile',
 )
 
