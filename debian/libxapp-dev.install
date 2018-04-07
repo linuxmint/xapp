@@ -1,5 +1,3 @@
-#!/usr/bin/dh-exec
-
 usr/include/xapp/libxapp
 usr/lib/*/libxapp.so
 usr/lib/*/pkgconfig/xapp.pc
