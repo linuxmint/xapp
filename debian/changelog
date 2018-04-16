@@ -1,8 +1,36 @@
-xapp (1.1.0) UNRELEASED; urgency=medium
+xapp (1.2.0) tara; urgency=medium
 
-  * Unstable
+  [ Clement Lefebvre ]
+  * Add CI configuration
 
- -- Clement Lefebvre <root@linuxmint.com>  Fri, 22 Dec 2017 12:21:54 +0000
+  [ Michael Webster ]
+  * Build: Switch to Meson (#34)
+  * docs/meson.build: split mkdb args properly. (fixes arch build)
+  * Fix post-install script shebang, remove the schema file from translation tracking.
+  * build: make docs optional, but enabled in debian build.  Add deprecated warnings option as well.
+  * xapp-gtk-window.c: use gdk_error_trap_pop_ignored to quiet build warning.
+  * xapp-gtk-window.c: Skip x11 calls if we're not running an x session.
+  * xapp-gtk-window.c: only do an x11 check once, cache the result.
+
+  [ JosephMcc ]
+  * prefs-window: Remove a stray separator
+
+  [ Michael Webster ]
+  * build: Fix pkg-config generation to require header-file-included libs (fixes CI build for nemo)
+
+  [ NikoKrause ]
+  * Add media-mount-symbolic icon (#37)
+  * extract/compress icons for nemo-fileroller (#38)
+
+  [ Fabio Fantoni ]
+  * debian: small improvements about python
+  * debian: wrap-and-sort -bst
+  * update debian/copyright
+  * Bump debhelper build-dep and compat to 10
+  * add debian/not-installed
+  * Drop dh's parallel arg (no longer needed with dh >= 10)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 16 Apr 2018 15:39:24 +0100
 
 xapp (1.0.4) sylvia; urgency=medium
 
