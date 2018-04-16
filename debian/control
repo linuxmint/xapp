@@ -2,65 +2,39 @@ Source: xapp
 Section: x11
 Priority: optional
 Maintainer: Clement Lefebvre <root@linuxmint.com>
-Build-Depends: debhelper (>= 9),
-               dh-python,
-               dh-exec,
-               dpkg-dev (>= 1.15.1),
-               gnome-doc-utils (>= 0.3.2),
-               gnome-pkg-tools (>= 0.10),
-               gobject-introspection (>= 0.10.2-1~),
-               gtk-doc-tools (>= 1.4),
-               intltool (>= 0.40.6),
-               libgdk-pixbuf2.0-dev (>= 2.22.0),
-               libgirepository1.0-dev (>= 0.10.2-1~),
-               libglib2.0-dev (>= 2.37.3),
-               libgtk-3-dev (>= 3.3.16),
-               libxkbfile-dev,
-               libx11-dev,
-               meson,
-               python3,
-               python-gi-dev,
-               yelp-tools,
-               libgnomekbd-dev,
-               valac
+Build-Depends:
+ debhelper (>= 11~),
+ dh-python,
+ dpkg-dev (>= 1.15.1),
+ gnome-doc-utils (>= 0.3.2),
+ gnome-pkg-tools (>= 0.10),
+ gobject-introspection (>= 0.10.2-1~),
+ gtk-doc-tools (>= 1.4),
+ intltool (>= 0.40.6),
+ libgdk-pixbuf2.0-dev (>= 2.22.0),
+ libgirepository1.0-dev (>= 0.10.2-1~),
+ libglib2.0-dev (>= 2.37.3),
+ libgnomekbd-dev,
+ libgtk-3-dev (>= 3.3.16),
+ libx11-dev,
+ libxkbfile-dev,
+ meson (>= 0.40.0),
+ python,
+ python-gi-dev,
+ python3,
+ valac,
+ yelp-tools,
 Standards-Version: 3.9.6
-
-Package: xapps-common
-Architecture: all
-Multi-Arch: foreign
-Depends: ${misc:Depends}, ${python3:Depends}, python3, python3-gi, inxi, xdg-utils, gist
-Description: Common files for XApp desktop apps
- This package includes files that are shared between several XApp
- apps (i18n files and configuration schemas).
-
-Package: libxapp1
-Section: libs
-Architecture: any
-Multi-Arch: same
-Pre-Depends: ${misc:Pre-Depends}
-Depends: xapps-common (>= ${source:Version}),
-         libgnomekbd8,
-         ${misc:Depends},
-         ${shlibs:Depends}
-Description: XApp library
- This library is used by several Xapp apps.
-
-Package: libxapp-dev
-Section: libdevel
-Architecture: any
-Depends: gir1.2-xapp-1.0 (= ${binary:Version}),
-         libxapp1 (= ${binary:Version}),
-         libgtk-3-dev (>= 3.3.16),
-         libxkbfile-dev,
-         ${misc:Depends}
-Description: XApp library - development files
- This package provides the include files and static library for the XApp
- library functions.
 
 Package: gir1.2-xapp-1.0
 Section: introspection
 Architecture: any
-Depends: ${gir:Depends}, ${misc:Depends}
+Depends:
+ ${gir:Depends},
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
 Description: Introspection data for XApp
  This package contains the introspection data for XApp.
 
@@ -74,9 +48,50 @@ Depends: libxapp1 (= ${binary:Version}), ${misc:Depends}
 Description: XApp library - debug symbols
  This package contains the symbols files needed to debug the XApp library.
 
+Package: libxapp-dev
+Section: libdevel
+Architecture: any
+Depends:
+ gir1.2-xapp-1.0 (= ${binary:Version}),
+ libgtk-3-dev (>= 3.3.16),
+ libxapp1 (= ${binary:Version}),
+ libxkbfile-dev,
+ ${misc:Depends},
+Description: XApp library - development files
+ This package provides the include files and static library for the XApp
+ library functions.
+
+Package: libxapp1
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ libgnomekbd8,
+ xapps-common (>= ${source:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: XApp library
+ This library is used by several Xapp apps.
+
+Package: xapps-common
+Architecture: all
+Multi-Arch: foreign
+Depends:
+ gist,
+ inxi,
+ python3,
+ python3-gi,
+ xdg-utils,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: Common files for XApp desktop apps
+ This package includes files that are shared between several XApp
+ apps (i18n files and configuration schemas).
+
 Package: xapps-doc
 Section: doc
 Architecture: all
-Depends: ${misc:Depends}, devhelp
+Depends: devhelp, ${misc:Depends}
 Description: Libxapp documentation
- This package contains documentation for xapp library
+ This package contains documentation for XApp library

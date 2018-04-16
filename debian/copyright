@@ -1,4 +1,4 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: xapps
 Source: https://github.com/linuxmint/xapps
 
@@ -11,9 +11,9 @@ License: LGPL-3+
  The complete text of the GNU Library General Public License can be found in
  "/usr/share/common-licenses/LGPL-3".
 
-Files: /usr/bin/xfce4-set-wallpaper
+Files: files/usr/bin/xfce4-set-wallpaper
 Copyright: Weitian Leung <weitianleung@gmail.com>
-License: GPL-3.0
+License: GPL-3
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License V3.
  .

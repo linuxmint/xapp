@@ -1,0 +1,6 @@
+# We are not using libtool files
+usr/lib/*/libxapp.la
+# python gi override files that must not install
+usr/lib/python*/dist-packages/gi/overrides/*.pyc
+usr/lib/python*/dist-packages/gi/overrides/*.pyo
+usr/lib/python3/dist-packages/gi/overrides/__pycache__/
