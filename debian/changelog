@@ -1,3 +1,10 @@
+xapp (1.2.1) tara; urgency=medium
+
+  [ Michael Webster ]
+  * icons: Add category-search-symbolic
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sun, 06 May 2018 14:34:17 +0100
+
 xapp (1.2.0) tara; urgency=medium
 
   [ Clement Lefebvre ]
