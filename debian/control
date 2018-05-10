@@ -6,8 +6,6 @@ Build-Depends:
  debhelper (>= 10),
  dh-python,
  dpkg-dev (>= 1.15.1),
- gnome-doc-utils (>= 0.3.2),
- gnome-pkg-tools (>= 0.10),
  gobject-introspection (>= 0.10.2-1~),
  gtk-doc-tools (>= 1.4),
  intltool (>= 0.40.6),
@@ -23,7 +21,6 @@ Build-Depends:
  python-gi-dev,
  python3,
  valac,
- yelp-tools,
 Standards-Version: 3.9.6
 
 Package: gir1.2-xapp-1.0
@@ -53,6 +50,7 @@ Section: libdevel
 Architecture: any
 Depends:
  gir1.2-xapp-1.0 (= ${binary:Version}),
+ libgnomekbd-dev,
  libgtk-3-dev (>= 3.3.16),
  libxapp1 (= ${binary:Version}),
  libxkbfile-dev,
