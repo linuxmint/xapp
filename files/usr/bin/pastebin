@@ -22,7 +22,9 @@ else:
         content = str_args
 
 if content != "":
-    for paster in ['/usr/bin/gist-paste', '/usr/bin/fpaste']:
-        if os.path.exists(paster):
-            p = subprocess.Popen([paster], stdin=subprocess.PIPE)
-            p.communicate(content.encode("UTF-8"))
+    if os.path.exists('/usr/bin/fpaste'):
+        p = subprocess.Popen(['/usr/bin/fpaste'], stdin=subprocess.PIPE)
+        p.communicate(content.encode("UTF-8"))
+    else:
+        p = subprocess.Popen(['nc', 'termbin.com', '9999'], stdin=subprocess.PIPE)
+        p.communicate(content.encode("UTF-8"))
