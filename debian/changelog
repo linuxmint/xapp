@@ -1,3 +1,16 @@
+xapp (1.2.2) tara; urgency=medium
+
+  [ Fabio Fantoni ]
+  * circleci: remove mint18 job (#41)
+
+  [ Michael Webster ]
+  * xapp-gtk-window.c: Check for x11 at a more appropriate time.
+
+  [ Clement Lefebvre ]
+  * Pastebin: Replace gist with termbin
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 17 Jul 2018 09:35:34 +0200
+
 xapp (1.2.1) tara; urgency=medium
 
   [ Michael Webster ]
