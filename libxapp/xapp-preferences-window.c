@@ -17,7 +17,6 @@ typedef struct
     GtkWidget    *stack;
     GtkWidget    *side_switcher;
     GtkWidget    *button_area;
-    GtkSizeGroup *button_size_group;
 
     gint          num_pages;
 } XAppPreferencesWindowPrivate;
@@ -66,8 +65,6 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     priv->button_area = gtk_action_bar_new ();
     gtk_box_pack_start (GTK_BOX (main_box), priv->button_area, FALSE, FALSE, 0);
     gtk_widget_set_no_show_all (priv->button_area, TRUE);
-
-    priv->button_size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
     /* Keep track of the number of pages so we can hide the stack switcher with < 2 */
     priv->num_pages = 0;
@@ -183,6 +180,5 @@ xapp_preferences_window_add_button (XAppPreferencesWindow *window,
     style_context = gtk_widget_get_style_context (button);
     gtk_style_context_add_class (style_context, "text-button");
 
-    gtk_size_group_add_widget (priv->button_size_group, button);
     gtk_widget_set_no_show_all (priv->button_area, FALSE);
 }
