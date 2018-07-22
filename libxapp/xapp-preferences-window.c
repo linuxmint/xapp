@@ -42,12 +42,18 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
     gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_container_set_border_width (GTK_CONTAINER(window), 5);
 
     main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_set_border_width (GTK_CONTAINER(main_box), 2);
     gtk_container_add (GTK_CONTAINER (window), main_box);
 
     secondary_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_container_set_border_width (GTK_CONTAINER(secondary_box), 5);
     gtk_box_pack_start (GTK_BOX (main_box), secondary_box, TRUE, TRUE, 0);
+
+    style_context = gtk_widget_get_style_context (secondary_box);
+    gtk_style_context_add_class (style_context, "frame");
 
     priv->side_switcher = gtk_stack_sidebar_new ();
     gtk_widget_set_size_request (priv->side_switcher, 100, -1);
@@ -63,6 +69,7 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     gtk_style_context_add_class (style_context, "view");
 
     priv->button_area = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    gtk_container_set_border_width (GTK_CONTAINER(priv->button_area), 5);
     gtk_box_pack_start (GTK_BOX (main_box), priv->button_area, FALSE, FALSE, 0);
     gtk_widget_set_no_show_all (priv->button_area, TRUE);
 
