@@ -62,7 +62,7 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     style_context = gtk_widget_get_style_context (priv->stack);
     gtk_style_context_add_class (style_context, "view");
 
-    priv->button_area = gtk_action_bar_new ();
+    priv->button_area = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
     gtk_box_pack_start (GTK_BOX (main_box), priv->button_area, FALSE, FALSE, 0);
     gtk_widget_set_no_show_all (priv->button_area, TRUE);
 
@@ -162,17 +162,13 @@ xapp_preferences_window_add_button (XAppPreferencesWindow *window,
     g_return_if_fail (XAPP_IS_PREFERENCES_WINDOW (window));
     g_return_if_fail (GTK_IS_WIDGET (button));
 
-    if (pack_type == GTK_PACK_START)
+    gtk_container_add (GTK_CONTAINER (priv->button_area), button);
+
+    if (pack_type == GTK_PACK_END)
     {
-        gtk_action_bar_pack_start (GTK_ACTION_BAR (priv->button_area), button);
-        gtk_widget_set_margin_start (button, 6);
+        gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (priv->button_area), button, TRUE);
     }
-    else if (pack_type == GTK_PACK_END)
-    {
-        gtk_action_bar_pack_end (GTK_ACTION_BAR (priv->button_area), button);
-        gtk_widget_set_margin_end (button, 6);
-    }
-    else
+    else if (pack_type != GTK_PACK_START)
     {
         return;
     }
