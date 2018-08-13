@@ -13,7 +13,8 @@ xapp_headers = [
     'xapp-gtk-window.h',
     'xapp-kbd-layout-controller.h',
     'xapp-monitor-blanker.h',
-    'xapp-preferences-window.h'
+    'xapp-preferences-window.h',
+    'xapp-stack-sidebar.h',
 ]
 
 xapp_sources = [
@@ -22,6 +23,7 @@ xapp_sources = [
     'xapp-kbd-layout-controller.c',
     'xapp-monitor-blanker.c',
     'xapp-preferences-window.c',
+    'xapp-stack-sidebar.c',
 ]
 
 libxapp = library('xapp',
