@@ -31,7 +31,6 @@ struct _XAppStackSidebar
 {
     GtkBin parent_instance;
 
-    GtkOrientation orientation;
     GtkListBox *list;
     GtkStack *stack;
     GHashTable *rows;
@@ -41,7 +40,6 @@ struct _XAppStackSidebar
 enum
 {
     PROP_0,
-    PROP_ORIENTATION,
     PROP_STACK,
     N_PROPERTIES
 };
@@ -60,9 +58,6 @@ xapp_stack_sidebar_set_property (GObject    *object,
 
     switch (prop_id)
     {
-        case PROP_ORIENTATION:
-            sidebar->orientation = g_value_get_enum (value);
-            break;
         case PROP_STACK:
             xapp_stack_sidebar_set_stack (XAPP_STACK_SIDEBAR (object), g_value_get_object (value));
             break;
@@ -82,29 +77,12 @@ xapp_stack_sidebar_get_property (GObject    *object,
 
     switch (prop_id)
     {
-        case PROP_ORIENTATION:
-            g_value_set_enum (value, sidebar->orientation);
-            break;
         case PROP_STACK:
             g_value_set_object (value, sidebar->stack);
             break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
-    }
-}
-
-static void
-update_header (GtkListBoxRow *row,
-               GtkListBoxRow *before,
-               gpointer       userdata)
-{
-    GtkWidget *ret = NULL;
-
-    if (before && !gtk_list_box_row_get_header (row))
-    {
-        ret = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-        gtk_list_box_row_set_header (row, ret);
     }
 }
 
@@ -176,13 +154,10 @@ xapp_stack_sidebar_row_selected (GtkListBox    *box,
 }
 
 static void
-xapp_stack_sidebar_constructed (GObject *object)
+xapp_stack_sidebar_init (XAppStackSidebar *sidebar)
 {
-    XAppStackSidebar *sidebar = XAPP_STACK_SIDEBAR (object);
     GtkStyleContext *style;
     GtkWidget *sw;
-
-    G_OBJECT_CLASS (xapp_stack_sidebar_parent_class)->constructed (object);
 
     sw = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
@@ -195,7 +170,6 @@ xapp_stack_sidebar_constructed (GObject *object)
 
     gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (sidebar->list));
 
-    gtk_list_box_set_header_func (sidebar->list, update_header, sidebar, NULL);
     gtk_list_box_set_sort_func (sidebar->list, sort_list, sidebar, NULL);
 
     g_signal_connect (sidebar->list, "row-selected",
@@ -203,11 +177,7 @@ xapp_stack_sidebar_constructed (GObject *object)
 
     style = gtk_widget_get_style_context (GTK_WIDGET (sidebar));
     gtk_style_context_add_class (style, "sidebar");
-}
 
-static void
-xapp_stack_sidebar_init (XAppStackSidebar *sidebar)
-{
     sidebar->rows = g_hash_table_new (NULL, NULL);
 }
 
@@ -244,14 +214,7 @@ update_row (XAppStackSidebar *sidebar,
         }
         else if (GTK_IS_IMAGE (child))
         {
-            if (sidebar->orientation == GTK_ORIENTATION_HORIZONTAL)
-            {
-                gtk_image_set_from_icon_name (GTK_IMAGE (child), icon_name, GTK_ICON_SIZE_MENU);
-            }
-            else
-            {
-                gtk_image_set_from_icon_name (GTK_IMAGE (child), icon_name, GTK_ICON_SIZE_LARGE_TOOLBAR);
-            }
+            gtk_image_set_from_icon_name (GTK_IMAGE (child), icon_name, GTK_ICON_SIZE_MENU);
         }
     }
 
@@ -299,7 +262,6 @@ add_child (GtkWidget        *widget,
     GtkWidget *label;
     GtkWidget *icon;
     GtkWidget *row;
-    int spacing = 0;
 
     /* Check we don't actually already know about this widget */
     if (g_hash_table_lookup (sidebar->rows, widget))
@@ -307,20 +269,15 @@ add_child (GtkWidget        *widget,
         return;
     }
 
-    if (sidebar->orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-        spacing = 6;
-    }
-
     /* Make a pretty item when we add children */
-    item = gtk_box_new (sidebar->orientation, spacing);
+    item = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_widget_set_margin_start (item, 6);
+    gtk_widget_set_margin_end (item, 6);
 
     icon = gtk_image_new ();
-    gtk_widget_set_halign (icon, GTK_ALIGN_CENTER);
     gtk_box_pack_start (GTK_BOX (item), icon, FALSE, FALSE, 0);
 
     label = gtk_label_new ("");
-    gtk_widget_set_halign (item, GTK_ALIGN_CENTER);
     gtk_box_pack_start (GTK_BOX (item), label, FALSE, FALSE, 0);
 
     row = gtk_list_box_row_new ();
@@ -470,7 +427,6 @@ xapp_stack_sidebar_class_init (XAppStackSidebarClass *klass)
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-    object_class->constructed = xapp_stack_sidebar_constructed;
     object_class->dispose = xapp_stack_sidebar_dispose;
     object_class->finalize = xapp_stack_sidebar_finalize;
     object_class->set_property = xapp_stack_sidebar_set_property;
@@ -483,14 +439,6 @@ xapp_stack_sidebar_class_init (XAppStackSidebarClass *klass)
                              GTK_TYPE_STACK,
                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
-    obj_properties[PROP_ORIENTATION] =
-        g_param_spec_enum ("orientation",
-                           "Orientation",
-                           "The orientation of the icon",
-                           GTK_TYPE_ORIENTATION,
-                           GTK_ORIENTATION_HORIZONTAL,
-                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-
     g_object_class_install_properties (object_class, N_PROPERTIES, obj_properties);
 
     gtk_widget_class_set_css_name (widget_class, "stacksidebar");
@@ -498,7 +446,6 @@ xapp_stack_sidebar_class_init (XAppStackSidebarClass *klass)
 
 /**
  * xapp_stack_sidebar_new:
- * @orientation: a #GtkOrientation
  *
  * Creates a new sidebar.
  *
@@ -506,11 +453,9 @@ xapp_stack_sidebar_class_init (XAppStackSidebarClass *klass)
  */
 
 XAppStackSidebar *
-xapp_stack_sidebar_new (GtkOrientation orientation)
+xapp_stack_sidebar_new (void)
 {
-    return g_object_new (XAPP_TYPE_STACK_SIDEBAR,
-                         "orientation", orientation,
-                         NULL);
+    return g_object_new (XAPP_TYPE_STACK_SIDEBAR, NULL);
 }
 
 /**

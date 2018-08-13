@@ -10,7 +10,7 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (XAppStackSidebar, xapp_stack_sidebar, XAPP, STACK_SIDEBAR, GtkBin)
 
-XAppStackSidebar *xapp_stack_sidebar_new (GtkOrientation orientation);
+XAppStackSidebar *xapp_stack_sidebar_new (void);
 
 void xapp_stack_sidebar_set_stack (XAppStackSidebar *sidebar,
                                    GtkStack         *stack);
