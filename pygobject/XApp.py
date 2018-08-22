@@ -21,5 +21,10 @@ __all__ = []
 class GtkWindow(XApp.GtkWindow):
     pass
 
+class GtkBin(XApp.StackSidebar):
+    pass
+
 GtkWindow = override(GtkWindow)
+GtkBin = override(GtkBin)
 __all__.append('GtkWindow')
+__all__.append('GtkBin')
