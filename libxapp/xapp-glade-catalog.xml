@@ -4,9 +4,12 @@
   <glade-widget-classes>
     <glade-widget-class name="XAppGtkWindow" generic-name="xappgtkwindow"
           title="XAppGtkWindow" parent="GtkWindow" />
+    <glade-widget-class name="XAppStackSidebar" generic-name="xappstacksidebar"
+          title="XAppStackSidebar" />
   </glade-widget-classes>
 
   <glade-widget-group name="xapp-widgets" title="XApp Widgets">
     <glade-widget-class-ref name="XAppGtkWindow" />
+    <glade-widget-class-ref name="XAppStackSidebar" />
   </glade-widget-group>
 </glade-catalog>
