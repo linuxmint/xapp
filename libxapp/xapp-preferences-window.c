@@ -1,5 +1,6 @@
 #include <gdk/gdk.h>
 #include "xapp-preferences-window.h"
+#include "xapp-stack-sidebar.h"
 
 /**
  * SECTION:xapp-preferences-window
@@ -14,12 +15,12 @@
 
 typedef struct
 {
-    GtkWidget    *stack;
-    GtkWidget    *side_switcher;
-    GtkWidget    *button_area;
-    GtkSizeGroup *button_size_group;
+    GtkWidget        *stack;
+    XAppStackSidebar *side_switcher;
+    GtkWidget        *button_area;
+    GtkSizeGroup     *button_size_group;
 
-    gint          num_pages;
+    gint              num_pages;
 } XAppPreferencesWindowPrivate;
 
 enum
@@ -49,15 +50,15 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     secondary_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start (GTK_BOX (main_box), secondary_box, TRUE, TRUE, 0);
 
-    priv->side_switcher = gtk_stack_sidebar_new ();
-    gtk_widget_set_size_request (priv->side_switcher, 100, -1);
-    gtk_box_pack_start (GTK_BOX (secondary_box), priv->side_switcher, FALSE, FALSE, 0);
-    gtk_widget_set_no_show_all (priv->side_switcher, TRUE);
+    priv->side_switcher = xapp_stack_sidebar_new ();
+    gtk_widget_set_size_request (GTK_WIDGET (priv->side_switcher), 100, -1);
+    gtk_box_pack_start (GTK_BOX (secondary_box), GTK_WIDGET (priv->side_switcher), FALSE, FALSE, 0);
+    gtk_widget_set_no_show_all (GTK_WIDGET (priv->side_switcher), TRUE);
 
     priv->stack = gtk_stack_new ();
     gtk_stack_set_transition_type (GTK_STACK (priv->stack), GTK_STACK_TRANSITION_TYPE_CROSSFADE);
     gtk_box_pack_start (GTK_BOX (secondary_box), priv->stack, TRUE, TRUE, 0);
-    gtk_stack_sidebar_set_stack (GTK_STACK_SIDEBAR (priv->side_switcher), GTK_STACK (priv->stack));
+    xapp_stack_sidebar_set_stack (priv->side_switcher, GTK_STACK (priv->stack));
 
     priv->button_area = gtk_action_bar_new ();
     gtk_box_pack_start (GTK_BOX (main_box), priv->button_area, FALSE, FALSE, 0);
@@ -135,7 +136,7 @@ xapp_preferences_window_add_page (XAppPreferencesWindow *window,
 
     if (priv->num_pages > 1)
     {
-        gtk_widget_set_no_show_all (priv->side_switcher, FALSE);
+        gtk_widget_set_no_show_all (GTK_WIDGET (priv->side_switcher), FALSE);
     }
 }
 
