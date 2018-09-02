@@ -178,6 +178,8 @@ xapp_stack_sidebar_init (XAppStackSidebar *sidebar)
     style = gtk_widget_get_style_context (GTK_WIDGET (sidebar));
     gtk_style_context_add_class (style, "sidebar");
 
+    gtk_widget_show_all (GTK_WIDGET (sidebar));
+
     sidebar->rows = g_hash_table_new (NULL, NULL);
 }
 
