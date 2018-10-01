@@ -17,17 +17,17 @@
 
 typedef struct
 {
-    guint         icon_size : 32;
-    GtkListStore  *category_list;
-    GtkWidget     *search_bar;
-    GtkListStore  *icon_store;
-    GtkWidget     *icon_view;
-    GtkWidget     *list_box;
-    GHashTable    *models;
-    GtkWidget     *select_button;
-    gchar         *icon_string;
-    gint           response;
-    GCancellable  *cancellable;
+    GtkResponseType  response;
+    XAppIconSize     icon_size;
+    GCancellable    *cancellable;
+    GtkListStore    *category_list;
+    GtkListStore    *icon_store;
+    GHashTable      *models;
+    GtkWidget       *search_bar;
+    GtkWidget       *icon_view;
+    GtkWidget       *list_box;
+    GtkWidget       *select_button;
+    gchar           *icon_string;
 } XAppIconChooserDialogPrivate;
 
 struct _XAppIconChooserDialog
@@ -127,7 +127,7 @@ xapp_icon_chooser_dialog_get_property (GObject    *object,
     switch (prop_id)
     {
         case PROP_ICON_SIZE:
-            g_value_set_int (value, priv->icon_size);
+            g_value_set_enum (value, priv->icon_size);
             break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -150,7 +150,7 @@ xapp_icon_chooser_dialog_set_property (GObject      *object,
     switch (prop_id)
     {
         case PROP_ICON_SIZE:
-            priv->icon_size = g_value_get_int (value);
+            priv->icon_size = g_value_get_enum (value);
             break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -178,14 +178,17 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
+    priv->icon_size = XAPP_ICON_SIZE_32;
+    priv->models = g_hash_table_new (NULL, NULL);
+    priv->response = GTK_RESPONSE_NONE;
+    priv->icon_string = "";
+    priv->cancellable = NULL;
+
     priv->icon_store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
     gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (priv->icon_store), COLUMN_DISPLAY_NAME,
                                           GTK_SORT_ASCENDING);
     g_signal_connect (priv->icon_store, "row-inserted",
                       G_CALLBACK (on_icon_store_icons_added), dialog);
-
-    priv->models = g_hash_table_new (NULL, NULL);
-    priv->response = GTK_RESPONSE_NONE;
 
     gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 400);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
@@ -302,11 +305,12 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
      * particular size.
      */
     obj_properties[PROP_ICON_SIZE] =
-        g_param_spec_int ("icon-size",
-                          _("Icon size"),
-                          _("The preferred icon size."),
-                          16, 256, 32,
-                          G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+        g_param_spec_enum ("icon-size",
+                           _("Icon size"),
+                           _("The preferred icon size."),
+                           XAPP_TYPE_ICON_SIZE,
+                           XAPP_ICON_SIZE_32,
+                           G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, obj_properties);
 

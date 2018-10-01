@@ -28,8 +28,14 @@ xapp_sources = [
     'xapp-stack-sidebar.c',
 ]
 
+xapp_enums = gnome.mkenums_simple('xapp_enums',
+    sources : xapp_headers,
+    identifier_prefix : 'XApp',
+    symbol_prefix : 'xapp'
+)
+
 libxapp = library('xapp',
-    sources  : xapp_headers + xapp_sources,
+    sources  : xapp_headers + xapp_sources + xapp_enums,
     include_directories: [top_inc],
     version: meson.project_version(),
     soversion: '1',
