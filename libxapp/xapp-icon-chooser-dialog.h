@@ -6,19 +6,9 @@
 
 G_BEGIN_DECLS
 
-G_DECLARE_DERIVABLE_TYPE (XAppIconChooserDialog, xapp_icon_chooser_dialog, XAPP, ICON_CHOOSER_DIALOG, GtkWindow)
-
 #define XAPP_TYPE_ICON_CHOOSER_DIALOG   (xapp_icon_chooser_dialog_get_type ())
-#define XAPP_ICON_CHOOSER_DIALOG(obj)   (G_TYPE_CHECK_INSTANCE_CAST ((obj), XAPP_TYPE_ICON_CHOOSER_DIALOG, XAppIconChooserDialog))
 
-struct _XAppIconChooserDialogClass
-{
-    GtkWindowClass parent_class;
-
-    /* Keybinding signals */
-    gboolean (* select_event) (XAppIconChooserDialog *dialog,
-                               GdkEventAny *event);
-};
+G_DECLARE_FINAL_TYPE (XAppIconChooserDialog, xapp_icon_chooser_dialog, XAPP, ICON_CHOOSER_DIALOG, GtkWindow)
 
 typedef enum
 {

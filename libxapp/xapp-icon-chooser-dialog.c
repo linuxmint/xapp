@@ -30,6 +30,11 @@ typedef struct
     GCancellable  *cancellable;
 } XAppIconChooserDialogPrivate;
 
+struct _XAppIconChooserDialog
+{
+    GtkWindow parent_instance;
+};
+
 typedef struct
 {
     GtkListStore    *model;
@@ -289,8 +294,6 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
 
     widget_class->delete_event = on_delete_event;
 
-    klass->select_event = on_select_event;
-
     /**
      * XAppIconChooserDialog:icon-size:
      *
@@ -320,7 +323,7 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
         g_signal_new ("select",
                       G_TYPE_FROM_CLASS (klass),
                       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                      G_STRUCT_OFFSET (XAppIconChooserDialogClass, select_event),
+                      0,
                       NULL, NULL, NULL,
                       G_TYPE_NONE, 0);
 
