@@ -251,7 +251,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
 
     // context list
     scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-    gtk_widget_set_size_request (GTK_WIDGET (scrolled_window), 100, -1);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     gtk_box_pack_start (GTK_BOX (secondary_box), scrolled_window, FALSE, FALSE, 0);
 
     priv->list_box = gtk_list_box_new ();
