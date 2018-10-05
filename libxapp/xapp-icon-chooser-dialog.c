@@ -22,7 +22,7 @@ typedef struct
     GCancellable    *cancellable;
     GtkListStore    *category_list;
     GtkListStore    *icon_store;
-    GHashTable      *models;
+    GHashTable      *categories;
     GtkWidget       *search_bar;
     GtkWidget       *icon_view;
     GtkWidget       *list_box;
@@ -41,6 +41,55 @@ typedef struct
     const gchar     *short_name;
     const gchar     *long_name;
 } IconInfoLoadCallbackInfo;
+
+typedef struct
+{
+    gchar        *name;
+    GList        *contexts;
+    GList        *icons;
+    GtkListStore *model;
+    gboolean      is_loaded;
+} IconCategoryInfo;
+
+typedef struct
+{
+    const gchar  *name;
+    const gchar  *contexts[5];
+} IconCategoryDefinition;
+
+static IconCategoryDefinition categories[] = {
+    //  Category name       context names
+    {
+        N_("Actions"),       { "Actions", NULL }
+    },
+    {
+        N_("Applications"),  { "Applications", "Apps", NULL }
+    },
+    {
+        N_("Categories"),    { "Categories", NULL }
+    },
+    {
+        N_("Devices"),       { "Devices", NULL }
+    },
+    {
+        N_("Emblems"),       { "Emblems", NULL }
+    },
+    {
+        N_("Emoji"),         { "Emotes", NULL }
+    },
+    {
+        N_("Mime types"),    { "MimeTypes", "Mimetypes", NULL }
+    },
+    {
+        N_("Places"),        { "Places", NULL }
+    },
+    {
+        N_("Status"),        { "Status", "Notifications", NULL }
+    },
+    {
+        N_("Other"),         { "Panel", NULL }
+    }
+};
 
 enum
 {
@@ -69,7 +118,7 @@ static guint signals[LAST_SIGNAL] = {0, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (XAppIconChooserDialog, xapp_icon_chooser_dialog, GTK_TYPE_WINDOW)
 
-static void on_context_selected (GtkListBox            *list_box,
+static void on_category_selected (GtkListBox            *list_box,
                                  XAppIconChooserDialog *dialog);
 
 static void on_search (GtkSearchEntry        *entry,
@@ -106,7 +155,7 @@ static void on_icon_view_item_activated (GtkIconView *iconview,
                                          GtkTreePath *path,
                                          gpointer     user_data);
 
-static void load_contexts (XAppIconChooserDialog *dialog);
+static void load_categories (XAppIconChooserDialog *dialog);
 
 static gint list_box_sort (GtkListBoxRow *row1,
                            GtkListBoxRow *row2,
@@ -179,7 +228,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     priv->icon_size = XAPP_ICON_SIZE_32;
-    priv->models = g_hash_table_new (NULL, NULL);
+    priv->categories = g_hash_table_new (NULL, NULL);
     priv->response = GTK_RESPONSE_NONE;
     priv->icon_string = "";
     priv->cancellable = NULL;
@@ -209,7 +258,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     gtk_container_add(GTK_CONTAINER (scrolled_window), GTK_WIDGET (priv->list_box));
     gtk_list_box_set_sort_func (GTK_LIST_BOX (priv->list_box), list_box_sort, NULL, NULL);
     g_signal_connect (priv->list_box, "selected-rows-changed",
-                      G_CALLBACK (on_context_selected), dialog);
+                      G_CALLBACK (on_category_selected), dialog);
 
     style = gtk_widget_get_style_context (GTK_WIDGET (priv->list_box));
     gtk_style_context_add_class (style, "sidebar");
@@ -282,7 +331,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     g_signal_connect (cancel_button, "clicked",
                       G_CALLBACK (on_cancel_button_clicked), dialog);
 
-    load_contexts (dialog);
+    load_categories (dialog);
 }
 
 static void
@@ -570,32 +619,70 @@ category_model_sort (GtkTreeModel *model,
 }
 
 static void
-load_contexts (XAppIconChooserDialog *dialog)
+load_categories (XAppIconChooserDialog *dialog)
 {
     XAppIconChooserDialogPrivate *priv;
     GtkIconTheme                 *theme;
-    GList                        *contexts;
-    char                         *context;
+    IconCategoryDefinition       *category;
+    IconCategoryInfo             *category_info;
+    GList                        *context_icons;
+    GtkWidget                    *row;
     GtkWidget                    *label;
+    gint                          i;
+    gint                          j;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     theme = gtk_icon_theme_get_default ();
-    contexts = gtk_icon_theme_list_contexts (theme);
 
-    for ( ; contexts; contexts = contexts->next)
+    for (i = 0; i < G_N_ELEMENTS (categories); i++)
     {
-        context = contexts->data;
-        label = gtk_label_new (_(context));
+        category = &categories[i];
+
+        category_info = g_new (IconCategoryInfo, 1);
+
+        category_info->name = _(category->name);
+        category_info->is_loaded = FALSE;
+        category_info->contexts = NULL;
+        category_info->icons = NULL;
+
+        for (j = 0; category->contexts[j] != NULL; j++)
+        {
+            category_info->contexts = g_list_prepend (category_info->contexts, g_strdup (category->contexts[j]));
+            context_icons = gtk_icon_theme_list_icons (theme, category->contexts[j]);
+            category_info->icons = g_list_concat (category_info->icons, context_icons);
+        }
+
+        if (g_list_length (category_info->icons) == 0)
+        {
+            g_list_free (category_info->contexts);
+            g_free (category_info);
+
+            continue;
+        }
+
+        category_info->model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
+        g_signal_connect (category_info->model, "row-inserted",
+                          G_CALLBACK (on_icon_store_icons_added), dialog);
+
+        gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (category_info->model), COLUMN_DISPLAY_NAME,
+                                         category_model_sort, NULL, NULL);
+        gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (category_info->model), COLUMN_DISPLAY_NAME,
+                                              GTK_SORT_ASCENDING);
+
+        row = gtk_list_box_row_new ();
+        label = gtk_label_new (category_info->name);
         gtk_label_set_xalign (GTK_LABEL (label), 0.0);
         gtk_widget_set_margin_top (GTK_WIDGET (label), 10);
         gtk_widget_set_margin_bottom (GTK_WIDGET (label), 10);
         gtk_widget_set_margin_start (GTK_WIDGET (label), 15);
         gtk_widget_set_margin_end (GTK_WIDGET (label), 15);
-        gtk_container_add (GTK_CONTAINER (priv->list_box), label);
-    }
 
-    g_list_free_full (contexts, g_free);
+        gtk_container_add (GTK_CONTAINER (row), label);
+        gtk_container_add (GTK_CONTAINER (priv->list_box), row);
+
+        g_hash_table_insert (priv->categories, row, category_info);
+    }
 }
 
 static void
@@ -670,18 +757,16 @@ finish_pixbuf_load_from_name (GObject      *info,
 }
 
 static void
-load_icons_for_context (GtkListStore *model,
-                        const gchar  *context,
-                        guint         icon_size)
+load_icons_for_category (GtkListStore *model,
+                         GList        *icons,
+                         guint         icon_size)
 {
     GtkIconTheme             *theme;
-    GList                    *icons;
     const gchar              *name;
     GtkIconInfo              *info;
     IconInfoLoadCallbackInfo *callback_info;
 
     theme = gtk_icon_theme_get_default ();
-    icons = gtk_icon_theme_list_icons (theme, context);
 
     for ( ; icons; icons = icons->next)
     {
@@ -693,20 +778,17 @@ load_icons_for_context (GtkListStore *model,
         info = gtk_icon_theme_lookup_icon (theme, callback_info->short_name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
         gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
     }
-
-    g_list_free_full (icons, g_free);
 }
 
 static void
-on_context_selected (GtkListBox            *list_box,
+on_category_selected (GtkListBox            *list_box,
                      XAppIconChooserDialog *dialog)
 {
     XAppIconChooserDialogPrivate *priv;
     GList                        *selection;
     GtkWidget                    *selected;
-    GtkWidget                    *child;
-    GtkListStore                 *model;
-    const gchar                  *context;
+    IconCategoryInfo             *category_info;
+    GList                        *contexts;
     GtkTreePath                  *new_path;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
@@ -721,25 +803,14 @@ on_context_selected (GtkListBox            *list_box,
     gtk_entry_set_text (GTK_ENTRY (priv->search_bar), "");
     selection = gtk_list_box_get_selected_rows (GTK_LIST_BOX (priv->list_box));
     selected = selection->data;
-    child = gtk_bin_get_child (GTK_BIN (selected));
-    model = g_hash_table_lookup (priv->models, child);
-
-    if (model == NULL)
+    category_info = g_hash_table_lookup (priv->categories, selected);
+    if (!category_info->is_loaded)
     {
-        model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
-        gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (model), COLUMN_DISPLAY_NAME,
-                                         category_model_sort, NULL, NULL);
-        gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model), COLUMN_DISPLAY_NAME,
-                                              GTK_SORT_ASCENDING);
-        g_signal_connect (model, "row-inserted",
-                          G_CALLBACK (on_icon_store_icons_added), dialog);
-
-        context = gtk_label_get_text (GTK_LABEL (child));
-        load_icons_for_context (model, context, priv->icon_size);
-        g_hash_table_insert (priv->models, child, model);
+        load_icons_for_category (category_info->model, category_info->icons, priv->icon_size);
+        category_info->is_loaded = TRUE;
     }
 
-    gtk_icon_view_set_model (GTK_ICON_VIEW (priv->icon_view), GTK_TREE_MODEL (model));
+    gtk_icon_view_set_model (GTK_ICON_VIEW (priv->icon_view), GTK_TREE_MODEL (category_info->model));
 
     new_path = gtk_tree_path_new_first ();
     gtk_icon_view_select_path (GTK_ICON_VIEW (priv->icon_view), new_path);
@@ -873,7 +944,7 @@ on_search (GtkSearchEntry        *entry,
 
     if (g_strcmp0 (search_text, "") == 0)
     {
-        on_context_selected (GTK_LIST_BOX (priv->list_box), dialog);
+        on_category_selected (GTK_LIST_BOX (priv->list_box), dialog);
     }
     else
     {

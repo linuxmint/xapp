@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-25 13:17-0600\n"
+"POT-Creation-Date: 2018-10-04 23:04-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,75 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libxapp/xapp-icon-chooser-dialog.c:153
+#: libxapp/xapp-icon-chooser-dialog.c:63
+msgid "Actions"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:66
+msgid "Applications"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:69
+msgid "Categories"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:72
+msgid "Devices"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:75
+msgid "Emblems"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:78
+msgid "Emoji"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:81
+msgid "Mime types"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:84
+msgid "Places"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:87
+msgid "Status"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:90
+msgid "Other"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:284
 msgid "Browse"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:192
-#: libxapp/xapp-icon-chooser-dialog.c:674
-msgid "Cancel"
-msgstr ""
-
-#: libxapp/xapp-icon-chooser-dialog.c:691
-msgid "Image"
-msgstr ""
-
-#: libxapp/xapp-icon-chooser-dialog.c:676
-msgid "Open"
-msgstr ""
-
-#: libxapp/xapp-icon-chooser-dialog.c:183
+#: libxapp/xapp-icon-chooser-dialog.c:316
 msgid "Select"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:671
+#: libxapp/xapp-icon-chooser-dialog.c:325
+#: libxapp/xapp-icon-chooser-dialog.c:1033
+msgid "Cancel"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:358
+msgid "Icon size"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:359
+msgid "The preferred icon size."
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:1030
 msgid "Select image file"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:1035
+msgid "Open"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:1050
+msgid "Image"
 msgstr ""
