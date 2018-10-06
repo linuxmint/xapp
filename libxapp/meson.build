@@ -28,8 +28,10 @@ xapp_sources = [
     'xapp-stack-sidebar.c',
 ]
 
-xapp_enums = gnome.mkenums_simple('xapp_enums',
+xapp_enums = gnome.mkenums('xapp-enums',
     sources : xapp_headers,
+    c_template : 'xapp-enums.c.template',
+    h_template : 'xapp-enums.h.template',
     identifier_prefix : 'XApp',
     symbol_prefix : 'xapp'
 )
