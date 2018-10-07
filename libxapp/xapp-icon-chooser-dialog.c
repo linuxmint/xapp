@@ -483,9 +483,6 @@ xapp_icon_chooser_dialog_run_with_category (XAppIconChooserDialog *dialog,
 {
     XAppIconChooserDialogPrivate *priv;
     GList                        *children;
-    GtkWidget                    *row;
-    GtkWidget                    *child;
-    const gchar                  *context;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -495,6 +492,10 @@ xapp_icon_chooser_dialog_run_with_category (XAppIconChooserDialog *dialog,
     children = gtk_container_get_children (GTK_CONTAINER (priv->list_box));
     for ( ; children; children = children->next)
     {
+        GtkWidget    *row;
+        GtkWidget    *child;
+        const gchar  *context;
+
         row = children->data;
         child = gtk_bin_get_child (GTK_BIN (row));
         context = gtk_label_get_text (GTK_LABEL (child));
@@ -623,11 +624,6 @@ load_categories (XAppIconChooserDialog *dialog)
 {
     XAppIconChooserDialogPrivate *priv;
     GtkIconTheme                 *theme;
-    IconCategoryDefinition       *category;
-    IconCategoryInfo             *category_info;
-    GList                        *context_icons;
-    GtkWidget                    *row;
-    GtkWidget                    *label;
     gint                          i;
     gint                          j;
 
@@ -637,6 +633,11 @@ load_categories (XAppIconChooserDialog *dialog)
 
     for (i = 0; i < G_N_ELEMENTS (categories); i++)
     {
+        IconCategoryDefinition  *category;
+        IconCategoryInfo        *category_info;
+        GtkWidget               *row;
+        GtkWidget               *label;
+
         category = &categories[i];
 
         category_info = g_new (IconCategoryInfo, 1);
@@ -648,6 +649,8 @@ load_categories (XAppIconChooserDialog *dialog)
 
         for (j = 0; category->contexts[j] != NULL; j++)
         {
+            GList *context_icons;
+
             category_info->contexts = g_list_prepend (category_info->contexts, g_strdup (category->contexts[j]));
             context_icons = gtk_icon_theme_list_icons (theme, category->contexts[j]);
             category_info->icons = g_list_concat (category_info->icons, context_icons);
@@ -761,16 +764,15 @@ load_icons_for_category (GtkListStore *model,
                          GList        *icons,
                          guint         icon_size)
 {
-    GtkIconTheme             *theme;
-    const gchar              *name;
-    GtkIconInfo              *info;
-    IconInfoLoadCallbackInfo *callback_info;
+    GtkIconTheme *theme;
 
     theme = gtk_icon_theme_get_default ();
 
     for ( ; icons; icons = icons->next)
     {
-        name = icons->data;
+        GtkIconInfo              *info;
+        IconInfoLoadCallbackInfo *callback_info;
+
         callback_info = g_new (IconInfoLoadCallbackInfo, 1);
         callback_info->model = model;
         callback_info->short_name = icons->data;
@@ -823,17 +825,10 @@ search_path (const gchar  *path_string,
              GtkListStore *icon_store,
              GCancellable *cancellable)
 {
-    const gchar              *search_str = "";
-    GFile                    *dir;
-    GFile                    *file;
-    GFileEnumerator          *children;
-    GFileInfo                *child_info;
-    const gchar              *child_name;
-    GFile                    *child;
-    const gchar              *child_path;
-    GError                   *error = NULL;
-    GFileInputStream         *stream;
-    IconInfoLoadCallbackInfo *callback_info;
+    const gchar      *search_str = "";
+    GFile            *dir;
+    GFileEnumerator  *children;
+    GFileInfo        *child_info;
 
     if (g_file_test (path_string, G_FILE_TEST_IS_DIR))
     {
@@ -841,6 +836,8 @@ search_path (const gchar  *path_string,
     }
     else
     {
+        GFile *file;
+
         file = g_file_new_for_path (path_string);
         dir = g_file_get_parent (file);
         search_str = g_file_get_basename (file);
@@ -859,11 +856,20 @@ search_path (const gchar  *path_string,
 
     while (child_info != NULL)
     {
+        const gchar  *child_name;
+        const gchar  *child_path;
+        GFile        *child;
+        GError       *error = NULL;
+
         child_name = g_file_info_get_name (child_info);
         child = g_file_enumerator_get_child (children, child_info);
+
         if (g_str_has_prefix (child_name, search_str) &&
             g_file_query_file_type (child, G_FILE_QUERY_INFO_NONE, NULL) != G_FILE_TYPE_DIRECTORY)
         {
+            GFileInputStream         *stream;
+            IconInfoLoadCallbackInfo *callback_info;
+
             child_path = g_file_get_path (child);
             stream = g_file_read (child, NULL, &error);
             if (stream == NULL)
@@ -878,18 +884,19 @@ search_path (const gchar  *path_string,
             callback_info->long_name = child_path;
             gdk_pixbuf_new_from_stream_async (G_INPUT_STREAM (stream), cancellable, (GAsyncReadyCallback) (finish_pixbuf_load_from_file), callback_info);
         }
+
         gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (icon_store), COLUMN_DISPLAY_NAME, search_model_sort,
                                          (gpointer) child_path, NULL);
 
         child_info = g_file_enumerator_next_file (children, NULL, NULL);
 
         g_object_unref (child);
+        g_clear_error (&error);
     }
 
     g_file_enumerator_close (children, NULL, NULL);
     g_object_unref (children);
     g_object_unref (dir);
-    g_clear_error (&error);
 }
 
 static void
@@ -967,9 +974,6 @@ on_icon_view_selection_changed (GtkIconView *icon_view,
 {
     XAppIconChooserDialogPrivate *priv;
     GList                        *selected_items;
-    GtkTreePath                  *tree_path;
-    GtkTreeIter                   iter;
-    GtkTreeModel                 *model;
     gchar                        *icon_string = "";
 
     priv = xapp_icon_chooser_dialog_get_instance_private (user_data);
@@ -981,6 +985,10 @@ on_icon_view_selection_changed (GtkIconView *icon_view,
     }
     else
     {
+        GtkTreePath  *tree_path;
+        GtkTreeModel *model;
+        GtkTreeIter   iter;
+
         gtk_widget_set_sensitive (GTK_WIDGET (priv->select_button), TRUE);
 
         tree_path = selected_items->data;
@@ -1023,7 +1031,6 @@ on_browse_button_clicked (GtkButton *button,
     const gchar                  *search_text;
     GtkFileFilter                *file_filter;
     gint                          response;
-    gchar                        *filename;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -1054,9 +1061,11 @@ on_browse_button_clicked (GtkButton *button,
     response = gtk_dialog_run (GTK_DIALOG (file_dialog));
     if (response == GTK_RESPONSE_ACCEPT)
     {
+        gchar *filename;
+
         filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (file_dialog));
         gtk_entry_set_text (GTK_ENTRY (priv->search_bar), filename);
-       g_free (filename);
+        g_free (filename);
     }
 
     gtk_widget_destroy (file_dialog);
