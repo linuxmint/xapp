@@ -3,6 +3,7 @@
 #include "xapp-icon-chooser-dialog.h"
 #include "xapp-stack-sidebar.h"
 #include <glib/gi18n-lib.h>
+#include <glib/gstdio.h>
 
 /**
  * SECTION:xapp-icon-chooser-dialog
@@ -863,14 +864,16 @@ search_path (const gchar  *path_string,
 
         child_name = g_file_info_get_name (child_info);
         child = g_file_enumerator_get_child (children, child_info);
+        child_path = g_file_get_path (child);
 
         if (g_str_has_prefix (child_name, search_str) &&
-            g_file_query_file_type (child, G_FILE_QUERY_INFO_NONE, NULL) != G_FILE_TYPE_DIRECTORY)
+            g_file_query_file_type (child, G_FILE_QUERY_INFO_NONE, NULL) != G_FILE_TYPE_DIRECTORY &&
+            g_str_has_prefix (g_content_type_guess (child_name, NULL, 0, NULL), "image") &&
+            g_access (child_path, R_OK) == 0)
         {
             GFileInputStream         *stream;
             IconInfoLoadCallbackInfo *callback_info;
 
-            child_path = g_file_get_path (child);
             stream = g_file_read (child, NULL, &error);
             if (stream == NULL)
             {
@@ -883,16 +886,17 @@ search_path (const gchar  *path_string,
             callback_info->short_name = child_name;
             callback_info->long_name = child_path;
             gdk_pixbuf_new_from_stream_async (G_INPUT_STREAM (stream), cancellable, (GAsyncReadyCallback) (finish_pixbuf_load_from_file), callback_info);
-        }
 
-        gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (icon_store), COLUMN_DISPLAY_NAME, search_model_sort,
-                                         (gpointer) child_path, NULL);
+            g_object_unref (child);
+        }
 
         child_info = g_file_enumerator_next_file (children, NULL, NULL);
 
-        g_object_unref (child);
         g_clear_error (&error);
     }
+
+    gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (icon_store), COLUMN_DISPLAY_NAME, search_model_sort,
+                                     (gpointer) search_str, NULL);
 
     g_file_enumerator_close (children, NULL, NULL);
     g_object_unref (children);
