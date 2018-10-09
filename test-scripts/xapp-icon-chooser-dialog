@@ -21,10 +21,12 @@ if __name__ == '__main__':
     parser.add_argument('-b', '--clipboard', dest='clipboard', action='store_true',
                         help='If this option is supplied, the result will be copied to the clipboard when an icon is '
                              'selected and the dialog closed.')
+    parser.add_argument('-p', '--disallow-paths', dest='paths', action='store_false',
+                        help='causes the path.')
 
     args = parser.parse_args()
 
-    dialog = XApp.IconChooserDialog()
+    dialog = XApp.IconChooserDialog(allow_paths=args.paths)
     if args.category:
         response = dialog.run_with_category(args.category)
     elif args.icon:

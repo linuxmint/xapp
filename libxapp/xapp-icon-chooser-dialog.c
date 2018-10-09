@@ -28,7 +28,9 @@ typedef struct
     GtkWidget       *icon_view;
     GtkWidget       *list_box;
     GtkWidget       *select_button;
+    GtkWidget       *browse_button;
     gchar           *icon_string;
+    gboolean         allow_paths;
 } XAppIconChooserDialogPrivate;
 
 struct _XAppIconChooserDialog
@@ -103,6 +105,7 @@ enum
 {
     PROP_0,
     PROP_ICON_SIZE,
+    PROP_ALLOW_PATHS,
     N_PROPERTIES
 };
 
@@ -179,6 +182,9 @@ xapp_icon_chooser_dialog_get_property (GObject    *object,
         case PROP_ICON_SIZE:
             g_value_set_enum (value, priv->icon_size);
             break;
+        case PROP_ALLOW_PATHS:
+            g_value_set_boolean (value, priv->allow_paths);
+            break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -202,6 +208,19 @@ xapp_icon_chooser_dialog_set_property (GObject      *object,
         case PROP_ICON_SIZE:
             priv->icon_size = g_value_get_enum (value);
             break;
+        case PROP_ALLOW_PATHS:
+            priv->allow_paths = g_value_get_boolean (value);
+            if (priv->allow_paths)
+            {
+                gtk_widget_show (priv->browse_button);
+                gtk_widget_set_no_show_all (priv->browse_button, FALSE);
+            }
+            else
+            {
+                gtk_widget_hide (priv->browse_button);
+                gtk_widget_set_no_show_all (priv->browse_button, TRUE);
+            }
+            break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -224,7 +243,6 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     GtkWidget                    *button_area;
     GtkWidget                    *selection;
     GtkWidget                    *scrolled_window;
-    GtkWidget                    *browse_button;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -282,10 +300,10 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     g_signal_connect (priv->search_bar, "key-press-event",
                       G_CALLBACK (on_search_bar_key_pressed), dialog);
 
-    browse_button = gtk_button_new_with_label (_("Browse"));
-    gtk_box_pack_start (GTK_BOX (search_bar_box), browse_button, FALSE, FALSE, 0);
+    priv->browse_button = gtk_button_new_with_label (_("Browse"));
+    gtk_box_pack_start (GTK_BOX (search_bar_box), priv->browse_button, FALSE, FALSE, 0);
 
-    g_signal_connect (browse_button, "clicked",
+    g_signal_connect (priv->browse_button, "clicked",
                       G_CALLBACK (on_browse_button_clicked), dialog);
 
     // icon view
@@ -362,6 +380,18 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
                            XAPP_ICON_SIZE_32,
                            G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
+    /**
+     * XAppIconChooserDialog:allow-paths:
+     *
+     * Whether to allow paths to be searched and selected or only icon names.
+     */
+    obj_properties[PROP_ALLOW_PATHS] =
+        g_param_spec_boolean ("allow-paths",
+                              _("Allow Paths"),
+                              _("Whether to allow paths."),
+                              TRUE,
+                              G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
     g_object_class_install_properties (object_class, N_PROPERTIES, obj_properties);
 
     // keybinding signals
@@ -437,6 +467,8 @@ xapp_icon_chooser_dialog_run (XAppIconChooserDialog *dialog)
  * icon name or a path. Passing an icon string or path that doesn't exist is accepted, but it may show
  * multiple results, or none at all. This behavior is useful if, for example, you wish to have the
  * user select an image file from a particular directory.
+ *
+ * If the property allow_paths is FALSE, setting a path will yield no results when the dialog is opened.
  *
  * xapp_icon_chooser_dialog_run (), xapp_icon_chooser_dialog_run_with_icon(), and
  * xapp_icon_chooser_dialog_run_with_category () may all be called multiple times. This is useful for
@@ -516,7 +548,9 @@ xapp_icon_chooser_dialog_run_with_category (XAppIconChooserDialog *dialog,
  * xapp_icon_chooser_dialog_get_icon_string:
  * @dialog: a #XAppIconChooserDialog
  *
- * Gets the currently selected icon from the dialog.
+ * Gets the currently selected icon from the dialog. If allow-paths is TRUE, this function may return
+ * either an icon name or a path depending on what the user selects. Otherwise it will only return an
+ * icon name.
  *
  * Returns: the string representation of the currently selected icon or NULL
  * if no icon is selected.
@@ -963,7 +997,10 @@ on_search (GtkSearchEntry        *entry,
         gtk_icon_view_set_model (GTK_ICON_VIEW (priv->icon_view), GTK_TREE_MODEL (priv->icon_store));
         if (g_strrstr (search_text, "/"))
         {
-            search_path (search_text, priv->icon_store, priv->cancellable);
+            if (priv->allow_paths)
+            {
+                search_path (search_text, priv->icon_store, priv->cancellable);
+            }
         }
         else
         {
