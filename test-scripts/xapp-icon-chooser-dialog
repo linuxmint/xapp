@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('XApp', '1.0')
+
+from gi.repository import Gtk, XApp, Gdk
+
+import argparse
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group()
+    # if there are no arguments supplied, we should create a new launcher in the default location (usually ~/.local/share/applications/)
+    group.add_argument('-c', '--category', dest='category', metavar='CATEGORY',
+                        help='The category to select when the dialog is opened.')
+    group.add_argument('-i', '--icon-string', dest='icon', metavar='ICON_STRING',
+                        help='The icon to select when the dialog is opened. This can be an icon name or a path. '
+                             'If the icon doesn\'t exist, it will not cause an error, but there may not be an icon '
+                             'selected.')
+    parser.add_argument('-b', '--clipboard', dest='clipboard', action='store_true',
+                        help='If this option is supplied, the result will be copied to the clipboard when an icon is '
+                             'selected and the dialog closed.')
+    parser.add_argument('-p', '--disallow-paths', dest='paths', action='store_false',
+                        help='causes the path.')
+
+    args = parser.parse_args()
+
+    dialog = XApp.IconChooserDialog(allow_paths=args.paths)
+    if args.category:
+        response = dialog.run_with_category(args.category)
+    elif args.icon:
+        response = dialog.run_with_icon(args.icon)
+    else:
+        response = dialog.run()
+
+    if response == Gtk.ResponseType.OK:
+        string = dialog.get_icon_string()
+        print(string)
+
+        if args.clipboard:
+            clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+            clipboard.set_text(string, -1)
+            clipboard.store()
+    else:
+        print('Dialog canceled')

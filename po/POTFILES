@@ -1,4 +1,5 @@
 libxapp/xapp-gtk-window.c
+libxapp/xapp-icon-chooser-dialog.c
 libxapp/xapp-kbd-layout-controller.c
 libxapp/xapp-monitor-blanker.c
 libxapp/xapp-preferences-window.c

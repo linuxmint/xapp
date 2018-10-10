@@ -27,7 +27,7 @@ c = configure_file(output : 'config.h',
 top_inc = include_directories('.')
 
 subdir('libxapp')
-# subdir('po')
+subdir('po')
 subdir('pygobject')
 subdir('files')
 subdir('schemas')
