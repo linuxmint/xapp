@@ -233,8 +233,10 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     XAppIconChooserDialogPrivate *priv;
     GtkWidget                    *main_box;
     GtkWidget                    *secondary_box;
+    GtkWidget                    *toolbar;
+    GtkToolItem                  *tool_item;
+    GtkWidget                    *toolbar_box;
     GtkWidget                    *right_box;
-    GtkWidget                    *search_bar_box;
     GtkCellRenderer              *renderer;
     GtkTreeViewColumn            *column;
     GtkStyleContext              *style;
@@ -265,6 +267,36 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add (GTK_CONTAINER (dialog), main_box);
 
+    // toolbar
+    toolbar = gtk_toolbar_new ();
+    gtk_box_pack_start (GTK_BOX (main_box), toolbar, FALSE, FALSE, 0);
+    style = gtk_widget_get_style_context (toolbar);
+    gtk_style_context_add_class (style, "primary-toolbar");
+
+    tool_item = gtk_tool_item_new ();
+    gtk_toolbar_insert (GTK_TOOLBAR (toolbar), tool_item, 0);
+    gtk_tool_item_set_expand (tool_item, TRUE);
+
+    toolbar_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_container_add (GTK_CONTAINER (tool_item), toolbar_box);
+    style = gtk_widget_get_style_context (GTK_WIDGET (toolbar_box));
+    gtk_style_context_add_class (style, "linked");
+
+    priv->search_bar = gtk_search_entry_new ();
+    gtk_box_pack_start (GTK_BOX (toolbar_box), priv->search_bar, TRUE, TRUE, 0);
+    gtk_entry_set_placeholder_text (GTK_ENTRY (priv->search_bar), _("Search"));
+
+    g_signal_connect (priv->search_bar, "search-changed",
+                      G_CALLBACK (on_search), dialog);
+    g_signal_connect (priv->search_bar, "key-press-event",
+                      G_CALLBACK (on_search_bar_key_pressed), dialog);
+
+    priv->browse_button = gtk_button_new_with_label (_("Browse"));
+    gtk_box_pack_start (GTK_BOX (toolbar_box), priv->browse_button, FALSE, FALSE, 0);
+
+    g_signal_connect (priv->browse_button, "clicked",
+                      G_CALLBACK (on_browse_button_clicked), dialog);
+
     secondary_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start (GTK_BOX (main_box), secondary_box, TRUE, TRUE, 0);
 
@@ -279,40 +311,15 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     g_signal_connect (priv->list_box, "selected-rows-changed",
                       G_CALLBACK (on_category_selected), dialog);
 
-    style = gtk_widget_get_style_context (GTK_WIDGET (priv->list_box));
+    style = gtk_widget_get_style_context (GTK_WIDGET (scrolled_window));
     gtk_style_context_add_class (style, "sidebar");
 
     right_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_pack_start (GTK_BOX (secondary_box), right_box, TRUE, TRUE, 8);
-
-    // search bar
-    search_bar_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_start (GTK_BOX (right_box), search_bar_box, FALSE, FALSE, 0);
-    // gtk_box_set_spacing (GTK_BOX (search_bar_box), 8);
-    style = gtk_widget_get_style_context (GTK_WIDGET (search_bar_box));
-    gtk_style_context_add_class (style, "linked");
-
-    priv->search_bar = gtk_search_entry_new ();
-    gtk_box_pack_start (GTK_BOX (search_bar_box), priv->search_bar, TRUE, TRUE, 0);
-
-    g_signal_connect (priv->search_bar, "search-changed",
-                      G_CALLBACK (on_search), dialog);
-    g_signal_connect (priv->search_bar, "key-press-event",
-                      G_CALLBACK (on_search_bar_key_pressed), dialog);
-
-    priv->browse_button = gtk_button_new_with_label (_("Browse"));
-    gtk_box_pack_start (GTK_BOX (search_bar_box), priv->browse_button, FALSE, FALSE, 0);
-
-    g_signal_connect (priv->browse_button, "clicked",
-                      G_CALLBACK (on_browse_button_clicked), dialog);
+    gtk_box_pack_start (GTK_BOX (secondary_box), right_box, TRUE, TRUE, 0);
 
     // icon view
     scrolled_window = gtk_scrolled_window_new (NULL, NULL);
     gtk_box_pack_start (GTK_BOX (right_box), scrolled_window, TRUE, TRUE, 0);
-    // gtk_widget_set_margin_top (GTK_WIDGET (scrolled_window), 8);
-    // gtk_widget_set_margin_bottom (GTK_WIDGET (scrolled_window), 8);
-    // gtk_widget_set_margin_start (GTK_WIDGET (scrolled_window), 8);
-    // gtk_widget_set_margin_end (GTK_WIDGET (scrolled_window), 8);
 
     priv->icon_view = gtk_icon_view_new ();
     gtk_container_add(GTK_CONTAINER (scrolled_window), GTK_WIDGET (priv->icon_view));
@@ -415,6 +422,8 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
     gtk_binding_entry_add_signal (binding_set, GDK_KEY_Escape, 0, "close", 0);
     gtk_binding_entry_add_signal (binding_set, GDK_KEY_Return, 0, "select", 0);
     gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Enter, 0, "select", 0);
+
+    gtk_widget_class_set_css_name (widget_class, "stacksidebar");
 }
 
 /**
@@ -711,10 +720,8 @@ load_categories (XAppIconChooserDialog *dialog)
         row = gtk_list_box_row_new ();
         label = gtk_label_new (category_info->name);
         gtk_label_set_xalign (GTK_LABEL (label), 0.0);
-        gtk_widget_set_margin_top (GTK_WIDGET (label), 10);
-        gtk_widget_set_margin_bottom (GTK_WIDGET (label), 10);
-        gtk_widget_set_margin_start (GTK_WIDGET (label), 15);
-        gtk_widget_set_margin_end (GTK_WIDGET (label), 15);
+        gtk_widget_set_margin_start (GTK_WIDGET (label), 6);
+        gtk_widget_set_margin_end (GTK_WIDGET (label), 6);
 
         gtk_container_add (GTK_CONTAINER (row), label);
         gtk_container_add (GTK_CONTAINER (priv->list_box), row);
