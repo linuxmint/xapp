@@ -17,6 +17,7 @@
   <chapter>
     <title>API reference</title>
     <xi:include href="xml/xapp-gtk-window.xml"/>
+    <xi:include href="xml/xapp-icon-chooser-button.xml"/>
     <xi:include href="xml/xapp-icon-chooser-dialog.xml"/>
     <xi:include href="xml/xapp-kbd-layout-controller.xml"/>
     <xi:include href="xml/xapp-monitor-blanker.xml"/>

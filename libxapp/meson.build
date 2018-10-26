@@ -11,6 +11,7 @@ libdeps += dependency('x11', required: true)
 
 xapp_headers = [
     'xapp-gtk-window.h',
+    'xapp-icon-chooser-button.h',
     'xapp-icon-chooser-dialog.h',
     'xapp-kbd-layout-controller.h',
     'xapp-monitor-blanker.h',
@@ -21,6 +22,7 @@ xapp_headers = [
 xapp_sources = [
     'xapp-glade-catalog.c',
     'xapp-gtk-window.c',
+    'xapp-icon-chooser-button.c',
     'xapp-icon-chooser-dialog.c',
     'xapp-kbd-layout-controller.c',
     'xapp-monitor-blanker.c',
