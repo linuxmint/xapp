@@ -18,7 +18,6 @@ typedef struct
     GtkWidget        *stack;
     XAppStackSidebar *side_switcher;
     GtkWidget        *button_area;
-    GtkSizeGroup     *button_size_group;
 
     gint              num_pages;
 } XAppPreferencesWindowPrivate;
@@ -39,16 +38,23 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     XAppPreferencesWindowPrivate *priv = xapp_preferences_window_get_instance_private (window);
     GtkWidget *main_box;
     GtkWidget *secondary_box;
+    GtkStyleContext *style_context;
 
     gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
     gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_container_set_border_width (GTK_CONTAINER (window), 5);
 
     main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_set_border_width (GTK_CONTAINER (main_box), 5);
     gtk_container_add (GTK_CONTAINER (window), main_box);
 
     secondary_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_container_set_border_width (GTK_CONTAINER (secondary_box), 5);
     gtk_box_pack_start (GTK_BOX (main_box), secondary_box, TRUE, TRUE, 0);
+
+    style_context = gtk_widget_get_style_context (secondary_box);
+    gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_FRAME);
 
     priv->side_switcher = xapp_stack_sidebar_new ();
     gtk_widget_set_size_request (GTK_WIDGET (priv->side_switcher), 100, -1);
@@ -60,11 +66,13 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     gtk_box_pack_start (GTK_BOX (secondary_box), priv->stack, TRUE, TRUE, 0);
     xapp_stack_sidebar_set_stack (priv->side_switcher, GTK_STACK (priv->stack));
 
-    priv->button_area = gtk_action_bar_new ();
+    style_context = gtk_widget_get_style_context (priv->stack);
+    gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_VIEW);
+
+    priv->button_area = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    gtk_container_set_border_width (GTK_CONTAINER (priv->button_area), 5);
     gtk_box_pack_start (GTK_BOX (main_box), priv->button_area, FALSE, FALSE, 0);
     gtk_widget_set_no_show_all (priv->button_area, TRUE);
-
-    priv->button_size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
     /* Keep track of the number of pages so we can hide the stack switcher with < 2 */
     priv->num_pages = 0;
@@ -162,17 +170,13 @@ xapp_preferences_window_add_button (XAppPreferencesWindow *window,
     g_return_if_fail (XAPP_IS_PREFERENCES_WINDOW (window));
     g_return_if_fail (GTK_IS_WIDGET (button));
 
-    if (pack_type == GTK_PACK_START)
+    gtk_container_add (GTK_CONTAINER (priv->button_area), button);
+
+    if (pack_type == GTK_PACK_END)
     {
-        gtk_action_bar_pack_start (GTK_ACTION_BAR (priv->button_area), button);
-        gtk_widget_set_margin_start (button, 6);
+        gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (priv->button_area), button, TRUE);
     }
-    else if (pack_type == GTK_PACK_END)
-    {
-        gtk_action_bar_pack_end (GTK_ACTION_BAR (priv->button_area), button);
-        gtk_widget_set_margin_end (button, 6);
-    }
-    else
+    else if (pack_type != GTK_PACK_START)
     {
         return;
     }
@@ -180,6 +184,5 @@ xapp_preferences_window_add_button (XAppPreferencesWindow *window,
     style_context = gtk_widget_get_style_context (button);
     gtk_style_context_add_class (style_context, "text-button");
 
-    gtk_size_group_add_widget (priv->button_size_group, button);
     gtk_widget_set_no_show_all (priv->button_area, FALSE);
 }
