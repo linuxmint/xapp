@@ -667,6 +667,7 @@ static void
 load_categories (XAppIconChooserDialog *dialog)
 {
     XAppIconChooserDialogPrivate *priv;
+    GtkListBoxRow                *row;
     GtkIconTheme                 *theme;
     gint                          i;
     gint                          j;
@@ -728,6 +729,9 @@ load_categories (XAppIconChooserDialog *dialog)
 
         g_hash_table_insert (priv->categories, row, category_info);
     }
+
+    row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (priv->list_box), 0);
+    gtk_list_box_select_row (GTK_LIST_BOX (priv->list_box), row);
 }
 
 static void
@@ -826,7 +830,7 @@ load_icons_for_category (GtkListStore *model,
 
 static void
 on_category_selected (GtkListBox            *list_box,
-                     XAppIconChooserDialog *dialog)
+                      XAppIconChooserDialog *dialog)
 {
     XAppIconChooserDialogPrivate *priv;
     GList                        *selection;
@@ -846,6 +850,17 @@ on_category_selected (GtkListBox            *list_box,
 
     gtk_entry_set_text (GTK_ENTRY (priv->search_bar), "");
     selection = gtk_list_box_get_selected_rows (GTK_LIST_BOX (priv->list_box));
+
+    if (!selection)
+    {
+        GtkListBoxRow *row;
+
+        row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (priv->list_box), 0);
+        gtk_list_box_select_row (GTK_LIST_BOX (priv->list_box), row);
+
+        return;
+    }
+
     selected = selection->data;
     category_info = g_hash_table_lookup (priv->categories, selected);
     if (!category_info->is_loaded)
