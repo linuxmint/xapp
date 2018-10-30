@@ -293,21 +293,22 @@ xapp_icon_chooser_button_get_icon (XAppIconChooserButton *button)
  */
 void
 xapp_icon_chooser_button_set_icon (XAppIconChooserButton *button,
-                                   gchar                 *icon)
+                                   const gchar           *icon)
 {
     XAppIconChooserButtonPrivate *priv;
     const gchar                  *icon_string;
 
     priv = xapp_icon_chooser_button_get_instance_private (button);
 
-    priv->icon_string = icon;
 
     if (icon == NULL)
     {
+        priv->icon_string = NULL;
         icon_string = "unkown";
     }
     else
     {
+        priv->icon_string = g_strdup (icon);
         icon_string = icon;
     }
 

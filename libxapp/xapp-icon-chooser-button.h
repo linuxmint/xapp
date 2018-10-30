@@ -20,7 +20,7 @@ void                      xapp_icon_chooser_button_set_icon_size         (XAppIc
                                                                           GtkIconSize            icon_size);
 
 void                      xapp_icon_chooser_button_set_icon              (XAppIconChooserButton *button,
-                                                                          gchar                 *icon);
+                                                                          const gchar           *icon);
 
 const gchar*              xapp_icon_chooser_button_get_icon              (XAppIconChooserButton *button);
 
