@@ -1,0 +1,4 @@
+#!/bin/bash
+
+xgettext --language=C --keyword=_ --keyword=N_ --output=xapp.pot libxapp/*.c
+

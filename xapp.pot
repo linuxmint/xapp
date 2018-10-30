@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-30 14:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: libxapp/xapp-icon-chooser-button.c:163
+#: libxapp/xapp-icon-chooser-dialog.c:387
+msgid "Icon size"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-button.c:164
+#: libxapp/xapp-icon-chooser-dialog.c:388
+msgid "The preferred icon size."
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-button.c:178
+msgid "Icon"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-button.c:179
+msgid "The string representing the icon."
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:68
+msgid "Actions"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:71
+msgid "Applications"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:74
+msgid "Categories"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:77
+msgid "Devices"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:80
+msgid "Emblems"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:83
+msgid "Emoji"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:86
+msgid "Mime types"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:89
+msgid "Places"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:92
+msgid "Status"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:95
+msgid "Other"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:289
+msgid "Search"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:296
+msgid "Browse"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:345
+msgid "Select"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:354
+#: libxapp/xapp-icon-chooser-dialog.c:1157
+msgid "Cancel"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:400
+msgid "Allow Paths"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:401
+msgid "Whether to allow paths."
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:1154
+msgid "Select image file"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:1159
+msgid "Open"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:1174
+msgid "Image"
+msgstr ""
