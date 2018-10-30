@@ -30,6 +30,7 @@ typedef struct
     GtkWidget       *list_box;
     GtkWidget       *select_button;
     GtkWidget       *browse_button;
+    GtkWidget       *action_area;
     gchar           *icon_string;
     gboolean         allow_paths;
 } XAppIconChooserDialogPrivate;
@@ -336,6 +337,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
 
     // buttons
     button_area = gtk_action_bar_new ();
+    priv->action_area = button_area;
     gtk_box_pack_start (GTK_BOX (main_box), button_area, FALSE, FALSE, 0);
 
     button_size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
@@ -574,18 +576,69 @@ xapp_icon_chooser_dialog_get_icon_string (XAppIconChooserDialog *dialog)
     return priv->icon_string;
 }
 
-gboolean
+static void
 xapp_icon_chooser_dialog_close (XAppIconChooserDialog *dialog,
-                                gboolean               cancelled)
+                                GtkResponseType        response)
 {
     XAppIconChooserDialogPrivate *priv;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
-    priv->response = (cancelled) ? GTK_RESPONSE_CANCEL : GTK_RESPONSE_OK;
+    priv->response = response;
     gtk_widget_hide (GTK_WIDGET (dialog));
 
     gtk_main_quit ();
+}
+
+static void
+on_custom_button_clicked (GtkButton *button,
+                          gpointer   user_data)
+{
+    GtkResponseType response_id;
+
+    response_id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "response-id"));
+
+    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), response_id);
+}
+
+/**
+ * xapp_icon_chooser_dialog_add_button:
+ * @dialog: an #XAppIconChooserDialog
+ * @button: a #GtkButton to add
+ * @packing: the #GtkPackType to specify start or end packing to the action bar
+ * @response_id: the dialog response id to return when this button is clicked.
+ *
+ * Allows a button to be added to the #GtkActionBar of the dialog with a custom
+ * response id.
+ */
+void
+xapp_icon_chooser_dialog_add_button (XAppIconChooserDialog *dialog,
+                                     GtkWidget             *button,
+                                     GtkPackType            packing,
+                                     GtkResponseType        response_id)
+{
+    XAppIconChooserDialogPrivate *priv;
+    GtkWidget *action_area;
+
+    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
+
+    g_signal_connect (button,
+                      "clicked",
+                      G_CALLBACK (on_custom_button_clicked),
+                      dialog);
+
+    /* This saves having to use a custom container for callback data. */
+    g_object_set_data (G_OBJECT (button),
+                       "response-id", GINT_TO_POINTER (response_id));
+
+    if (packing == GTK_PACK_START)
+    {
+        gtk_action_bar_pack_start (GTK_ACTION_BAR (priv->action_area), button);
+    }
+    else
+    {
+        gtk_action_bar_pack_start (GTK_ACTION_BAR (priv->action_area), button);
+    }
 }
 
 static gint
@@ -1139,21 +1192,21 @@ static void
 on_select_button_clicked (GtkButton *button,
                           gpointer   user_data)
 {
-    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), FALSE);
+    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), GTK_RESPONSE_OK);
 }
 
 static void
 on_cancel_button_clicked (GtkButton *button,
                           gpointer   user_data)
 {
-    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), TRUE);
+    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), GTK_RESPONSE_CANCEL);
 }
 
 static gboolean
 on_delete_event (GtkWidget   *widget,
                  GdkEventAny *event)
 {
-    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (widget), TRUE);
+    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (widget), GTK_RESPONSE_CANCEL);
 }
 
 static gboolean
@@ -1166,7 +1219,7 @@ on_select_event (XAppIconChooserDialog *dialog,
 
     if (g_strcmp0 (priv->icon_string, "") != 0)
     {
-        xapp_icon_chooser_dialog_close (dialog, FALSE);
+        xapp_icon_chooser_dialog_close (dialog, GTK_RESPONSE_OK);
     }
 }
 
@@ -1175,7 +1228,7 @@ on_icon_view_item_activated (GtkIconView *iconview,
                              GtkTreePath *path,
                              gpointer     user_data)
 {
-    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), FALSE);
+    xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), GTK_RESPONSE_OK);
 }
 
 static gboolean
@@ -1192,13 +1245,13 @@ on_search_bar_key_pressed (GtkWidget *widget,
     switch (keyval)
     {
         case GDK_KEY_Escape:
-            xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), TRUE);
+            xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), GTK_RESPONSE_CANCEL);
             return TRUE;
         case GDK_KEY_Return:
         case GDK_KEY_KP_Enter:
             if (g_strcmp0 (priv->icon_string, "") != 0)
             {
-                xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), FALSE);
+                xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), GTK_RESPONSE_OK);
             }
             return TRUE;
     }
