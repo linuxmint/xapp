@@ -1207,6 +1207,8 @@ on_delete_event (GtkWidget   *widget,
                  GdkEventAny *event)
 {
     xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (widget), GTK_RESPONSE_CANCEL);
+
+    return TRUE;
 }
 
 static gboolean
