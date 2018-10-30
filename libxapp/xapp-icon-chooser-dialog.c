@@ -1,5 +1,6 @@
 #include <config.h>
 #include <gdk/gdk.h>
+#include "xapp-enums.h"
 #include "xapp-icon-chooser-dialog.h"
 #include "xapp-stack-sidebar.h"
 #include <glib/gi18n-lib.h>

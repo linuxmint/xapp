@@ -3,7 +3,6 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include "xapp-enums.h"
 
 G_BEGIN_DECLS
 
