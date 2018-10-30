@@ -1,3 +1,42 @@
+xapp (1.4.0) tessa; urgency=medium
+
+  [ JosephMcc ]
+  * Add an XAppStackSidebar widget (#45)
+  * stack-sidear: Simplify a bit
+  * stack-sidebar: Allow using in Glade
+
+  [ Michael Webster ]
+  * xapp-stack-sidebar.c: Set our internal children visible during construction.
+
+  [ JosephMcc ]
+  * icons: Add new icons for the nemo preferences window
+  * prefs-window: Use XAppStackSidebar
+
+  [ Stephen Collins ]
+  * Add an icon chooser dialog (#51)
+
+  [ JosephMcc ]
+  * icon-chooser: Do a bit of restyling (#52)
+
+  [ Fabio Fantoni ]
+  * Improve debian packaging (#42)
+
+  [ Stephen Collins ]
+  * fix segfault in icon chooser dialog and ensure a category is always selected (#54)
+  * Add an icon chooser button. Displays an image of the icon and opens the icon chooser dialog on click. (#53)
+
+  [ JosephMcc ]
+  * prefs-window: Restyle to better match other dialogs (#55)
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-dialog: include the generated enums header in the .c file so it does not break C application compilation.
+  * xapp-icon-chooser-dialog: Add xapp_icon_chooser_dialog_add_button().
+
+  [ Clement Lefebvre ]
+  * l10n: Add makepot and de-couple POT from build system
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 30 Oct 2018 15:26:24 +0000
+
 xapp (1.2.2) tara; urgency=medium
 
   [ Fabio Fantoni ]
