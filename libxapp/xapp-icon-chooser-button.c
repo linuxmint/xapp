@@ -113,7 +113,7 @@ xapp_icon_chooser_button_set_property (GObject      *object,
             xapp_icon_chooser_button_set_icon_size (button, g_value_get_enum (value));
             break;
         case PROP_ICON:
-            priv->icon_string = g_strdup (g_value_get_string (value));
+            xapp_icon_chooser_button_set_icon (button, g_strdup (g_value_get_string (value)));
             break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
