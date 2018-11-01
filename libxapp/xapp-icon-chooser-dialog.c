@@ -255,6 +255,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     priv->response = GTK_RESPONSE_NONE;
     priv->icon_string = "";
     priv->cancellable = NULL;
+    priv->allow_paths = TRUE;
 
     priv->icon_store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
     gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (priv->icon_store), COLUMN_DISPLAY_NAME,
