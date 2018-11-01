@@ -3,7 +3,6 @@
 #include <glib/gi18n-lib.h>
 
 #define XAPP_BUTTON_ICON_SIZE_DEFAULT GTK_ICON_SIZE_DIALOG
-#define XAPP_DIALOG_ICON_SIZE_DEFAULT XAPP_ICON_SIZE_32
 
 /**
  * SECTION:xapp-icon-chooser-button
@@ -227,9 +226,11 @@ xapp_icon_chooser_button_new_with_size (GtkIconSize   icon_size)
  */
 void
 xapp_icon_chooser_button_set_icon_size (XAppIconChooserButton *button,
-                                               GtkIconSize            icon_size)
+                                        GtkIconSize            icon_size)
 {
     XAppIconChooserButtonPrivate *priv;
+    gint width, height;
+    gchar *icon;
 
     priv = xapp_icon_chooser_button_get_instance_private (button);
 
@@ -242,26 +243,16 @@ xapp_icon_chooser_button_set_icon_size (XAppIconChooserButton *button,
         priv->icon_size = icon_size;
     }
 
-    switch (priv->icon_size)
-    {
-        case GTK_ICON_SIZE_MENU:
-        case GTK_ICON_SIZE_SMALL_TOOLBAR:
-        case GTK_ICON_SIZE_BUTTON:
-            gtk_image_set_pixel_size (GTK_IMAGE (priv->image), 16);
-            break;
-        case GTK_ICON_SIZE_LARGE_TOOLBAR:
-            gtk_image_set_pixel_size (GTK_IMAGE (priv->image), 24);
-            break;
-        case GTK_ICON_SIZE_DND:
-            gtk_image_set_pixel_size (GTK_IMAGE (priv->image), 32);
-            break;
-        case GTK_ICON_SIZE_DIALOG:
-            gtk_image_set_pixel_size (GTK_IMAGE (priv->image), 48);
-            break;
-        default:
-            g_warning ("%d is not a valid icon size", priv->icon_size);
-            break;
-    }
+    gtk_icon_size_lookup (priv->icon_size, &width, &height);
+    gtk_image_set_pixel_size (GTK_IMAGE (priv->image), width);
+
+    // We need to make sure the icon gets resized if it's a file path. Since
+    // this means regenerating the pixbuf anyway, it's easier to just call
+    // xapp_icon_chooser_button_set_icon, but we need to dup the string so
+    // it doens't get freed before it gets used.
+    icon = g_strdup(priv->icon_string);
+    xapp_icon_chooser_button_set_icon (button, icon);
+    g_free (icon);
 
     g_object_notify (G_OBJECT (button), "icon-size");
 }
@@ -318,7 +309,14 @@ xapp_icon_chooser_button_set_icon (XAppIconChooserButton *button,
 
     if (g_strrstr (icon_string, "/"))
     {
-        gtk_image_set_from_file (GTK_IMAGE (priv->image), icon_string);
+        GdkPixbuf *pixbuf;
+        gint width, height;
+
+        gtk_icon_size_lookup (priv->icon_size, &width, &height);
+
+        pixbuf = gdk_pixbuf_new_from_file_at_size (icon_string, width, height, NULL);
+
+        gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), pixbuf);
     }
     else
     {
