@@ -333,7 +333,7 @@ xapp_icon_chooser_button_set_icon (XAppIconChooserButton *button,
  * Gets a reference to the icon chooser dialog for the #XAppIconChooserButton.
  * This is useful for setting properties on the dialog.
  *
- * Returns: the XAppIconChooserDialog
+ * Returns: (transfer none): the #XAppIconChooserDialog
  */
 XAppIconChooserDialog *
 xapp_icon_chooser_button_get_dialog (XAppIconChooserButton *button)

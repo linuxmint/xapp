@@ -23,6 +23,7 @@ void                      xapp_icon_chooser_button_set_icon              (XAppIc
                                                                           const gchar           *icon);
 
 const gchar*              xapp_icon_chooser_button_get_icon              (XAppIconChooserButton *button);
+XAppIconChooserDialog *   xapp_icon_chooser_button_get_dialog            (XAppIconChooserButton *button);
 
 G_END_DECLS
 
