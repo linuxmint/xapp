@@ -61,13 +61,6 @@ typedef struct
     gboolean progress_pulse;
 } XAppGtkWindowPrivate;
 
-struct _XAppGtkWindow
-{
-    GtkWindow parent_object;
-
-    XAppGtkWindowPrivate *priv;
-};
-
 G_DEFINE_TYPE_WITH_PRIVATE (XAppGtkWindow, xapp_gtk_window, GTK_TYPE_WINDOW)
 
 static gboolean
@@ -340,7 +333,7 @@ static void
 xapp_gtk_window_realize (GtkWidget *widget)
 {
     XAppGtkWindow *window = XAPP_GTK_WINDOW (widget);
-    XAppGtkWindowPrivate *priv = window->priv;
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
 
     GTK_WIDGET_CLASS (xapp_gtk_window_parent_class)->realize (widget);
 
@@ -358,7 +351,7 @@ static void
 xapp_gtk_window_finalize (GObject *object)
 {
     XAppGtkWindow *window = XAPP_GTK_WINDOW (object);
-    XAppGtkWindowPrivate *priv = window->priv;
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
 
     clear_icon_strings (priv);
 
@@ -369,10 +362,6 @@ static void
 xapp_gtk_window_init (XAppGtkWindow *window)
 {
     XAppGtkWindowPrivate *priv;
-
-    window->priv = G_TYPE_INSTANCE_GET_PRIVATE (window, XAPP_TYPE_GTK_WINDOW, XAppGtkWindowPrivate);
-    
-    priv = window->priv;
 
     priv->icon_name = NULL;
     priv->icon_path = NULL;
@@ -421,7 +410,9 @@ xapp_gtk_window_set_icon_name (XAppGtkWindow   *window,
 {
     g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
 
-    set_icon_name_internal (GTK_WINDOW (window), window->priv, icon_name);
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
+
+    set_icon_name_internal (GTK_WINDOW (window), priv, icon_name);
 }
 
 /**
@@ -443,7 +434,9 @@ xapp_gtk_window_set_icon_from_file (XAppGtkWindow   *window,
 {
     g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
 
-    set_icon_from_file_internal (GTK_WINDOW (window), window->priv, file_name, error);
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
+
+    set_icon_from_file_internal (GTK_WINDOW (window), priv, file_name, error);
 }
 
 /**
@@ -469,7 +462,9 @@ xapp_gtk_window_set_progress (XAppGtkWindow   *window,
 {
     g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
 
-    set_progress_internal (GTK_WINDOW (window), window->priv, progress);
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
+
+    set_progress_internal (GTK_WINDOW (window), priv, progress);
 }
 
 /**
@@ -494,7 +489,9 @@ xapp_gtk_window_set_progress_pulse (XAppGtkWindow   *window,
     g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
     g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
 
-    set_progress_pulse_internal (GTK_WINDOW (window), window->priv, pulse);
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
+
+    set_progress_pulse_internal (GTK_WINDOW (window), priv, pulse);
 }
 
 

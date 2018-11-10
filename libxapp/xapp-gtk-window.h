@@ -10,7 +10,14 @@ G_BEGIN_DECLS
 
 #define XAPP_TYPE_GTK_WINDOW (xapp_gtk_window_get_type ())
 
-G_DECLARE_FINAL_TYPE (XAppGtkWindow, xapp_gtk_window, XAPP, GTK_WINDOW, GtkWindow)
+G_DECLARE_DERIVABLE_TYPE (XAppGtkWindow, xapp_gtk_window, XAPP, GTK_WINDOW, GtkWindow)
+
+struct _XAppGtkWindowClass
+{
+  GtkWindowClass parent_class;
+
+  gpointer padding[12];
+};
 
 /* Class */
 GtkWidget               *xapp_gtk_window_new                             (GtkWindowType type);
