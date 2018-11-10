@@ -24,6 +24,7 @@ typedef struct
     GCancellable    *cancellable;
     GtkListStore    *category_list;
     GtkListStore    *icon_store;
+    GList           *full_icon_list;
     GHashTable      *categories;
     GtkWidget       *search_bar;
     GtkWidget       *icon_view;
@@ -230,6 +231,24 @@ xapp_icon_chooser_dialog_set_property (GObject      *object,
 }
 
 static void
+xapp_icon_chooser_dialog_dispose (GObject *object)
+{
+    XAppIconChooserDialog        *dialog;
+    XAppIconChooserDialogPrivate *priv;
+
+    dialog = XAPP_ICON_CHOOSER_DIALOG (object);
+    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
+
+    if (priv->full_icon_list != NULL)
+    {
+        g_list_free_full (priv->full_icon_list, g_free);
+        priv->full_icon_list = NULL;
+    }
+
+    G_OBJECT_CLASS (xapp_icon_chooser_dialog_parent_class)->dispose (object);
+}
+
+static void
 xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
 {
     XAppIconChooserDialogPrivate *priv;
@@ -373,6 +392,7 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
 
     object_class->get_property = xapp_icon_chooser_dialog_get_property;
     object_class->set_property = xapp_icon_chooser_dialog_set_property;
+    object_class->dispose = xapp_icon_chooser_dialog_dispose;
 
     widget_class->delete_event = on_delete_event;
 
@@ -1015,22 +1035,31 @@ search_path (const gchar  *path_string,
 }
 
 static void
-search_icon_name (const gchar  *name_string,
-                  GtkListStore *icon_store,
-                  GCancellable *cancellable,
-                  guint         icon_size)
+search_icon_name (XAppIconChooserDialog *dialog,
+                  const gchar           *name_string,
+                  GtkListStore          *icon_store,
+                  GCancellable          *cancellable,
+                  guint                  icon_size)
 {
+    XAppIconChooserDialogPrivate *priv;
     GtkIconTheme             *theme;
     GList                    *icons;
     GtkIconInfo              *info;
     IconInfoLoadCallbackInfo *callback_info;
+
+    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     theme = gtk_icon_theme_get_default ();
 
     gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (icon_store), COLUMN_DISPLAY_NAME, search_model_sort,
                                      (gpointer) name_string, NULL);
 
-    icons = gtk_icon_theme_list_icons (theme, NULL);
+    if (priv->full_icon_list == NULL)
+    {
+        priv->full_icon_list = gtk_icon_theme_list_icons (theme, NULL);
+    }
+
+    icons = priv->full_icon_list;
 
     for ( ; icons; icons = icons->next)
     {
@@ -1043,7 +1072,6 @@ search_icon_name (const gchar  *name_string,
             gtk_icon_info_load_icon_async (info, cancellable, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
         }
     }
-    g_list_free_full (icons, g_free);
 }
 
 static void
@@ -1069,6 +1097,11 @@ on_search (GtkSearchEntry        *entry,
         on_category_selected (GTK_LIST_BOX (priv->list_box), dialog);
     }
     else
+    if (strlen (search_text) < 2)
+    {
+        return;
+    }
+    else
     {
         gtk_list_store_clear (GTK_LIST_STORE (priv->icon_store));
         gtk_icon_view_set_model (GTK_ICON_VIEW (priv->icon_view), GTK_TREE_MODEL (priv->icon_store));
@@ -1081,7 +1114,7 @@ on_search (GtkSearchEntry        *entry,
         }
         else
         {
-            search_icon_name (search_text, priv->icon_store, priv->cancellable, priv->icon_size);
+            search_icon_name (dialog, search_text, priv->icon_store, priv->cancellable, priv->icon_size);
         }
     }
 }
