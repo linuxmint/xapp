@@ -44,13 +44,19 @@ struct _XAppIconChooserDialog
 typedef struct
 {
     GtkListStore    *model;
-    const gchar     *short_name;
-    const gchar     *long_name;
-} IconInfoLoadCallbackInfo;
+    const gchar     *name;
+} NamedIconInfoLoadCallbackInfo;
 
 typedef struct
 {
-    gchar        *name;
+    GtkListStore    *model;
+    gchar           *short_name;
+    gchar           *long_name;
+} FileIconInfoLoadCallbackInfo;
+
+typedef struct
+{
+    const gchar  *name; /* This is a translation which doesn't get freed */
     GList        *contexts;
     GList        *icons;
     GtkListStore *model;
@@ -168,6 +174,26 @@ static gint list_box_sort (GtkListBoxRow *row1,
                            GtkListBoxRow *row2,
                            gpointer       user_data);
 
+static void
+free_category_info (IconCategoryInfo *category_info)
+{
+    g_list_free_full (category_info->contexts, g_free);
+    g_list_free_full (category_info->icons, g_free);
+
+    g_clear_object (&category_info->model);
+
+    g_free (category_info);
+}
+
+static void
+free_file_load_callback_info (FileIconInfoLoadCallbackInfo *load_info)
+{
+    g_free (load_info->short_name);
+    g_free (load_info->long_name);
+
+    g_free (load_info);
+}
+
 void
 xapp_icon_chooser_dialog_get_property (GObject    *object,
                                        guint       prop_id,
@@ -245,6 +271,15 @@ xapp_icon_chooser_dialog_dispose (GObject *object)
         priv->full_icon_list = NULL;
     }
 
+    if (priv->categories != NULL)
+    {
+        g_hash_table_destroy (priv->categories);
+        priv->categories = NULL;
+    }
+
+    g_clear_pointer (&priv->icon_string, g_free);
+    g_clear_object (&priv->cancellable);
+
     G_OBJECT_CLASS (xapp_icon_chooser_dialog_parent_class)->dispose (object);
 }
 
@@ -270,9 +305,9 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     priv->icon_size = XAPP_ICON_SIZE_32;
-    priv->categories = g_hash_table_new (NULL, NULL);
+    priv->categories = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) free_category_info);
     priv->response = GTK_RESPONSE_NONE;
-    priv->icon_string = "";
+    priv->icon_string = NULL;
     priv->cancellable = NULL;
     priv->allow_paths = TRUE;
 
@@ -585,7 +620,7 @@ xapp_icon_chooser_dialog_run_with_category (XAppIconChooserDialog *dialog,
  * either an icon name or a path depending on what the user selects. Otherwise it will only return an
  * icon name.
  *
- * Returns: the string representation of the currently selected icon or NULL
+ * Returns: (transfer full): the string representation of the currently selected icon or NULL
  * if no icon is selected.
  */
 gchar *
@@ -594,7 +629,8 @@ xapp_icon_chooser_dialog_get_icon_string (XAppIconChooserDialog *dialog)
     XAppIconChooserDialogPrivate *priv;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
-    return priv->icon_string;
+
+    return g_strdup (priv->icon_string);
 }
 
 static void
@@ -686,41 +722,54 @@ search_model_sort (GtkTreeModel *model,
                    GtkTreeIter  *b,
                    gpointer      user_data)
 {
-    gchar    *a_value;
-    gchar    *b_value;
-    gchar    *search_str;
-    gboolean  a_starts_with;
-    gboolean  b_starts_with;
+    gchar       *a_value;
+    gchar       *b_value;
+    gchar       *search_str;
+    gboolean     a_starts_with;
+    gboolean     b_starts_with;
+    gint ret;
 
-    search_str = user_data;
+    search_str = g_strdup (user_data);
 
     gtk_tree_model_get (model, a, COLUMN_DISPLAY_NAME, &a_value, -1);
     gtk_tree_model_get (model, b, COLUMN_DISPLAY_NAME, &b_value, -1);
 
+    ret = g_strcmp0 (a_value, b_value);
+
+    if (search_str == NULL)
+    {
+    }
+    else
     if (g_strcmp0 (a_value, search_str) == 0)
     {
-        return -1;
+        ret = -1;
     }
-
+    else
     if (g_strcmp0 (b_value, search_str) == 0)
     {
-        return 1;
+        ret = 1;
     }
-
-    a_starts_with = g_str_has_prefix (a_value, search_str);
-    b_starts_with = g_str_has_prefix (b_value, search_str);
-
-    if (a_starts_with && !b_starts_with)
+    else
     {
-        return -1;
+        a_starts_with = g_str_has_prefix (a_value, search_str);
+        b_starts_with = g_str_has_prefix (b_value, search_str);
+
+        if (a_starts_with && !b_starts_with)
+        {
+            ret = -1;
+        }
+
+        if (!a_starts_with && b_starts_with)
+        {
+            ret = 1;
+        }
     }
 
-    if (!a_starts_with && b_starts_with)
-    {
-        return 1;
-    }
+    g_free (a_value);
+    g_free (b_value);
+    g_free (search_str);
 
-    return g_strcmp0 (a_value, b_value);
+    return ret;
 }
 
 static gint
@@ -760,12 +809,9 @@ load_categories (XAppIconChooserDialog *dialog)
 
         category = &categories[i];
 
-        category_info = g_new (IconCategoryInfo, 1);
+        category_info = g_new0 (IconCategoryInfo, 1);
 
         category_info->name = _(category->name);
-        category_info->is_loaded = FALSE;
-        category_info->contexts = NULL;
-        category_info->icons = NULL;
 
         for (j = 0; category->contexts[j] != NULL; j++)
         {
@@ -778,8 +824,7 @@ load_categories (XAppIconChooserDialog *dialog)
 
         if (g_list_length (category_info->icons) == 0)
         {
-            g_list_free (category_info->contexts);
-            g_free (category_info);
+            free_category_info (category_info);
 
             continue;
         }
@@ -814,12 +859,12 @@ finish_pixbuf_load_from_file (GObject      *stream,
                               GAsyncResult *res,
                               gpointer     *user_data)
 {
-    IconInfoLoadCallbackInfo *callback_info;
+    FileIconInfoLoadCallbackInfo *callback_info;
     GdkPixbuf                *pixbuf;
     GError                   *error = NULL;
     GtkTreeIter               iter;
 
-    callback_info = (IconInfoLoadCallbackInfo*) user_data;
+    callback_info = (FileIconInfoLoadCallbackInfo *) user_data;
 
     pixbuf = gdk_pixbuf_new_from_stream_finish (res, &error);
 
@@ -839,7 +884,7 @@ finish_pixbuf_load_from_file (GObject      *stream,
         g_message ("%s\n", error->message);
     }
 
-    g_free (callback_info);
+    free_file_load_callback_info (callback_info);
     g_clear_error (&error);
     g_object_unref (pixbuf);
     g_object_unref (stream);
@@ -850,12 +895,12 @@ finish_pixbuf_load_from_name (GObject      *info,
                               GAsyncResult *res,
                               gpointer     *user_data)
 {
-    IconInfoLoadCallbackInfo *callback_info;
+    NamedIconInfoLoadCallbackInfo *callback_info;
     GdkPixbuf                *pixbuf;
     GError                   *error = NULL;
     GtkTreeIter               iter;
 
-    callback_info = (IconInfoLoadCallbackInfo*) user_data;
+    callback_info = (NamedIconInfoLoadCallbackInfo*) user_data;
 
     pixbuf = gtk_icon_info_load_icon_finish (GTK_ICON_INFO (info), res, &error);
 
@@ -863,8 +908,8 @@ finish_pixbuf_load_from_name (GObject      *info,
     {
         gtk_list_store_append (callback_info->model, &iter);
         gtk_list_store_set (callback_info->model, &iter,
-                            COLUMN_DISPLAY_NAME, callback_info->short_name,
-                            COLUMN_FULL_NAME, callback_info->long_name,
+                            COLUMN_DISPLAY_NAME, callback_info->name,
+                            COLUMN_FULL_NAME, callback_info->name,
                             COLUMN_PIXBUF, pixbuf,
                             -1);
 
@@ -892,13 +937,12 @@ load_icons_for_category (GtkListStore *model,
     for ( ; icons; icons = icons->next)
     {
         GtkIconInfo              *info;
-        IconInfoLoadCallbackInfo *callback_info;
+        NamedIconInfoLoadCallbackInfo *callback_info;
 
-        callback_info = g_new (IconInfoLoadCallbackInfo, 1);
+        callback_info = g_new (NamedIconInfoLoadCallbackInfo, 1);
         callback_info->model = model;
-        callback_info->short_name = icons->data;
-        callback_info->long_name = icons->data;
-        info = gtk_icon_theme_lookup_icon (theme, callback_info->short_name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
+        callback_info->name = icons->data;
+        info = gtk_icon_theme_lookup_icon (theme, callback_info->name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
         gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
     }
 }
@@ -957,7 +1001,7 @@ search_path (const gchar  *path_string,
              GtkListStore *icon_store,
              GCancellable *cancellable)
 {
-    const gchar      *search_str = "";
+    gchar            *search_str = NULL;
     GFile            *dir;
     GFileEnumerator  *children;
     GFileInfo        *child_info;
@@ -979,17 +1023,23 @@ search_path (const gchar  *path_string,
     if (!g_file_query_exists (dir, NULL) ||
         g_file_query_file_type (dir, G_FILE_QUERY_INFO_NONE, NULL) != G_FILE_TYPE_DIRECTORY)
     {
+        g_free (search_str);
         g_object_unref (dir);
         return;
     }
 
-    children = g_file_enumerate_children (dir, "*", G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    children = g_file_enumerate_children (dir,
+                                          G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+                                          G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE ","
+                                          G_FILE_ATTRIBUTE_STANDARD_SIZE ","
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                          G_FILE_QUERY_INFO_NONE, NULL, NULL);
     child_info = g_file_enumerator_next_file (children, NULL, NULL);
 
     while (child_info != NULL)
     {
         const gchar  *child_name;
-        const gchar  *child_path;
+        gchar        *child_path;
         GFile        *child;
         GError       *error = NULL;
 
@@ -997,33 +1047,48 @@ search_path (const gchar  *path_string,
         child = g_file_enumerator_get_child (children, child_info);
         child_path = g_file_get_path (child);
 
-        if (g_str_has_prefix (child_name, search_str) &&
-            g_file_query_file_type (child, G_FILE_QUERY_INFO_NONE, NULL) != G_FILE_TYPE_DIRECTORY &&
-            g_str_has_prefix (g_content_type_guess (child_name, NULL, 0, NULL), "image") &&
-            g_access (child_path, R_OK) == 0)
+        if (search_str == NULL || g_str_has_prefix (child_name, search_str))
         {
-            GFileInputStream         *stream;
-            IconInfoLoadCallbackInfo *callback_info;
+            gchar *content_type;
+            gboolean uncertain;
 
-            stream = g_file_read (child, NULL, &error);
-            if (stream == NULL)
+            content_type = g_content_type_guess (child_name, NULL, 0, &uncertain);
+
+            if (content_type && g_str_has_prefix (content_type, "image") && !uncertain)
             {
-                g_message ("%s\n", error->message);
-                continue;
+                GFileInputStream         *stream;
+                FileIconInfoLoadCallbackInfo *callback_info;
+
+                stream = g_file_read (child, NULL, &error);
+
+                if (stream != NULL)
+                {
+                    callback_info = g_new (FileIconInfoLoadCallbackInfo, 1);
+                    callback_info->model = icon_store;
+                    callback_info->short_name = g_strdup (child_name);
+                    callback_info->long_name = g_strdup (child_path);
+                    gdk_pixbuf_new_from_stream_async (G_INPUT_STREAM (stream),
+                                                      cancellable,
+                                                      (GAsyncReadyCallback) finish_pixbuf_load_from_file,
+                                                      callback_info);
+                }
+                else
+                {
+                    if (error)
+                    {
+                        g_message ("%s\n", error->message);
+                        g_error_free (error);
+                    }
+                }
             }
 
-            callback_info = g_new (IconInfoLoadCallbackInfo, 1);
-            callback_info->model = icon_store;
-            callback_info->short_name = child_name;
-            callback_info->long_name = child_path;
-            gdk_pixbuf_new_from_stream_async (G_INPUT_STREAM (stream), cancellable, (GAsyncReadyCallback) (finish_pixbuf_load_from_file), callback_info);
-
-            g_object_unref (child);
+            g_free (content_type);
         }
 
-        child_info = g_file_enumerator_next_file (children, NULL, NULL);
+        g_free (child_path);
+        g_object_unref (child);
 
-        g_clear_error (&error);
+        child_info = g_file_enumerator_next_file (children, NULL, NULL);
     }
 
     gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (icon_store), COLUMN_DISPLAY_NAME, search_model_sort,
@@ -1045,7 +1110,7 @@ search_icon_name (XAppIconChooserDialog *dialog,
     GtkIconTheme             *theme;
     GList                    *icons;
     GtkIconInfo              *info;
-    IconInfoLoadCallbackInfo *callback_info;
+    NamedIconInfoLoadCallbackInfo *callback_info;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -1064,11 +1129,10 @@ search_icon_name (XAppIconChooserDialog *dialog,
     for ( ; icons; icons = icons->next)
     {
         if (g_strrstr (icons->data, name_string)) {
-            callback_info = g_new (IconInfoLoadCallbackInfo, 1);
+            callback_info = g_new (NamedIconInfoLoadCallbackInfo, 1);
             callback_info->model = icon_store;
-            callback_info->short_name = icons->data;
-            callback_info->long_name = icons->data;
-            info = gtk_icon_theme_lookup_icon (theme, callback_info->short_name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
+            callback_info->name = icons->data;
+            info = gtk_icon_theme_lookup_icon (theme, callback_info->name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
             gtk_icon_info_load_icon_async (info, cancellable, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
         }
     }
@@ -1125,7 +1189,7 @@ on_icon_view_selection_changed (GtkIconView *icon_view,
 {
     XAppIconChooserDialogPrivate *priv;
     GList                        *selected_items;
-    gchar                        *icon_string = "";
+    gchar                        *icon_string = NULL;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (user_data);
 
@@ -1146,6 +1210,11 @@ on_icon_view_selection_changed (GtkIconView *icon_view,
         model = gtk_icon_view_get_model (icon_view);
         gtk_tree_model_get_iter (model, &iter, tree_path);
         gtk_tree_model_get (model, &iter, COLUMN_FULL_NAME, &icon_string, -1);
+    }
+
+    if (priv->icon_string != NULL)
+    {
+        g_free (priv->icon_string);
     }
 
     priv->icon_string = icon_string;
@@ -1253,7 +1322,7 @@ on_select_event (XAppIconChooserDialog *dialog,
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
-    if (g_strcmp0 (priv->icon_string, "") != 0)
+    if (priv->icon_string != NULL)
     {
         xapp_icon_chooser_dialog_close (dialog, GTK_RESPONSE_OK);
     }
@@ -1285,7 +1354,7 @@ on_search_bar_key_pressed (GtkWidget *widget,
             return TRUE;
         case GDK_KEY_Return:
         case GDK_KEY_KP_Enter:
-            if (g_strcmp0 (priv->icon_string, "") != 0)
+            if (priv->icon_string != NULL)
             {
                 xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (user_data), GTK_RESPONSE_OK);
             }
