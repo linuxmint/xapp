@@ -4,11 +4,13 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include "xapp-gtk-window.h"
+
 G_BEGIN_DECLS
 
 #define XAPP_TYPE_ICON_CHOOSER_DIALOG   (xapp_icon_chooser_dialog_get_type ())
 
-G_DECLARE_FINAL_TYPE (XAppIconChooserDialog, xapp_icon_chooser_dialog, XAPP, ICON_CHOOSER_DIALOG, GtkWindow)
+G_DECLARE_FINAL_TYPE (XAppIconChooserDialog, xapp_icon_chooser_dialog, XAPP, ICON_CHOOSER_DIALOG, XAppGtkWindow)
 
 typedef enum
 {

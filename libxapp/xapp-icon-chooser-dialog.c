@@ -37,7 +37,7 @@ typedef struct
 
 struct _XAppIconChooserDialog
 {
-    GtkWindow parent_instance;
+    XAppGtkWindow parent_instance;
 };
 
 typedef struct
@@ -122,7 +122,7 @@ static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
 static guint signals[LAST_SIGNAL] = {0, };
 
-G_DEFINE_TYPE_WITH_PRIVATE (XAppIconChooserDialog, xapp_icon_chooser_dialog, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE_WITH_PRIVATE (XAppIconChooserDialog, xapp_icon_chooser_dialog, XAPP_TYPE_GTK_WINDOW)
 
 static void on_category_selected (GtkListBox            *list_box,
                                  XAppIconChooserDialog *dialog);
@@ -263,7 +263,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     g_signal_connect (priv->icon_store, "row-inserted",
                       G_CALLBACK (on_icon_store_icons_added), dialog);
 
-    gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 400);
+    gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 450);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
     gtk_window_set_type_hint (GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 

@@ -7,6 +7,8 @@ gi.require_version('XApp', '1.0')
 from gi.repository import Gtk, XApp, Gdk
 
 import argparse
+import signal
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -27,6 +29,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     dialog = XApp.IconChooserDialog(allow_paths=args.paths)
+    dialog.set_skip_taskbar_hint(False)
     if args.category:
         response = dialog.run_with_category(args.category)
     elif args.icon:
