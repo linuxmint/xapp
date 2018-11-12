@@ -1,3 +1,17 @@
+xapp (1.4.1) tessa; urgency=medium
+
+  [ Stephen Collins ]
+  * icon chooser dialog: Prevent the dialog from being destroyed when the window close button is clicked. This was causing an issue where the dialog will not reopen in some cases. (#56)
+  * icon chooser button: fix image not updating when the icon property is set (#57)
+  * icon chooser dialog: initialize the default value for the allow_paths property. it was causing file paths to not work when the property wasn't set, even though the browse button was showing (#59)
+  * icon chooser button: prevent string pointer issues when calling icon_… (#58)
+  * icon chooser button: enforce image size when using paths
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-button.h: add missing public method and fix annotation for it.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 12 Nov 2018 15:13:01 +0000
+
 xapp (1.4.0) tessa; urgency=medium
 
   [ JosephMcc ]
