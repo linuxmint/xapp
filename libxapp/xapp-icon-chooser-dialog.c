@@ -266,6 +266,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 450);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
     gtk_window_set_type_hint (GTK_WINDOW (dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+    gtk_window_set_title (GTK_WINDOW (dialog), _("Choose an icon"));
 
     main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add (GTK_CONTAINER (dialog), main_box);
