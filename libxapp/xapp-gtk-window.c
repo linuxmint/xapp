@@ -362,6 +362,7 @@ static void
 xapp_gtk_window_init (XAppGtkWindow *window)
 {
     XAppGtkWindowPrivate *priv;
+    priv = xapp_gtk_window_get_instance_private (window);
 
     priv->icon_name = NULL;
     priv->icon_path = NULL;
