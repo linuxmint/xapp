@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-30 14:59+0000\n"
+"POT-Creation-Date: 2018-11-15 10:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,97 +17,105 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libxapp/xapp-icon-chooser-button.c:163
-#: libxapp/xapp-icon-chooser-dialog.c:387
+#: libxapp/xapp-icon-chooser-button.c:162
+#: libxapp/xapp-icon-chooser-dialog.c:601
 msgid "Icon size"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-button.c:164
-#: libxapp/xapp-icon-chooser-dialog.c:388
+#: libxapp/xapp-icon-chooser-button.c:163
+#: libxapp/xapp-icon-chooser-dialog.c:602
 msgid "The preferred icon size."
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-button.c:178
+#: libxapp/xapp-icon-chooser-button.c:177
 msgid "Icon"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-button.c:179
+#: libxapp/xapp-icon-chooser-button.c:178
 msgid "The string representing the icon."
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:68
+#: libxapp/xapp-icon-chooser-dialog.c:93
 msgid "Actions"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:71
+#: libxapp/xapp-icon-chooser-dialog.c:96
 msgid "Applications"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:74
+#: libxapp/xapp-icon-chooser-dialog.c:99
 msgid "Categories"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:77
+#: libxapp/xapp-icon-chooser-dialog.c:102
 msgid "Devices"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:80
+#: libxapp/xapp-icon-chooser-dialog.c:105
 msgid "Emblems"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:83
+#: libxapp/xapp-icon-chooser-dialog.c:108
 msgid "Emoji"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:86
+#: libxapp/xapp-icon-chooser-dialog.c:111
 msgid "Mime types"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:89
+#: libxapp/xapp-icon-chooser-dialog.c:114
 msgid "Places"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:92
+#: libxapp/xapp-icon-chooser-dialog.c:117
 msgid "Status"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:95
+#: libxapp/xapp-icon-chooser-dialog.c:120
 msgid "Other"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:289
+#: libxapp/xapp-icon-chooser-dialog.c:449
+msgid "Choose an icon"
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:471
 msgid "Search"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:296
+#: libxapp/xapp-icon-chooser-dialog.c:478
 msgid "Browse"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:345
+#: libxapp/xapp-icon-chooser-dialog.c:534
+msgid "Loading..."
+msgstr ""
+
+#: libxapp/xapp-icon-chooser-dialog.c:558
 msgid "Select"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:354
-#: libxapp/xapp-icon-chooser-dialog.c:1157
+#: libxapp/xapp-icon-chooser-dialog.c:567
+#: libxapp/xapp-icon-chooser-dialog.c:1787
 msgid "Cancel"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:400
+#: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "Allow Paths"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:401
+#: libxapp/xapp-icon-chooser-dialog.c:615
 msgid "Whether to allow paths."
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:1154
+#: libxapp/xapp-icon-chooser-dialog.c:1784
 msgid "Select image file"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:1159
+#: libxapp/xapp-icon-chooser-dialog.c:1789
 msgid "Open"
 msgstr ""
 
-#: libxapp/xapp-icon-chooser-dialog.c:1174
+#: libxapp/xapp-icon-chooser-dialog.c:1804
 msgid "Image"
 msgstr ""
