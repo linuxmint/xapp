@@ -45,7 +45,7 @@ libxapp = library('xapp',
     soversion: '1',
     dependencies: libdeps,
     c_args: ['-Wno-declaration-after-statement'],
-    link_args: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ],
+    link_args: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', '-lm'],
     install: true
 )
 
