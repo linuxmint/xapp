@@ -8,6 +8,7 @@
 #include <glib/gstdio.h>
 
 #define DEBUG_REFS 0
+#define DEBUG_ICON_THEME 0
 
 /**
  * SECTION:xapp-icon-chooser-dialog
@@ -428,6 +429,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     priv->current_text = NULL;
     priv->cancellable = NULL;
     priv->allow_paths = TRUE;
+    priv->full_icon_list = NULL;
 
     priv->search_icon_store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
 
@@ -937,12 +939,14 @@ load_categories (XAppIconChooserDialog *dialog)
     XAppIconChooserDialogPrivate *priv;
     GtkListBoxRow                *row;
     GtkIconTheme                 *theme;
+    GList                        *contexts, *l;
     gint                          i;
     gint                          j;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     theme = gtk_icon_theme_get_default ();
+    contexts = gtk_icon_theme_list_contexts (theme);
 
     for (i = 0; i < G_N_ELEMENTS (categories); i++)
     {
@@ -950,6 +954,7 @@ load_categories (XAppIconChooserDialog *dialog)
         IconCategoryInfo        *category_info;
         GtkWidget               *row;
         GtkWidget               *label;
+        GList                   *context_icons;
 
         category = &categories[i];
 
@@ -959,10 +964,34 @@ load_categories (XAppIconChooserDialog *dialog)
 
         for (j = 0; category->contexts[j] != NULL; j++)
         {
-            GList *context_icons;
+            GList *match;
 
             context_icons = gtk_icon_theme_list_icons (theme, category->contexts[j]);
             category_info->icons = g_list_concat (category_info->icons, context_icons);
+
+            match = g_list_find_custom (contexts, category->contexts[j], (GCompareFunc) g_strcmp0);
+
+            if (match)
+            {
+                contexts = g_list_remove_link (contexts, match);
+                g_free (match->data);
+                g_list_free (match);
+            }
+        }
+
+        /* Any contexts not consumed by categories should be added to the 'other' category */
+        if (i == (G_N_ELEMENTS (categories) - 1) && g_list_length (contexts) > 0)
+        {
+            for (l = contexts; l != NULL; l = l->next)
+            {
+
+#if DEBUG_ICON_THEME
+                g_message ("Adding unused category to Other category: '%s'", (gchar *) l->data);
+#endif
+                context_icons = gtk_icon_theme_list_icons (theme, (gchar *) l->data);
+
+                category_info->icons = g_list_concat (category_info->icons, context_icons);
+            }
         }
 
         if (g_list_length (category_info->icons) == 0)
@@ -971,6 +1000,10 @@ load_categories (XAppIconChooserDialog *dialog)
 
             continue;
         }
+
+        /* Add the list of icons for this category into our master search list */
+        priv->full_icon_list = g_list_concat (priv->full_icon_list,
+                                              g_list_copy_deep (category_info->icons, (GCopyFunc) g_strdup, NULL));
 
         category_info->model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
         g_signal_connect (category_info->model, "row-inserted",
@@ -989,6 +1022,10 @@ load_categories (XAppIconChooserDialog *dialog)
 
         g_hash_table_insert (priv->categories, row, category_info);
     }
+
+    g_list_free_full (contexts, g_free);
+
+    priv->full_icon_list = g_list_sort (priv->full_icon_list, (GCompareFunc) g_utf8_collate);
 
     row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (priv->list_box), 0);
     gtk_list_box_select_row (GTK_LIST_BOX (priv->list_box), row);
@@ -1580,12 +1617,6 @@ search_icon_name (XAppIconChooserDialog *dialog,
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     theme = gtk_icon_theme_get_default ();
-
-    if (priv->full_icon_list == NULL)
-    {
-        priv->full_icon_list = gtk_icon_theme_list_icons (theme, NULL);
-        priv->full_icon_list = g_list_sort (priv->full_icon_list, (GCompareFunc) g_utf8_collate);
-    }
 
     icons = priv->full_icon_list;
 
