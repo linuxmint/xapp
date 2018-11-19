@@ -367,12 +367,6 @@ xapp_icon_chooser_dialog_dispose (GObject *object)
     dialog = XAPP_ICON_CHOOSER_DIALOG (object);
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
-    if (priv->full_icon_list != NULL)
-    {
-        g_list_free_full (priv->full_icon_list, g_free);
-        priv->full_icon_list = NULL;
-    }
-
     if (priv->categories != NULL)
     {
         g_hash_table_destroy (priv->categories);
@@ -1003,7 +997,7 @@ load_categories (XAppIconChooserDialog *dialog)
 
         /* Add the list of icons for this category into our master search list */
         priv->full_icon_list = g_list_concat (priv->full_icon_list,
-                                              g_list_copy_deep (category_info->icons, (GCopyFunc) g_strdup, NULL));
+                                              g_list_copy (category_info->icons));
 
         category_info->model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
         g_signal_connect (category_info->model, "row-inserted",
