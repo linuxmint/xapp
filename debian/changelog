@@ -1,3 +1,20 @@
+xapp (1.4.2) tessa; urgency=medium
+
+  [ Michael Webster ]
+  * XAppGtkWindow: make derivable type.
+  * xapp-icon-chooser-dialog: use XAppGtkWindow as a parent class, make the default window size slightly taller to prevent a category scroll bar under typical situations, remove the skip-taskbar hint in the test script.
+  * xapp-gtk-window.c: Fix previous commit, initialize priv.
+  * xapp-icon-chooser-dialog.c: Give the window the title 'Choose an icon'.
+  * various improvements (#61)
+
+  [ Clement Lefebvre ]
+  * l10n: Update POT
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-dialog.c: Only display icons that belong to contexts.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 19 Nov 2018 10:03:21 +0000
+
 xapp (1.4.1) tessa; urgency=medium
 
   [ Stephen Collins ]
