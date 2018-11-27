@@ -1,4 +1,4 @@
-# Spanish translation for linuxmint
+# Kabyle translation for linuxmint
 # Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
 # This file is distributed under the same license as the linuxmint package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2018-11-15 22:12+0000\n"
-"Last-Translator: Isidro Pisa <isidro@utils.info>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"PO-Revision-Date: 2018-11-15 15:41+0000\n"
+"Last-Translator: Slimane Amiri <slimane.amiri@gmail.com>\n"
+"Language-Team: Kabyle <kab@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,102 +20,102 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:162
 #: libxapp/xapp-icon-chooser-dialog.c:601
 msgid "Icon size"
-msgstr "Tamaño de Icono"
+msgstr "Tiddi n tignit"
 
 #: libxapp/xapp-icon-chooser-button.c:163
 #: libxapp/xapp-icon-chooser-dialog.c:602
 msgid "The preferred icon size."
-msgstr "Tamaño preferido de Icono."
+msgstr "Tiddi tanuraft n tignit."
 
 #: libxapp/xapp-icon-chooser-button.c:177
 msgid "Icon"
-msgstr "Icono"
+msgstr "Tignit"
 
 #: libxapp/xapp-icon-chooser-button.c:178
 msgid "The string representing the icon."
-msgstr "La cadena que representa un icono."
+msgstr "Azrar ara yesenkden tignit."
 
 #: libxapp/xapp-icon-chooser-dialog.c:93
 msgid "Actions"
-msgstr "Acciones"
+msgstr "Tigawin"
 
 #: libxapp/xapp-icon-chooser-dialog.c:96
 msgid "Applications"
-msgstr "Aplicaciones"
+msgstr "Isnasen"
 
 #: libxapp/xapp-icon-chooser-dialog.c:99
 msgid "Categories"
-msgstr "Categorías"
+msgstr "Taggayin"
 
 #: libxapp/xapp-icon-chooser-dialog.c:102
 msgid "Devices"
-msgstr "Dispositivos"
+msgstr "Ibenkan"
 
 #: libxapp/xapp-icon-chooser-dialog.c:105
 msgid "Emblems"
-msgstr "Emblemas"
+msgstr "Izamulen"
 
 #: libxapp/xapp-icon-chooser-dialog.c:108
 msgid "Emoji"
-msgstr "Emoji"
+msgstr "Tignit n uḥulfu"
 
 #: libxapp/xapp-icon-chooser-dialog.c:111
 msgid "Mime types"
-msgstr "Tipos MIME"
+msgstr "Anawen mime"
 
 #: libxapp/xapp-icon-chooser-dialog.c:114
 msgid "Places"
-msgstr "Lugares"
+msgstr "Isunen"
 
 #: libxapp/xapp-icon-chooser-dialog.c:117
 msgid "Status"
-msgstr "Estado"
+msgstr "Addad"
 
 #: libxapp/xapp-icon-chooser-dialog.c:120
 msgid "Other"
-msgstr "Otros"
+msgstr "Wayeḍ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:449
 msgid "Choose an icon"
-msgstr "Elija un icono"
+msgstr "Fren tagnit"
 
 #: libxapp/xapp-icon-chooser-dialog.c:471
 msgid "Search"
-msgstr "Buscar"
+msgstr "Nadi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:478
 msgid "Browse"
-msgstr "Explorar"
+msgstr "Snirem"
 
 #: libxapp/xapp-icon-chooser-dialog.c:534
 msgid "Loading..."
-msgstr "Cargando..."
+msgstr "Tulya..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:558
 msgid "Select"
-msgstr "Seleccionar"
+msgstr "Fren"
 
 #: libxapp/xapp-icon-chooser-dialog.c:567
 #: libxapp/xapp-icon-chooser-dialog.c:1787
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Sefsex"
 
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "Allow Paths"
-msgstr "Permitir rutas"
+msgstr "Sireg iberdan"
 
 #: libxapp/xapp-icon-chooser-dialog.c:615
 msgid "Whether to allow paths."
-msgstr "Si se permiten rutas  o no."
+msgstr "Ma yella ad tsirgeḍ iberdan."
 
 #: libxapp/xapp-icon-chooser-dialog.c:1784
 msgid "Select image file"
-msgstr "Seleccionar archivo de imagen"
+msgstr "Fren afaylu n tugna"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1789
 msgid "Open"
-msgstr "Abrir"
+msgstr "Ldi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1804
 msgid "Image"
-msgstr "Imagen"
+msgstr "Tugna"

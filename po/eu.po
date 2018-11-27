@@ -1,4 +1,4 @@
-# Spanish translation for linuxmint
+# Basque translation for linuxmint
 # Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
 # This file is distributed under the same license as the linuxmint package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2018-11-15 22:12+0000\n"
-"Last-Translator: Isidro Pisa <isidro@utils.info>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"PO-Revision-Date: 2018-11-25 20:36+0000\n"
+"Last-Translator: Asier Iturralde Sarasola <Unknown>\n"
+"Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,102 +20,102 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:162
 #: libxapp/xapp-icon-chooser-dialog.c:601
 msgid "Icon size"
-msgstr "Tamaño de Icono"
+msgstr "Ikonoaren tamaina"
 
 #: libxapp/xapp-icon-chooser-button.c:163
 #: libxapp/xapp-icon-chooser-dialog.c:602
 msgid "The preferred icon size."
-msgstr "Tamaño preferido de Icono."
+msgstr "Hobetsitako ikono tamaina"
 
 #: libxapp/xapp-icon-chooser-button.c:177
 msgid "Icon"
-msgstr "Icono"
+msgstr "Ikonoa"
 
 #: libxapp/xapp-icon-chooser-button.c:178
 msgid "The string representing the icon."
-msgstr "La cadena que representa un icono."
+msgstr "Ikonoa adierazten duen katea."
 
 #: libxapp/xapp-icon-chooser-dialog.c:93
 msgid "Actions"
-msgstr "Acciones"
+msgstr "Ekintzak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:96
 msgid "Applications"
-msgstr "Aplicaciones"
+msgstr "Aplikazioak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:99
 msgid "Categories"
-msgstr "Categorías"
+msgstr "Kategoriak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:102
 msgid "Devices"
-msgstr "Dispositivos"
+msgstr "Gailuak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:105
 msgid "Emblems"
-msgstr "Emblemas"
+msgstr "Ikurrak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:108
 msgid "Emoji"
-msgstr "Emoji"
+msgstr "Emojiak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:111
 msgid "Mime types"
-msgstr "Tipos MIME"
+msgstr "Mime motak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:114
 msgid "Places"
-msgstr "Lugares"
+msgstr "Lekuak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:117
 msgid "Status"
-msgstr "Estado"
+msgstr "Egoera"
 
 #: libxapp/xapp-icon-chooser-dialog.c:120
 msgid "Other"
-msgstr "Otros"
+msgstr "Bestelakoak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:449
 msgid "Choose an icon"
-msgstr "Elija un icono"
+msgstr "Aukeratu ikono bat"
 
 #: libxapp/xapp-icon-chooser-dialog.c:471
 msgid "Search"
-msgstr "Buscar"
+msgstr "Bilatu"
 
 #: libxapp/xapp-icon-chooser-dialog.c:478
 msgid "Browse"
-msgstr "Explorar"
+msgstr "Arakatu"
 
 #: libxapp/xapp-icon-chooser-dialog.c:534
 msgid "Loading..."
-msgstr "Cargando..."
+msgstr "Kargatzen..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:558
 msgid "Select"
-msgstr "Seleccionar"
+msgstr "Hautatu"
 
 #: libxapp/xapp-icon-chooser-dialog.c:567
 #: libxapp/xapp-icon-chooser-dialog.c:1787
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Utzi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "Allow Paths"
-msgstr "Permitir rutas"
+msgstr "Onartu bideak"
 
 #: libxapp/xapp-icon-chooser-dialog.c:615
 msgid "Whether to allow paths."
-msgstr "Si se permiten rutas  o no."
+msgstr "Bideak onartu behar diren ala ez."
 
 #: libxapp/xapp-icon-chooser-dialog.c:1784
 msgid "Select image file"
-msgstr "Seleccionar archivo de imagen"
+msgstr "Hautatu irudi-fitxategia"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1789
 msgid "Open"
-msgstr "Abrir"
+msgstr "Ireki"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1804
 msgid "Image"
-msgstr "Imagen"
+msgstr "Irudia"
