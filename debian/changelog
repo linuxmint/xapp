@@ -1,3 +1,10 @@
+xapp (1.4.3) tessa; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-dialog.c: Don't deep copy the category's icon list, just shallow copy and only free the strings once.  This is faster.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 27 Nov 2018 17:24:54 +0000
+
 xapp (1.4.2) tessa; urgency=medium
 
   [ Michael Webster ]
