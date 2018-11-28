@@ -121,10 +121,8 @@ xapp_icon_chooser_button_set_property (GObject      *object,
                                        GParamSpec   *pspec)
 {
     XAppIconChooserButton        *button;
-    XAppIconChooserButtonPrivate *priv;
 
     button = XAPP_ICON_CHOOSER_BUTTON (object);
-    priv = xapp_icon_chooser_button_get_instance_private (button);
 
     switch (prop_id)
     {
@@ -163,7 +161,6 @@ xapp_icon_chooser_button_init (XAppIconChooserButton *button)
 static void
 xapp_icon_chooser_button_class_init (XAppIconChooserButtonClass *klass)
 {
-    GtkBindingSet *binding_set;
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
     GtkButtonClass *button_class = GTK_BUTTON_CLASS (klass);
 
