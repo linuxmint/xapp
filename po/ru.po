@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2018-11-17 16:49+0000\n"
-"Last-Translator: Dmitry Kiryanov <Unknown>\n"
+"PO-Revision-Date: 2018-11-28 16:30+0000\n"
+"Last-Translator: Dmitriy Kulikov <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-11-27 17:54+0000\n"
-"X-Generator: Launchpad (build 18826)\n"
+"X-Launchpad-Export-Date: 2018-12-11 12:03+0000\n"
+"X-Generator: Launchpad (build 18837)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:162
 #: libxapp/xapp-icon-chooser-dialog.c:601
@@ -77,7 +77,7 @@ msgstr "Другое"
 
 #: libxapp/xapp-icon-chooser-dialog.c:449
 msgid "Choose an icon"
-msgstr "Выберите иконку"
+msgstr "Выберите значок"
 
 #: libxapp/xapp-icon-chooser-dialog.c:471
 msgid "Search"
