@@ -1,3 +1,9 @@
+xapp (1.4.5) tessa; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 11 Dec 2018 14:21:26 +0000
+
 xapp (1.4.4) tessa; urgency=medium
 
   * Update translations
