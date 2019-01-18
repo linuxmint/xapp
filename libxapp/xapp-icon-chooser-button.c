@@ -45,10 +45,13 @@ on_clicked (GtkButton *button)
 {
     XAppIconChooserButtonPrivate *priv;
     GtkResponseType               response;
+    GtkWidget *toplevel;
 
+    toplevel = gtk_widget_get_toplevel (GTK_WIDGET (button));
     priv = xapp_icon_chooser_button_get_instance_private (XAPP_ICON_CHOOSER_BUTTON (button));
 
-    gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (button))));
+    gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (toplevel));
+    gtk_window_set_modal (GTK_WINDOW (priv->dialog), gtk_window_get_modal (GTK_WINDOW (toplevel)));
 
     if (priv->icon_string == NULL)
     {
