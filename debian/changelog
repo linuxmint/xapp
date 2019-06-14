@@ -1,3 +1,10 @@
+xapp (1.4.6) tina; urgency=medium
+
+  [ Stephen Collins ]
+  * xapp-icon-chooser-button.c: make dialog inherit modal state (#64)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 14 Jun 2019 12:00:33 +0100
+
 xapp (1.4.5) tessa; urgency=medium
 
   * l10n: Update translations
