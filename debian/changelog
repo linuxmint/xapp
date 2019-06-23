@@ -1,3 +1,9 @@
+xapp (1.4.7) tina; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sun, 23 Jun 2019 15:24:11 +0200
+
 xapp (1.4.6) tina; urgency=medium
 
   [ Stephen Collins ]
