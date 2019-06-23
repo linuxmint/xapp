@@ -1,16 +1,16 @@
-# Lithuanian translation for linuxmint
-# Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
+# Slovenian translation for linuxmint
+# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2018-11-15 21:11+0000\n"
-"Last-Translator: Moo <hazap@hotmail.com>\n"
-"Language-Team: Lithuanian <lt@li.org>\n"
+"PO-Revision-Date: 2019-03-08 13:21+0000\n"
+"Last-Translator: MountainLynx <Unknown>\n"
+"Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,102 +20,102 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:162
 #: libxapp/xapp-icon-chooser-dialog.c:601
 msgid "Icon size"
-msgstr "Piktogramų dydis"
+msgstr "Velikost ikon"
 
 #: libxapp/xapp-icon-chooser-button.c:163
 #: libxapp/xapp-icon-chooser-dialog.c:602
 msgid "The preferred icon size."
-msgstr "Pageidaujamas piktogramų dydis."
+msgstr "Željena velikost ikon."
 
 #: libxapp/xapp-icon-chooser-button.c:177
 msgid "Icon"
-msgstr "Piktograma"
+msgstr "Ikona"
 
 #: libxapp/xapp-icon-chooser-button.c:178
 msgid "The string representing the icon."
-msgstr "Eilutė, atvaizduojanti piktogramą."
+msgstr "Niz ki predstavlja ikono."
 
 #: libxapp/xapp-icon-chooser-dialog.c:93
 msgid "Actions"
-msgstr "Veiksmai"
+msgstr "Dejanja"
 
 #: libxapp/xapp-icon-chooser-dialog.c:96
 msgid "Applications"
-msgstr "Programos"
+msgstr "Aplikacije"
 
 #: libxapp/xapp-icon-chooser-dialog.c:99
 msgid "Categories"
-msgstr "Kategorijos"
+msgstr "Kategorije"
 
 #: libxapp/xapp-icon-chooser-dialog.c:102
 msgid "Devices"
-msgstr "Įrenginiai"
+msgstr "Naprave"
 
 #: libxapp/xapp-icon-chooser-dialog.c:105
 msgid "Emblems"
-msgstr "Emblemos"
+msgstr "Emblemi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:108
 msgid "Emoji"
-msgstr "Šypsenėlės"
+msgstr "Čustveni simboli"
 
 #: libxapp/xapp-icon-chooser-dialog.c:111
 msgid "Mime types"
-msgstr "Mime tipai"
+msgstr "Vrste MIME"
 
 #: libxapp/xapp-icon-chooser-dialog.c:114
 msgid "Places"
-msgstr "Vietos"
+msgstr "Mesta"
 
 #: libxapp/xapp-icon-chooser-dialog.c:117
 msgid "Status"
-msgstr "Būsena"
+msgstr "Status"
 
 #: libxapp/xapp-icon-chooser-dialog.c:120
 msgid "Other"
-msgstr "Kita"
+msgstr "Drugo"
 
 #: libxapp/xapp-icon-chooser-dialog.c:449
 msgid "Choose an icon"
-msgstr "Pasirinkite piktogramą"
+msgstr "Izberi ikono"
 
 #: libxapp/xapp-icon-chooser-dialog.c:471
 msgid "Search"
-msgstr "Ieškoti"
+msgstr "Iskanje"
 
 #: libxapp/xapp-icon-chooser-dialog.c:478
 msgid "Browse"
-msgstr "Naršyti"
+msgstr "Brskaj"
 
 #: libxapp/xapp-icon-chooser-dialog.c:534
 msgid "Loading..."
-msgstr "Įkeliama..."
+msgstr "Nalaganje ..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:558
 msgid "Select"
-msgstr "Pasirinkti"
+msgstr "Izberi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:567
 #: libxapp/xapp-icon-chooser-dialog.c:1787
 msgid "Cancel"
-msgstr "Atsisakyti"
+msgstr "Prekliči"
 
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "Allow Paths"
-msgstr "Leisti kelius"
+msgstr "Dovoli Poti"
 
 #: libxapp/xapp-icon-chooser-dialog.c:615
 msgid "Whether to allow paths."
-msgstr "Ar leisti kelius."
+msgstr "Ali želite dovoliti poti."
 
 #: libxapp/xapp-icon-chooser-dialog.c:1784
 msgid "Select image file"
-msgstr "Pasirinkti paveikslo failą"
+msgstr "Izberi slikovno datoteko"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1789
 msgid "Open"
-msgstr "Atverti"
+msgstr "Odpri"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1804
 msgid "Image"
-msgstr "Paveikslas"
+msgstr "Slika"

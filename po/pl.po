@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2018-11-17 12:54+0000\n"
-"Last-Translator: Mariusz <wisniowy@g.pl>\n"
+"PO-Revision-Date: 2019-01-01 01:40+0000\n"
+"Last-Translator: Piotr Strębski <strebski@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-11 12:03+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
+"X-Launchpad-Export-Date: 2019-06-23 10:24+0000\n"
+"X-Generator: Launchpad (build 18989)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:162
 #: libxapp/xapp-icon-chooser-dialog.c:601
@@ -33,7 +33,7 @@ msgstr "Ikona"
 
 #: libxapp/xapp-icon-chooser-button.c:178
 msgid "The string representing the icon."
-msgstr ""
+msgstr "Ciąg znaków reprezentujący ikone."
 
 #: libxapp/xapp-icon-chooser-dialog.c:93
 msgid "Actions"
@@ -106,7 +106,7 @@ msgstr "Zezwól ścieżki"
 
 #: libxapp/xapp-icon-chooser-dialog.c:615
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Czy zezwalać na ścieżki."
 
 #: libxapp/xapp-icon-chooser-dialog.c:1784
 msgid "Select image file"
