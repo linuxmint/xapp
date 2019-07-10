@@ -1,4 +1,4 @@
-# Slovenian translation for linuxmint
+# Greek translation for linuxmint
 # Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
 # This file is distributed under the same license as the linuxmint package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2019-03-08 13:21+0000\n"
-"Last-Translator: MountainLynx <Unknown>\n"
-"Language-Team: Slovenian <sl@li.org>\n"
+"PO-Revision-Date: 2019-07-01 04:16+0000\n"
+"Last-Translator: Vasilis Thomopoulos <Unknown>\n"
+"Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,102 +20,102 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:162
 #: libxapp/xapp-icon-chooser-dialog.c:601
 msgid "Icon size"
-msgstr "Velikost ikon"
+msgstr "Μέγεθος εικονιδίων"
 
 #: libxapp/xapp-icon-chooser-button.c:163
 #: libxapp/xapp-icon-chooser-dialog.c:602
 msgid "The preferred icon size."
-msgstr "Željena velikost ikon."
+msgstr "Το προτιμώμενο μέγεθος εικονιδίου."
 
 #: libxapp/xapp-icon-chooser-button.c:177
 msgid "Icon"
-msgstr "Ikona"
+msgstr "Εικονίδιο"
 
 #: libxapp/xapp-icon-chooser-button.c:178
 msgid "The string representing the icon."
-msgstr "Niz ki predstavlja ikono."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:93
 msgid "Actions"
-msgstr "Dejanja"
+msgstr "Ενέργειες"
 
 #: libxapp/xapp-icon-chooser-dialog.c:96
 msgid "Applications"
-msgstr "Aplikacije"
+msgstr "Εφαρμογές"
 
 #: libxapp/xapp-icon-chooser-dialog.c:99
 msgid "Categories"
-msgstr "Kategorije"
+msgstr "Κατηγορίες"
 
 #: libxapp/xapp-icon-chooser-dialog.c:102
 msgid "Devices"
-msgstr "Naprave"
+msgstr "Συσκευές"
 
 #: libxapp/xapp-icon-chooser-dialog.c:105
 msgid "Emblems"
-msgstr "Emblemi"
+msgstr "Εμβλήματα"
 
 #: libxapp/xapp-icon-chooser-dialog.c:108
 msgid "Emoji"
-msgstr "Čustveni simboli"
+msgstr "Emoji"
 
 #: libxapp/xapp-icon-chooser-dialog.c:111
 msgid "Mime types"
-msgstr "Vrste MIME"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:114
 msgid "Places"
-msgstr "Mesta"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:117
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:120
 msgid "Other"
-msgstr "Drugo"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:449
 msgid "Choose an icon"
-msgstr "Izberi ikono"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:471
 msgid "Search"
-msgstr "Iskanje"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:478
 msgid "Browse"
-msgstr "Brskaj"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:534
 msgid "Loading..."
-msgstr "Nalaganje ..."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:558
 msgid "Select"
-msgstr "Izberi"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:567
 #: libxapp/xapp-icon-chooser-dialog.c:1787
 msgid "Cancel"
-msgstr "Prekliči"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "Allow Paths"
-msgstr "Dovoli Poti"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:615
 msgid "Whether to allow paths."
-msgstr "Ali želite dovoliti poti."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1784
 msgid "Select image file"
-msgstr "Izberi slikovno datoteko"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1789
 msgid "Open"
-msgstr "Odpri"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1804
 msgid "Image"
-msgstr "Slika"
+msgstr ""
