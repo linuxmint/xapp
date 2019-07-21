@@ -8,3 +8,8 @@ option('deprecated_warnings',
     value : false,
     description: 'Show build warnings for deprecations'
 )
+option('py-overrides-dir',
+    type : 'string',
+    value : '',
+    description: 'Path to pygobject overrides directory'
+)
