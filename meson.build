@@ -33,12 +33,13 @@ c = configure_file(output : 'config.h',
 
 top_inc = include_directories('.')
 
+subdir('icons')
 subdir('libxapp')
 subdir('po')
 subdir('pygobject')
-subdir('files')
 subdir('schemas')
 subdir('status-applets')
+subdir('scripts')
 
 if get_option('docs')
     subdir('docs')
