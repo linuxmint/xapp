@@ -488,7 +488,6 @@ xapp_gtk_window_set_progress_pulse (XAppGtkWindow   *window,
                                     gboolean         pulse)
 {
     g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
-    g_return_if_fail (XAPP_IS_GTK_WINDOW (window));
 
     XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
 

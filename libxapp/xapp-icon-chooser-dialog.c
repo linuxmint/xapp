@@ -848,7 +848,7 @@ xapp_icon_chooser_dialog_add_button (XAppIconChooserDialog *dialog,
     }
     else
     {
-        gtk_action_bar_pack_start (GTK_ACTION_BAR (priv->action_area), button);
+        gtk_action_bar_pack_end (GTK_ACTION_BAR (priv->action_area), button);
     }
 }
 
