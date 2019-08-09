@@ -1,0 +1,61 @@
+#!/usr/bin/python3
+
+from gi.repository import Gio, GLib, GObject
+import sys
+
+class Applet(GObject.Object):
+
+    def __init__(self):
+        super(Applet, self).__init__()
+
+        self.bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+        self.dbus_proxy = Gio.DBusProxy.new_sync(self.bus,
+                                                 Gio.DBusProxyFlags.NONE,
+                                                 None,
+                                                 'org.freedesktop.DBus',
+                                                 '/org/freedesktop/DBus',
+                                                 'org.freedesktop.DBus',
+                                                 None)
+
+        self.find_status_interfaces()
+
+        self.bus.signal_subscribe(None, "org.freedesktop.DBus", "NameOwnerChanged",
+                                         None, None, 0, self.on_bus_changes, None)
+
+    def find_status_interfaces(self):
+        # Find all the status interfaces on the session bus
+        result = self.dbus_proxy.ListNames('()')
+        names = result
+        for name in names:
+            if name.startswith("org.x.Status"):
+                owner = self.dbus_proxy.call_sync('GetNameOwner',
+                                           GLib.Variant('(s)', (name,)),
+                                           Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+
+                proxy = Gio.DBusProxy.new_sync( self.bus, Gio.DBusProxyFlags.NONE, None,
+                                          name, '/org/x/Status', 'org.freedesktop.DBus.Properties', None)
+                properties = proxy.GetAll('(s)', 'org.x.Status')
+                print(name, owner, properties)
+
+                self.bus.signal_subscribe(name, "org.freedesktop.DBus.Properties", "PropertiesChanged", None, None, 0, self.on_properties_changed)
+
+    def on_bus_changes(self, connection, sender_name,
+                                object_path, interface_name, signal_name,
+                                parameters, user_data):
+        print("-----------------------------")
+        self.find_status_interfaces()
+
+
+    def on_properties_changed(self, connection, owner, path, interface, signal_name, properties):
+        print("Changed: ", properties)
+
+if __name__ == '__main__':
+
+    applet = Applet()
+
+    try:
+        GLib.MainLoop().run()
+    except KeyboardInterrupt:
+        pass
+
+    sys.exit(0)

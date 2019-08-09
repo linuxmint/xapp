@@ -1,0 +1,32 @@
+#!/usr/bin/python3
+
+import gi
+gi.require_version('XApp', '1.0')
+from gi.repository import XApp
+from gi.repository import Gio, GLib, GObject
+import sys
+
+class App(GObject.Object):
+
+    def __init__(self):
+        super(App, self).__init__()
+        self.manager = XApp.StatusManager()
+        self.manager.set_app_name("my app name")
+        self.manager.set_icon_name("my icon name")
+        self.manager.set_label("label 1")
+        self.counter = 1
+
+        GLib.timeout_add_seconds(2, self.on_timeout_cb)
+
+    def on_timeout_cb(self):
+        self.counter += 1
+        self.manager.set_label("label %d" % self.counter)
+        return True
+
+if __name__ == '__main__':
+    app = App()
+    try:
+        GLib.MainLoop().run()
+    except KeyboardInterrupt:
+        pass
+    sys.exit(0)
