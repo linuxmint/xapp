@@ -41,6 +41,21 @@ static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 G_DEFINE_TYPE_WITH_PRIVATE (XAppIconChooserButton, xapp_icon_chooser_button, GTK_TYPE_BUTTON)
 
 static void
+ensure_dialog (XAppIconChooserButton *button)
+{
+    XAppIconChooserButtonPrivate *priv;
+
+    priv = xapp_icon_chooser_button_get_instance_private (button);
+
+    if (priv->dialog != NULL)
+    {
+        return;
+    }
+
+    priv->dialog = xapp_icon_chooser_dialog_new ();
+}
+
+static void
 on_clicked (GtkButton *button)
 {
     XAppIconChooserButtonPrivate *priv;
@@ -49,6 +64,8 @@ on_clicked (GtkButton *button)
 
     toplevel = gtk_widget_get_toplevel (GTK_WIDGET (button));
     priv = xapp_icon_chooser_button_get_instance_private (XAPP_ICON_CHOOSER_BUTTON (button));
+
+    ensure_dialog (XAPP_ICON_CHOOSER_BUTTON (button));
 
     gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (toplevel));
     gtk_window_set_modal (GTK_WINDOW (priv->dialog), gtk_window_get_modal (GTK_WINDOW (toplevel)));
@@ -140,7 +157,7 @@ xapp_icon_chooser_button_init (XAppIconChooserButton *button)
 
     xapp_icon_chooser_button_set_icon_size (button, -1);
 
-    priv->dialog = xapp_icon_chooser_dialog_new ();
+    priv->dialog = NULL;
 }
 
 static void
@@ -342,6 +359,8 @@ XAppIconChooserDialog *
 xapp_icon_chooser_button_get_dialog (XAppIconChooserButton *button)
 {
     XAppIconChooserButtonPrivate *priv;
+
+    ensure_dialog (button);
 
     priv = xapp_icon_chooser_button_get_instance_private (button);
 
