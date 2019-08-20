@@ -1,3 +1,11 @@
+xapp (1.4.9) tina; urgency=medium
+
+  [ Michael Webster ]
+  * Fix a couple of copy/paste mistakes.
+  * xapp-icon-chooser-button.c: Only create the chooser dialog when needed.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 20 Aug 2019 10:52:32 +0200
+
 xapp (1.4.8) tina; urgency=medium
 
   * l10n: Update translations
