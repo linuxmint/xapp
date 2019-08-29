@@ -31,10 +31,11 @@ struct _XAppStatusManagerClass
     GObjectClass parent_class;
 };
 
-GType xapp_status_manager_get_type      (void);
-void  xapp_status_manager_set_app_name  (XAppStatusManager *self, const gchar *app_name);
-void  xapp_status_manager_set_label     (XAppStatusManager *self, const gchar *label);
-void  xapp_status_manager_set_icon_name (XAppStatusManager *self, const gchar *icon_name);
+GType xapp_status_manager_get_type         (void);
+void  xapp_status_manager_set_icon_name    (XAppStatusManager *self, const gchar *icon_name);
+void  xapp_status_manager_set_tooltip_text (XAppStatusManager *self, const gchar *tooltip_text);
+void  xapp_status_manager_set_label        (XAppStatusManager *self, const gchar *label);
+void  xapp_status_manager_set_visible      (XAppStatusManager *self, const gboolean visible);
 
 G_END_DECLS
 

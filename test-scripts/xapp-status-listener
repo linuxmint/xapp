@@ -1,12 +1,82 @@
 #!/usr/bin/python3
-
-from gi.repository import Gio, GLib, GObject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gio, GLib, GObject, Gtk
 import sys
+
+class StatusWidget(Gtk.Button):
+
+    def __init__(self, name, bus, dbus_proxy):
+        super(Gtk.Button, self).__init__()
+
+        self.name = name
+        self.bus = bus
+        self.dbus_proxy = dbus_proxy
+        self.properties_proxy = Gio.DBusProxy.new_sync(self.bus, Gio.DBusProxyFlags.NONE, None,
+                    name, '/org/x/Status', 'org.freedesktop.DBus.Properties', None)
+        self.proxy = Gio.DBusProxy.new_sync(self.bus, Gio.DBusProxyFlags.NONE, None,
+                    name, '/org/x/Status', 'org.x.Status', None)
+
+        owner = self.dbus_proxy.call_sync('GetNameOwner',
+                    GLib.Variant('(s)', (name,)),
+                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+        self.owner_name = owner[0]
+
+        properties = self.properties_proxy.GetAll('(s)', 'org.x.Status')
+
+        box = Gtk.Box()
+        self.image = Gtk.Image()
+        self.label = Gtk.Label()
+        box.add(self.image)
+        box.add(self.label)
+        self.add(box)
+
+        self.update_widget(properties)
+        self.bus.signal_subscribe(sender=self.owner_name, interface_name="org.freedesktop.DBus.Properties", member="PropertiesChanged", object_path=None, arg0=None, flags=0, callback=self.on_properties_changed)
+
+        self.connect("button-release-event", self.on_click)
+
+    def on_properties_changed(self, connection, owner, path, interface, signal_name, properties):
+        self.update_widget(properties[1])
+
+    def update_widget(self, properties):
+        self.image.set_from_icon_name(properties['IconName'], Gtk.IconSize.DIALOG)
+        self.set_tooltip_text(properties['TooltipText'])
+        self.label.set_text(properties['Label'])
+        self.set_visible(properties['Visible'])
+
+    def on_click(self, widget, event):
+        x = event.x # TODO find the coordinates of the widget
+        y = event.y
+        if event.button == 1:
+            print ("Left click : %d:%d" % (x, y))
+            self.proxy.call_sync('LeftClick',
+                    GLib.Variant('(ii)', (x,y,)),
+                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+        elif event.button == 2:
+            print ("Middle click : %d:%d" % (x, y))
+            self.proxy.call_sync('MiddleClick',
+                    GLib.Variant('(ii)', (x,y,)),
+                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+        elif event.button == 3:
+            print ("Right click : %d:%d" % (x, y))
+            self.proxy.call_sync('RightClick',
+                    GLib.Variant('(ii)', (x,y,)),
+                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
 
 class Applet(GObject.Object):
 
     def __init__(self):
         super(Applet, self).__init__()
+
+        self.window = Gtk.Window()
+        self.window.connect("destroy", Gtk.main_quit)
+        self.window.show()
+
+        self.indicator_box = Gtk.Box()
+        self.window.add(self.indicator_box)
+
+        self.indicators = {}
 
         self.bus = Gio.bus_get_sync(Gio.BusType.SESSION)
         self.dbus_proxy = Gio.DBusProxy.new_sync(self.bus,
@@ -17,45 +87,40 @@ class Applet(GObject.Object):
                                                  'org.freedesktop.DBus',
                                                  None)
 
-        self.find_status_interfaces()
+        self.refresh_status_items()
+        self.bus.signal_subscribe(None, "org.freedesktop.DBus", "NameOwnerChanged", None, None, 0, self.on_bus_changes, None)
 
-        self.bus.signal_subscribe(None, "org.freedesktop.DBus", "NameOwnerChanged",
-                                         None, None, 0, self.on_bus_changes, None)
-
-    def find_status_interfaces(self):
+    def refresh_status_items(self):
         # Find all the status interfaces on the session bus
         result = self.dbus_proxy.ListNames('()')
         names = result
+        current_names = []
         for name in names:
             if name.startswith("org.x.Status"):
-                owner = self.dbus_proxy.call_sync('GetNameOwner',
-                                           GLib.Variant('(s)', (name,)),
-                                           Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+                current_names.append(name)
 
-                proxy = Gio.DBusProxy.new_sync( self.bus, Gio.DBusProxyFlags.NONE, None,
-                                          name, '/org/x/Status', 'org.freedesktop.DBus.Properties', None)
-                properties = proxy.GetAll('(s)', 'org.x.Status')
-                print(name, owner, properties)
+        # Handle new names
+        for name in current_names:
+            if name not in self.indicators.keys():
+                print("Adding %s"  % name)
+                self.indicators[name] = StatusWidget(name, self.bus, self.dbus_proxy)
+                self.indicator_box.add(self.indicators[name])
+                self.window.show_all()
 
-                self.bus.signal_subscribe(name, "org.freedesktop.DBus.Properties", "PropertiesChanged", None, None, 0, self.on_properties_changed)
+        # Handle names which vanishes
+        names_to_remove = []
+        for name in self.indicators.keys():
+            if name not in current_names:
+                names_to_remove.append(name)
+        for name in names_to_remove:
+            print("Removing %s" % name)
+            self.indicator_box.remove(self.indicators[name])
+            del(self.indicators[name])
 
-    def on_bus_changes(self, connection, sender_name,
-                                object_path, interface_name, signal_name,
-                                parameters, user_data):
-        print("-----------------------------")
-        self.find_status_interfaces()
-
-
-    def on_properties_changed(self, connection, owner, path, interface, signal_name, properties):
-        print("Changed: ", properties)
+    def on_bus_changes(self, connection, sender_name, object_path, interface_name, signal_name, parameters, user_data):
+        self.refresh_status_items()
 
 if __name__ == '__main__':
-
     applet = Applet()
-
-    try:
-        GLib.MainLoop().run()
-    except KeyboardInterrupt:
-        pass
-
+    Gtk.main()
     sys.exit(0)
