@@ -4,6 +4,9 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gio, GLib, GObject, Gtk
 import sys
 
+DBUS_NAME = "org.x.StatusIcon"
+DBUS_PATH = "/org/x/StatusIcon"
+
 class StatusWidget(Gtk.Button):
 
     def __init__(self, name, bus, dbus_proxy):
@@ -13,16 +16,16 @@ class StatusWidget(Gtk.Button):
         self.bus = bus
         self.dbus_proxy = dbus_proxy
         self.properties_proxy = Gio.DBusProxy.new_sync(self.bus, Gio.DBusProxyFlags.NONE, None,
-                    name, '/org/x/Status', 'org.freedesktop.DBus.Properties', None)
+                    name, DBUS_PATH, 'org.freedesktop.DBus.Properties', None)
         self.proxy = Gio.DBusProxy.new_sync(self.bus, Gio.DBusProxyFlags.NONE, None,
-                    name, '/org/x/Status', 'org.x.Status', None)
+                    name, DBUS_PATH, DBUS_NAME, None)
 
         owner = self.dbus_proxy.call_sync('GetNameOwner',
                     GLib.Variant('(s)', (name,)),
                     Gio.DBusCallFlags.NO_AUTO_START, 500, None)
         self.owner_name = owner[0]
 
-        properties = self.properties_proxy.GetAll('(s)', 'org.x.Status')
+        properties = self.properties_proxy.GetAll('(s)', DBUS_NAME)
 
         box = Gtk.Box()
         self.image = Gtk.Image()
@@ -40,10 +43,14 @@ class StatusWidget(Gtk.Button):
         self.update_widget(properties[1])
 
     def update_widget(self, properties):
-        self.image.set_from_icon_name(properties['IconName'], Gtk.IconSize.DIALOG)
-        self.set_tooltip_text(properties['TooltipText'])
-        self.label.set_text(properties['Label'])
-        self.set_visible(properties['Visible'])
+        if 'IconName' in properties:
+            self.image.set_from_icon_name(properties['IconName'], Gtk.IconSize.DIALOG)
+        if 'TooltipText' in properties:
+            self.set_tooltip_text(properties['TooltipText'])
+        if 'Label' in properties:
+            self.label.set_text(properties['Label'])
+        if 'Visible' in properties:
+            self.set_visible(properties['Visible'])
 
     def on_click(self, widget, event):
         x = event.x # TODO find the coordinates of the widget
@@ -64,10 +71,10 @@ class StatusWidget(Gtk.Button):
                     GLib.Variant('(ii)', (x,y,)),
                     Gio.DBusCallFlags.NO_AUTO_START, 500, None)
 
-class Applet(GObject.Object):
+class StatusApplet(GObject.Object):
 
     def __init__(self):
-        super(Applet, self).__init__()
+        super(StatusApplet, self).__init__()
 
         self.window = Gtk.Window()
         self.window.connect("destroy", Gtk.main_quit)
@@ -96,7 +103,7 @@ class Applet(GObject.Object):
         names = result
         current_names = []
         for name in names:
-            if name.startswith("org.x.Status"):
+            if name.startswith(DBUS_NAME):
                 current_names.append(name)
 
         # Handle new names
@@ -121,6 +128,6 @@ class Applet(GObject.Object):
         self.refresh_status_items()
 
 if __name__ == '__main__':
-    applet = Applet()
+    applet = StatusApplet()
     Gtk.main()
     sys.exit(0)

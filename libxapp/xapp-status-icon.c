@@ -13,11 +13,14 @@
 
 #include <glib/gi18n-lib.h>
 
-#include "xapp-status-manager.h"
+#include "xapp-status-icon.h"
+
+static const gchar * DBUS_PATH = "/org/x/StatusIcon";
+static const gchar * DBUS_NAME = "org.x.StatusIcon";
 
 static const gchar introspection_xml[] =
     "<node>"
-    "    <interface name='org.x.Status'>"
+    "    <interface name='org.x.StatusIcon'>"
     "    <method name='LeftClick'>"
     "        <arg name='x' direction='in' type='i'/>"
     "        <arg name='y' direction='in' type='i'/>"
@@ -30,6 +33,7 @@ static const gchar introspection_xml[] =
     "        <arg name='x' direction='in' type='i'/>"
     "        <arg name='y' direction='in' type='i'/>"
     "    </method>"
+    "    <property type='s' name='Name' access='read'/>"
     "    <property type='s' name='IconName' access='read'/>"
     "    <property type='s' name='TooltipText' access='read'/>"
     "    <property type='s' name='Label' access='read'/>"
@@ -48,16 +52,17 @@ enum
 static guint signals[LAST_SIGNAL] = {0, };
 
 /**
- * SECTION:xapp-status-manager
+ * SECTION:xapp-status-icon
  * @Short_description: Broadcasts status information over DBUS
- * @Title: XAppStatusManager
+ * @Title: XAppStatusIcon
  *
- * The XAppStatusManager allows applications to share status info
+ * The XAppStatusIcon allows applications to share status info
  * about themselves.
  */
 
-struct _XAppStatusManagerPrivate
+struct _XAppStatusIconPrivate
 {
+    gchar * name;
     gchar * icon_name;
     gchar * tooltip_text;
     gchar * label;
@@ -67,30 +72,39 @@ struct _XAppStatusManagerPrivate
     guint registration_id;
 };
 
-G_DEFINE_TYPE (XAppStatusManager, xapp_status_manager, G_TYPE_OBJECT);
+G_DEFINE_TYPE (XAppStatusIcon, xapp_status_icon, G_TYPE_OBJECT);
 
 void
-emit_changed_properties_signal (XAppStatusManager *self)
+emit_changed_properties_signal (XAppStatusIcon *self)
 {
     GVariantBuilder *builder;
     GError *local_error;
 
-    local_error = NULL;
-    builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
-    g_variant_builder_add (builder, "{sv}", "IconName", g_variant_new_string (self->priv->icon_name));
-    g_variant_builder_add (builder, "{sv}", "TooltipText", g_variant_new_string (self->priv->tooltip_text));
-    g_variant_builder_add (builder, "{sv}", "Label", g_variant_new_string (self->priv->label));
-    g_variant_builder_add (builder, "{sv}", "Visible", g_variant_new_boolean (self->priv->visible));
-    g_dbus_connection_emit_signal (self->priv->connection,
-                                 NULL,
-                                 "/org/x/Status",
-                                 "org.freedesktop.DBus.Properties",
-                                 "PropertiesChanged",
-                                 g_variant_new ("(sa{sv}as)",
-                                                "org.x.Status",
-                                                builder,
-                                                NULL),
-                                 &local_error);
+    if (self->priv->connection) {
+
+        local_error = NULL;
+        builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+        if (self->priv->name)
+            g_variant_builder_add (builder, "{sv}", "Name", g_variant_new_string (self->priv->name));
+        if (self->priv->icon_name)
+            g_variant_builder_add (builder, "{sv}", "IconName", g_variant_new_string (self->priv->icon_name));
+        if (self->priv->tooltip_text)
+            g_variant_builder_add (builder, "{sv}", "TooltipText", g_variant_new_string (self->priv->tooltip_text));
+        if (self->priv->label)
+            g_variant_builder_add (builder, "{sv}", "Label", g_variant_new_string (self->priv->label));
+        if (self->priv->visible)
+            g_variant_builder_add (builder, "{sv}", "Visible", g_variant_new_boolean (self->priv->visible));
+        g_dbus_connection_emit_signal (self->priv->connection,
+                                     NULL,
+                                     DBUS_PATH,
+                                     "org.freedesktop.DBus.Properties",
+                                     "PropertiesChanged",
+                                     g_variant_new ("(sa{sv}as)",
+                                                    DBUS_NAME,
+                                                    builder,
+                                                    NULL),
+                                     &local_error);
+    }
 }
 
 void
@@ -103,28 +117,28 @@ handle_method_call (GDBusConnection       *connection,
                     GDBusMethodInvocation *invocation,
                     gpointer               user_data)
 {
-    XAppStatusManager *manager = user_data;
+    XAppStatusIcon *icon = user_data;
 
     if (g_strcmp0 (method_name, "LeftClick") == 0)
     {
         int x, y;
         g_variant_get (parameters, "(ii)", &x, &y);
         g_dbus_method_invocation_return_value (invocation, NULL);
-        g_signal_emit (manager, signals[LEFT_CLICK], 0, x, y);
+        g_signal_emit (icon, signals[LEFT_CLICK], 0, x, y);
     }
     else if (g_strcmp0 (method_name, "MiddleClick") == 0)
     {
         int x, y;
         g_variant_get (parameters, "(ii)", &x, &y);
         g_dbus_method_invocation_return_value (invocation, NULL);
-        g_signal_emit (manager, signals[MIDDLE_CLICK], 0, x, y);
+        g_signal_emit (icon, signals[MIDDLE_CLICK], 0, x, y);
     }
     else if (g_strcmp0 (method_name, "RightClick") == 0)
     {
         int x, y;
         g_variant_get (parameters, "(ii)", &x, &y);
         g_dbus_method_invocation_return_value (invocation, NULL);
-        g_signal_emit (manager, signals[RIGHT_CLICK], 0, x, y);
+        g_signal_emit (icon, signals[RIGHT_CLICK], 0, x, y);
     }
 }
 
@@ -138,24 +152,28 @@ get_property (GDBusConnection  *connection,
              gpointer          user_data)
 {
     GVariant *ret;
-    XAppStatusManager *manager = user_data;
+    XAppStatusIcon *icon = user_data;
     ret = NULL;
 
-    if (g_strcmp0 (property_name, "IconName") == 0)
+    if (icon->priv->name && g_strcmp0 (property_name, "Name") == 0)
     {
-        ret = g_variant_new_string (manager->priv->icon_name);
+        ret = g_variant_new_string (icon->priv->name);
     }
-    else if (g_strcmp0 (property_name, "TooltipText") == 0)
+    else if (icon->priv->icon_name && g_strcmp0 (property_name, "IconName") == 0)
     {
-        ret = g_variant_new_string (manager->priv->tooltip_text);
+        ret = g_variant_new_string (icon->priv->icon_name);
     }
-    else if (g_strcmp0 (property_name, "Label") == 0)
+    else if (icon->priv->tooltip_text && g_strcmp0 (property_name, "TooltipText") == 0)
     {
-        ret = g_variant_new_string (manager->priv->label);
+        ret = g_variant_new_string (icon->priv->tooltip_text);
+    }
+    else if (icon->priv->label && g_strcmp0 (property_name, "Label") == 0)
+    {
+        ret = g_variant_new_string (icon->priv->label);
     }
     else if (g_strcmp0 (property_name, "Visible") == 0)
     {
-        ret = g_variant_new_boolean (manager->priv->visible);
+        ret = g_variant_new_boolean (icon->priv->visible);
     }
 
     return ret;
@@ -170,16 +188,16 @@ static const GDBusInterfaceVTable interface_vtable =
 
 void on_bus_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data)
 {
-    XAppStatusManager *manager = user_data;
+    XAppStatusIcon *icon = user_data;
 
-    manager->priv->connection = connection;
+    icon->priv->connection = connection;
 
     GDBusNodeInfo *introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
-    manager->priv->registration_id = g_dbus_connection_register_object (connection,
-                     "/org/x/Status",
+    icon->priv->registration_id = g_dbus_connection_register_object (connection,
+                     DBUS_PATH,
                      introspection_data->interfaces[0],
                      &interface_vtable,
-                     manager,  /* user_data */
+                     icon,  /* user_data */
                      NULL,  /* user_data_free_func */
                      NULL); /* GError** */
 }
@@ -193,18 +211,19 @@ void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user
 }
 
 static void
-xapp_status_manager_init (XAppStatusManager *self)
+xapp_status_icon_init (XAppStatusIcon *self)
 {
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_STATUS_MANAGER, XAppStatusManagerPrivate);
-    self->priv->icon_name = g_strdup("");
-    self->priv->tooltip_text = g_strdup("");
-    self->priv->label = g_strdup("");
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_STATUS_ICON, XAppStatusIconPrivate);
+    self->priv->name = g_strdup_printf("%s", g_get_application_name());
+    self->priv->icon_name = NULL;
+    self->priv->tooltip_text = NULL;
+    self->priv->label = NULL;
     self->priv->visible = TRUE;
     self->priv->connection = NULL;
     self->priv->owner_id = 0;
     self->priv->registration_id = 0;
 
-    char *owner_name = g_strdup_printf("org.x.Status.PID-%d", getpid());
+    char *owner_name = g_strdup_printf("%s.PID-%d", DBUS_NAME, getpid());
     self->priv->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                 owner_name,
                 G_DBUS_CONNECTION_FLAGS_NONE,
@@ -218,7 +237,7 @@ xapp_status_manager_init (XAppStatusManager *self)
 
     signals[LEFT_CLICK] =
         g_signal_new ("left-click",
-                      XAPP_TYPE_STATUS_MANAGER,
+                      XAPP_TYPE_STATUS_ICON,
                       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                       NULL,
                       NULL, NULL, NULL,
@@ -226,7 +245,7 @@ xapp_status_manager_init (XAppStatusManager *self)
 
     signals[MIDDLE_CLICK] =
         g_signal_new ("middle-click",
-                      XAPP_TYPE_STATUS_MANAGER,
+                      XAPP_TYPE_STATUS_ICON,
                       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                       NULL,
                       NULL, NULL, NULL,
@@ -234,7 +253,7 @@ xapp_status_manager_init (XAppStatusManager *self)
 
     signals[RIGHT_CLICK] =
         g_signal_new ("right-click",
-                      XAPP_TYPE_STATUS_MANAGER,
+                      XAPP_TYPE_STATUS_ICON,
                       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                       NULL,
                       NULL, NULL, NULL,
@@ -242,10 +261,11 @@ xapp_status_manager_init (XAppStatusManager *self)
 }
 
 static void
-xapp_status_manager_finalize (GObject *object)
+xapp_status_icon_finalize (GObject *object)
 {
-    XAppStatusManager *self = XAPP_STATUS_MANAGER (object);
+    XAppStatusIcon *self = XAPP_STATUS_ICON (object);
 
+    g_free (self->priv->name);
     g_free (self->priv->icon_name);
     g_free (self->priv->tooltip_text);
     g_free (self->priv->label);
@@ -258,71 +278,87 @@ xapp_status_manager_finalize (GObject *object)
         g_bus_unown_name(self->priv->owner_id);
     }
 
-    G_OBJECT_CLASS (xapp_status_manager_parent_class)->finalize (object);
+    G_OBJECT_CLASS (xapp_status_icon_parent_class)->finalize (object);
 }
 
 static void
-xapp_status_manager_class_init (XAppStatusManagerClass *klass)
+xapp_status_icon_class_init (XAppStatusIconClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-    gobject_class->finalize = xapp_status_manager_finalize;
+    gobject_class->finalize = xapp_status_icon_finalize;
 
-    g_type_class_add_private (gobject_class, sizeof (XAppStatusManagerPrivate));
+    g_type_class_add_private (gobject_class, sizeof (XAppStatusIconPrivate));
 }
 
 /**
- * xapp_status_manager_set_icon_name:
- * @self: a #XAppStatusManager
+ * xapp_status_icon_set_name:
+ * @self: a #XAppStatusIcon
  *
  * Sets the icon name
  */
 
 void
-xapp_status_manager_set_icon_name (XAppStatusManager *self, const gchar *icon_name)
+xapp_status_icon_set_name (XAppStatusIcon *self, const gchar *name)
 {
-    g_return_if_fail (XAPP_IS_STATUS_MANAGER (self));
+    g_return_if_fail (XAPP_IS_STATUS_ICON (self));
+    g_free (self->priv->name);
+    self->priv->name = g_strdup (name);
+    emit_changed_properties_signal (self);
+}
+
+/**
+ * xapp_status_icon_set_icon_name:
+ * @self: a #XAppStatusIcon
+ *
+ * Sets the icon name
+ */
+
+void
+xapp_status_icon_set_icon_name (XAppStatusIcon *self, const gchar *icon_name)
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (self));
     g_free (self->priv->icon_name);
     self->priv->icon_name = g_strdup (icon_name);
     emit_changed_properties_signal (self);
 }
 
 /**
- * xapp_status_manager_set_tooltip_text:
- * @self: a #XAppStatusManager
+ * xapp_status_icon_set_tooltip_text:
+ * @self: a #XAppStatusIcon
  *
  * Sets the app name
  */
 
 void
-xapp_status_manager_set_tooltip_text (XAppStatusManager *self, const gchar *tooltip_text)
+xapp_status_icon_set_tooltip_text (XAppStatusIcon *self, const gchar *tooltip_text)
 {
-    g_return_if_fail (XAPP_IS_STATUS_MANAGER (self));
+    g_return_if_fail (XAPP_IS_STATUS_ICON (self));
     g_free (self->priv->tooltip_text);
     self->priv->tooltip_text = g_strdup (tooltip_text);
     emit_changed_properties_signal (self);
 }
 
 /**
- * xapp_status_manager_set_label:
- * @self: a #XAppStatusManager
+ * xapp_status_icon_set_label:
+ * @self: a #XAppStatusIcon
  *
  * Sets the label
  */
 
 void
-xapp_status_manager_set_label (XAppStatusManager *self, const gchar *label)
+xapp_status_icon_set_label (XAppStatusIcon *self, const gchar *label)
 {
-    g_return_if_fail (XAPP_IS_STATUS_MANAGER (self));
+    g_return_if_fail (XAPP_IS_STATUS_ICON (self));
     g_free (self->priv->label);
     self->priv->label = g_strdup (label);
     emit_changed_properties_signal (self);
 }
 
 void
-xapp_status_manager_set_visible (XAppStatusManager *self, const gboolean visible)
+xapp_status_icon_set_visible (XAppStatusIcon *self, const gboolean visible)
 {
-    g_return_if_fail (XAPP_IS_STATUS_MANAGER (self));
+    g_return_if_fail (XAPP_IS_STATUS_ICON (self));
     self->priv->visible = visible;
     emit_changed_properties_signal (self);
 }
