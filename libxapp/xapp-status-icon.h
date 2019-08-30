@@ -32,11 +32,11 @@ struct _XAppStatusIconClass
 };
 
 GType xapp_status_icon_get_type         (void);
-void  xapp_status_icon_set_name         (XAppStatusIcon *self, const gchar *name);
-void  xapp_status_icon_set_icon_name    (XAppStatusIcon *self, const gchar *icon_name);
-void  xapp_status_icon_set_tooltip_text (XAppStatusIcon *self, const gchar *tooltip_text);
-void  xapp_status_icon_set_label        (XAppStatusIcon *self, const gchar *label);
-void  xapp_status_icon_set_visible      (XAppStatusIcon *self, const gboolean visible);
+void  xapp_status_icon_set_name         (XAppStatusIcon *icon, const gchar *name);
+void  xapp_status_icon_set_icon_name    (XAppStatusIcon *icon, const gchar *icon_name);
+void  xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_text);
+void  xapp_status_icon_set_label        (XAppStatusIcon *icon, const gchar *label);
+void  xapp_status_icon_set_visible      (XAppStatusIcon *icon, const gboolean visible);
 
 G_END_DECLS
 

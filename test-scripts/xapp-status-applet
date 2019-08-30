@@ -2,6 +2,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gio, GLib, GObject, Gtk
+import os
 import sys
 
 DBUS_NAME = "org.x.StatusIcon"
@@ -55,20 +56,21 @@ class StatusWidget(Gtk.Button):
     def on_click(self, widget, event):
         x = event.x # TODO find the coordinates of the widget
         y = event.y
+        time = event.time
         if event.button == 1:
             print ("Left click : %d:%d" % (x, y))
             self.proxy.call_sync('LeftClick',
-                    GLib.Variant('(ii)', (x,y,)),
+                    GLib.Variant('(iiii)', (x,y,event.time, event.button,)),
                     Gio.DBusCallFlags.NO_AUTO_START, 500, None)
         elif event.button == 2:
             print ("Middle click : %d:%d" % (x, y))
             self.proxy.call_sync('MiddleClick',
-                    GLib.Variant('(ii)', (x,y,)),
+                    GLib.Variant('(iiii)', (x,y,event.time, event.button,)),
                     Gio.DBusCallFlags.NO_AUTO_START, 500, None)
         elif event.button == 3:
             print ("Right click : %d:%d" % (x, y))
             self.proxy.call_sync('RightClick',
-                    GLib.Variant('(ii)', (x,y,)),
+                    GLib.Variant('(iiii)', (x,y,event.time, event.button,)),
                     Gio.DBusCallFlags.NO_AUTO_START, 500, None)
 
 class StatusApplet(GObject.Object):
@@ -86,6 +88,15 @@ class StatusApplet(GObject.Object):
         self.indicators = {}
 
         self.bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+
+        # Register an Applet name on DBUS to let icons know there's at least one applet running
+        Gio.bus_own_name(Gio.BusType.SESSION,
+                         "org.x.StatusApplet.PID-%d" % os.getpid(),
+                         Gio.BusNameOwnerFlags.NONE,
+                         None,
+                         self.on_name_acquired,
+                         self.on_name_lost)
+
         self.dbus_proxy = Gio.DBusProxy.new_sync(self.bus,
                                                  Gio.DBusProxyFlags.NONE,
                                                  None,
@@ -96,6 +107,13 @@ class StatusApplet(GObject.Object):
 
         self.refresh_status_items()
         self.bus.signal_subscribe(None, "org.freedesktop.DBus", "NameOwnerChanged", None, None, 0, self.on_bus_changes, None)
+
+    def on_name_lost(self, connection, name, data=None):
+        print("DBus name couldn't be acquired!  Exiting...")
+        Gtk.main_quit()
+
+    def on_name_acquired(self, connection, name, data=None):
+        print("Registering applet on DBUS: %s" % name)
 
     def refresh_status_items(self):
         # Find all the status interfaces on the session bus

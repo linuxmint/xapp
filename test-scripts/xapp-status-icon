@@ -28,13 +28,13 @@ class App(GObject.Object):
         # self.status_icon.set_visible((self.counter % 2) == 0)
         return True
 
-    def on_left_click(self, status_icon, x, y):
+    def on_left_click(self, status_icon, x, y, time, button):
         print("We were left clicked at %d %d" % (x, y))
 
-    def on_middle_click(self, status_icon, x, y):
+    def on_middle_click(self, status_icon, x, y, time, button):
         print("We were middle clicked at %d %d" % (x, y))
 
-    def on_right_click(self, status_icon, x, y):
+    def on_right_click(self, status_icon, x, y, time, button):
         print("We were right clicked at %d %d" % (x, y))
 
 if __name__ == '__main__':
