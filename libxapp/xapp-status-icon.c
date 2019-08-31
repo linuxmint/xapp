@@ -90,22 +90,28 @@ emit_changed_properties_signal (XAppStatusIcon *self)
     GVariantBuilder *builder;
     GError *local_error;
 
-    if (self->priv->connection) {
+    if (self->priv->connection)
+    {
         local_error = NULL;
         builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
-        if (self->priv->name) {
+        if (self->priv->name)
+        {
             g_variant_builder_add (builder, "{sv}", "Name", g_variant_new_string (self->priv->name));
         }
-        if (self->priv->icon_name) {
+        if (self->priv->icon_name)
+        {
             g_variant_builder_add (builder, "{sv}", "IconName", g_variant_new_string (self->priv->icon_name));
         }
-        if (self->priv->tooltip_text) {
+        if (self->priv->tooltip_text)
+        {
             g_variant_builder_add (builder, "{sv}", "TooltipText", g_variant_new_string (self->priv->tooltip_text));
         }
-        if (self->priv->label) {
+        if (self->priv->label)
+        {
             g_variant_builder_add (builder, "{sv}", "Label", g_variant_new_string (self->priv->label));
         }
-        if (self->priv->visible){
+        if (self->priv->visible)
+        {
             g_variant_builder_add (builder, "{sv}", "Visible", g_variant_new_boolean (self->priv->visible));
         }
         g_dbus_connection_emit_signal (self->priv->connection,
@@ -131,17 +137,20 @@ handle_method_call (GDBusConnection       *connection,
     int x, y, time, button;
     XAppStatusIcon *icon = user_data;
 
-    if (g_strcmp0 (method_name, "LeftClick") == 0) {
+    if (g_strcmp0 (method_name, "LeftClick") == 0)
+    {
         g_variant_get (parameters, "(iiii)", &x, &y, &time, &button);
         g_dbus_method_invocation_return_value (invocation, NULL);
         g_signal_emit (icon, signals[LEFT_CLICK], 0, x, y, time, button);
     }
-    else if (g_strcmp0 (method_name, "MiddleClick") == 0) {
+    else if (g_strcmp0 (method_name, "MiddleClick") == 0)
+    {
         g_variant_get (parameters, "(iiii)", &x, &y, &time, &button);
         g_dbus_method_invocation_return_value (invocation, NULL);
         g_signal_emit (icon, signals[MIDDLE_CLICK], 0, x, y, time, button);
     }
-    else if (g_strcmp0 (method_name, "RightClick") == 0) {
+    else if (g_strcmp0 (method_name, "RightClick") == 0)
+    {
         g_variant_get (parameters, "(iiii)", &x, &y, &time, &button);
         g_dbus_method_invocation_return_value (invocation, NULL);
         g_signal_emit (icon, signals[RIGHT_CLICK], 0, x, y, time, button);
@@ -161,19 +170,24 @@ get_property (GDBusConnection  *connection,
     XAppStatusIcon *icon = user_data;
     ret = NULL;
 
-    if (icon->priv->name && g_strcmp0 (property_name, "Name") == 0) {
+    if (icon->priv->name && g_strcmp0 (property_name, "Name") == 0)
+    {
         ret = g_variant_new_string (icon->priv->name);
     }
-    else if (icon->priv->icon_name && g_strcmp0 (property_name, "IconName") == 0) {
+    else if (icon->priv->icon_name && g_strcmp0 (property_name, "IconName") == 0)
+    {
         ret = g_variant_new_string (icon->priv->icon_name);
     }
-    else if (icon->priv->tooltip_text && g_strcmp0 (property_name, "TooltipText") == 0) {
+    else if (icon->priv->tooltip_text && g_strcmp0 (property_name, "TooltipText") == 0)
+    {
         ret = g_variant_new_string (icon->priv->tooltip_text);
     }
-    else if (icon->priv->label && g_strcmp0 (property_name, "Label") == 0) {
+    else if (icon->priv->label && g_strcmp0 (property_name, "Label") == 0)
+    {
         ret = g_variant_new_string (icon->priv->label);
     }
-    else if (g_strcmp0 (property_name, "Visible") == 0) {
+    else if (g_strcmp0 (property_name, "Visible") == 0)
+    {
         ret = g_variant_new_boolean (icon->priv->visible);
     }
 
@@ -218,9 +232,10 @@ check_at_least_one_status_applet_is_running ()
 
     error = NULL;
     connection = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &error);
-    if (connection == NULL) {
+    if (connection == NULL)
+    {
         g_warning("Unable to connect to dbus: %s", error->message);
-        g_printerr (_("Error: %s\n"), error->message);
+        g_printerr ("Error: %s\n", error->message);
         g_error_free (error);
         return FALSE;
     }
@@ -237,15 +252,18 @@ check_at_least_one_status_applet_is_running ()
                                           3000, /* 3 secs */
                                           NULL,
                                           &error);
-    if (result == NULL) {
+    if (result == NULL)
+    {
       g_printerr (_("Error: %s\n"), error->message);
       g_error_free (error);
       return FALSE;
     }
 
     g_variant_get (result, "(as)", &iter);
-    while (g_variant_iter_loop (iter, "s", &str)) {
-        if (g_str_has_prefix (str, "org.x.StatusApplet")) {
+    while (g_variant_iter_loop (iter, "s", &str))
+    {
+        if (g_str_has_prefix (str, "org.x.StatusApplet"))
+        {
             // printf("FOUND %s\n", str);
             found = TRUE;
         }
@@ -284,12 +302,14 @@ xapp_status_icon_init (XAppStatusIcon *self)
     self->priv->gtk_status_icon = NULL;
 
     // Check for an applet, if none..  fallback to delegating calls to a Gtk.StatusIcon
-    if (!check_at_least_one_status_applet_is_running()) {
+    if (!check_at_least_one_status_applet_is_running())
+    {
         self->priv->gtk_status_icon = gtk_status_icon_new ();
         g_signal_connect (self->priv->gtk_status_icon, "activate", G_CALLBACK (on_gtk_status_icon_activate), self);
         g_signal_connect (self->priv->gtk_status_icon, "popup-menu", G_CALLBACK (on_gtk_status_icon_popup_menu), self);
     }
-    else {
+    else
+    {
         char *owner_name = g_strdup_printf("%s.PID-%d", DBUS_NAME, getpid());
         self->priv->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                     owner_name,
@@ -338,17 +358,20 @@ xapp_status_icon_finalize (GObject *object)
     g_free (self->priv->tooltip_text);
     g_free (self->priv->label);
 
-    if (self->priv->gtk_status_icon != NULL) {
+    if (self->priv->gtk_status_icon != NULL)
+    {
         g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_activate, self);
         g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_popup_menu, self);
         g_object_unref (self->priv->gtk_status_icon);
     }
 
-    if (self->priv->connection != NULL && self->priv->registration_id > 0) {
+    if (self->priv->connection != NULL && self->priv->registration_id > 0)
+    {
         g_dbus_connection_unregister_object(self->priv->connection, self->priv->registration_id);
     }
 
-    if (self->priv->owner_id > 0) {
+    if (self->priv->owner_id > 0)
+    {
         g_bus_unown_name(self->priv->owner_id);
     }
 
@@ -382,7 +405,8 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
     icon->priv->name = g_strdup (name);
     emit_changed_properties_signal (icon);
 
-    if (icon->priv->gtk_status_icon != NULL) {
+    if (icon->priv->gtk_status_icon != NULL)
+    {
         gtk_status_icon_set_name (icon->priv->gtk_status_icon, name);
     }
 }
@@ -404,7 +428,8 @@ xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
     icon->priv->icon_name = g_strdup (icon_name);
     emit_changed_properties_signal (icon);
 
-    if (icon->priv->gtk_status_icon != NULL) {
+    if (icon->priv->gtk_status_icon != NULL)
+    {
         gtk_status_icon_set_from_icon_name (icon->priv->gtk_status_icon, icon_name);
     }
 }
@@ -426,7 +451,8 @@ xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_te
     icon->priv->tooltip_text = g_strdup (tooltip_text);
     emit_changed_properties_signal (icon);
 
-    if (icon->priv->gtk_status_icon != NULL) {
+    if (icon->priv->gtk_status_icon != NULL)
+    {
         gtk_status_icon_set_tooltip_text (icon->priv->gtk_status_icon, tooltip_text);
     }
 }
@@ -465,7 +491,8 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
     icon->priv->visible = visible;
     emit_changed_properties_signal (icon);
 
-    if (icon->priv->gtk_status_icon != NULL) {
+    if (icon->priv->gtk_status_icon != NULL)
+    {
         gtk_status_icon_set_visible (icon->priv->gtk_status_icon, visible);
     }
 }
