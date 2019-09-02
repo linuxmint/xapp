@@ -21,23 +21,19 @@ static const gchar * DBUS_NAME = "org.x.StatusIcon";
 static const gchar introspection_xml[] =
     "<node>"
     "    <interface name='org.x.StatusIcon'>"
-    "    <method name='LeftClick'>"
+    "    <method name='ButtonPress'>"
     "        <arg name='x' direction='in' type='i'/>"
     "        <arg name='y' direction='in' type='i'/>"
-    "        <arg name='time' direction='in' type='i'/>"
     "        <arg name='button' direction='in' type='i'/>"
+    "        <arg name='time' direction='in' type='i'/>"
+    "        <arg name='panel_position' direction='in' type='i'/>"
     "    </method>"
-    "    <method name='MiddleClick'>"
+    "    <method name='ButtonRelease'>"
     "        <arg name='x' direction='in' type='i'/>"
     "        <arg name='y' direction='in' type='i'/>"
-    "        <arg name='time' direction='in' type='i'/>"
     "        <arg name='button' direction='in' type='i'/>"
-    "    </method>"
-    "    <method name='RightClick'>"
-    "        <arg name='x' direction='in' type='i'/>"
-    "        <arg name='y' direction='in' type='i'/>"
     "        <arg name='time' direction='in' type='i'/>"
-    "        <arg name='button' direction='in' type='i'/>"
+    "        <arg name='panel_position' direction='in' type='i'/>"
     "    </method>"
     "    <property type='s' name='Name' access='read'/>"
     "    <property type='s' name='IconName' access='read'/>"
@@ -49,9 +45,8 @@ static const gchar introspection_xml[] =
 
 enum
 {
-    LEFT_CLICK,
-    MIDDLE_CLICK,
-    RIGHT_CLICK,
+    BUTTON_PRESS,
+    BUTTON_RELEASE,
     LAST_SIGNAL
 };
 
@@ -134,26 +129,20 @@ handle_method_call (GDBusConnection       *connection,
                     GDBusMethodInvocation *invocation,
                     gpointer               user_data)
 {
-    int x, y, time, button;
+    int x, y, time, button, position;
     XAppStatusIcon *icon = user_data;
 
-    if (g_strcmp0 (method_name, "LeftClick") == 0)
+    if (g_strcmp0 (method_name, "ButtonPress") == 0)
     {
-        g_variant_get (parameters, "(iiii)", &x, &y, &time, &button);
+        g_variant_get (parameters, "(iiiii)", &x, &y, &button, &time, &position);
         g_dbus_method_invocation_return_value (invocation, NULL);
-        g_signal_emit (icon, signals[LEFT_CLICK], 0, x, y, time, button);
+        g_signal_emit (icon, signals[BUTTON_PRESS], 0, x, y, button, time, position);
     }
-    else if (g_strcmp0 (method_name, "MiddleClick") == 0)
+    else if (g_strcmp0 (method_name, "ButtonRelease") == 0)
     {
-        g_variant_get (parameters, "(iiii)", &x, &y, &time, &button);
+        g_variant_get (parameters, "(iiiii)", &x, &y, &button, &time, &position);
         g_dbus_method_invocation_return_value (invocation, NULL);
-        g_signal_emit (icon, signals[MIDDLE_CLICK], 0, x, y, time, button);
-    }
-    else if (g_strcmp0 (method_name, "RightClick") == 0)
-    {
-        g_variant_get (parameters, "(iiii)", &x, &y, &time, &button);
-        g_dbus_method_invocation_return_value (invocation, NULL);
-        g_signal_emit (icon, signals[RIGHT_CLICK], 0, x, y, time, button);
+        g_signal_emit (icon, signals[BUTTON_RELEASE], 0, x, y, button, time, position);
     }
 }
 
@@ -277,14 +266,14 @@ static void
 on_gtk_status_icon_activate (GtkStatusIcon *status_icon, gpointer user_data)
 {
     XAppStatusIcon *icon = user_data;
-    g_signal_emit (icon, signals[LEFT_CLICK], 0, 0, 0, 0, 0);
+    g_signal_emit (icon, signals[BUTTON_PRESS], 0, 0, 0, 0, 0, GTK_POS_BOTTOM);
 }
 
 static void
 on_gtk_status_icon_popup_menu (GtkStatusIcon *status_icon, guint button, guint activate_time, gpointer user_data)
 {
     XAppStatusIcon *icon = user_data;
-    g_signal_emit (icon, signals[RIGHT_CLICK], 0, 0, 0, activate_time, button);
+    g_signal_emit (icon, signals[BUTTON_RELEASE], 0, 0, 0, activate_time, button, GTK_POS_BOTTOM);
 }
 
 static void
@@ -323,29 +312,21 @@ xapp_status_icon_init (XAppStatusIcon *self)
         g_free(owner_name);
     }
 
-    signals[LEFT_CLICK] =
-        g_signal_new ("left-click",
+    signals[BUTTON_PRESS] =
+        g_signal_new ("button-press-event",
                       XAPP_TYPE_STATUS_ICON,
                       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                       0,
                       NULL, NULL, NULL,
-                      G_TYPE_NONE, 4, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+                      G_TYPE_NONE, 5, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
 
-    signals[MIDDLE_CLICK] =
-        g_signal_new ("middle-click",
+    signals[BUTTON_RELEASE] =
+        g_signal_new ("button-release-event",
                       XAPP_TYPE_STATUS_ICON,
                       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                       0,
                       NULL, NULL, NULL,
-                      G_TYPE_NONE, 4, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
-
-    signals[RIGHT_CLICK] =
-        g_signal_new ("right-click",
-                      XAPP_TYPE_STATUS_ICON,
-                      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                      0,
-                      NULL, NULL, NULL,
-                      G_TYPE_NONE, 4, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+                      G_TYPE_NONE, 5, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
 }
 
 static void

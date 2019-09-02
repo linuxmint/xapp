@@ -16,9 +16,8 @@ class App(GObject.Object):
         self.status_icon.set_tooltip_text("My tooltip text")
         self.status_icon.set_label("label 1")
         self.counter = 1
-        self.status_icon.connect("left-click", self.on_left_click)
-        self.status_icon.connect("middle-click", self.on_middle_click)
-        self.status_icon.connect("right-click", self.on_right_click)
+        self.status_icon.connect("button-press-event", self.on_button_press)
+        self.status_icon.connect("button-release-event", self.on_button_release)
 
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
 
@@ -28,14 +27,11 @@ class App(GObject.Object):
         # self.status_icon.set_visible((self.counter % 2) == 0)
         return True
 
-    def on_left_click(self, status_icon, x, y, time, button):
-        print("We were left clicked at %d %d" % (x, y))
+    def on_button_press(self, status_icon, x, y, button, time, position_type):
+        print("Mouse button %d was pressed at %d %d" % (button, x, y))
 
-    def on_middle_click(self, status_icon, x, y, time, button):
-        print("We were middle clicked at %d %d" % (x, y))
-
-    def on_right_click(self, status_icon, x, y, time, button):
-        print("We were right clicked at %d %d" % (x, y))
+    def on_button_release(self, status_icon, x, y, button, time, position_type):
+        print("Mouse button %d was released at %d %d" % (button, x, y))
 
 if __name__ == '__main__':
     app = App()

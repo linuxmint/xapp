@@ -38,7 +38,8 @@ class StatusWidget(Gtk.Button):
         self.update_widget(properties)
         self.bus.signal_subscribe(sender=self.owner_name, interface_name="org.freedesktop.DBus.Properties", member="PropertiesChanged", object_path=None, arg0=None, flags=0, callback=self.on_properties_changed)
 
-        self.connect("button-release-event", self.on_click)
+        self.connect("button-press-event", self.on_button_press)
+        self.connect("button-release-event", self.on_button_release)
 
     def on_properties_changed(self, connection, owner, path, interface, signal_name, properties):
         self.update_widget(properties[1])
@@ -53,25 +54,23 @@ class StatusWidget(Gtk.Button):
         if 'Visible' in properties:
             self.set_visible(properties['Visible'])
 
-    def on_click(self, widget, event):
+    def on_button_press(self, widget, event):
         x = event.x # TODO find the coordinates of the widget
         y = event.y
         time = event.time
-        if event.button == 1:
-            print ("Left click : %d:%d" % (x, y))
-            self.proxy.call_sync('LeftClick',
-                    GLib.Variant('(iiii)', (x,y,event.time, event.button,)),
-                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
-        elif event.button == 2:
-            print ("Middle click : %d:%d" % (x, y))
-            self.proxy.call_sync('MiddleClick',
-                    GLib.Variant('(iiii)', (x,y,event.time, event.button,)),
-                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
-        elif event.button == 3:
-            print ("Right click : %d:%d" % (x, y))
-            self.proxy.call_sync('RightClick',
-                    GLib.Variant('(iiii)', (x,y,event.time, event.button,)),
-                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+        print ("Button press : %d:%d" % (x, y))
+        self.proxy.call_sync('ButtonPress',
+                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.BOTTOM,)),
+                Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+
+    def on_button_release(self, widget, event):
+        x = event.x # TODO find the coordinates of the widget
+        y = event.y
+        time = event.time
+        print ("Button press : %d:%d" % (x, y))
+        self.proxy.call_sync('ButtonRelease',
+                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.BOTTOM,)),
+                Gio.DBusCallFlags.NO_AUTO_START, 500, None)
 
 class StatusApplet(GObject.Object):
 
