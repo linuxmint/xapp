@@ -17,6 +17,7 @@ xapp_headers = [
     'xapp-monitor-blanker.h',
     'xapp-preferences-window.h',
     'xapp-stack-sidebar.h',
+    'xapp-status-icon.h',
 ]
 
 xapp_sources = [
@@ -28,6 +29,7 @@ xapp_sources = [
     'xapp-monitor-blanker.c',
     'xapp-preferences-window.c',
     'xapp-stack-sidebar.c',
+    'xapp-status-icon.c',
 ]
 
 xapp_enums = gnome.mkenums('xapp-enums',

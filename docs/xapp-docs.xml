@@ -23,6 +23,7 @@
     <xi:include href="xml/xapp-monitor-blanker.xml"/>
     <xi:include href="xml/xapp-preferences-window.xml"/>
     <xi:include href="xml/xapp-stack-sidebar.xml"/>
+    <xi:include href="xml/xapp-status-icon.xml"/>
 
   </chapter>
   <chapter id="object-tree">

@@ -1,0 +1,152 @@
+#!/usr/bin/python3
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gio, GLib, GObject, Gtk
+import os
+import sys
+
+DBUS_NAME = "org.x.StatusIcon"
+DBUS_PATH = "/org/x/StatusIcon"
+
+class StatusWidget(Gtk.Button):
+
+    def __init__(self, name, bus, dbus_proxy):
+        super(Gtk.Button, self).__init__()
+
+        self.name = name
+        self.bus = bus
+        self.dbus_proxy = dbus_proxy
+        self.properties_proxy = Gio.DBusProxy.new_sync(self.bus, Gio.DBusProxyFlags.NONE, None,
+                    name, DBUS_PATH, 'org.freedesktop.DBus.Properties', None)
+        self.proxy = Gio.DBusProxy.new_sync(self.bus, Gio.DBusProxyFlags.NONE, None,
+                    name, DBUS_PATH, DBUS_NAME, None)
+
+        owner = self.dbus_proxy.call_sync('GetNameOwner',
+                    GLib.Variant('(s)', (name,)),
+                    Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+        self.owner_name = owner[0]
+
+        properties = self.properties_proxy.GetAll('(s)', DBUS_NAME)
+
+        box = Gtk.Box()
+        self.image = Gtk.Image()
+        self.label = Gtk.Label()
+        box.add(self.image)
+        box.add(self.label)
+        self.add(box)
+
+        self.update_widget(properties)
+        self.bus.signal_subscribe(sender=self.owner_name, interface_name="org.freedesktop.DBus.Properties", member="PropertiesChanged", object_path=None, arg0=None, flags=0, callback=self.on_properties_changed)
+
+        self.connect("button-press-event", self.on_button_press)
+        self.connect("button-release-event", self.on_button_release)
+
+    def on_properties_changed(self, connection, owner, path, interface, signal_name, properties):
+        self.update_widget(properties[1])
+
+    def update_widget(self, properties):
+        if 'IconName' in properties:
+            self.image.set_from_icon_name(properties['IconName'], Gtk.IconSize.DIALOG)
+        if 'TooltipText' in properties:
+            self.set_tooltip_text(properties['TooltipText'])
+        if 'Label' in properties:
+            self.label.set_text(properties['Label'])
+        if 'Visible' in properties:
+            self.set_visible(properties['Visible'])
+
+    def on_button_press(self, widget, event):
+        # We're simulating a top panel here
+        x = widget.get_window().get_origin().x
+        y = widget.get_window().get_origin().y + widget.get_allocation().height
+        time = event.time
+        print ("Button press : %d:%d" % (x, y))
+        self.proxy.call_sync('ButtonPress',
+                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.TOP,)),
+                Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+
+    def on_button_release(self, widget, event):
+        # We're simulating a top panel here
+        x = widget.get_window().get_origin().x
+        y = widget.get_window().get_origin().y + widget.get_allocation().height
+        time = event.time
+        print ("Button press : %d:%d" % (x, y))
+        self.proxy.call_sync('ButtonRelease',
+                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.TOP,)),
+                Gio.DBusCallFlags.NO_AUTO_START, 500, None)
+
+class StatusApplet(GObject.Object):
+
+    def __init__(self):
+        super(StatusApplet, self).__init__()
+
+        self.window = Gtk.Window()
+        self.window.connect("destroy", Gtk.main_quit)
+        self.window.show()
+
+        self.indicator_box = Gtk.Box()
+        self.window.add(self.indicator_box)
+
+        self.indicators = {}
+
+        self.bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+
+        # Register an Applet name on DBUS to let icons know there's at least one applet running
+        Gio.bus_own_name(Gio.BusType.SESSION,
+                         "org.x.StatusApplet.PID-%d" % os.getpid(),
+                         Gio.BusNameOwnerFlags.NONE,
+                         None,
+                         self.on_name_acquired,
+                         self.on_name_lost)
+
+        self.dbus_proxy = Gio.DBusProxy.new_sync(self.bus,
+                                                 Gio.DBusProxyFlags.NONE,
+                                                 None,
+                                                 'org.freedesktop.DBus',
+                                                 '/org/freedesktop/DBus',
+                                                 'org.freedesktop.DBus',
+                                                 None)
+
+        self.refresh_status_items()
+        self.bus.signal_subscribe(None, "org.freedesktop.DBus", "NameOwnerChanged", None, None, 0, self.on_bus_changes, None)
+
+    def on_name_lost(self, connection, name, data=None):
+        print("DBus name couldn't be acquired!  Exiting...")
+        Gtk.main_quit()
+
+    def on_name_acquired(self, connection, name, data=None):
+        print("Registering applet on DBUS: %s" % name)
+
+    def refresh_status_items(self):
+        # Find all the status interfaces on the session bus
+        result = self.dbus_proxy.ListNames('()')
+        names = result
+        current_names = []
+        for name in names:
+            if name.startswith(DBUS_NAME):
+                current_names.append(name)
+
+        # Handle new names
+        for name in current_names:
+            if name not in self.indicators.keys():
+                print("Adding %s"  % name)
+                self.indicators[name] = StatusWidget(name, self.bus, self.dbus_proxy)
+                self.indicator_box.add(self.indicators[name])
+                self.window.show_all()
+
+        # Handle names which vanishes
+        names_to_remove = []
+        for name in self.indicators.keys():
+            if name not in current_names:
+                names_to_remove.append(name)
+        for name in names_to_remove:
+            print("Removing %s" % name)
+            self.indicator_box.remove(self.indicators[name])
+            del(self.indicators[name])
+
+    def on_bus_changes(self, connection, sender_name, object_path, interface_name, signal_name, parameters, user_data):
+        self.refresh_status_items()
+
+if __name__ == '__main__':
+    applet = StatusApplet()
+    Gtk.main()
+    sys.exit(0)
