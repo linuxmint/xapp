@@ -55,21 +55,23 @@ class StatusWidget(Gtk.Button):
             self.set_visible(properties['Visible'])
 
     def on_button_press(self, widget, event):
-        x = event.x # TODO find the coordinates of the widget
-        y = event.y
+        # We're simulating a top panel here
+        x = widget.get_window().get_origin().x
+        y = widget.get_window().get_origin().y + widget.get_allocation().height
         time = event.time
         print ("Button press : %d:%d" % (x, y))
         self.proxy.call_sync('ButtonPress',
-                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.BOTTOM,)),
+                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.TOP,)),
                 Gio.DBusCallFlags.NO_AUTO_START, 500, None)
 
     def on_button_release(self, widget, event):
-        x = event.x # TODO find the coordinates of the widget
-        y = event.y
+        # We're simulating a top panel here
+        x = widget.get_window().get_origin().x
+        y = widget.get_window().get_origin().y + widget.get_allocation().height
         time = event.time
         print ("Button press : %d:%d" % (x, y))
         self.proxy.call_sync('ButtonRelease',
-                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.BOTTOM,)),
+                GLib.Variant('(iiiii)', (x, y, event.button, event.time, Gtk.PositionType.TOP,)),
                 Gio.DBusCallFlags.NO_AUTO_START, 500, None)
 
 class StatusApplet(GObject.Object):

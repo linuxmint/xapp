@@ -266,14 +266,14 @@ static void
 on_gtk_status_icon_activate (GtkStatusIcon *status_icon, gpointer user_data)
 {
     XAppStatusIcon *icon = user_data;
-    g_signal_emit (icon, signals[BUTTON_PRESS], 0, 0, 0, 0, 0, GTK_POS_BOTTOM);
+    g_signal_emit (icon, signals[BUTTON_PRESS], 0, 0, 0, 1, 0, -1);
 }
 
 static void
 on_gtk_status_icon_popup_menu (GtkStatusIcon *status_icon, guint button, guint activate_time, gpointer user_data)
 {
     XAppStatusIcon *icon = user_data;
-    g_signal_emit (icon, signals[BUTTON_RELEASE], 0, 0, 0, activate_time, button, GTK_POS_BOTTOM);
+    g_signal_emit (icon, signals[BUTTON_RELEASE], 0, 0, 0, button, activate_time, -1);
 }
 
 static void
