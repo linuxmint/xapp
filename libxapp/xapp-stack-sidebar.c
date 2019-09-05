@@ -54,8 +54,6 @@ xapp_stack_sidebar_set_property (GObject    *object,
                                  const       GValue *value,
                                  GParamSpec *pspec)
 {
-    XAppStackSidebar *sidebar = XAPP_STACK_SIDEBAR (object);
-
     switch (prop_id)
     {
         case PROP_STACK:

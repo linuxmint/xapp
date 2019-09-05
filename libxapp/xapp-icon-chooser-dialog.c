@@ -180,9 +180,6 @@ static gboolean on_search_bar_key_pressed (GtkWidget *widget,
 static gboolean on_delete_event (GtkWidget   *widget,
                                  GdkEventAny *event);
 
-static gboolean on_select_event (XAppIconChooserDialog *dialog,
-                                 GdkEventAny           *event);
-
 static void on_icon_view_item_activated (GtkIconView *iconview,
                                          GtkTreePath *path,
                                          gpointer     user_data);
@@ -400,13 +397,10 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     GtkToolItem                  *tool_item;
     GtkWidget                    *toolbar_box;
     GtkWidget                    *right_box;
-    GtkCellRenderer              *renderer;
-    GtkTreeViewColumn            *column;
     GtkStyleContext              *style;
     GtkSizeGroup                 *button_size_group;
     GtkWidget                    *cancel_button;
     GtkWidget                    *button_area;
-    GtkWidget                    *selection;
     GtkWidget                    *scrolled_window;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
@@ -829,7 +823,6 @@ xapp_icon_chooser_dialog_add_button (XAppIconChooserDialog *dialog,
                                      GtkResponseType        response_id)
 {
     XAppIconChooserDialogPrivate *priv;
-    GtkWidget *action_area;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -1147,7 +1140,6 @@ finish_pixbuf_load_from_file (GObject      *stream,
     FileIconInfoLoadCallbackInfo *callback_info;
     GdkPixbuf                *pixbuf, *final_pixbuf;
     GError                   *error = NULL;
-    GtkTreeIter               iter;
 
     callback_info = (FileIconInfoLoadCallbackInfo *) user_data;
     priv = xapp_icon_chooser_dialog_get_instance_private (callback_info->dialog);
@@ -1408,7 +1400,6 @@ on_category_selected (GtkListBox            *list_box,
     GList                        *selection;
     GtkWidget                    *selected;
     IconCategoryInfo             *category_info;
-    GtkTreePath                  *new_path;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -1604,8 +1595,6 @@ search_icon_name (XAppIconChooserDialog *dialog,
     XAppIconChooserDialogPrivate *priv;
     GtkIconTheme                 *theme;
     GList                        *icons;
-    GtkIconInfo                  *info;
-    NamedIconInfoLoadCallbackInfo *callback_info;
     gint chunk_count;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
@@ -1864,20 +1853,6 @@ on_delete_event (GtkWidget   *widget,
     xapp_icon_chooser_dialog_close (XAPP_ICON_CHOOSER_DIALOG (widget), GTK_RESPONSE_CANCEL);
 
     return TRUE;
-}
-
-static gboolean
-on_select_event (XAppIconChooserDialog *dialog,
-                 GdkEventAny           *event)
-{
-    XAppIconChooserDialogPrivate *priv;
-
-    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
-
-    if (priv->icon_string != NULL)
-    {
-        xapp_icon_chooser_dialog_close (dialog, GTK_RESPONSE_OK);
-    }
 }
 
 static void
