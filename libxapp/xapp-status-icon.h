@@ -31,12 +31,17 @@ struct _XAppStatusIconClass
     GObjectClass parent_class;
 };
 
+typedef GObject (*XAppNewObjectFunc)       (void);
+
+
 GType xapp_status_icon_get_type         (void);
+XAppStatusIcon *xapp_status_icon_new    (void);
 void  xapp_status_icon_set_name         (XAppStatusIcon *icon, const gchar *name);
 void  xapp_status_icon_set_icon_name    (XAppStatusIcon *icon, const gchar *icon_name);
 void  xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_text);
 void  xapp_status_icon_set_label        (XAppStatusIcon *icon, const gchar *label);
 void  xapp_status_icon_set_visible      (XAppStatusIcon *icon, const gboolean visible);
+void  xapp_status_icon_set_menu         (XAppStatusIcon *icon, GtkMenu *menu);
 
 G_END_DECLS
 

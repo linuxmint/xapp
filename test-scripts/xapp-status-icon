@@ -2,7 +2,7 @@
 
 import gi
 gi.require_version('XApp', '1.0')
-from gi.repository import XApp
+from gi.repository import XApp, Gtk, Gdk
 from gi.repository import GLib, GObject
 import sys
 
@@ -15,9 +15,19 @@ class App(GObject.Object):
         self.status_icon.set_icon_name("folder-symbolic")
         self.status_icon.set_tooltip_text("My tooltip text")
         self.status_icon.set_label("label 1")
+        self.status_icon.set_visible(True)
+
         self.counter = 1
         self.status_icon.connect("button-press-event", self.on_button_press)
         self.status_icon.connect("button-release-event", self.on_button_release)
+
+        self.menu = Gtk.Menu()
+        self.menu.append(Gtk.MenuItem.new_with_label("Engage the hyperdrive"))
+        self.menu.append(Gtk.SeparatorMenuItem())
+        self.menu.append(Gtk.MenuItem.new_with_label("It's a trap!"))
+        self.menu.show_all()
+
+        self.status_icon.set_menu(self.menu)
 
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
 
@@ -32,6 +42,19 @@ class App(GObject.Object):
 
     def on_button_release(self, status_icon, x, y, button, time, position_type):
         print("Mouse button %d was released at %d %d" % (button, x, y))
+        if button == 3:
+            def position_menu_cb(menu, pointer_x, pointer_y, user_data):
+                [x, y, position] = user_data;
+                if (position_type == Gtk.PositionType.BOTTOM):
+                    y = y - menu.get_allocation().height;
+                if (position_type == Gtk.PositionType.RIGHT):
+                    x = x - menu.get_allocation().width;
+                return (x, y, False)
+
+            device = Gdk.Display.get_default().get_device_manager().get_client_pointer()
+
+            self.menu.popup_for_device(device, None, None, position_menu_cb, [x, y, position_type], button, 0)
+        return False
 
 if __name__ == '__main__':
     app = App()

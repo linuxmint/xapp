@@ -24,6 +24,8 @@
     <xi:include href="xml/xapp-preferences-window.xml"/>
     <xi:include href="xml/xapp-stack-sidebar.xml"/>
     <xi:include href="xml/xapp-status-icon.xml"/>
+    <xi:include href="xml/xapp-status-icon-monitor.xml"/>
+    <xi:include href="xml/xapp-statusicon-interface.xml"/>
 
   </chapter>
   <chapter id="object-tree">
