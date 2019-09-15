@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <gdk/gdkx.h>
+// #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
 #include <glib/gi18n-lib.h>
@@ -160,6 +160,8 @@ popup_gtk_status_icon_with_menu (XAppStatusIcon *icon,
                     activate_time);
 }
 
+#define BUTTON_PRIMARY 1 // gtk2 doesn't have GDK_BUTTON_PRIMARY
+
 static void
 on_gtk_status_icon_activate (GtkStatusIcon *status_icon, gpointer user_data)
 {
@@ -173,12 +175,12 @@ on_gtk_status_icon_activate (GtkStatusIcon *status_icon, gpointer user_data)
 
         popup_gtk_status_icon_with_menu (icon,
                                          status_icon,
-                                         GDK_BUTTON_PRIMARY,
+                                         BUTTON_PRIMARY,
                                          gtk_get_current_event_time ());
     }
     else
     {
-        g_signal_emit (icon, signals[BUTTON_PRESS], 0, 0, 0, GDK_BUTTON_PRIMARY, gtk_get_current_event_time (), -1);
+        g_signal_emit (icon, signals[BUTTON_PRESS], 0, 0, 0, BUTTON_PRIMARY, gtk_get_current_event_time (), -1);
     }
 }
 
@@ -213,15 +215,24 @@ on_gtk_status_icon_popup_menu (GtkStatusIcon *status_icon, guint button, guint a
                                           &orientation))
         {
             GdkDisplay *display = gdk_screen_get_display (screen);
-            GdkMonitor *monitor;
             GdkRectangle mrect;
 
+#if GTK_MAJOR_VERSION == 2
+            gint monitor_idx;
+
+            monitor_idx = gdk_screen_get_monitor_at_point  (screen,
+                                                            irect.x + (irect.width / 2),
+                                                            irect.y + (irect.height / 2));
+
+            gdk_screen_get_monitor_geometry (screen, monitor_idx, &mrect);
+#else
+            GdkMonitor *monitor;
             monitor = gdk_display_get_monitor_at_point (display,
                                                         irect.x + (irect.width / 2),
                                                         irect.y + (irect.height / 2));
 
-            gdk_monitor_get_workarea (monitor, &mrect);
-
+            gdk_monitor_get_geometry (monitor, &mrect);
+#endif
             switch (orientation)
             {
                 case GTK_ORIENTATION_HORIZONTAL:
@@ -424,7 +435,7 @@ use_gtk_status_icon (XAppStatusIcon *self)
     g_debug ("XAppStatusIcon: falling back to GtkStatusIcon");
 
     tear_down_dbus (self);
-g_printerr ("??????\n");
+
     self->priv->gtk_status_icon = gtk_status_icon_new ();
 
     g_signal_connect (priv->gtk_status_icon, "activate", G_CALLBACK (on_gtk_status_icon_activate), self);

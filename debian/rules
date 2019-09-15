@@ -4,7 +4,7 @@
 # meson support is baked in
 
 %:
-	dh $@ --with=gir,python2,python3
+	dh $@ --with=gir
 
 override_dh_auto_configure:
 	mkdir -p debian/build
@@ -15,7 +15,8 @@ override_dh_auto_configure:
 		-D deprecated_warnings=false
 
 override_dh_strip:
-	dh_strip --dbg-package=libxapp-dbg
+	dh_strip -Xgtk2 --dbg-package=libxapp-dbg
+	dh_strip -Xxapp1 --dbg-package=libxapp-status-icon-gtk2-dbg
 
 override_dh_auto_build:
 	ninja -C debian/build

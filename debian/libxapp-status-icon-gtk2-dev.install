@@ -1,0 +1,5 @@
+usr/include/xapp-status-icon-gtk2/libxapp
+usr/lib/*/libxapp-status-icon-gtk2.so
+usr/lib/*/pkgconfig/xapp-status-icon-gtk2.pc
+usr/share/gir-1.0/XAppGtk2-1.0.gir
+

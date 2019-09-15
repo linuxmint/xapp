@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+import gi
+gi.require_version('AppIndicator3', '0.1')
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk, AppIndicator3
+from gi.repository import GLib, GObject
+import sys
+
+class App(GObject.Object):
+
+    def __init__(self):
+        super(App, self).__init__()
+        self.indicator = AppIndicator3.Indicator.new("xapp-status-icon-via-libappindicator",
+                                                       "info",
+                                                       AppIndicator3.IndicatorCategory.SYSTEM_SERVICES)
+        self.indicator.set_icon_full("info", "Everything is fine.")
+        self.indicator.set_label("AppIndicator3 1", "AppIndicator3 1000")
+        self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+        self.counter = 1
+
+        self.menu = Gtk.Menu()
+        self.menu.append(Gtk.MenuItem.new_with_label("Engage the hyperdrive"))
+        self.menu.append(Gtk.SeparatorMenuItem())
+        self.menu.append(Gtk.MenuItem.new_with_label("It's a trap!"))
+        self.menu.show_all()
+
+        self.indicator.set_menu(self.menu)
+
+        GLib.timeout_add_seconds(2, self.on_timeout_cb)
+
+    def on_timeout_cb(self):
+        self.counter += 1
+        self.indicator.set_label("AppIndicator3 %d" % self.counter, "AppIndicator3 1000")
+        return True
+
+if __name__ == '__main__':
+    app = App()
+    try:
+        GLib.MainLoop().run()
+    except KeyboardInterrupt:
+        pass
+    sys.exit(0)
