@@ -18,6 +18,7 @@ xapp_headers = [
     'xapp-preferences-window.h',
     'xapp-stack-sidebar.h',
     'xapp-status-icon.h',
+    'xapp-status-icon-monitor.h'
 ]
 
 xapp_sources = [
@@ -30,7 +31,35 @@ xapp_sources = [
     'xapp-preferences-window.c',
     'xapp-stack-sidebar.c',
     'xapp-status-icon.c',
+    'xapp-status-icon-monitor.c'
 ]
+
+codegen = find_program('g-codegen.py')
+
+dbus_headers = []
+
+# FIXME: Ugly workaround that simulates the generation of
+#        two different targets, so headers can be included
+#        explicitly for introspection.
+# 
+# This can be removed once all platforms use meson >=.46
+# and replaced with gnome.gdbus_codegen
+generated_sources = custom_target(
+    'xapp-statusicon-interface',
+    input: 'org.x.StatusIcon.xml',
+    output: ['xapp-statusicon-interface.h', 'xapp-statusicon-interface.c'],
+    command: [
+        codegen,
+        'org.x.StatusIcon',
+        'xapp-statusicon-interface',
+        'StatusIconInterface',
+        meson.current_build_dir(),
+        '@INPUT@', '@OUTPUT@'
+    ]
+)
+
+dbus_headers += generated_sources[0]
+xapp_sources += generated_sources[1]
 
 xapp_enums = gnome.mkenums('xapp-enums',
     sources : xapp_headers,
@@ -41,12 +70,12 @@ xapp_enums = gnome.mkenums('xapp-enums',
 )
 
 libxapp = library('xapp',
-    sources  : xapp_headers + xapp_sources + xapp_enums,
+    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers,
     include_directories: [top_inc],
     version: meson.project_version(),
     soversion: '1',
     dependencies: libdeps,
-    c_args: ['-Wno-declaration-after-statement'],
+    c_args: ['-Wno-declaration-after-statement', '-DG_LOG_DOMAIN="XApp"'],
     link_args: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', '-lm'],
     install: true
 )
@@ -59,13 +88,13 @@ libxapp_dep = declare_dependency(
     link_with: libxapp,
     include_directories: top_inc,
     dependencies: libdeps,
-    sources: [ xapp_headers ]
+    sources: [ xapp_headers, dbus_headers ]
 )
 
 gir = gnome.generate_gir(libxapp,
     namespace: 'XApp',
     nsversion: '1.0',
-    sources: xapp_headers + xapp_sources,
+    sources: xapp_headers + xapp_sources + dbus_headers,
     identifier_prefix: 'XApp',
     symbol_prefix: 'xapp_',
     includes: ['GObject-2.0', 'Gtk-3.0'],
