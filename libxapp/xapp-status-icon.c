@@ -424,7 +424,7 @@ use_gtk_status_icon (XAppStatusIcon *self)
     g_debug ("XAppStatusIcon: falling back to GtkStatusIcon");
 
     tear_down_dbus (self);
-g_printerr ("??????\n");
+
     self->priv->gtk_status_icon = gtk_status_icon_new ();
 
     g_signal_connect (priv->gtk_status_icon, "activate", G_CALLBACK (on_gtk_status_icon_activate), self);
