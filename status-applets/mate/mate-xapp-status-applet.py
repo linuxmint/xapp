@@ -20,6 +20,20 @@ gettext.install("xapp", "@locale@")
 locale.bindtextdomain("xapp", "@locale@")
 locale.textdomain("xapp")
 
+INDICATOR_BOX_BORDER = 2
+INDICATOR_BOX_BORDER_COMP = INDICATOR_BOX_BORDER + 1
+
+def translate_applet_orientation_to_xapp(mate_applet_orientation):
+    # wtf...mate panel's orientation is.. the direction to center of monitor?
+    if mate_applet_orientation == MatePanelApplet.AppletOrient.UP:
+        return Gtk.PositionType.BOTTOM
+    elif mate_applet_orientation == MatePanelApplet.AppletOrient.DOWN:
+        return Gtk.PositionType.TOP
+    elif mate_applet_orientation == MatePanelApplet.AppletOrient.LEFT:
+        return Gtk.PositionType.RIGHT
+    elif mate_applet_orientation == MatePanelApplet.AppletOrient.RIGHT:
+        return Gtk.PositionType.LEFT
+
 class StatusWidget(Gtk.EventBox):
     def __init__(self, icon, orientation, size):
         super(Gtk.EventBox, self).__init__(visible_window=False)
@@ -53,8 +67,14 @@ class StatusWidget(Gtk.EventBox):
 
         self.proxy.connect("notify::icon-name", self._on_icon_name_changed)
 
+        self.in_widget = False
+        self.plain_surface = None
+        self.saturated_surface = None
+
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
+        self.connect("enter-notify-event", self.on_enter_notify)
+        self.connect("leave-notify-event", self.on_leave_notify)
 
         self.update_orientation()
         self.update_icon()
@@ -86,21 +106,16 @@ class StatusWidget(Gtk.EventBox):
         try:
             if os.path.exists(string):
                 pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size (string, -1, pixbuf_size)
-                surf = Gdk.cairo_surface_create_from_pixbuf (pixbuf,
-                                                             scale,
-                                                             self.get_window())
 
-                self.image.set_from_surface(surf)
+                self.generate_surfs(pixbuf, scale)
                 return
             else:
                 if self.theme.has_icon(string):
-                    surf = self.theme.load_surface(string,
-                                                   size,
-                                                   scale,
-                                                   self.get_window(),
-                                                   Gtk.IconLookupFlags.FORCE_SIZE)
+                    pixbuf = self.theme.load_icon(string,
+                                                  pixbuf_size,
+                                                  Gtk.IconLookupFlags.FORCE_SIZE)
 
-                    self.image.set_from_surface(surf)
+                    self.generate_surfs(pixbuf, scale)
                     return
         except GLib.Error as e:
             print("MateXAppStatusApplet: Could not load icon '%s' for '%s': %s" % (string, self.proc_name, e.message))
@@ -110,23 +125,40 @@ class StatusWidget(Gtk.EventBox):
         #fallback
         self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
 
+    def generate_surfs(self, pixbuf, scale):
+        surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf,
+                                                        scale,
+                                                        self.get_window())
+
+        self.image.set_from_surface(surface)
+
+    # TODO?
+    def on_enter_notify(self, widget, event):
+        self.in_widget = True
+
+        return Gdk.EVENT_PROPAGATE
+
+    def on_leave_notify(self, widget, event):
+        self.in_widget = False
+
+        return Gdk.EVENT_PROPAGATE
+    # /TODO
+
     def on_button_press(self, widget, event):
-        orientation = self.translate_applet_orientation_to_xapp(self.orientation)
+        orientation = translate_applet_orientation_to_xapp(self.orientation)
 
         x, y = self.calc_menu_origin(widget, orientation)
-        time = event.time
-
         self.proxy.call_button_press(x, y, event.button, event.time, orientation, None, None)
-        return True
+
+        return Gdk.EVENT_STOP
 
     def on_button_release(self, widget, event):
-        orientation = self.translate_applet_orientation_to_xapp(self.orientation)
+        orientation = translate_applet_orientation_to_xapp(self.orientation)
 
         x, y = self.calc_menu_origin(widget, orientation)
-        time = event.time
-
         self.proxy.call_button_release(x, y, event.button, event.time, orientation, None, None)
-        return True
+
+        return Gdk.EVENT_STOP
 
     def calc_menu_origin(self, widget, orientation):
         alloc = widget.get_allocation()
@@ -136,32 +168,21 @@ class StatusWidget(Gtk.EventBox):
 
         if orientation == Gtk.PositionType.TOP:
             rx = x + alloc.x
-            ry = y + alloc.y + alloc.height
+            ry = y + alloc.y + alloc.height + INDICATOR_BOX_BORDER_COMP
         elif orientation == Gtk.PositionType.BOTTOM:
             rx = x + alloc.x
-            ry = y + alloc.y
+            ry = y + alloc.y - INDICATOR_BOX_BORDER_COMP
         elif orientation == Gtk.PositionType.LEFT:
-            rx = x + alloc.x + alloc.width
+            rx = x + alloc.x + alloc.width + INDICATOR_BOX_BORDER_COMP
             ry = y + alloc.y
         elif orientation == Gtk.PositionType.RIGHT:
-            rx = x + alloc.x
+            rx = x + alloc.x - INDICATOR_BOX_BORDER_COMP
             ry = y + alloc.y
         else:
-            rx = event.x
-            ry = event.y
+            rx = x
+            ry = y
 
         return rx, ry
-
-    def translate_applet_orientation_to_xapp(self, mate_applet_orientation):
-        # wtf...mate panel's orientation is.. the direction to center of monitor?
-        if mate_applet_orientation == MatePanelApplet.AppletOrient.UP:
-            return Gtk.PositionType.BOTTOM
-        elif mate_applet_orientation == MatePanelApplet.AppletOrient.DOWN:
-            return Gtk.PositionType.TOP
-        elif mate_applet_orientation == MatePanelApplet.AppletOrient.LEFT:
-            return Gtk.PositionType.RIGHT
-        elif mate_applet_orientation == MatePanelApplet.AppletOrient.RIGHT:
-            return Gtk.PositionType.LEFT
 
 class MateXAppStatusApplet(object):
     def __init__(self, applet, iid):
@@ -169,22 +190,26 @@ class MateXAppStatusApplet(object):
         self.applet.set_flags(MatePanelApplet.AppletFlags.EXPAND_MINOR)
         self.applet.set_can_focus(True)
 
+        self.applet.connect("realize", self.on_applet_realized)
+        self.applet.connect("destroy", self.on_applet_destroy)
+
+        self.indicators = {}
+        self.monitor = None
+
+    def on_applet_realized(self, widget, data=None):
         self.indicator_box = Gtk.Box(spacing=5,
-                                     border_width=2,
-                                     visible=True)
+                                     visible=True,
+                                     border_width=INDICATOR_BOX_BORDER)
 
         self.applet.add(self.indicator_box)
         self.applet.connect("change-size", self.on_applet_size_changed)
         self.applet.connect("change-orient", self.on_applet_orientation_changed)
-
-        self.indicators = {}
-
         self.update_orientation()
 
-        self.monitor = None
-        self.setup_monitor()
+        if not self.monitor:
+            self.setup_monitor()
 
-    def on_window_destroy(self, widget, data=None):
+    def on_applet_destroy(self, widget, data=None):
         self.destroy_monitor()
         Gtk.main_quit()
 
