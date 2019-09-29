@@ -10,7 +10,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("XApp", "1.0")
 gi.require_version('MatePanelApplet', '4.0')
-from gi.repository import Gtk, GdkPixbuf, Gdk, GObject, XApp, GLib, MatePanelApplet
+from gi.repository import Gtk, GdkPixbuf, Gdk, GObject, Gio, XApp, GLib, MatePanelApplet
 
 # Rename the process
 setproctitle.setproctitle('mate-xapp-status-applet')
@@ -20,8 +20,21 @@ gettext.install("xapp", "@locale@")
 locale.bindtextdomain("xapp", "@locale@")
 locale.textdomain("xapp")
 
-INDICATOR_BOX_BORDER = 2
+INDICATOR_BOX_BORDER = 1
 INDICATOR_BOX_BORDER_COMP = INDICATOR_BOX_BORDER + 1
+ICON_SIZE_REDUCTION = (INDICATOR_BOX_BORDER * 2)
+ICON_SPACING = 5
+VISIBLE_LABEL_MARGIN = 5 # When an icon has a label, add a margin between icon and label
+
+statusicon_css_string = """
+.statuswidget {
+    border: none;
+    padding-top: 0;
+    padding-left: 4px;
+    padding-bottom: 0;
+    padding-right: 4px;
+}
+"""
 
 def translate_applet_orientation_to_xapp(mate_applet_orientation):
     # wtf...mate panel's orientation is.. the direction to center of monitor?
@@ -34,12 +47,14 @@ def translate_applet_orientation_to_xapp(mate_applet_orientation):
     elif mate_applet_orientation == MatePanelApplet.AppletOrient.RIGHT:
         return Gtk.PositionType.LEFT
 
-class StatusWidget(Gtk.EventBox):
+class StatusWidget(Gtk.Button):
     def __init__(self, icon, orientation, size):
-        super(Gtk.EventBox, self).__init__(visible_window=False)
+        super(Gtk.Button, self).__init__()
         self.theme = Gtk.IconTheme.get_default()
         self.orientation = orientation
         self.size = size
+
+        self.get_style_context().add_class("statuswidget")
 
         self.proxy = icon
 
@@ -49,14 +64,13 @@ class StatusWidget(Gtk.EventBox):
         # this is (usually) the name of the remote process
         self.proc_name = self.proxy.props.name
 
-        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL,
-                           spacing=5)
+        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.image = Gtk.Image(hexpand=True)
         self.image.show()
         self.label = Gtk.Label(no_show_all=True)
         self.box.pack_start(self.image, False, False, 0)
-        self.box.add(self.label)
+        self.box.pack_start(self.label, False, False, 0)
         self.add(self.box)
 
         flags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
@@ -96,26 +110,33 @@ class StatusWidget(Gtk.EventBox):
             box_orientation = Gtk.Orientation.VERTICAL
 
         self.box.set_orientation(box_orientation)
-        self.label.set_visible(box_orientation == Gtk.Orientation.HORIZONTAL)
+
+        if len(self.label.props.label) > 0 and box_orientation == Gtk.Orientation.HORIZONTAL:
+            self.label.set_visible(True)
+            self.label.set_margin_start(VISIBLE_LABEL_MARGIN)
+        else:
+            self.label.set_visible(False)
+            self.label.set_margin_start(0)
 
     def set_icon(self, string):
-        size = self.size - 5
-        scale = self.get_scale_factor()
-        pixbuf_size = (size) * scale
+        size = self.size - ICON_SIZE_REDUCTION
+
+        # round down to even
+        if size % 2 != 0:
+            size -= 1
+
+        self.image.set_pixel_size(size)
 
         try:
             if os.path.exists(string):
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size (string, -1, pixbuf_size)
-
-                self.generate_surfs(pixbuf, scale)
+                icon_file = Gio.File.new_for_path(string)
+                icon = Gio.FileIcon.new(icon_file)
+                self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
                 return
             else:
                 if self.theme.has_icon(string):
-                    pixbuf = self.theme.load_icon(string,
-                                                  pixbuf_size,
-                                                  Gtk.IconLookupFlags.FORCE_SIZE)
-
-                    self.generate_surfs(pixbuf, scale)
+                    icon = Gio.ThemedIcon.new(string)
+                    self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
                     return
         except GLib.Error as e:
             print("MateXAppStatusApplet: Could not load icon '%s' for '%s': %s" % (string, self.proc_name, e.message))
@@ -124,13 +145,6 @@ class StatusWidget(Gtk.EventBox):
 
         #fallback
         self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
-
-    def generate_surfs(self, pixbuf, scale):
-        surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf,
-                                                        scale,
-                                                        self.get_window())
-
-        self.image.set_from_surface(surface)
 
     # TODO?
     def on_enter_notify(self, widget, event):
@@ -150,15 +164,24 @@ class StatusWidget(Gtk.EventBox):
         x, y = self.calc_menu_origin(widget, orientation)
         self.proxy.call_button_press(x, y, event.button, event.time, orientation, None, None)
 
-        return Gdk.EVENT_STOP
+        self.set_state_flags(Gtk.StateFlags.SELECTED, False)
+
+        if event.button == 3:
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
 
     def on_button_release(self, widget, event):
         orientation = translate_applet_orientation_to_xapp(self.orientation)
 
         x, y = self.calc_menu_origin(widget, orientation)
         self.proxy.call_button_release(x, y, event.button, event.time, orientation, None, None)
+        self.set_state_flags(Gtk.StateFlags.SELECTED, False)
 
-        return Gdk.EVENT_STOP
+        if event.button == 3:
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
 
     def calc_menu_origin(self, widget, orientation):
         alloc = widget.get_allocation()
@@ -188,7 +211,13 @@ class MateXAppStatusApplet(object):
     def __init__(self, applet, iid):
         self.applet = applet
         self.applet.set_flags(MatePanelApplet.AppletFlags.EXPAND_MINOR)
-        self.applet.set_can_focus(True)
+        self.applet.set_can_focus(False)
+        self.applet.set_background_widget(self.applet)
+
+        button_css = Gtk.CssProvider()
+
+        if button_css.load_from_data(statusicon_css_string.encode()):
+            Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), button_css, 600)
 
         self.applet.connect("realize", self.on_applet_realized)
         self.applet.connect("destroy", self.on_applet_destroy)
@@ -197,7 +226,7 @@ class MateXAppStatusApplet(object):
         self.monitor = None
 
     def on_applet_realized(self, widget, data=None):
-        self.indicator_box = Gtk.Box(spacing=5,
+        self.indicator_box = Gtk.Box(spacing=ICON_SPACING,
                                      visible=True,
                                      border_width=INDICATOR_BOX_BORDER)
 
@@ -231,11 +260,15 @@ class MateXAppStatusApplet(object):
         self.indicators[name] = StatusWidget(proxy, self.applet.get_orient(), self.applet.get_size())
         self.indicator_box.add(self.indicators[name])
 
+        self.sort_icons()
+
     def on_icon_removed(self, monitor, proxy):
         name = proxy.get_name()
 
         self.indicator_box.remove(self.indicators[name])
         del(self.indicators[name])
+
+        self.sort_icons()
 
     def update_orientation(self):
         self.on_applet_orientation_changed(self, self.applet.get_orient())
@@ -265,6 +298,23 @@ class MateXAppStatusApplet(object):
 
         self.indicator_box.set_orientation(box_orientation)
         self.indicator_box.queue_resize()
+
+    def sort_icons(self):
+        icon_list = list(self.indicators.values())
+
+        # for i in icon_list:
+        #     print("before: ", i.proxy.props.icon_name, i.proxy.props.name.lower())
+
+        icon_list.sort(key=lambda icon: icon.proxy.props.name.lower())
+        icon_list.sort(key=lambda icon: icon.proxy.props.icon_name.lower().endswith("symbolic"))
+
+        # for i in icon_list:
+        #     print("after: ", i.proxy.props.icon_name, i.proxy.props.name.lower())
+
+        icon_list.reverse()
+
+        for icon in icon_list:
+            self.indicator_box.reorder_child(icon, 0)
 
 def applet_factory(applet, iid, data):
     MateXAppStatusApplet(applet, iid)
