@@ -18,8 +18,6 @@ class App(GObject.Object):
         self.status_icon.set_visible(True)
 
         self.counter = 1
-        self.status_icon.connect("button-press-event", self.on_button_press)
-        self.status_icon.connect("button-release-event", self.on_button_release)
 
         self.menu = Gtk.Menu()
         self.menu.append(Gtk.MenuItem.new_with_label("Engage the hyperdrive"))
@@ -27,6 +25,12 @@ class App(GObject.Object):
         self.menu.append(Gtk.MenuItem.new_with_label("It's a trap!"))
         self.menu.show_all()
 
+        self.status_icon.connect("button-press-event", self.on_button_press)
+
+        # button-release is not needed when using set_menu.  Comment one and uncomment
+        # the other if you want to test the other behavior.
+
+        # self.status_icon.connect("button-release-event", self.on_button_release)
         self.status_icon.set_menu(self.menu)
 
         GLib.timeout_add_seconds(2, self.on_timeout_cb)

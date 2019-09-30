@@ -37,6 +37,13 @@ enum
 
 static guint signals[LAST_SIGNAL] = {0, };
 
+enum
+{
+    PROP_0,
+    PROP_MENU,
+    N_PROPERTIES
+};
+
 /**
  * SECTION:xapp-status-icon
  * @Short_description: Broadcasts status information over DBUS
@@ -47,7 +54,7 @@ static guint signals[LAST_SIGNAL] = {0, };
  * Gtk.StatusIcon widget.
  *
  * If used in an environment where no applet is handling XAppStatusIcons,
- * The XAppStatusIcon delegates its calls to a Gtk.StatusIcon.
+ * the XAppStatusIcon delegates its calls to a Gtk.StatusIcon.
  */
 struct _XAppStatusIconPrivate
 {
@@ -103,6 +110,71 @@ panel_position_to_str (GtkPositionType type)
     }
 }
 
+typedef struct {
+    gint    x;
+    gint    y;
+    gint    position;
+    guint32 t;
+} PositionData;
+
+static void
+position_menu_cb (GtkMenu  *menu,
+                  gint     *x,
+                  gint     *y,
+                  gboolean *push_in,
+                  gpointer  user_data)
+{
+    GtkAllocation alloc;
+    PositionData *position_data = (PositionData *) user_data;
+
+    *x = position_data->x;
+    *y = position_data->y;
+
+    gtk_widget_get_allocation (GTK_WIDGET (menu), &alloc);
+
+    switch (position_data->position) {
+        case GTK_POS_BOTTOM:
+            *y = *y - alloc.height;
+            break;
+        case GTK_POS_RIGHT:
+            *x = *x - alloc.width;
+            break;
+    }
+
+    *push_in = TRUE;
+}
+
+static void
+popup_native_icon_menu (XAppStatusIcon *self,
+                        gint            x,
+                        gint            y,
+                        guint           button,
+                        guint           _time,
+                        gint            panel_position)
+{
+    GdkDisplay *display;
+    GdkDevice *pointer;
+
+    g_debug ("XAppStatusIcon: Popup menu on behalf of application");
+
+    PositionData position_data = {
+        x, y, panel_position, _time
+    };
+
+    display = gdk_display_get_default ();
+    pointer = gdk_device_manager_get_client_pointer (gdk_display_get_device_manager (display));
+
+    gtk_menu_popup_for_device (GTK_MENU (self->priv->menu),
+                               pointer,
+                               NULL,
+                               NULL,
+                               position_menu_cb,
+                               &position_data,
+                               NULL,
+                               button,
+                               _time);
+}
+
 static gboolean
 handle_click_method (XAppStatusIconInterface *skeleton,
                      GDBusMethodInvocation   *invocation,
@@ -124,6 +196,11 @@ handle_click_method (XAppStatusIconInterface *skeleton,
 
         g_signal_emit (icon, signals[BUTTON_PRESS], 0, x, y, button, _time, panel_position);
 
+        if (button == GDK_BUTTON_PRIMARY)
+        {
+            g_signal_emit (icon, signals[ACTIVATE], 0);
+        }
+
         xapp_status_icon_interface_complete_button_press (skeleton,
                                                           invocation);
     }
@@ -136,6 +213,18 @@ handle_click_method (XAppStatusIconInterface *skeleton,
                  x, y, button, _time, panel_position_to_str (panel_position));
 
         g_signal_emit (icon, signals[BUTTON_RELEASE], 0, x, y, button, _time, panel_position);
+
+        if (button == GDK_BUTTON_SECONDARY)
+        {
+            if (icon->priv->menu)
+            {
+                popup_native_icon_menu (icon, x, y, button, _time, panel_position);
+            }
+            else
+            {
+                g_signal_emit (icon, signals[POPUP_MENU], 0, x, y, button, _time, panel_position);
+            }
+        }
 
         xapp_status_icon_interface_complete_button_release (skeleton,
                                                             invocation);
@@ -200,8 +289,8 @@ on_gtk_status_icon_popup_menu (GtkStatusIcon *status_icon, guint button, guint a
     {
         g_debug ("XAppStatusIcon: GtkStatusIcon popup menu with NO menu provided");
 
-        /* No menu provided, do our best to pass along good position info the app or appindicator 
-         * (if they're not using patched appindicator) */
+        /* No menu provided, do our best to pass along good position info to the app
+         * or appindicator (if they're not using patched appindicator). */
         GdkScreen *screen;
         GdkRectangle irect;
         GtkOrientation orientation;
@@ -610,6 +699,42 @@ refresh_icon (XAppStatusIcon *self)
 }
 
 static void
+xapp_status_icon_set_property (GObject    *object,
+                               guint       prop_id,
+                               const       GValue *value,
+                               GParamSpec *pspec)
+{
+    switch (prop_id)
+    {
+        case PROP_MENU:
+            xapp_status_icon_set_menu (XAPP_STATUS_ICON (object), g_value_get_object (value));
+            break;
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+            break;
+    }
+}
+
+static void
+xapp_status_icon_get_property (GObject    *object,
+                               guint       prop_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
+{
+    XAppStatusIcon *icon = XAPP_STATUS_ICON (object);
+
+    switch (prop_id)
+    {
+        case PROP_MENU:
+            g_value_set_object (value, icon->priv->menu);
+            break;
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+            break;
+    }
+}
+
+static void
 xapp_status_icon_init (XAppStatusIcon *self)
 {
     self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_STATUS_ICON, XAppStatusIconPrivate);
@@ -694,20 +819,44 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
 
     gobject_class->dispose = xapp_status_icon_dispose;
     gobject_class->finalize = xapp_status_icon_finalize;
+    gobject_class->set_property = xapp_status_icon_set_property;
+    gobject_class->get_property = xapp_status_icon_get_property;
 
     g_type_class_add_private (gobject_class, sizeof (XAppStatusIconPrivate));
 
-  /**
-   * XAppStatusIcon::button-press-event:
-   * @icon: The #XAppStatusIcon
-   * @x: The absolute x position to use for menu positioning
-   * @y: The absolute y position to use for menu positioning
-   * @button: The button that was pressed
-   * @time: The time supplied by the event, or 0
-   * @panel_position: The #GtkPositionType to use for menu positioning
-   *
-   * Gets emitted when there is a button press received from an applet
-   */
+    /**
+     * XAppStatusIcon:menu:
+     *
+     * A #GtkMenu to use when requested by the remote monitor.
+     *
+     * When this property is not %NULL, it is not necessary for the application
+     * to connect to the #XAppStatusIcon::button-release-event signal, and the
+     * #XAppStatusIcon::popup-menu signal will not be emitted. All menu positioning
+     * will be handled internally by #XAppStatusIcon.
+     *
+     * Setting this will remove any floating reference to the menu and assume ownership.
+     * As a result, it is not necessary to maintain a reference to it in the parent
+     * application (or unref it when finished with it - if you wish to replace the menu,
+     * simply call this method again with a new menu.
+     */
+    g_object_class_install_property (gobject_class, PROP_MENU,
+                                     g_param_spec_object ("menu",
+                                                          "Status icon menu",
+                                                          "The menu to use when the status icon is remotely requested",
+                                                           GTK_TYPE_WIDGET,
+                                                           G_PARAM_READWRITE));
+
+    /**
+     * XAppStatusIcon::button-press-event:
+     * @icon: The #XAppStatusIcon
+     * @x: The absolute x position to use for menu positioning
+     * @y: The absolute y position to use for menu positioning
+     * @button: The button that was pressed
+     * @time: The time supplied by the event, or 0
+     * @panel_position: The #GtkPositionType to use for menu positioning
+     *
+     * Gets emitted when there is a button press received from an applet
+     */
     signals[BUTTON_PRESS] =
         g_signal_new ("button-press-event",
                       XAPP_TYPE_STATUS_ICON,
@@ -716,17 +865,17 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
                       NULL, NULL, NULL,
                       G_TYPE_NONE, 5, G_TYPE_INT, G_TYPE_INT, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INT);
 
-  /**
-   * XAppStatusIcon::button-release-event:
-   * @icon: The #XAppStatusIcon
-   * @x: The absolute x position to use for menu positioning
-   * @y: The absolute y position to use for menu positioning
-   * @button: The button that was released
-   * @time: The time supplied by the event, or 0
-   * @panel_position: The #GtkPositionType to use for menu positioning
-   *
-   * Gets emitted when there is a button release received from an applet
-   */
+    /**
+     * XAppStatusIcon::button-release-event:
+     * @icon: The #XAppStatusIcon
+     * @x: The absolute x position to use for menu positioning
+     * @y: The absolute y position to use for menu positioning
+     * @button: The button that was released
+     * @time: The time supplied by the event, or 0
+     * @panel_position: The #GtkPositionType to use for menu positioning
+     *
+     * Gets emitted when there is a button release received from an applet
+     */
     signals[BUTTON_RELEASE] =
         g_signal_new ("button-release-event",
                       XAPP_TYPE_STATUS_ICON,
@@ -735,12 +884,12 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
                       NULL, NULL, NULL,
                       G_TYPE_NONE, 5, G_TYPE_INT, G_TYPE_INT, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INT);
 
-  /**
-   * XAppStatusIcon::activate:
-   * @icon: The #XAppStatusIcon
-   *
-   * Gets emitted when the user activates the status icon. 
-   */
+    /**
+     * XAppStatusIcon::activate:
+     * @icon: The #XAppStatusIcon
+     *
+     * Gets emitted when the user activates (left-click) the status icon.
+     */
     signals [ACTIVATE] =
         g_signal_new ("activate",
                       XAPP_TYPE_STATUS_ICON,
@@ -750,28 +899,26 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
                       G_TYPE_NONE,
                       0);
 
-  /**
-   * XAppStatusIcon::popup-menu:
-   * @icon: the #XAppStatusIcon
-   * @button: the button that was pressed, or 0 if the 
-   *   signal is not emitted in response to a button press event
-   * @activate_time: the timestamp of the event that
-   *   triggered the signal emission
-   *
-   * Gets emitted when the user brings up the context menu
-   * of the status icon.
-   *
-   */
+    /**
+     * XAppStatusIcon::popup-menu:
+     * @icon: the #XAppStatusIcon
+     * @x: The absolute x position to use for menu positioning
+     * @y: The absolute y position to use for menu positioning
+     * @button: The button that was released
+     * @time: The time supplied by the event, or 0
+     * @panel_position: The #GtkPositionType to use for menu positioning
+     *
+     * Gets emitted when a right-click is performed on a button-release-
+     * event.
+     *
+     */
     signals [POPUP_MENU] =
         g_signal_new ("popup-menu",
                       XAPP_TYPE_STATUS_ICON,
                       G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                       0,
                       NULL, NULL, NULL,
-                      G_TYPE_NONE,
-                      2,
-                      G_TYPE_UINT,
-                      G_TYPE_UINT);
+                      G_TYPE_NONE, 5, G_TYPE_INT, G_TYPE_INT, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INT);
 }
 
 /**
@@ -779,7 +926,7 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
  * @icon: a #XAppStatusIcon
  * @name: a name (this defaults to the name of the application, if not set)
  *
- * Sets the status icon name. This is now shown to users.
+ * Sets the status icon name. This is not shown to users.
  *
  * Since: 1.6
  */
@@ -808,7 +955,7 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
  * @icon: a #XAppStatusIcon
  * @icon_name: An icon name or absolute path to an icon.
  *
- * Sets the icon name or icon filename to use.
+ * Sets the icon name or local path to use.
  *
  * Since: 1.6
  */
@@ -916,9 +1063,9 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
 /**
  * xapp_status_icon_set_menu:
  * @icon: a #XAppStatusIcon
- * @menu: A #GtkMenu to display when requested
+ * @menu: (nullable): A #GtkMenu to display when requested
  *
- * Sets a menu that will be used when requested.
+ * See the #XAppStatusIcon:menu property for details
  *
  * Since: 1.6
  */
@@ -929,7 +1076,32 @@ xapp_status_icon_set_menu (XAppStatusIcon *icon,
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
 
     g_clear_object (&icon->priv->menu);
-    icon->priv->menu = GTK_WIDGET (g_object_ref (menu));
+
+    if (menu)
+    {
+        icon->priv->menu = GTK_WIDGET (g_object_ref_sink (menu));
+    }
+}
+
+/**
+ * xapp_status_icon_get_menu:
+ * @icon: a #XAppStatusIcon
+ *
+ * Returns a pointer to a #GtkMenu that was set previously.  If
+ * no menu was set, this returns %NULL.
+ *
+ * Returns: (transfer none): the #GtkMenu or %NULL if none was set.
+
+ * Since: 1.6
+ */
+void
+xapp_status_icon_get_menu (XAppStatusIcon *icon,
+                           GtkMenu        *menu)
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+
+    g_clear_object (&icon->priv->menu);
+    icon->priv->menu = GTK_WIDGET (g_object_ref_sink (menu));
 }
 
 /**
