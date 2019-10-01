@@ -10,6 +10,13 @@ i18n = import('i18n')
 cdata = configuration_data()
 cdata.set('GETTEXT_PACKAGE', '"xapp"')
 
+add_global_arguments([
+    '-Wunused',
+    '-Wimplicit-function-declaration'
+  ],
+  language: 'c'
+)
+
 if not get_option('deprecated_warnings')
   add_global_arguments([
       '-Wno-deprecated-declarations',

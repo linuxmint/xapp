@@ -76,7 +76,6 @@ on_proxy_name_owner_changed (GObject    *object,
                              gpointer    user_data)
 {
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
-    XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
     gchar *name_owner = NULL;
     gchar *proxy_name = NULL;
