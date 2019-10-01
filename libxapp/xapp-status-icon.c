@@ -56,7 +56,7 @@ enum
  * If used in an environment where no applet is handling XAppStatusIcons,
  * the XAppStatusIcon delegates its calls to a Gtk.StatusIcon.
  */
-struct _XAppStatusIconPrivate
+typedef struct
 {
     XAppStatusIconInterface *skeleton;
     GDBusConnection *connection;
@@ -76,9 +76,15 @@ struct _XAppStatusIconPrivate
     guint listener_id;
 
     gint fail_counter;
+} XAppStatusIconPrivate;
+
+struct _XAppStatusIcon
+{
+    GObject parent_instance;
+    XAppStatusIconPrivate *priv;
 };
 
-G_DEFINE_TYPE (XAppStatusIcon, xapp_status_icon, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (XAppStatusIcon, xapp_status_icon, G_TYPE_OBJECT)
 
 static void refresh_icon        (XAppStatusIcon *self);
 static void use_gtk_status_icon (XAppStatusIcon *self);
@@ -737,8 +743,11 @@ xapp_status_icon_get_property (GObject    *object,
 static void
 xapp_status_icon_init (XAppStatusIcon *self)
 {
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_STATUS_ICON, XAppStatusIconPrivate);
+    self->priv = xapp_status_icon_get_instance_private (self);
+
     self->priv->name = g_strdup_printf("%s", g_get_application_name());
+
+    g_debug ("XAppStatusIcon: init: application name: '%s'", self->priv->name);
 
     // Default to visible (the same behavior as GtkStatusIcon)
     self->priv->visible = TRUE;
@@ -782,6 +791,7 @@ xapp_status_icon_dispose (GObject *object)
     g_free (self->priv->label);
 
     g_clear_pointer (&self->priv->cancellable, g_cancellable_cancel);
+    g_clear_object (&self->priv->menu);
 
     if (self->priv->gtk_status_icon != NULL)
     {
@@ -821,8 +831,6 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
     gobject_class->finalize = xapp_status_icon_finalize;
     gobject_class->set_property = xapp_status_icon_set_property;
     gobject_class->get_property = xapp_status_icon_get_property;
-
-    g_type_class_add_private (gobject_class, sizeof (XAppStatusIconPrivate));
 
     /**
      * XAppStatusIcon:menu:
@@ -1062,7 +1070,7 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
 
 /**
  * xapp_status_icon_set_menu:
- * @icon: a #XAppStatusIcon
+ * @icon: an #XAppStatusIcon
  * @menu: (nullable): A #GtkMenu to display when requested
  *
  * See the #XAppStatusIcon:menu property for details
@@ -1077,6 +1085,8 @@ xapp_status_icon_set_menu (XAppStatusIcon *icon,
 
     g_clear_object (&icon->priv->menu);
 
+    g_debug ("XAppStatusIcon set_menu: %p", menu);
+
     if (menu)
     {
         icon->priv->menu = GTK_WIDGET (g_object_ref_sink (menu));
@@ -1085,7 +1095,7 @@ xapp_status_icon_set_menu (XAppStatusIcon *icon,
 
 /**
  * xapp_status_icon_get_menu:
- * @icon: a #XAppStatusIcon
+ * @icon: an #XAppStatusIcon
  *
  * Returns a pointer to a #GtkMenu that was set previously.  If
  * no menu was set, this returns %NULL.
@@ -1094,14 +1104,14 @@ xapp_status_icon_set_menu (XAppStatusIcon *icon,
 
  * Since: 1.6
  */
-void
-xapp_status_icon_get_menu (XAppStatusIcon *icon,
-                           GtkMenu        *menu)
+GtkWidget *
+xapp_status_icon_get_menu (XAppStatusIcon *icon)
 {
-    g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+    g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), NULL);
 
-    g_clear_object (&icon->priv->menu);
-    icon->priv->menu = GTK_WIDGET (g_object_ref_sink (menu));
+    g_debug ("XAppStatusIcon get_menu: %p", icon->priv->menu);
+
+    return icon->priv->menu;
 }
 
 /**

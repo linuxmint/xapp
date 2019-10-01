@@ -9,32 +9,9 @@
 G_BEGIN_DECLS
 
 #define XAPP_TYPE_STATUS_ICON            (xapp_status_icon_get_type ())
-#define XAPP_STATUS_ICON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), XAPP_TYPE_STATUS_ICON, XAppStatusIcon))
-#define XAPP_STATUS_ICON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  XAPP_TYPE_STATUS_ICON, XAppStatusIconClass))
-#define XAPP_IS_STATUS_ICON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), XAPP_TYPE_STATUS_ICON))
-#define XAPP_IS_STATUS_ICON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  XAPP_TYPE_STATUS_ICON))
-#define XAPP_STATUS_ICON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  XAPP_TYPE_STATUS_ICON, XAppStatusIconClass))
 
-typedef struct _XAppStatusIconPrivate XAppStatusIconPrivate;
-typedef struct _XAppStatusIcon XAppStatusIcon;
-typedef struct _XAppStatusIconClass XAppStatusIconClass;
+G_DECLARE_FINAL_TYPE (XAppStatusIcon, xapp_status_icon, XAPP, STATUS_ICON, GObject)
 
-struct _XAppStatusIcon
-{
-    GObject parent_object;
-
-    XAppStatusIconPrivate *priv;
-};
-
-struct _XAppStatusIconClass
-{
-    GObjectClass parent_class;
-};
-
-typedef GObject (*XAppNewObjectFunc)       (void);
-
-
-GType xapp_status_icon_get_type         (void);
 XAppStatusIcon *xapp_status_icon_new    (void);
 void  xapp_status_icon_set_name         (XAppStatusIcon *icon, const gchar *name);
 void  xapp_status_icon_set_icon_name    (XAppStatusIcon *icon, const gchar *icon_name);
@@ -42,6 +19,7 @@ void  xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tool
 void  xapp_status_icon_set_label        (XAppStatusIcon *icon, const gchar *label);
 void  xapp_status_icon_set_visible      (XAppStatusIcon *icon, const gboolean visible);
 void  xapp_status_icon_set_menu         (XAppStatusIcon *icon, GtkMenu *menu);
+GtkWidget  *xapp_status_icon_get_menu   (XAppStatusIcon *icon);
 
 G_END_DECLS
 
