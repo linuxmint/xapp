@@ -273,6 +273,7 @@ on_gtk_status_icon_activate (GtkStatusIcon *status_icon, gpointer user_data)
     }
     else
     {
+        g_signal_emit (icon, signals[ACTIVATE], 0);
         g_signal_emit (icon, signals[BUTTON_PRESS], 0, 0, 0, GDK_BUTTON_PRIMARY, gtk_get_current_event_time (), -1);
     }
 }
