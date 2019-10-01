@@ -16,6 +16,10 @@ This project is still relatively new though and we can't yet commit to a stable 
 
 You are welcome to use libxapp or xapps-common in your application, but if you do, please make sure to tell us, so that we can communicate with you going forward about any potential changes.
 
+# API Reference
+
+http://developer.linuxmint.com/xapps/reference/index.html
+
 ## XAppMonitorBlanker
 
 XAppMonitorBlanker is used to blank other monitors. It takes a window as an argument and blanks all the monitors but the one where the window is located.
