@@ -1,0 +1,4 @@
+<!ENTITY package_bugreport "@PACKAGE_BUGREPORT@">
+<!ENTITY package_url "@PACKAGE_URL@">
+<!ENTITY package_version "@PACKAGE_VERSION@">
+<!ENTITY abi_version "@XAPP_ABI_VERSION@">
