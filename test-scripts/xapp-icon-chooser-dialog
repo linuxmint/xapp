@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    dialog = XApp.IconChooserDialog(allow_paths=args.paths)
+    dialog = XApp.IconChooserDialog(allow_paths=args.paths, default_icon='folder')
     dialog.set_skip_taskbar_hint(False)
     if args.category:
         response = dialog.run_with_category(args.category)
