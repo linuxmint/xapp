@@ -1,0 +1,13 @@
+[Applet Factory]
+Id=MateXAppStatusAppletFactory
+InProcess=false
+Location=@libexec@/xapps/mate-xapp-status-applet.py
+Name=XAppStatusApplet Factory
+Description=DBus-based status icon panel applet
+
+[MateXAppStatusApplet]
+Name=Mate XApp Status Applet
+Description=DBus-based status icon panel applet
+Icon=panel-applets
+MateComponentId=OAFIID:MATE_MateXAppStatusApplet;
+
