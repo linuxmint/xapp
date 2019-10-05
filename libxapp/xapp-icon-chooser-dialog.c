@@ -1500,6 +1500,13 @@ load_icons_for_category (XAppIconChooserDialog *dialog,
                 GtkIconInfo              *info;
 
                 info = gtk_icon_theme_lookup_icon (theme, name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
+                if (info == NULL)
+                {
+                    // this shouldn't be the case most of the time, but if a custom category is defined it's possible
+                    // the icon doesn't exist. In that case it's best to just skip over it since trying to load it will
+                    // lead to a segfault.
+                    continue;
+                }
                 gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
             }
         }
