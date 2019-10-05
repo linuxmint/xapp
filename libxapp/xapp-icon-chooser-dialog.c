@@ -33,7 +33,6 @@ typedef struct
 {
     GtkResponseType  response;
     XAppIconSize     icon_size;
-    GtkListStore    *category_list;
     GtkListStore    *search_icon_store;
     GFileEnumerator *search_file_enumerator;
     GCancellable    *cancellable;
@@ -1064,7 +1063,7 @@ load_next_file_search_chunk (gpointer user_data)
 
     callback_info = (FileIconInfoLoadCallbackInfo*) user_data;
     priv = xapp_icon_chooser_dialog_get_instance_private (callback_info->dialog);
-   
+
     if (g_cancellable_is_cancelled (callback_info->cancellable))
     {
         free_file_info (callback_info);
@@ -1089,7 +1088,7 @@ load_next_category_chunk (gpointer user_data)
 
     callback_info = (NamedIconInfoLoadCallbackInfo*) user_data;
     priv = xapp_icon_chooser_dialog_get_instance_private (callback_info->dialog);
-   
+
     if (g_cancellable_is_cancelled (callback_info->cancellable))
     {
         free_named_info (callback_info);
@@ -1121,7 +1120,7 @@ load_next_name_search_chunk (gpointer user_data)
 
         return G_SOURCE_REMOVE;
     }
-   
+
     search_icon_name (callback_info->dialog,
                       priv->current_text,
                       priv->search_icon_store);
@@ -1381,7 +1380,7 @@ load_icons_for_category (XAppIconChooserDialog *dialog,
                 GtkIconInfo              *info;
 
                 info = gtk_icon_theme_lookup_icon (theme, name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
-                gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);    
+                gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
             }
         }
         else
@@ -1648,7 +1647,7 @@ search_icon_name (XAppIconChooserDialog *dialog,
                     info = gtk_icon_theme_lookup_icon (theme, name, priv->icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
                     gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
                 }
-                
+
                 chunk_count++;
             }
         }
