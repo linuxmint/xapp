@@ -43,6 +43,7 @@ typedef struct
     GtkWidget       *search_bar;
     GtkWidget       *icon_view;
     GtkWidget       *list_box;
+    GtkWidget       *default_button;
     GtkWidget       *select_button;
     GtkWidget       *browse_button;
     GtkWidget       *action_area;
@@ -51,6 +52,7 @@ typedef struct
     gchar           *current_text;
     gulong           search_changed_id;
     gboolean         allow_paths;
+    gchar           *default_icon;
     IconCategoryInfo *current_category;
 } XAppIconChooserDialogPrivate;
 
@@ -133,6 +135,7 @@ enum
     PROP_0,
     PROP_ICON_SIZE,
     PROP_ALLOW_PATHS,
+    PROP_DEFAULT_ICON,
     N_PROPERTIES
 };
 
@@ -171,6 +174,9 @@ static void on_select_button_clicked (GtkButton *button,
 
 static void on_cancel_button_clicked (GtkButton *button,
                                       gpointer   user_data);
+
+static gboolean on_default_button_clicked (GtkButton *button,
+                                           gpointer   user_data);
 
 static gboolean on_search_bar_key_pressed (GtkWidget *widget,
                                            GdkEvent  *event,
@@ -312,6 +318,9 @@ xapp_icon_chooser_dialog_get_property (GObject    *object,
         case PROP_ALLOW_PATHS:
             g_value_set_boolean (value, priv->allow_paths);
             break;
+        case PROP_DEFAULT_ICON:
+            g_value_set_string (value, xapp_icon_chooser_dialog_get_default_icon(dialog));
+            break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -348,6 +357,9 @@ xapp_icon_chooser_dialog_set_property (GObject      *object,
                 gtk_widget_set_no_show_all (priv->browse_button, TRUE);
             }
             break;
+        case PROP_DEFAULT_ICON:
+            xapp_icon_chooser_dialog_set_default_icon (dialog, g_value_get_string (value));
+            break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -376,6 +388,7 @@ xapp_icon_chooser_dialog_dispose (GObject *object)
     }
 
     g_clear_pointer (&priv->icon_string, g_free);
+    g_clear_pointer (&priv->default_icon, g_free);
     g_clear_pointer (&priv->current_text, g_free);
     g_clear_object (&priv->cancellable);
 
@@ -544,6 +557,16 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
 
     button_size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
+    priv->default_button = gtk_button_new_with_label (_("Default"));
+    gtk_widget_set_no_show_all (priv->default_button, TRUE);
+    style = gtk_widget_get_style_context (GTK_WIDGET (priv->default_button));
+    gtk_style_context_add_class (style, "text-button");
+    gtk_size_group_add_widget (button_size_group, priv->default_button);
+    gtk_action_bar_pack_start (GTK_ACTION_BAR (button_area), priv->default_button);
+
+    g_signal_connect (priv->default_button, "clicked",
+                      G_CALLBACK (on_default_button_clicked), dialog);
+
     priv->select_button = gtk_button_new_with_label (_("Select"));
     style = gtk_widget_get_style_context (GTK_WIDGET (priv->select_button));
     gtk_style_context_add_class (style, "text-button");
@@ -604,6 +627,18 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
                               _("Whether to allow paths."),
                               TRUE,
                               G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+    /**
+     * XAppIconChooserDialog:default-icon:
+     *
+     * The icon to use by default.
+     */
+    obj_properties[PROP_DEFAULT_ICON] =
+        g_param_spec_string ("default-icon",
+                             _("Default Icon"),
+                             _("The icon to use by default"),
+                             NULL,
+                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, obj_properties);
 
@@ -757,6 +792,49 @@ xapp_icon_chooser_dialog_run_with_category (XAppIconChooserDialog *dialog,
     gtk_main ();
 
     return priv->response;
+}
+
+/**
+ * xapp_icon_chooser_dialog_get_default_icon:
+ *
+ * Returns the default icon (if set).
+ *
+ * Returns: (transfer full): the default icon, or NULL if none is set
+ */
+gchar *
+xapp_icon_chooser_dialog_get_default_icon (XAppIconChooserDialog *dialog)
+{
+    XAppIconChooserDialogPrivate *priv;
+
+    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
+
+    return g_strdup(priv->default_icon);
+}
+
+/**
+ * xapp_icon_chooser_dialog_set_default_icon:
+ * @icon: the default icon, or NULL to unset
+ *
+ * Sets the default icon. If @icon is not NULL, a button will be shown that
+ * will reset the dialog to it's default value.
+ */
+void
+xapp_icon_chooser_dialog_set_default_icon (XAppIconChooserDialog *dialog,
+                                           const gchar           *icon)
+{
+    XAppIconChooserDialogPrivate *priv;
+
+    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
+
+    priv->default_icon = g_strdup (icon);
+    if (icon == NULL)
+    {
+        gtk_widget_hide (priv->default_button);
+    }
+    else
+    {
+        gtk_widget_show (priv->default_button);
+    }
 }
 
 /**
@@ -1888,4 +1966,16 @@ on_search_bar_key_pressed (GtkWidget *widget,
     }
 
     return FALSE;
+}
+
+static gboolean
+on_default_button_clicked (GtkButton *button,
+                           gpointer   user_data)
+{
+    XAppIconChooserDialogPrivate *priv;
+
+    priv = xapp_icon_chooser_dialog_get_instance_private (user_data);
+
+    gtk_entry_set_text (GTK_ENTRY (priv->search_bar), priv->default_icon);
+
 }

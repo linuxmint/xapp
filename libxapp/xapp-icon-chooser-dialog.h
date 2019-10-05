@@ -38,6 +38,11 @@ void                        xapp_icon_chooser_dialog_add_button         (XAppIco
                                                                          GtkWidget             *button,
                                                                          GtkPackType            packing,
                                                                          GtkResponseType        response_id);
+
+gchar *                     xapp_icon_chooser_dialog_get_default_icon  (XAppIconChooserDialog *dialog);
+void                        xapp_icon_chooser_dialog_set_default_icon  (XAppIconChooserDialog *dialog,
+                                                                        const gchar           *icon);
+
 G_END_DECLS
 
 #endif /* _XAPP_ICON_CHOOSER_DIALOG_H_ */
