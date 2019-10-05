@@ -43,6 +43,10 @@ gchar *                     xapp_icon_chooser_dialog_get_default_icon  (XAppIcon
 void                        xapp_icon_chooser_dialog_set_default_icon  (XAppIconChooserDialog *dialog,
                                                                         const gchar           *icon);
 
+void                        xapp_icon_chooser_dialog_add_custom_category   (XAppIconChooserDialog *dialog,
+                                                                            const gchar           *name,
+                                                                            GList                 *icons);
+
 G_END_DECLS
 
 #endif /* _XAPP_ICON_CHOOSER_DIALOG_H_ */

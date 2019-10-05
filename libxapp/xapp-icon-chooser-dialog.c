@@ -838,6 +838,48 @@ xapp_icon_chooser_dialog_set_default_icon (XAppIconChooserDialog *dialog,
 }
 
 /**
+ * xapp_icon_chooser_dialog_add_custom_category:
+ * @dialog: a #XAppIconChooserDialog
+ * @name: the name of the category as it will be displayed in the category list
+ * @icons: (transfer full) (element-type utf8): a list of icon names to add to the new category
+ *
+ * Adds a custom category to the dialog.
+ */
+void
+xapp_icon_chooser_dialog_add_custom_category   (XAppIconChooserDialog *dialog,
+                                                const gchar           *name,
+                                                GList                 *icons)
+{
+    XAppIconChooserDialogPrivate *priv;
+    IconCategoryInfo        *category_info;
+    GtkWidget               *row;
+    GtkWidget               *label;
+
+    priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
+
+    category_info = g_new0 (IconCategoryInfo, 1);
+    category_info->name = name;
+    category_info->icons = icons;
+
+    category_info->model = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, GDK_TYPE_PIXBUF);
+    g_signal_connect (category_info->model, "row-inserted",
+                      G_CALLBACK (on_icon_store_icons_added), dialog);
+
+    category_info->icons = g_list_sort (category_info->icons, (GCompareFunc) g_utf8_collate);
+
+    row = gtk_list_box_row_new ();
+    label = gtk_label_new (category_info->name);
+    gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+    gtk_widget_set_margin_start (GTK_WIDGET (label), 6);
+    gtk_widget_set_margin_end (GTK_WIDGET (label), 6);
+
+    gtk_container_add (GTK_CONTAINER (row), label);
+    gtk_container_add (GTK_CONTAINER (priv->list_box), row);
+
+    g_hash_table_insert (priv->categories, row, category_info);
+}
+
+/**
  * xapp_icon_chooser_dialog_get_icon_string:
  * @dialog: a #XAppIconChooserDialog
  *
