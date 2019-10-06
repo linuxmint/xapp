@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+
+import gi
+gi.require_version('XApp', '1.0')
+from gi.repository import XApp, Gtk, Gdk
+from gi.repository import GLib, GObject
+import sys
+
+"""
+This variant tests behavior of giving primary and secondary menus to the StatusIcon instance.
+The instance handles all menu-related things internally.  There is no activation signal.
+"""
+
+class App(GObject.Object):
+
+    def __init__(self):
+        super(App, self).__init__()
+        self.status_icon = XApp.StatusIcon()
+
+        self.status_icon.set_icon_name("folder-symbolic")
+        self.status_icon.set_tooltip_text("Testing primary and secondary menus")
+        self.status_icon.set_label("label 1")
+        self.status_icon.set_visible(True)
+
+        self.counter = 1
+
+        menu = Gtk.Menu()
+        menu.append(Gtk.MenuItem.new_with_label("Engage the hyperdrive"))
+        menu.append(Gtk.SeparatorMenuItem())
+        menu.append(Gtk.MenuItem.new_with_label("It's a trap!"))
+        menu.show_all()
+
+        self.status_icon.set_primary_menu(menu)
+
+        menu = Gtk.Menu()
+        menu.append(Gtk.MenuItem.new_with_label("Hi, secondary menu here!"))
+        menu.append(Gtk.SeparatorMenuItem())
+        menu.append(Gtk.MenuItem.new_with_label("Help me!"))
+        menu.show_all()
+
+        self.status_icon.set_secondary_menu(menu)
+
+        GLib.timeout_add_seconds(2, self.on_timeout_cb)
+
+    def on_timeout_cb(self):
+        self.counter += 1
+        self.status_icon.set_label("label %d" % self.counter)
+        return True
+
+if __name__ == '__main__':
+    GLib.setenv ("G_MESSAGES_DEBUG", "all", True)
+    app = App()
+    try:
+        GLib.MainLoop().run()
+    except KeyboardInterrupt:
+        pass
+    sys.exit(0)

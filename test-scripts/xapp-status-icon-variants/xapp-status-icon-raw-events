@@ -6,14 +6,19 @@ from gi.repository import XApp, Gtk, Gdk
 from gi.repository import GLib, GObject
 import sys
 
+"""
+This variant tests button-press-event and button-release-event with no menus assigned -
+it must do all menu handling itself.
+"""
+
 class App(GObject.Object):
 
     def __init__(self):
         super(App, self).__init__()
         self.status_icon = XApp.StatusIcon()
-        #self.status_icon.set_name("xapp-status-icon") # optional, defaults to program name, not shown to users
+
         self.status_icon.set_icon_name("folder-symbolic")
-        self.status_icon.set_tooltip_text("My tooltip text")
+        self.status_icon.set_tooltip_text("Testing raw button press and release events")
         self.status_icon.set_label("label 1")
         self.status_icon.set_visible(True)
 
@@ -26,23 +31,19 @@ class App(GObject.Object):
         self.menu.show_all()
 
         self.status_icon.connect("button-press-event", self.on_button_press)
-
-        # button-release is not needed when using set_menu.  Comment one and uncomment
-        # the other if you want to test the other behavior.
-
-        # self.status_icon.connect("button-release-event", self.on_button_release)
-        self.status_icon.set_menu(self.menu)
+        self.status_icon.connect("button-release-event", self.on_button_release)
 
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
 
     def on_timeout_cb(self):
         self.counter += 1
         self.status_icon.set_label("label %d" % self.counter)
-        # self.status_icon.set_visible((self.counter % 2) == 0)
         return True
 
     def on_button_press(self, status_icon, x, y, button, time, position_type):
         print("Mouse button %d was pressed at %d %d" % (button, x, y))
+        self.counter = 0
+        self.status_icon.set_label("label %d" % self.counter)
 
     def on_button_release(self, status_icon, x, y, button, time, position_type):
         print("Mouse button %d was released at %d %d" % (button, x, y))
@@ -58,9 +59,9 @@ class App(GObject.Object):
             device = Gdk.Display.get_default().get_device_manager().get_client_pointer()
 
             self.menu.popup_for_device(device, None, None, position_menu_cb, [x, y, position_type], button, 0)
-        return False
 
 if __name__ == '__main__':
+    GLib.setenv ("G_MESSAGES_DEBUG", "all", True)
     app = App()
     try:
         GLib.MainLoop().run()

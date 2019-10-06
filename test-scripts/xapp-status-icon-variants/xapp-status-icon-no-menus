@@ -1,0 +1,48 @@
+#!/usr/bin/python3
+
+import gi
+gi.require_version('XApp', '1.0')
+from gi.repository import XApp, Gtk, Gdk
+from gi.repository import GLib, GObject
+import sys
+
+"""
+This variant tests behavior of providing no menus to the StatusIcon instance.
+This results in 'activate' signals being sent for all button presses.
+"""
+
+class App(GObject.Object):
+
+    def __init__(self):
+        super(App, self).__init__()
+        self.status_icon = XApp.StatusIcon()
+
+        self.status_icon.set_icon_name("folder-symbolic")
+        self.status_icon.set_tooltip_text("Testing primary activate and secondary menu")
+        self.status_icon.set_label("label 1")
+        self.status_icon.set_visible(True)
+
+        self.counter = 1
+
+        self.status_icon.connect("activate", self.on_status_icon_activate)
+
+        GLib.timeout_add_seconds(2, self.on_timeout_cb)
+
+    def on_timeout_cb(self):
+        self.counter += 1
+        self.status_icon.set_label("label %d" % self.counter)
+        return True
+
+    def on_status_icon_activate(self, icon, button, time):
+        print("Activated via button %d" % button)
+        self.counter = 0
+        self.status_icon.set_label("label %d" % self.counter)
+
+if __name__ == '__main__':
+    GLib.setenv ("G_MESSAGES_DEBUG", "all", True)
+    app = App()
+    try:
+        GLib.MainLoop().run()
+    except KeyboardInterrupt:
+        pass
+    sys.exit(0)
