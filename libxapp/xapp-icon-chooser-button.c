@@ -21,6 +21,7 @@ typedef struct
     XAppIconChooserDialog   *dialog;
     GtkIconSize              icon_size;
     gchar                   *icon_string;
+    gchar                   *category_string;
 } XAppIconChooserButtonPrivate;
 
 struct _XAppIconChooserButton
@@ -33,6 +34,7 @@ enum
     PROP_0,
     PROP_ICON_SIZE,
     PROP_ICON,
+    PROP_CATEGORY,
     N_PROPERTIES
 };
 
@@ -70,13 +72,17 @@ on_clicked (GtkButton *button)
     gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (toplevel));
     gtk_window_set_modal (GTK_WINDOW (priv->dialog), gtk_window_get_modal (GTK_WINDOW (toplevel)));
 
-    if (priv->icon_string == NULL)
+    if (priv->category_string)
     {
-        response = xapp_icon_chooser_dialog_run (priv->dialog);
+        response = xapp_icon_chooser_dialog_run_with_category (priv->dialog, priv->category_string);
+    }
+    else if (priv->icon_string)
+    {
+        response = xapp_icon_chooser_dialog_run_with_icon (priv->dialog, priv->icon_string);
     }
     else
     {
-        response = xapp_icon_chooser_dialog_run_with_icon (priv->dialog, priv->icon_string);
+        response = xapp_icon_chooser_dialog_run (priv->dialog);
     }
 
     if (response == GTK_RESPONSE_OK)
@@ -108,6 +114,9 @@ xapp_icon_chooser_button_get_property (GObject    *object,
         case PROP_ICON:
             g_value_set_string (value, priv->icon_string);
             break;
+        case PROP_CATEGORY:
+            g_value_set_string (value, priv->category_string);
+            break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -131,6 +140,9 @@ xapp_icon_chooser_button_set_property (GObject      *object,
             break;
         case PROP_ICON:
             xapp_icon_chooser_button_set_icon (button, g_value_get_string (value));
+            break;
+        case PROP_CATEGORY:
+            xapp_icon_chooser_button_set_default_category (button, g_value_get_string (value));
             break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -193,6 +205,18 @@ xapp_icon_chooser_button_class_init (XAppIconChooserButtonClass *klass)
         g_param_spec_string ("icon",
                              _("Icon"),
                              _("The string representing the icon."),
+                             "",
+                             G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+    /**
+     * XAppIconChooserButton:category:
+     *
+     * The category selected by default.
+     */
+    obj_properties[PROP_CATEGORY] =
+        g_param_spec_string ("category",
+                             _("Category"),
+                             _("The default category."),
                              "",
                              G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -341,6 +365,29 @@ xapp_icon_chooser_button_set_icon (XAppIconChooserButton *button,
     }
 
     g_object_notify (G_OBJECT (button), "icon");
+}
+
+/**
+ * xapp_icon_chooser_button_set_default_category:
+ * @button: a #XAppIconChooserButton
+ * @category: (nullable): a string representing the category selected by default.
+ *
+ * Sets the icon on the #XAppIconChooserButton.
+ */
+void
+xapp_icon_chooser_button_set_default_category (XAppIconChooserButton *button,
+                                               const gchar           *category)
+{
+    XAppIconChooserButtonPrivate *priv;
+
+    priv = xapp_icon_chooser_button_get_instance_private (button);
+
+    if (priv->category_string != NULL)
+    {
+        g_free (priv->category_string);
+    }
+
+    priv->category_string = g_strdup (category);
 }
 
 /**
