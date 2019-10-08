@@ -22,6 +22,9 @@ void                      xapp_icon_chooser_button_set_icon_size         (XAppIc
 void                      xapp_icon_chooser_button_set_icon              (XAppIconChooserButton *button,
                                                                           const gchar           *icon);
 
+void                      xapp_icon_chooser_button_set_default_category  (XAppIconChooserButton *button,
+                                                                          const gchar           *category);
+
 const gchar*              xapp_icon_chooser_button_get_icon              (XAppIconChooserButton *button);
 XAppIconChooserDialog *   xapp_icon_chooser_button_get_dialog            (XAppIconChooserButton *button);
 
