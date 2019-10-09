@@ -150,6 +150,21 @@ xapp_icon_chooser_button_set_property (GObject      *object,
     }
 }
 
+void
+xapp_icon_chooser_button_dispose (GObject *object)
+{
+    XAppIconChooserButtonPrivate *priv;
+
+    priv = xapp_icon_chooser_button_get_instance_private (XAPP_ICON_CHOOSER_BUTTON (object));
+
+    g_clear_pointer (&priv->icon_string, g_free);
+    g_clear_pointer (&priv->category_string, g_free);
+
+    g_clear_object (&priv->dialog);
+
+    G_OBJECT_CLASS (xapp_icon_chooser_button_parent_class)->dispose (object);
+}
+
 static void
 xapp_icon_chooser_button_init (XAppIconChooserButton *button)
 {
@@ -178,6 +193,7 @@ xapp_icon_chooser_button_class_init (XAppIconChooserButtonClass *klass)
 
     object_class->get_property = xapp_icon_chooser_button_get_property;
     object_class->set_property = xapp_icon_chooser_button_set_property;
+    object_class->dispose = xapp_icon_chooser_button_dispose;
 
     button_class->clicked = on_clicked;
 
