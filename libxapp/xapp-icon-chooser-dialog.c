@@ -1388,7 +1388,7 @@ finish_pixbuf_load_from_name (GObject      *info,
     callback_info = (NamedIconInfoLoadCallbackInfo*) user_data;
     priv = xapp_icon_chooser_dialog_get_instance_private (callback_info->dialog);
 
-    pixbuf = gtk_icon_info_load_icon_finish (GTK_ICON_INFO (info), res, &error);
+    pixbuf = gtk_icon_info_load_symbolic_for_context_finish (GTK_ICON_INFO (info), res, NULL, &error);
     g_object_unref (info);
 
     if (g_cancellable_is_cancelled (callback_info->cancellable))
@@ -1497,7 +1497,8 @@ load_icons_for_category (XAppIconChooserDialog *dialog,
             }
             else
             {
-                GtkIconInfo              *info;
+                GtkIconInfo *info;
+                GtkStyleContext *context;
 
                 info = gtk_icon_theme_lookup_icon (theme, name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
                 if (info == NULL)
@@ -1507,7 +1508,9 @@ load_icons_for_category (XAppIconChooserDialog *dialog,
                     // lead to a segfault.
                     continue;
                 }
-                gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
+
+                context = gtk_widget_get_style_context (priv->icon_view);
+                gtk_icon_info_load_symbolic_for_context_async (info, context, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
             }
         }
         else
@@ -1769,10 +1772,12 @@ search_icon_name (XAppIconChooserDialog *dialog,
                 }
                 else
                 {
-                    GtkIconInfo              *info;
+                    GtkIconInfo *info;
+                    GtkStyleContext *context;
 
                     info = gtk_icon_theme_lookup_icon (theme, name, priv->icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
-                    gtk_icon_info_load_icon_async (info, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
+                    context = gtk_widget_get_style_context (priv->icon_view);
+                    gtk_icon_info_load_symbolic_for_context_async (info, context, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
                 }
 
                 chunk_count++;
