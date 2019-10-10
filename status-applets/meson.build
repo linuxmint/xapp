@@ -1,1 +1,2 @@
 subdir('mate')
+subdir('xfce')

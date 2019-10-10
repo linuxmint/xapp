@@ -1,0 +1,8 @@
+[Xfce Panel]
+Type=X-XFCE-PanelPlugin
+Name=XFCE XApp Status Applet
+Comment=Allows XAppStatusIcons to display in the panel
+Icon=panel-applets
+X-XFCE-Module=xappstatusapplet
+X-XFCE-Internal=FALSE
+X-XFCE-API=2.0

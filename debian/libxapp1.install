@@ -1,1 +1,3 @@
 usr/lib/*/libxapp.so.1*
+usr/lib/*/xfce4/panel/plugins
+usr/share/xfce4/panel/plugins
