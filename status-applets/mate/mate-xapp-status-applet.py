@@ -20,19 +20,24 @@ gettext.install("xapp", "@locale@")
 locale.bindtextdomain("xapp", "@locale@")
 locale.textdomain("xapp")
 
-INDICATOR_BOX_BORDER = 1
-INDICATOR_BOX_BORDER_COMP = INDICATOR_BOX_BORDER + 1
-ICON_SIZE_REDUCTION = (INDICATOR_BOX_BORDER * 2)
-ICON_SPACING = 5
+ICON_SIZE_REDUCTION = 2
 VISIBLE_LABEL_MARGIN = 5 # When an icon has a label, add a margin between icon and label
 
 statusicon_css_string = """
-.statuswidget {
+.statuswidget-horizontal {
     border: none;
     padding-top: 0;
-    padding-left: 4px;
+    padding-left: 2px;
     padding-bottom: 0;
-    padding-right: 4px;
+    padding-right: 2px;
+}
+
+.statuswidget-vertical {
+    border: none;
+    padding-top: 2px;
+    padding-left: 0;
+    padding-bottom: 2px;
+    padding-right: 0;
 }
 """
 
@@ -47,14 +52,12 @@ def translate_applet_orientation_to_xapp(mate_applet_orientation):
     elif mate_applet_orientation == MatePanelApplet.AppletOrient.RIGHT:
         return Gtk.PositionType.LEFT
 
-class StatusWidget(Gtk.Button):
+class StatusWidget(Gtk.ToggleButton):
     def __init__(self, icon, orientation, size):
         super(Gtk.Button, self).__init__()
         self.theme = Gtk.IconTheme.get_default()
         self.orientation = orientation
         self.size = size
-
-        self.get_style_context().add_class("statuswidget")
 
         self.proxy = icon
 
@@ -69,9 +72,14 @@ class StatusWidget(Gtk.Button):
         self.image = Gtk.Image(hexpand=True)
         self.image.show()
         self.label = Gtk.Label(no_show_all=True)
-        self.box.pack_start(self.image, False, False, 0)
+        self.box.pack_start(self.image, True, False, 0)
         self.box.pack_start(self.label, False, False, 0)
         self.add(self.box)
+
+        self.set_can_default(False)
+        self.set_can_focus(False)
+        self.set_relief(Gtk.ReliefStyle.NONE)
+        self.set_focus_on_click(False)
 
         flags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
 
@@ -103,12 +111,23 @@ class StatusWidget(Gtk.Button):
 
         self.set_icon(string)
 
-    def update_orientation(self):
-        box_orientation = Gtk.Orientation.HORIZONTAL
+    def update_style(self, orientation):
+        ctx = self.get_style_context()
 
-        if self.orientation in (MatePanelApplet.AppletOrient.LEFT, MatePanelApplet.AppletOrient.RIGHT):
+        if orientation == Gtk.Orientation.HORIZONTAL:
+            ctx.remove_class("statuswidget-vertical")
+            ctx.add_class("statuswidget-horizontal")
+        else:
+            ctx.remove_class("statuswidget-horizontal")
+            ctx.add_class("statuswidget-vertical")
+
+    def update_orientation(self):
+        if self.orientation in (MatePanelApplet.AppletOrient.UP, MatePanelApplet.AppletOrient.DOWN):
+            box_orientation = Gtk.Orientation.HORIZONTAL
+        else:
             box_orientation = Gtk.Orientation.VERTICAL
 
+        self.update_style(box_orientation)
         self.box.set_orientation(box_orientation)
 
         if len(self.label.props.label) > 0 and box_orientation == Gtk.Orientation.HORIZONTAL:
@@ -120,10 +139,6 @@ class StatusWidget(Gtk.Button):
 
     def set_icon(self, string):
         size = self.size - ICON_SIZE_REDUCTION
-
-        # round down to even
-        if size % 2 != 0:
-            size -= 1
 
         self.image.set_pixel_size(size)
 
@@ -158,15 +173,23 @@ class StatusWidget(Gtk.Button):
         return Gdk.EVENT_PROPAGATE
     # /TODO
 
+    def after_release_idle(self, data=None):
+        self.set_active(False)
+
+        return GLib.SOURCE_REMOVE
+
     def on_button_press(self, widget, event):
         orientation = translate_applet_orientation_to_xapp(self.orientation)
 
         x, y = self.calc_menu_origin(widget, orientation)
         self.proxy.call_button_press(x, y, event.button, event.time, orientation, None, None)
 
-        self.set_state_flags(Gtk.StateFlags.SELECTED, False)
+        if event.button != Gdk.BUTTON_PRIMARY:
+            self.set_active(True)
 
-        if event.button == 3:
+        if event.button in (Gdk.BUTTON_MIDDLE, Gdk.BUTTON_SECONDARY):
+            # Block the 'remove from panel' menu, and the middle-click drag.
+            # They can still accomplish these things along the edges of the applet
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
@@ -176,10 +199,8 @@ class StatusWidget(Gtk.Button):
 
         x, y = self.calc_menu_origin(widget, orientation)
         self.proxy.call_button_release(x, y, event.button, event.time, orientation, None, None)
-        self.set_state_flags(Gtk.StateFlags.SELECTED, False)
 
-        if event.button == 3:
-            return Gdk.EVENT_STOP
+        GObject.timeout_add(200, self.after_release_idle)
 
         return Gdk.EVENT_PROPAGATE
 
@@ -191,15 +212,15 @@ class StatusWidget(Gtk.Button):
 
         if orientation == Gtk.PositionType.TOP:
             rx = x + alloc.x
-            ry = y + alloc.y + alloc.height + INDICATOR_BOX_BORDER_COMP
+            ry = y + alloc.y + alloc.height
         elif orientation == Gtk.PositionType.BOTTOM:
             rx = x + alloc.x
-            ry = y + alloc.y - INDICATOR_BOX_BORDER_COMP
+            ry = y + alloc.y
         elif orientation == Gtk.PositionType.LEFT:
-            rx = x + alloc.x + alloc.width + INDICATOR_BOX_BORDER_COMP
+            rx = x + alloc.x + alloc.width
             ry = y + alloc.y
         elif orientation == Gtk.PositionType.RIGHT:
-            rx = x + alloc.x - INDICATOR_BOX_BORDER_COMP
+            rx = x + alloc.x
             ry = y + alloc.y
         else:
             rx = x
@@ -210,7 +231,8 @@ class StatusWidget(Gtk.Button):
 class MateXAppStatusApplet(object):
     def __init__(self, applet, iid):
         self.applet = applet
-        self.applet.set_flags(MatePanelApplet.AppletFlags.EXPAND_MINOR)
+        self.applet.set_flags(MatePanelApplet.AppletFlags.EXPAND_MINOR |
+                              MatePanelApplet.AppletFlags.HAS_HANDLE)
         self.applet.set_can_focus(False)
         self.applet.set_background_widget(self.applet)
 
@@ -226,9 +248,7 @@ class MateXAppStatusApplet(object):
         self.monitor = None
 
     def on_applet_realized(self, widget, data=None):
-        self.indicator_box = Gtk.Box(spacing=ICON_SPACING,
-                                     visible=True,
-                                     border_width=INDICATOR_BOX_BORDER)
+        self.indicator_box = Gtk.Box(visible=True)
 
         self.applet.add(self.indicator_box)
         self.applet.connect("change-size", self.on_applet_size_changed)
