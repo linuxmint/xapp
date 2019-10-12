@@ -2,15 +2,26 @@
 
 conf = configuration_data()
 conf.set('locale', join_paths(get_option('prefix'), get_option('localedir')))
+conf.set('pkgversion', meson.project_version())
 
-applet_file = configure_file(
-  input : 'mate-xapp-status-applet.py',
-  output: 'mate-xapp-status-applet.py',
+# Put replacements in a separate file, and import the file into the applet.
+# This is mainly to make testing/dev easier - if you put the conf replacement
+# strings inside the applet itself, you have to build each time to get a valid
+# file (with all replacements made).  With this, you can just copy from source,
+# and your replacements are already there in this file.
+constants_file = configure_file(
+  input : 'applet_constants.py.in',
+  output: 'applet_constants.py',
   configuration: conf,
 )
 
-install_data(applet_file,
-  install_dir: join_paths(get_option('libexecdir'), 'xapps')
+libexec_files = [
+    constants_file,
+    'mate-xapp-status-applet.py'
+]
+
+install_data(libexec_files,
+  install_dir: join_paths(get_option('libexecdir'), 'xapps', 'mate-panel')
 )
 
 ## DBus service file

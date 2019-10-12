@@ -12,12 +12,14 @@ gi.require_version("XApp", "1.0")
 gi.require_version('MatePanelApplet', '4.0')
 from gi.repository import Gtk, GdkPixbuf, Gdk, GObject, Gio, XApp, GLib, MatePanelApplet
 
+import applet_constants
+
 # Rename the process
 setproctitle.setproctitle('mate-xapp-status-applet')
 
 # i18n
-gettext.install("xapp", "@locale@")
-locale.bindtextdomain("xapp", "@locale@")
+gettext.install("xapp", applet_constants.LOCALEDIR)
+locale.bindtextdomain("xapp", applet_constants.LOCALEDIR)
 locale.textdomain("xapp")
 
 ICON_SIZE_REDUCTION = 2
@@ -236,6 +238,8 @@ class MateXAppStatusApplet(object):
         self.applet.set_can_focus(False)
         self.applet.set_background_widget(self.applet)
 
+        self.add_about()
+
         button_css = Gtk.CssProvider()
 
         if button_css.load_from_data(statusicon_css_string.encode()):
@@ -246,6 +250,37 @@ class MateXAppStatusApplet(object):
 
         self.indicators = {}
         self.monitor = None
+
+    def add_about(self):
+        group = Gtk.ActionGroup(name="xapp-status-applet-group")
+        group.set_translation_domain("xapp")
+
+        about_action = Gtk.Action(name="ShowAbout",
+                                  icon_name="info",
+                                  label=_("About"),
+                                  visible=True)
+
+        about_action.connect("activate", self.show_about)
+        group.add_action(about_action)
+
+        xml = '\
+            <menuitem name="ShowDesktopAboutItem" action="ShowAbout"/> \
+        '
+
+        self.applet.setup_menu(xml, group)
+
+    def show_about(self, action, data=None):
+        dialog = Gtk.AboutDialog.new()
+
+        dialog.set_program_name("XApp Status Applet")
+        dialog.set_version(applet_constants.PKGVERSION)
+        dialog.set_license_type(Gtk.License.GPL_3_0)
+        dialog.set_website("https://github.com/linuxmint/xapps")
+        dialog.set_logo_icon_name("panel-applets")
+        dialog.set_comments(_("An applet for displaying XApp application status icons"))
+
+        dialog.run()
+        dialog.destroy()
 
     def on_applet_realized(self, widget, data=None):
         self.indicator_box = Gtk.Box(visible=True)
