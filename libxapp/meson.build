@@ -58,6 +58,12 @@ generated_sources = custom_target(
     ]
 )
 
+# You can't actually access the generated header udring the install_header command below,
+# because the command is evaluated prior to the files being generated.  So we need to manually
+# install the dbus header file (custom install scripts really *do* get evaluated after build,
+# during the install phase.)
+meson.add_install_script('install_generated_header.py', 'xapp-statusicon-interface.h')
+
 dbus_headers += generated_sources[0]
 xapp_sources += generated_sources[1]
 
