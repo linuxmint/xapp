@@ -19,7 +19,7 @@ conf = configuration_data()
 conf.set('libexec', join_paths(get_option('prefix'), get_option('libexecdir')))
 
 service_file = configure_file(
-  input : 'org.mate.panel.applet.MateXAppStatusAppletFactory.service.in',
+  input : 'org.mate.panel.applet.MateXAppStatusAppletFactory.service',
   output: 'org.mate.panel.applet.MateXAppStatusAppletFactory.service',
   configuration: conf,
 )
@@ -30,13 +30,11 @@ install_data(service_file,
 
 ## Applet definition file
 
-def_file = configure_file(
-  input : 'org.x.MateXAppStatusApplet.mate-panel-applet.in',
+i18n.merge_file(
+  input: 'org.x.MateXAppStatusApplet.mate-panel-applet.in',
   output: 'org.x.MateXAppStatusApplet.mate-panel-applet',
-  configuration: conf,
-)
-
-install_data(def_file,
+  type: 'desktop',
+  po_dir: join_paths(meson.source_root(), 'po'),
+  install: true,
   install_dir: join_paths(get_option('datadir'), 'mate-panel', 'applets')
 )
-

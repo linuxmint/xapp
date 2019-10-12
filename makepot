@@ -1,4 +1,8 @@
 #!/bin/bash
 
+rm -f xapp.pot
+touch xapp.pot
 xgettext --language=C --keyword=_ --keyword=N_ --output=xapp.pot libxapp/*.c
+xgettext --language=Desktop --join-existing --add-comments \
+          -k --keyword=Name --keyword=Description --output=xapp.pot status-applets/*/*.in
 
