@@ -1,6 +1,6 @@
 project('xapp',
     'c',
-    version : '1.4.9'
+    version : '1.5.0'
 )
 
 # this should maybe be 1.1.0, libxapp/meson.build should set it as 'version' for the shared library
