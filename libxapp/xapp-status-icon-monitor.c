@@ -22,6 +22,9 @@
 
 #define STATUS_ICON_MATCH "org.x.StatusIcon."
 
+#define STATUS_ICON_ID_FORMAT "org.x.StatusIcon.PID-%d-%d"
+#define STATUS_ICON_PATH_PREFIX "/org/x/StatusIcon/"
+
 enum
 {
     ICON_ADDED,
@@ -171,16 +174,29 @@ add_icon (XAppStatusIconMonitor *self,
           const gchar           *name)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
+    gchar *unique_path;
+    gint pid, id;
 
-    g_debug("XAppStatusIconMonitor: adding icon: '%s'", name);
+    if (sscanf (name, STATUS_ICON_ID_FORMAT, &pid, &id) == 2)
+    {
+        unique_path = g_strdup_printf (STATUS_ICON_PATH_PREFIX "%d", id);
 
-    xapp_status_icon_interface_proxy_new (priv->connection,
-                                          G_DBUS_PROXY_FLAGS_NONE,
-                                          name,
-                                          "/org/x/StatusIcon",
-                                          NULL,
-                                          new_status_icon_proxy_complete,
-                                          self);
+        g_debug("XAppStatusIconMonitor: adding icon: '%s' with path '%s'", name, unique_path);
+
+        xapp_status_icon_interface_proxy_new (priv->connection,
+                                              G_DBUS_PROXY_FLAGS_NONE,
+                                              name,
+                                              unique_path,
+                                              NULL,
+                                              new_status_icon_proxy_complete,
+                                              self);
+
+        g_free (unique_path);
+    }
+    else
+    {
+        g_debug ("XAppStatusIconMonitor: adding icon failed, name '%s' is invalid", name);
+    }
 }
 
 static void

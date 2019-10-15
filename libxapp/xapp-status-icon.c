@@ -26,6 +26,8 @@
 
 #define MAX_NAME_FAILS 3
 
+static gint unique_id = 0;
+
 enum
 {
     BUTTON_PRESS,
@@ -642,6 +644,7 @@ export_icon_interface (XAppStatusIcon *self)
 {
     GError *error = NULL;
     gint i;
+    gchar *unique_path;
 
     if (self->priv->skeleton) {
         return TRUE;
@@ -649,12 +652,16 @@ export_icon_interface (XAppStatusIcon *self)
 
     self->priv->skeleton = xapp_status_icon_interface_skeleton_new ();
 
-    g_debug ("XAppStatusIcon: exporting StatusIcon dbus interface");
+    unique_path = g_strdup_printf (ICON_PATH "/%d", unique_id);
+
+    g_debug ("XAppStatusIcon: exporting StatusIcon dbus interface to %s", unique_path);
 
     g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (self->priv->skeleton),
                                       self->priv->connection,
-                                      ICON_PATH,
+                                      unique_path,
                                       &error);
+
+    g_free (unique_path);
 
     if (error != NULL) {
         g_critical ("XAppStatusIcon: could not export StatusIcon interface: %s", error->message);
@@ -678,7 +685,10 @@ export_icon_interface (XAppStatusIcon *self)
 static void
 connect_with_status_applet (XAppStatusIcon *self)
 {
-    char *owner_name = g_strdup_printf("%s.PID-%d", ICON_NAME, getpid());
+
+    char *owner_name = g_strdup_printf("%s.PID-%d-%d", ICON_NAME, getpid (), unique_id);
+
+    unique_id++;
 
     g_debug ("XAppStatusIcon: Attempting to acquire presence on dbus as %s", owner_name);
 
