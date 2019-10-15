@@ -92,12 +92,15 @@ static void use_gtk_status_icon (XAppStatusIcon *self);
 static void tear_down_dbus      (XAppStatusIcon *self);
 
 static void
-cancellable_init (XAppStatusIcon *self)
+cancellable_reset (XAppStatusIcon *self)
 {
-    if (self->priv->cancellable == NULL)
+    if (self->priv->cancellable)
     {
-        self->priv->cancellable = g_cancellable_new ();
+        g_cancellable_cancel (self->priv->cancellable);
+        g_object_unref (self->priv->cancellable);
     }
+
+    self->priv->cancellable = g_cancellable_new ();
 }
 
 static const gchar *
@@ -576,18 +579,6 @@ add_name_listener (XAppStatusIcon *self)
                                                                   NULL);
 }
 
-typedef struct
-{
-    const gchar  *signal_name;
-    gpointer      callback;
-} SkeletonSignal;
-
-static SkeletonSignal skeleton_signals[] = {
-    // signal name                                callback
-    { "handle-button-press",                      handle_click_method },
-    { "handle-button-release",                    handle_click_method }
-};
-
 static void
 on_name_lost (GDBusConnection *connection,
               const gchar     *name,
@@ -603,16 +594,13 @@ on_name_lost (GDBusConnection *connection,
 }
 
 static void
-on_name_acquired (GDBusConnection *connection,
-                  const gchar     *name,
-                  gpointer         user_data)
+sync_skeleton (XAppStatusIcon *self)
 {
-    XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
     XAppStatusIconPrivate *priv = self->priv;
 
-    g_debug ("XAppStatusIcon: name acquired on dbus, syncing icon properties");
-
     priv->fail_counter = 0;
+
+    g_clear_object (&self->priv->gtk_status_icon);
 
     g_object_set (G_OBJECT (priv->skeleton),
                   "name", priv->name,
@@ -624,6 +612,30 @@ on_name_acquired (GDBusConnection *connection,
 
     g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (priv->skeleton));
 }
+
+static void
+on_name_acquired (GDBusConnection *connection,
+                  const gchar     *name,
+                  gpointer         user_data)
+{
+    XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
+
+    g_debug ("XAppStatusIcon: name acquired on dbus, syncing icon properties");
+
+    sync_skeleton (self);
+}
+
+typedef struct
+{
+    const gchar  *signal_name;
+    gpointer      callback;
+} SkeletonSignal;
+
+static SkeletonSignal skeleton_signals[] = {
+    // signal name                                callback
+    { "handle-button-press",                      handle_click_method },
+    { "handle-button-release",                    handle_click_method }
+};
 
 static gboolean
 export_icon_interface (XAppStatusIcon *self)
@@ -666,8 +678,6 @@ export_icon_interface (XAppStatusIcon *self)
 static void
 connect_with_status_applet (XAppStatusIcon *self)
 {
-    g_clear_object (&self->priv->gtk_status_icon);
-
     char *owner_name = g_strdup_printf("%s.PID-%d", ICON_NAME, getpid());
 
     g_debug ("XAppStatusIcon: Attempting to acquire presence on dbus as %s", owner_name);
@@ -706,6 +716,9 @@ use_gtk_status_icon (XAppStatusIcon *self)
 
     tear_down_dbus (self);
 
+    // Make sure there wasn't already one
+    g_clear_object (&self->priv->gtk_status_icon);
+
     self->priv->gtk_status_icon = gtk_status_icon_new ();
 
     g_signal_connect (priv->gtk_status_icon,
@@ -741,19 +754,17 @@ on_list_names_completed (GObject      *source,
 
     if (error != NULL)
     {
-        if (!g_cancellable_is_cancelled (self->priv->cancellable))
+        if (error->code != G_IO_ERROR_CANCELLED)
         {
             g_critical ("XAppStatusIcon: attempt to ListNames failed: %s\n", error->message);
+            use_gtk_status_icon (self);
         }
         else
         {
-            g_clear_object (&self->priv->cancellable);
+            g_debug ("XAppStatusIcon: attempt to ListNames cancelled");
         }
 
         g_error_free (error);
-
-        use_gtk_status_icon (self);
-
         return;
     }
 
@@ -775,10 +786,13 @@ on_list_names_completed (GObject      *source,
 
     if (found && export_icon_interface (self))
     {
-        if (self->priv->owner_id == 0)
+        if (self->priv->owner_id > 0)
         {
-            g_clear_object (&self->priv->gtk_status_icon);
-
+            g_debug ("XAppStatusIcon: We already exist on the bus, syncing icon properties");
+            sync_skeleton (self);
+        }
+        else
+        {
             connect_with_status_applet (self);
 
             return;
@@ -796,7 +810,7 @@ look_for_status_applet (XAppStatusIcon *self)
     // Check that there is at least one applet on DBUS
     g_debug("XAppStatusIcon: Looking for status monitors");
 
-    cancellable_init (self);
+    cancellable_reset (self);
 
     g_dbus_connection_call (self->priv->connection,
                             FDO_DBUS_NAME,
@@ -847,29 +861,28 @@ on_session_bus_connected (GObject      *source,
 
     if (error != NULL)
     {
-        if (!g_cancellable_is_cancelled (self->priv->cancellable))
+        if (error->code != G_IO_ERROR_CANCELLED)
         {
             g_critical ("XAppStatusIcon: Unable to acquire session bus: %s", error->message);
+
+
+            /* If we never get a connection, we use the Gtk icon exclusively, and will never
+             * re-try.  FIXME? this is unlikely to happen, so I don't see the point in trying
+             * later, as there are probably bigger problems in this case. */
+            use_gtk_status_icon (self);
         }
         else
         {
-            g_clear_object (&self->priv->cancellable);
+            g_debug ("XAppStatusIcon: Cancelled session bus acquire");
         }
 
         g_error_free (error);
-
-        /* If we never get a connection, we use the Gtk icon exclusively, and will never
-         * re-try.  FIXME? this is unlikely to happen, so I don't see the point in trying
-         * later, as there are probably bigger problems in this case. */
-        use_gtk_status_icon (self);
-
         return;
     }
 
     if (self->priv->connection)
     {
         complete_icon_setup (self);
-
         return;
     }
 
@@ -883,7 +896,7 @@ refresh_icon (XAppStatusIcon *self)
     {
         g_debug ("XAppStatusIcon: Trying to acquire session bus connection");
 
-        self->priv->cancellable = g_cancellable_new ();
+        cancellable_reset (self);
 
         g_bus_get (G_BUS_TYPE_SESSION,
                    self->priv->cancellable,
@@ -988,16 +1001,14 @@ xapp_status_icon_dispose (GObject *object)
     g_free (self->priv->tooltip_text);
     g_free (self->priv->label);
 
-    g_clear_pointer (&self->priv->cancellable, g_cancellable_cancel);
+    g_clear_object (&self->priv->cancellable);
+
     g_clear_object (&self->priv->primary_menu);
     g_clear_object (&self->priv->secondary_menu);
 
-    if (self->priv->gtk_status_icon != NULL)
-    {
-        g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_press, self);
-        g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_release, self);
-        g_object_unref (self->priv->gtk_status_icon);
-    }
+    g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_press, self);
+    g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_release, self);
+    g_clear_object (&self->priv->gtk_status_icon);
 
     tear_down_dbus (self);
 
