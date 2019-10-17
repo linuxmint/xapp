@@ -39,10 +39,12 @@
     <keyword type="function" name="xapp_icon_chooser_button_new_with_size ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-new-with-size"/>
     <keyword type="function" name="xapp_icon_chooser_button_set_icon_size ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-set-icon-size"/>
     <keyword type="function" name="xapp_icon_chooser_button_set_icon ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-set-icon"/>
+    <keyword type="function" name="xapp_icon_chooser_button_set_default_category ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-set-default-category"/>
     <keyword type="function" name="xapp_icon_chooser_button_get_icon ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-get-icon"/>
     <keyword type="function" name="xapp_icon_chooser_button_get_dialog ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-get-dialog"/>
     <keyword type="macro" name="XAPP_TYPE_ICON_CHOOSER_BUTTON" link="XAppIconChooserButton.html#XAPP-TYPE-ICON-CHOOSER-BUTTON:CAPS"/>
     <keyword type="struct" name="XAppIconChooserButton" link="XAppIconChooserButton.html#XAppIconChooserButton-struct"/>
+    <keyword type="property" name="The “category” property" link="XAppIconChooserButton.html#XAppIconChooserButton--category"/>
     <keyword type="property" name="The “icon” property" link="XAppIconChooserButton.html#XAppIconChooserButton--icon"/>
     <keyword type="property" name="The “icon-size” property" link="XAppIconChooserButton.html#XAppIconChooserButton--icon-size"/>
     <keyword type="function" name="xapp_icon_chooser_dialog_new ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-new"/>
@@ -51,10 +53,14 @@
     <keyword type="function" name="xapp_icon_chooser_dialog_run_with_category ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-run-with-category"/>
     <keyword type="function" name="xapp_icon_chooser_dialog_get_icon_string ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-get-icon-string"/>
     <keyword type="function" name="xapp_icon_chooser_dialog_add_button ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-add-button"/>
+    <keyword type="function" name="xapp_icon_chooser_dialog_get_default_icon ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-get-default-icon"/>
+    <keyword type="function" name="xapp_icon_chooser_dialog_set_default_icon ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-set-default-icon"/>
+    <keyword type="function" name="xapp_icon_chooser_dialog_add_custom_category ()" link="XAppIconChooserDialog.html#xapp-icon-chooser-dialog-add-custom-category"/>
     <keyword type="macro" name="XAPP_TYPE_ICON_CHOOSER_DIALOG" link="XAppIconChooserDialog.html#XAPP-TYPE-ICON-CHOOSER-DIALOG:CAPS"/>
     <keyword type="enum" name="enum XAppIconSize" link="XAppIconChooserDialog.html#XAppIconSize"/>
     <keyword type="struct" name="XAppIconChooserDialog" link="XAppIconChooserDialog.html#XAppIconChooserDialog-struct"/>
     <keyword type="property" name="The “allow-paths” property" link="XAppIconChooserDialog.html#XAppIconChooserDialog--allow-paths"/>
+    <keyword type="property" name="The “default-icon” property" link="XAppIconChooserDialog.html#XAppIconChooserDialog--default-icon"/>
     <keyword type="property" name="The “icon-size” property" link="XAppIconChooserDialog.html#XAppIconChooserDialog--icon-size"/>
     <keyword type="signal" name="The “close” signal" link="XAppIconChooserDialog.html#XAppIconChooserDialog-close"/>
     <keyword type="signal" name="The “select” signal" link="XAppIconChooserDialog.html#XAppIconChooserDialog-select"/>
@@ -95,18 +101,23 @@
     <keyword type="macro" name="XAPP_TYPE_STACK_SIDEBAR" link="XAppStackSidebar.html#XAPP-TYPE-STACK-SIDEBAR:CAPS"/>
     <keyword type="struct" name="XAppStackSidebar" link="XAppStackSidebar.html#XAppStackSidebar-struct"/>
     <keyword type="property" name="The “stack” property" link="XAppStackSidebar.html#XAppStackSidebar--stack"/>
-    <keyword type="function" name="XAppNewObjectFunc ()" link="XAppStatusIcon.html#XAppNewObjectFunc"/>
     <keyword type="function" name="xapp_status_icon_new ()" link="XAppStatusIcon.html#xapp-status-icon-new" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_name ()" link="XAppStatusIcon.html#xapp-status-icon-set-name" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_icon_name ()" link="XAppStatusIcon.html#xapp-status-icon-set-icon-name" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_tooltip_text ()" link="XAppStatusIcon.html#xapp-status-icon-set-tooltip-text" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_label ()" link="XAppStatusIcon.html#xapp-status-icon-set-label" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_visible ()" link="XAppStatusIcon.html#xapp-status-icon-set-visible" since="1.6"/>
-    <keyword type="function" name="xapp_status_icon_set_menu ()" link="XAppStatusIcon.html#xapp-status-icon-set-menu" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_set_primary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-set-primary-menu" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_get_primary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-get-primary-menu" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_set_secondary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-set-secondary-menu" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_get_secondary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-get-secondary-menu" since="1.6"/>
+    <keyword type="macro" name="XAPP_TYPE_STATUS_ICON" link="XAppStatusIcon.html#XAPP-TYPE-STATUS-ICON:CAPS"/>
+    <keyword type="struct" name="XAppStatusIcon" link="XAppStatusIcon.html#XAppStatusIcon-struct"/>
+    <keyword type="property" name="The “primary-menu” property" link="XAppStatusIcon.html#XAppStatusIcon--primary-menu"/>
+    <keyword type="property" name="The “secondary-menu” property" link="XAppStatusIcon.html#XAppStatusIcon--secondary-menu"/>
     <keyword type="signal" name="The “activate” signal" link="XAppStatusIcon.html#XAppStatusIcon-activate"/>
     <keyword type="signal" name="The “button-press-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-button-press-event"/>
     <keyword type="signal" name="The “button-release-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-button-release-event"/>
-    <keyword type="signal" name="The “popup-menu” signal" link="XAppStatusIcon.html#XAppStatusIcon-popup-menu"/>
     <keyword type="function" name="xapp_status_icon_monitor_new ()" link="XAppStatusIconMonitor.html#xapp-status-icon-monitor-new" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_monitor_list_icons ()" link="XAppStatusIconMonitor.html#xapp-status-icon-monitor-list-icons" since="1.6"/>
     <keyword type="macro" name="XAPP_TYPE_STATUS_ICON_MONITOR" link="XAppStatusIconMonitor.html#XAPP-TYPE-STATUS-ICON-MONITOR:CAPS"/>
