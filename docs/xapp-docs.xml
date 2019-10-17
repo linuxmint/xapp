@@ -3,17 +3,14 @@
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
 [
   <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
-  <!ENTITY % gtkdocentities SYSTEM "gtkdocentities.ent">
+  <!ENTITY % gtkdocentities SYSTEM "xml/gtkdocentities.ent">
   %gtkdocentities;
 ]>
-
 <book id="index">
   <bookinfo>
     <title>XApp Reference Manual</title>
     <releaseinfo>
-      For libxapp &package_version; (abi &abi_version;).
-      Source:
-      <ulink role="online-location" url="&package_url;">&package_url;</ulink>
+      &package_string; &package_version;
     </releaseinfo>
   </bookinfo>
 
