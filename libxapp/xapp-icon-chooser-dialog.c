@@ -1459,9 +1459,12 @@ load_icons_for_category (XAppIconChooserDialog *dialog,
     XAppIconChooserDialogPrivate *priv;
     GtkIconTheme *theme;
     gint chunk_count;
+    gint scale;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
     theme = gtk_icon_theme_get_default ();
+
+    scale = gtk_widget_get_scale_factor (GTK_WIDGET (dialog));
 
     for (chunk_count = 0; chunk_count < CATEGORY_CHUNK_SIZE; chunk_count++)
     {
@@ -1500,7 +1503,7 @@ load_icons_for_category (XAppIconChooserDialog *dialog,
                 GtkIconInfo *info;
                 GtkStyleContext *context;
 
-                info = gtk_icon_theme_lookup_icon (theme, name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
+                info = gtk_icon_theme_lookup_icon_for_scale (theme, name, icon_size, scale, GTK_ICON_LOOKUP_FORCE_SIZE);
                 if (info == NULL)
                 {
                     // this shouldn't be the case most of the time, but if a custom category is defined it's possible
@@ -1725,10 +1728,12 @@ search_icon_name (XAppIconChooserDialog *dialog,
     GtkIconTheme                 *theme;
     GList                        *icons;
     gint chunk_count;
+    gint scale;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     theme = gtk_icon_theme_get_default ();
+    scale = gtk_widget_get_scale_factor (GTK_WIDGET (dialog));
 
     icons = priv->full_icon_list;
 
@@ -1775,7 +1780,7 @@ search_icon_name (XAppIconChooserDialog *dialog,
                     GtkIconInfo *info;
                     GtkStyleContext *context;
 
-                    info = gtk_icon_theme_lookup_icon (theme, name, priv->icon_size, GTK_ICON_LOOKUP_FORCE_SIZE);
+                    info = gtk_icon_theme_lookup_icon_for_scale (theme, name, priv->icon_size, scale, GTK_ICON_LOOKUP_FORCE_SIZE);
                     context = gtk_widget_get_style_context (priv->icon_view);
                     gtk_icon_info_load_symbolic_for_context_async (info, context, NULL, (GAsyncReadyCallback) (finish_pixbuf_load_from_name), callback_info);
                 }
