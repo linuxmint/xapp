@@ -277,7 +277,7 @@ class MateXAppStatusApplet(object):
         dialog.set_license_type(Gtk.License.GPL_3_0)
         dialog.set_website("https://github.com/linuxmint/xapps")
         dialog.set_logo_icon_name("panel-applets")
-        dialog.set_comments(_("An applet for displaying XApp application status icons"))
+        dialog.set_comments(_("Area where XApp status icons appear"))
 
         dialog.run()
         dialog.destroy()
