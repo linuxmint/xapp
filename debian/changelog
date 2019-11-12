@@ -1,8 +1,68 @@
-xapp (1.5.0) UNRELEASED; urgency=medium
+xapp (1.6.0) tricia; urgency=medium
 
-  * Unstable version bump
+  [ Clement Lefebvre ]
+  * Implement XAppStatusIcon (#67)
 
- -- Clement Lefebvre <root@linuxmint.com>  Tue, 15 Oct 2019 13:47:54 +0100
+  [ James Ross ]
+  * libxapp: cleanup compile warnings (#69)
+
+  [ Michael Webster ]
+  * status icons: Add a monitor class for applets - XAppStatusIconMonitor, (#70)
+  * test-scripts: add a status-icon-via-libappindicator script.
+  * xapp-status-icon.c: Remove leftover debug line
+  * xapp-status-icon: When a menu is provided to XAppStatusIcon, handle positioning and showing it internally instead of requiring the application to do it.
+  * xapp-status-icon.c: Use G_ class macros to cleanup header file, fix xapp_status_icon_get_menu()  (copy/paste error).
+  * Add some useful build C-flags, fix test script exec bit.
+
+  [ Clement Lefebvre ]
+  * Add API reference in docs/reference/
+  * Set theme jekyll-theme-architect
+  * README: Add link to API reference
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: Emit 'activate' during fallback status icon activation.
+  * docs: Generate html automatically
+
+  [ Stephen Collins ]
+  * xapp-icon-chooser-dialog.c: Remove unused variable
+  * icon chooser dialog: add default_icon property
+  * icon chooser dialog: add *_add_custom_category () function
+
+  [ Michael Webster ]
+  * Add a Mate status applet (#72)
+  * xapp-status-icon.c: Refactor event handling.
+
+  [ Stephen Collins ]
+  * xapp-icon-chooser-dialog.c: prevent segfault on non-existent icon name (#76)
+
+  [ Clement Lefebvre ]
+  * IconChooserButton: Add the ability to set the default category (#77)
+
+  [ Stephen Collins ]
+  * xapp-icon-chooser-button.c: add missing dispose method (#78)
+
+  [ Michael Webster ]
+  * mate-xapp-status-applet.py: Make improvements to event handling and widget appearance during clicks.
+  * Add a custom install script for installing the generated header file.
+  * Add i18n for the mate applet.
+  * mate applet: Add an about window, use more appropriate install locations, move build replacement strings to a separate imported file.
+  * xapp-status-icon.c: During async ops, when checking for cancellation, use the error code, as the cancellable may have reset in the interim, but the code will be correct.
+
+  [ Michael Webster ]
+  * status icons: Support multiple icons from the same process.
+
+  [ Clement Lefebvre ]
+  * Revert "docs: Generate html automatically"
+  * Add a makedoc script to update docs/reference
+  * Update reference docs
+
+  [ Stephen Collins ]
+  * xapp-icon-chooser-dialog.c: color the symbolic icons properly and fix hidpi (#79)
+
+  [ Clement Lefebvre ]
+  * l10n: Update POT
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 12 Nov 2019 11:12:12 +0100
 
 xapp (1.4.9) tina; urgency=medium
 
