@@ -23,6 +23,8 @@ GtkWidget      *xapp_status_icon_get_primary_menu   (XAppStatusIcon *icon);
 void            xapp_status_icon_set_secondary_menu (XAppStatusIcon *icon, GtkMenu *menu);
 GtkWidget      *xapp_status_icon_get_secondary_menu (XAppStatusIcon *icon);
 
+/* static */
+gboolean        xapp_status_icon_any_monitors       (void);
 G_END_DECLS
 
 #endif  /* __XAPP_STATUS_ICON_H__ */

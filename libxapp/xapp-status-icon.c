@@ -1411,3 +1411,81 @@ xapp_status_icon_new (void)
 {
     return g_object_new (XAPP_TYPE_STATUS_ICON, NULL);
 }
+
+/**
+ * xapp_status_icon_any_monitors:
+ *
+ * Looks for the existence of any active #XAppStatusIconMonitors on the bus.
+ *
+ * Returns: %TRUE if at least one monitor was found.
+ *
+ * Since: 1.6
+ */
+gboolean
+xapp_status_icon_any_monitors (void)
+{
+    GDBusConnection *connection;
+    GError *error;
+    gboolean found;
+
+    g_debug("XAppStatusIcon: any_monitors: Looking for status monitors");
+
+    error = NULL;
+    found = FALSE;
+
+    connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+
+    if (connection)
+    {
+        GVariant *result;
+
+        result = g_dbus_connection_call_sync (connection,
+                                              FDO_DBUS_NAME,
+                                              FDO_DBUS_PATH,
+                                              FDO_DBUS_NAME,
+                                              "ListNames",
+                                              NULL,
+                                              G_VARIANT_TYPE ("(as)"),
+                                              G_DBUS_CALL_FLAGS_NONE,
+                                              2, NULL, &error);
+
+        if (result)
+        {
+            GVariantIter *iter;
+            gchar *str;
+
+            g_variant_get (result, "(as)", &iter);
+
+            found = FALSE;
+
+            while (g_variant_iter_loop (iter, "s", &str))
+            {
+                if (g_str_has_prefix (str, STATUS_ICON_MONITOR_MATCH))
+                {
+                    g_debug ("XAppStatusIcon: any_monitors: discovered active status monitor (%s)", str);
+
+                    found = TRUE;
+
+                    g_free (str);
+                    break;
+                }
+            }
+
+            g_variant_iter_free (iter);
+            g_variant_unref (result);
+        }
+
+        g_object_unref (connection);
+    }
+
+    if (error)
+    {
+        g_warning ("XAppStatusIcon: any_monitors: Unable to check for monitors: %s", error->message);
+        g_error_free (error);
+    }
+
+    g_debug ("XAppStatusIcon: any_monitors: %s", found ? "TRUE" : "FALSE");
+
+    return found;
+}
+
