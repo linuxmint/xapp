@@ -21,7 +21,7 @@ libexec_files = [
 ]
 
 install_data(libexec_files,
-  install_dir: join_paths(get_option('libexecdir'), 'xapps', 'mate-panel')
+  install_dir: join_paths(get_option('libexecdir'), 'xapps')
 )
 
 ## DBus service file
