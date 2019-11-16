@@ -8,3 +8,8 @@ option('deprecated_warnings',
     value : false,
     description: 'Show build warnings for deprecations'
 )
+option('status_applets',
+    type: 'boolean',
+    value: true,
+    description: 'Build Mate status applet'
+)

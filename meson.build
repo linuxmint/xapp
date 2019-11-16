@@ -38,7 +38,9 @@ subdir('po')
 subdir('pygobject')
 subdir('files')
 subdir('schemas')
+if get_option('status_applets')
 subdir('status-applets')
+endif
 
 if get_option('docs')
     subdir('docs')
