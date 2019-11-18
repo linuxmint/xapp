@@ -144,24 +144,28 @@ class StatusWidget(Gtk.ToggleButton):
 
         self.image.set_pixel_size(size)
 
-        try:
-            if os.path.exists(string):
-                icon_file = Gio.File.new_for_path(string)
-                icon = Gio.FileIcon.new(icon_file)
-                self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
-                return
-            else:
-                if self.theme.has_icon(string):
-                    icon = Gio.ThemedIcon.new(string)
+        fallback = True
+
+        if string:
+            try:
+                if os.path.exists(string):
+                    icon_file = Gio.File.new_for_path(string)
+                    icon = Gio.FileIcon.new(icon_file)
                     self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
-                    return
-        except GLib.Error as e:
-            print("MateXAppStatusApplet: Could not load icon '%s' for '%s': %s" % (string, self.proc_name, e.message))
-        except TypeError as e:
-            print("MateXAppStatusApplet: Could not load icon '%s' for '%s': %s" % (string, self.proc_name, str(e)))
+                else:
+                    if self.theme.has_icon(string):
+                        icon = Gio.ThemedIcon.new(string)
+                        self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
+
+                fallback = False
+            except GLib.Error as e:
+                print("MateXAppStatusApplet: Could not load icon '%s' for '%s': %s" % (string, self.proc_name, e.message))
+            except TypeError as e:
+                print("MateXAppStatusApplet: Could not load icon '%s' for '%s': %s" % (string, self.proc_name, str(e)))
 
         #fallback
-        self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
+        if fallback:
+            self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
 
     # TODO?
     def on_enter_notify(self, widget, event):
