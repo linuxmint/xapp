@@ -44,10 +44,13 @@ class StatusWidget(Gtk.Button):
         self.set_icon(string)
 
     def set_icon(self, string):
-        if os.path.exists(string):
-            self.image.set_from_file(string)
+        if string:
+            if string and os.path.exists(string):
+                self.image.set_from_file(string)
+            else:
+                self.image.set_from_icon_name(string, Gtk.IconSize.DIALOG)
         else:
-            self.image.set_from_icon_name(string, Gtk.IconSize.DIALOG)
+            self.image.set_from_icon_name("image-missing", Gtk.IconSize.DIALOG)
 
     def on_button_press(self, widget, event):
         # We're simulating a top panel here
@@ -133,11 +136,32 @@ class StatusApplet(GObject.Object):
         self.indicator_box.add(self.indicators[name])
         self.window.show_all()
 
+        self.sort_icons()
+
     def on_icon_removed(self, monitor, proxy):
         name = proxy.get_name()
 
         self.indicator_box.remove(self.indicators[name])
         del(self.indicators[name])
+
+        self.sort_icons()
+
+    def sort_icons(self, status_icon=None):
+        icon_list = list(self.indicators.values())
+
+        # for i in icon_list:
+        #     print("before: ", i.proxy.props.icon_name, i.proxy.props.name.lower())
+
+        icon_list.sort(key=lambda icon: icon.proxy.props.name.lower())
+        icon_list.sort(key=lambda icon: icon.proxy.props.icon_name.lower().endswith("symbolic"))
+
+        # for i in icon_list:
+        #     print("after: ", i.proxy.props.icon_name, i.proxy.props.name.lower())
+
+        icon_list.reverse()
+
+        for icon in icon_list:
+            self.indicator_box.reorder_child(icon, 0)
 
 if __name__ == '__main__':
     applet = StatusApplet()
