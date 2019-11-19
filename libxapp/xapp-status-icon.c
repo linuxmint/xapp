@@ -79,6 +79,7 @@ typedef struct
     guint listener_id;
 
     gint fail_counter;
+    gboolean have_button_press;
 } XAppStatusIconPrivate;
 
 struct _XAppStatusIcon
@@ -316,6 +317,8 @@ handle_click_method (XAppStatusIconInterface *skeleton,
             }
         }
 
+        icon->priv->have_button_press = TRUE;
+
         g_signal_emit (icon, signals[BUTTON_PRESS], 0,
                        x, y,
                        button,
@@ -333,23 +336,28 @@ handle_click_method (XAppStatusIconInterface *skeleton,
                  g_dbus_method_invocation_get_sender (invocation),
                  x, y, button_to_str (button), _time, panel_position_to_str (panel_position));
 
-        GtkWidget *menu_to_use = get_menu_to_use (icon, button);
-
-        if (menu_to_use)
+        if (icon->priv->have_button_press)
         {
-            popup_native_icon_menu (icon,
-                                    GTK_MENU (menu_to_use),
-                                    x, y,
-                                    button,
-                                    _time,
-                                    panel_position);
+            GtkWidget *menu_to_use = get_menu_to_use (icon, button);
+
+            if (menu_to_use)
+            {
+                popup_native_icon_menu (icon,
+                                        GTK_MENU (menu_to_use),
+                                        x, y,
+                                        button,
+                                        _time,
+                                        panel_position);
+            }
+
+            g_signal_emit (icon, signals[BUTTON_RELEASE], 0,
+                           x, y,
+                           button,
+                           _time,
+                           panel_position);
         }
 
-        g_signal_emit (icon, signals[BUTTON_RELEASE], 0,
-                       x, y,
-                       button,
-                       _time,
-                       panel_position);
+        icon->priv->have_button_press = FALSE;
 
         xapp_status_icon_interface_complete_button_release (skeleton,
                                                             invocation);
@@ -481,6 +489,8 @@ on_gtk_status_icon_button_press (GtkStatusIcon *status_icon,
                                                         &y,
                                                         &orientation);
 
+    icon->priv->have_button_press = TRUE;
+
     g_signal_emit (icon, signals[BUTTON_PRESS], 0,
                    x, y,
                    button,
@@ -541,6 +551,8 @@ on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
                                                         &x,
                                                         &y,
                                                         &orientation);
+
+    icon->priv->have_button_press = FALSE;
 
     g_signal_emit (icon, signals[BUTTON_RELEASE], 0,
                    x, y,
