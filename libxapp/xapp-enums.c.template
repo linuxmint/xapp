@@ -3,6 +3,7 @@
 #include "config.h"
 #include "xapp-enums.h"
 #include "xapp-icon-chooser-dialog.h"
+#include "xapp-status-icon.h"
 
 #define C_ENUM(v) ((gint) v)
 #define C_FLAGS(v) ((guint) v)

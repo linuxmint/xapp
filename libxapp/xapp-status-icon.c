@@ -15,6 +15,7 @@
 
 #include "xapp-status-icon.h"
 #include "xapp-statusicon-interface.h"
+#include "xapp-enums.h"
 
 #define FDO_DBUS_NAME "org.freedesktop.DBus"
 #define FDO_DBUS_PATH "/org/freedesktop/DBus"
@@ -33,6 +34,7 @@ enum
     BUTTON_PRESS,
     BUTTON_RELEASE,
     ACTIVATE,
+    STATE_CHANGED,
     LAST_SIGNAL
 };
 
@@ -69,6 +71,8 @@ typedef struct
     GtkWidget *primary_menu;
     GtkWidget *secondary_menu;
 
+    XAppStatusIconState state;
+
     gchar *name;
     gchar *icon_name;
     gchar *tooltip_text;
@@ -93,6 +97,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (XAppStatusIcon, xapp_status_icon, G_TYPE_OBJECT)
 static void refresh_icon        (XAppStatusIcon *self);
 static void use_gtk_status_icon (XAppStatusIcon *self);
 static void tear_down_dbus      (XAppStatusIcon *self);
+
+#define GET_STATE_STR(i) (g_enum_to_string(XAPP_TYPE_STATUS_ICON_STATE, i->priv->state))
 
 static void
 cancellable_reset (XAppStatusIcon *self)
@@ -634,9 +640,12 @@ on_name_acquired (GDBusConnection *connection,
 {
     XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
 
-    g_debug ("XAppStatusIcon: name acquired on dbus, syncing icon properties");
+    self->priv->state = XAPP_STATUS_ICON_STATE_NATIVE;
 
     sync_skeleton (self);
+
+    g_debug ("XAppStatusIcon: name acquired on dbus, syncing icon properties. State is now: %s", GET_STATE_STR (self));
+    g_signal_emit (self, signals[STATE_CHANGED], 0, self->priv->state);
 }
 
 typedef struct
@@ -730,6 +739,29 @@ update_fallback_icon (XAppStatusIcon *self,
 }
 
 static void
+on_gtk_status_icon_embedded_changed (GtkStatusIcon *icon,
+                                     GParamSpec    *pspec,
+                                     gpointer       user_data)
+{
+    g_return_if_fail (GTK_IS_STATUS_ICON (icon));
+
+    XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
+    XAppStatusIconPrivate *priv = self->priv;
+
+    if (gtk_status_icon_is_embedded (icon))
+    {
+        priv->state = XAPP_STATUS_ICON_STATE_FALLBACK;
+    }
+    else
+    {
+        priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
+    }
+
+    g_debug ("XAppStatusIcon fallback icon embedded_changed. State is now %s", GET_STATE_STR (self));
+    g_signal_emit (self, signals[STATE_CHANGED], 0, priv->state);
+}
+
+static void
 use_gtk_status_icon (XAppStatusIcon *self)
 {
     XAppStatusIconPrivate *priv = self->priv;
@@ -750,6 +782,10 @@ use_gtk_status_icon (XAppStatusIcon *self)
     g_signal_connect (priv->gtk_status_icon,
                       "button-release-event",
                       G_CALLBACK (on_gtk_status_icon_button_release),
+                      self);
+    g_signal_connect (priv->gtk_status_icon,
+                      "notify::embedded",
+                      G_CALLBACK (on_gtk_status_icon_embedded_changed),
                       self);
 
     update_fallback_icon (self, priv->icon_name ? priv->icon_name : "");
@@ -979,6 +1015,7 @@ xapp_status_icon_init (XAppStatusIcon *self)
     self->priv = xapp_status_icon_get_instance_private (self);
 
     self->priv->name = g_strdup_printf("%s", g_get_application_name());
+    self->priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
 
     g_debug ("XAppStatusIcon: init: application name: '%s'", self->priv->name);
 
@@ -1176,6 +1213,24 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
                       0,
                       NULL, NULL, NULL,
                       G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
+
+    /**
+     * XAppStatusIcon::state-changed:
+     * @icon: The #XAppStatusIcon
+     * @new_state: The new #XAppStatusIconState of the icon
+     *
+     * Gets emitted when the state of the icon changes. If you wish
+     * to react to changes in how the status icon is being handled
+     * (perhaps to alter the menu or other click behavior), you should
+     * connect to this - see #XAppStatusIconState for more details.
+     */
+    signals [STATE_CHANGED] =
+        g_signal_new ("state-changed",
+                      XAPP_TYPE_STATUS_ICON,
+                      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+                      0,
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 1, XAPP_TYPE_STATUS_ICON_STATE);
 }
 
 /**
@@ -1422,6 +1477,30 @@ XAppStatusIcon *
 xapp_status_icon_new (void)
 {
     return g_object_new (XAPP_TYPE_STATUS_ICON, NULL);
+}
+
+/**
+ * xapp_status_icon_get_state:
+ * @icon: an #XAppStatusIcon
+ *
+ * Gets the current #XAppStatusIconState of icon. The state is determined by whether
+ * the icon is being displayed by an #XAppStatusMonitor client, a fallback tray icon,
+ * or not being displayed at all.
+ *
+ * See #XAppStatusIconState for more details.
+ *
+ * Returns: the icon's state.
+ *
+ * Since: 1.6
+ */
+XAppStatusIconState
+xapp_status_icon_get_state (XAppStatusIcon *icon)
+{
+    g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), XAPP_STATUS_ICON_STATE_NO_SUPPORT);
+
+    g_debug ("XAppStatusIcon get_state: %s", GET_STATE_STR (icon));
+
+    return icon->priv->state;
 }
 
 /**

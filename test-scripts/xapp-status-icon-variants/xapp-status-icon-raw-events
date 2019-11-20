@@ -16,6 +16,7 @@ class App(GObject.Object):
     def __init__(self):
         super(App, self).__init__()
         self.status_icon = XApp.StatusIcon()
+        self.status_icon.connect("state-changed", self.on_icon_state_changed)
 
         self.status_icon.set_icon_name("folder-symbolic")
         self.status_icon.set_tooltip_text("Testing raw button press and release events")
@@ -34,6 +35,9 @@ class App(GObject.Object):
         self.status_icon.connect("button-release-event", self.on_button_release)
 
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
+
+    def on_icon_state_changed(self, icon, new_state):
+        print("Icon state changed - the state is now: %s" % new_state)
 
     def on_timeout_cb(self):
         self.counter += 1
