@@ -98,8 +98,6 @@ static void refresh_icon        (XAppStatusIcon *self);
 static void use_gtk_status_icon (XAppStatusIcon *self);
 static void tear_down_dbus      (XAppStatusIcon *self);
 
-#define GET_STATE_STR(i) (g_enum_to_string(XAPP_TYPE_STATUS_ICON_STATE, i->priv->state))
-
 static void
 cancellable_reset (XAppStatusIcon *self)
 {
@@ -140,6 +138,22 @@ button_to_str (guint button)
             return "Right";
         case GDK_BUTTON_MIDDLE:
             return "Middle";
+        default:
+            return "Unknown";
+    }
+}
+
+static const gchar *
+state_to_str (XAppStatusIconState state)
+{
+    switch (state)
+    {
+        case XAPP_STATUS_ICON_STATE_NATIVE:
+            return "Native";
+        case XAPP_STATUS_ICON_STATE_FALLBACK:
+            return "Fallback";
+        case XAPP_STATUS_ICON_STATE_NO_SUPPORT:
+            return "NoSupport";
         default:
             return "Unknown";
     }
@@ -644,7 +658,8 @@ on_name_acquired (GDBusConnection *connection,
 
     sync_skeleton (self);
 
-    g_debug ("XAppStatusIcon: name acquired on dbus, syncing icon properties. State is now: %s", GET_STATE_STR (self));
+    g_debug ("XAppStatusIcon: name acquired on dbus, syncing icon properties. State is now: %s",
+             state_to_str (self->priv->state));
     g_signal_emit (self, signals[STATE_CHANGED], 0, self->priv->state);
 }
 
@@ -757,7 +772,8 @@ on_gtk_status_icon_embedded_changed (GtkStatusIcon *icon,
         priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
     }
 
-    g_debug ("XAppStatusIcon fallback icon embedded_changed. State is now %s", GET_STATE_STR (self));
+    g_debug ("XAppStatusIcon fallback icon embedded_changed. State is now %s",
+             state_to_str (priv->state));
     g_signal_emit (self, signals[STATE_CHANGED], 0, priv->state);
 }
 
@@ -1498,7 +1514,7 @@ xapp_status_icon_get_state (XAppStatusIcon *icon)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), XAPP_STATUS_ICON_STATE_NO_SUPPORT);
 
-    g_debug ("XAppStatusIcon get_state: %s", GET_STATE_STR (icon));
+    g_debug ("XAppStatusIcon get_state: %s", state_to_str (icon->priv->state));
 
     return icon->priv->state;
 }
