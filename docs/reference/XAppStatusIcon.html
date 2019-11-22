@@ -122,6 +122,22 @@
 <a class="link" href="XAppStatusIcon.html#xapp-status-icon-get-secondary-menu" title="xapp_status_icon_get_secondary_menu ()">xapp_status_icon_get_secondary_menu</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="returnvalue">XAppStatusIconState</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppStatusIcon.html#xapp-status-icon-get-state" title="xapp_status_icon_get_state ()">xapp_status_icon_get_state</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppStatusIcon.html#xapp-status-icon-any-monitors" title="xapp_status_icon_any_monitors ()">xapp_status_icon_any_monitors</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -173,6 +189,11 @@
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-button-release-event" title="The “button-release-event” signal">button-release-event</a></td>
 <td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-state-changed" title="The “state-changed” signal">state-changed</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -189,6 +210,10 @@
 <td class="function_name"><a class="link" href="XAppStatusIcon.html#XAPP-TYPE-STATUS-ICON:CAPS" title="XAPP_TYPE_STATUS_ICON">XAPP_TYPE_STATUS_ICON</a></td>
 </tr>
 <tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState">XAppStatusIconState</a></td>
+</tr>
+<tr>
 <td class="datatype_keyword"> </td>
 <td class="function_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-struct" title="XAppStatusIcon">XAppStatusIcon</a></td>
 </tr>
@@ -197,7 +222,9 @@
 </div>
 <div class="refsect1">
 <a name="XAppStatusIcon.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
+    <span class="lineart">╰──</span> XAppStatusIconState
+    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> XAppStatusIcon
 </pre>
 </div>
@@ -498,6 +525,48 @@ secondary mouse button.  If no menu was set, this returns <a href="../glib/glib-
 </div>
 <p class="since">Since: 1.6</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xapp-status-icon-get-state"></a><h3>xapp_status_icon_get_state ()</h3>
+<pre class="programlisting"><a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="returnvalue">XAppStatusIconState</span></a>
+xapp_status_icon_get_state (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>);</pre>
+<p>Gets the current <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="type">XAppStatusIconState</span></a> of icon. The state is determined by whether
+the icon is being displayed by an <span class="type">XAppStatusMonitor</span> client, a fallback tray icon,
+or not being displayed at all.</p>
+<p>See <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="type">XAppStatusIconState</span></a> for more details.</p>
+<div class="refsect3">
+<a name="xapp-status-icon-get-state.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>icon</p></td>
+<td class="parameter_description"><p>an <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-status-icon-get-state.returns"></a><h4>Returns</h4>
+<p> the icon's state.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-status-icon-any-monitors"></a><h3>xapp_status_icon_any_monitors ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_status_icon_any_monitors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Looks for the existence of any active <a href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-struct"><span class="type">XAppStatusIconMonitors</span></a> on the bus.</p>
+<div class="refsect3">
+<a name="xapp-status-icon-any-monitors.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if at least one monitor was found.</p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
 </div>
 <div class="refsect1">
 <a name="XAppStatusIcon.other_details"></a><h2>Types and Values</h2>
@@ -505,6 +574,46 @@ secondary mouse button.  If no menu was set, this returns <a href="../glib/glib-
 <a name="XAPP-TYPE-STATUS-ICON:CAPS"></a><h3>XAPP_TYPE_STATUS_ICON</h3>
 <pre class="programlisting">#define XAPP_TYPE_STATUS_ICON            (xapp_status_icon_get_type ())
 </pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XAppStatusIconState"></a><h3>enum XAppStatusIconState</h3>
+<div class="refsect3">
+<a name="XAppStatusIconState.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-STATUS-ICON-STATE-NATIVE:CAPS"></a>XAPP_STATUS_ICON_STATE_NATIVE</p></td>
+<td class="enum_member_description">
+<p>The <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> is currently being handled
+by an <a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor"><span class="type">XAppStatusIconMonitor</span></a> (usually in an applet).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-STATUS-ICON-STATE-FALLBACK:CAPS"></a>XAPP_STATUS_ICON_STATE_FALLBACK</p></td>
+<td class="enum_member_description">
+<p>The <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> is currently being handled
+by a legacy system tray implementation (using GtkStatusIcon).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-STATUS-ICON-STATE-NO-SUPPORT:CAPS"></a>XAPP_STATUS_ICON_STATE_NO_SUPPORT</p></td>
+<td class="enum_member_description">
+<p>The <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> is not currently being handled by any
+kind of status icon implementation.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -706,6 +815,46 @@ user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"
 <tr>
 <td class="parameter_name"><p>panel_position</p></td>
 <td class="parameter_description"><p>The <a href="../gtk3/gtk3-Standard-Enumerations.html#GtkPositionType"><span class="type">GtkPositionType</span></a> to use for menu positioning</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XAppStatusIcon-state-changed"></a><h3>The <code class="literal">“state-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>     *icon,
+               <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="type">XAppStatusIconState</span></a> new_state,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)</pre>
+<p>Gets emitted when the state of the icon changes. If you wish
+to react to changes in how the status icon is being handled
+(perhaps to alter the menu or other click behavior), you should
+connect to this - see <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="type">XAppStatusIconState</span></a> for more details.</p>
+<div class="refsect3">
+<a name="XAppStatusIcon-state-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>icon</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_state</p></td>
+<td class="parameter_description"><p>The new <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="type">XAppStatusIconState</span></a> of the icon</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

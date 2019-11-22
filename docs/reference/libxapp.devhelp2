@@ -111,13 +111,17 @@
     <keyword type="function" name="xapp_status_icon_get_primary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-get-primary-menu" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_secondary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-set-secondary-menu" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_get_secondary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-get-secondary-menu" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_get_state ()" link="XAppStatusIcon.html#xapp-status-icon-get-state" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_any_monitors ()" link="XAppStatusIcon.html#xapp-status-icon-any-monitors" since="1.6"/>
     <keyword type="macro" name="XAPP_TYPE_STATUS_ICON" link="XAppStatusIcon.html#XAPP-TYPE-STATUS-ICON:CAPS"/>
+    <keyword type="enum" name="enum XAppStatusIconState" link="XAppStatusIcon.html#XAppStatusIconState"/>
     <keyword type="struct" name="XAppStatusIcon" link="XAppStatusIcon.html#XAppStatusIcon-struct"/>
     <keyword type="property" name="The “primary-menu” property" link="XAppStatusIcon.html#XAppStatusIcon--primary-menu"/>
     <keyword type="property" name="The “secondary-menu” property" link="XAppStatusIcon.html#XAppStatusIcon--secondary-menu"/>
     <keyword type="signal" name="The “activate” signal" link="XAppStatusIcon.html#XAppStatusIcon-activate"/>
     <keyword type="signal" name="The “button-press-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-button-press-event"/>
     <keyword type="signal" name="The “button-release-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-button-release-event"/>
+    <keyword type="signal" name="The “state-changed” signal" link="XAppStatusIcon.html#XAppStatusIcon-state-changed"/>
     <keyword type="function" name="xapp_status_icon_monitor_new ()" link="XAppStatusIconMonitor.html#xapp-status-icon-monitor-new" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_monitor_list_icons ()" link="XAppStatusIconMonitor.html#xapp-status-icon-monitor-list-icons" since="1.6"/>
     <keyword type="macro" name="XAPP_TYPE_STATUS_ICON_MONITOR" link="XAppStatusIconMonitor.html#XAPP-TYPE-STATUS-ICON-MONITOR:CAPS"/>
@@ -168,5 +172,8 @@
     <keyword type="constant" name="XAPP_ICON_SIZE_32" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-32:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_48" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-48:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_96" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-96:CAPS"/>
+    <keyword type="constant" name="XAPP_STATUS_ICON_STATE_NATIVE" link="XAppStatusIcon.html#XAPP-STATUS-ICON-STATE-NATIVE:CAPS"/>
+    <keyword type="constant" name="XAPP_STATUS_ICON_STATE_FALLBACK" link="XAppStatusIcon.html#XAPP-STATUS-ICON-STATE-FALLBACK:CAPS"/>
+    <keyword type="constant" name="XAPP_STATUS_ICON_STATE_NO_SUPPORT" link="XAppStatusIcon.html#XAPP-STATUS-ICON-STATE-NO-SUPPORT:CAPS"/>
   </functions>
 </book>
