@@ -1,3 +1,19 @@
+xapp (1.6.2) tricia; urgency=medium
+
+  [ Eli Schwartz ]
+  * mate applet: fix configuring
+  * mate applet: fix regression in install location
+  * debian: fixup changed file locations
+
+  [ Michael Webster ]
+  * mate-xapp-status-applet.py: handle a null icon name correctly.
+  * test-scripts: have xapp-status-applet sort icons in the same manner the real applets do (symbolic to the right, then by alpha process name).
+  * xapp-status-icon.c: Keep an account of button presses so an orphan release doesn't activate or pop up a menu.
+  * xapp-status-icon: Track and notify changes in types of support for the icon - notify when a status icon is picked up by a native applet, a traditional system tray, or is not being picked up by anything.
+  * xapp-status-icon.c: Replace g_enum_to_string with a custom function, this isn't available with lmde's glib.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 22 Nov 2019 10:36:41 +0000
+
 xapp (1.6.1) tricia; urgency=medium
 
   [ Michael Webster ]
