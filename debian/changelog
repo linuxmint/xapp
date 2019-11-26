@@ -1,3 +1,9 @@
+xapp (1.6.3) tricia; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 26 Nov 2019 17:11:36 +0000
+
 xapp (1.6.2) tricia; urgency=medium
 
   [ Eli Schwartz ]
