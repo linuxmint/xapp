@@ -7,115 +7,153 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-11-15 10:11+0000\n"
-"PO-Revision-Date: 2018-11-28 16:30+0000\n"
-"Last-Translator: Dmitriy Kulikov <Unknown>\n"
+"POT-Creation-Date: 2019-11-12 11:04+0100\n"
+"PO-Revision-Date: 2019-11-26 11:58+0000\n"
+"Last-Translator: Saveliy Daurcev <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-07-10 08:32+0000\n"
-"X-Generator: Launchpad (build 19007)\n"
+"X-Launchpad-Export-Date: 2019-11-26 16:03+0000\n"
+"X-Generator: Launchpad (build c597c3229eb023b1e626162d5947141bf7befb13)\n"
 
-#: libxapp/xapp-icon-chooser-button.c:162
-#: libxapp/xapp-icon-chooser-dialog.c:601
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
+msgid "XApp Status Applet"
+msgstr "Апплет статуса XApp"
+
+#: libxapp/xapp-icon-chooser-button.c:207
+#: libxapp/xapp-icon-chooser-dialog.c:613
 msgid "Icon size"
 msgstr "Размер значка"
 
-#: libxapp/xapp-icon-chooser-button.c:163
-#: libxapp/xapp-icon-chooser-dialog.c:602
+#: libxapp/xapp-icon-chooser-button.c:208
+#: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "The preferred icon size."
 msgstr "Предпочтительный размер значка."
 
-#: libxapp/xapp-icon-chooser-button.c:177
+#: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
 msgstr "Значок"
 
-#: libxapp/xapp-icon-chooser-button.c:178
+#: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
 msgstr "Строка, соответствующая значку."
 
-#: libxapp/xapp-icon-chooser-dialog.c:93
+#: libxapp/xapp-icon-chooser-button.c:234
+msgid "Category"
+msgstr "Категория"
+
+#: libxapp/xapp-icon-chooser-button.c:235
+msgid "The default category."
+msgstr "Категория по умолчанию."
+
+#: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
 msgstr "Действия"
 
-#: libxapp/xapp-icon-chooser-dialog.c:96
+#: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Applications"
 msgstr "Приложения"
 
-#: libxapp/xapp-icon-chooser-dialog.c:99
+#: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Categories"
 msgstr "Категории"
 
-#: libxapp/xapp-icon-chooser-dialog.c:102
+#: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Devices"
 msgstr "Устройства"
 
-#: libxapp/xapp-icon-chooser-dialog.c:105
+#: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Emblems"
 msgstr "Эмблемы"
 
-#: libxapp/xapp-icon-chooser-dialog.c:108
+#: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emoji"
 msgstr "Эмодзи"
 
-#: libxapp/xapp-icon-chooser-dialog.c:111
+#: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Mime types"
 msgstr "Типы MIME"
 
-#: libxapp/xapp-icon-chooser-dialog.c:114
+#: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Places"
 msgstr "Места"
 
-#: libxapp/xapp-icon-chooser-dialog.c:117
+#: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Status"
 msgstr "Статус"
 
-#: libxapp/xapp-icon-chooser-dialog.c:120
+#: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Other"
 msgstr "Другое"
 
-#: libxapp/xapp-icon-chooser-dialog.c:449
+#: libxapp/xapp-icon-chooser-dialog.c:451
 msgid "Choose an icon"
 msgstr "Выберите значок"
 
-#: libxapp/xapp-icon-chooser-dialog.c:471
+#: libxapp/xapp-icon-chooser-dialog.c:473
 msgid "Search"
 msgstr "Поиск"
 
-#: libxapp/xapp-icon-chooser-dialog.c:478
+#: libxapp/xapp-icon-chooser-dialog.c:480
 msgid "Browse"
 msgstr "Обзор"
 
-#: libxapp/xapp-icon-chooser-dialog.c:534
+#: libxapp/xapp-icon-chooser-dialog.c:536
 msgid "Loading..."
 msgstr "Загрузка…"
 
-#: libxapp/xapp-icon-chooser-dialog.c:558
+#: libxapp/xapp-icon-chooser-dialog.c:560
+msgid "Default"
+msgstr "По умолчанию"
+
+#: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
 msgstr "Выбрать"
 
-#: libxapp/xapp-icon-chooser-dialog.c:567
-#: libxapp/xapp-icon-chooser-dialog.c:1787
+#: libxapp/xapp-icon-chooser-dialog.c:579
+#: libxapp/xapp-icon-chooser-dialog.c:1937
 msgid "Cancel"
 msgstr "Отмена"
 
-#: libxapp/xapp-icon-chooser-dialog.c:614
+#: libxapp/xapp-icon-chooser-dialog.c:626
 msgid "Allow Paths"
 msgstr "Разрешать пути"
 
-#: libxapp/xapp-icon-chooser-dialog.c:615
+#: libxapp/xapp-icon-chooser-dialog.c:627
 msgid "Whether to allow paths."
 msgstr "Разрешать ли пути."
 
-#: libxapp/xapp-icon-chooser-dialog.c:1784
+#: libxapp/xapp-icon-chooser-dialog.c:638
+msgid "Default Icon"
+msgstr "Значок по умолчанию"
+
+#: libxapp/xapp-icon-chooser-dialog.c:639
+msgid "The icon to use by default"
+msgstr "Значок, используемый по умолчанию"
+
+#: libxapp/xapp-icon-chooser-dialog.c:1934
 msgid "Select image file"
 msgstr "Выберите файл изображения"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1789
+#: libxapp/xapp-icon-chooser-dialog.c:1939
 msgid "Open"
 msgstr "Открыть"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1804
+#: libxapp/xapp-icon-chooser-dialog.c:1954
 msgid "Image"
 msgstr "Изображение"
+
+#: status-applets/mate/mate-xapp-status-applet.py:260
+msgid "About"
+msgstr "О программе"
+
+#: status-applets/mate/mate-xapp-status-applet.py:280
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
+msgid "Area where XApp status icons appear"
+msgstr "Область, где появляется значок статуса XApp"
+
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
+msgid "XApp Status Applet Factory"
+msgstr "Заводские настройки апплета статуса XApp"
