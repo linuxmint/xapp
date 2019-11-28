@@ -237,8 +237,7 @@ class StatusWidget(Gtk.ToggleButton):
 class MateXAppStatusApplet(object):
     def __init__(self, applet, iid):
         self.applet = applet
-        self.applet.set_flags(MatePanelApplet.AppletFlags.EXPAND_MINOR |
-                              MatePanelApplet.AppletFlags.HAS_HANDLE)
+        self.applet.set_flags(MatePanelApplet.AppletFlags.EXPAND_MINOR)
         self.applet.set_can_focus(False)
         self.applet.set_background_widget(self.applet)
 
