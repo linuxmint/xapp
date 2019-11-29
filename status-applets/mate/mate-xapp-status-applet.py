@@ -24,6 +24,7 @@ locale.textdomain("xapp")
 
 ICON_SIZE_REDUCTION = 2
 VISIBLE_LABEL_MARGIN = 5 # When an icon has a label, add a margin between icon and label
+SYMBOLIC_ICON_SIZE = 22
 
 statusicon_css_string = """
 .statuswidget-horizontal {
@@ -140,7 +141,10 @@ class StatusWidget(Gtk.ToggleButton):
             self.label.set_margin_start(0)
 
     def set_icon(self, string):
-        size = self.size - ICON_SIZE_REDUCTION
+        if "symbolic" in string:
+            size = SYMBOLIC_ICON_SIZE
+        else:
+            size = self.size - ICON_SIZE_REDUCTION
 
         self.image.set_pixel_size(size)
 
