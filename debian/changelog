@@ -1,3 +1,10 @@
+xapp (1.6.5) tricia; urgency=medium
+
+  [ Michael Webster ]
+  * mate-xapp-status-applet.py: Hardcode symbolic icons to 22px.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 29 Nov 2019 18:33:05 +0000
+
 xapp (1.6.4) tricia; urgency=medium
 
   * Mate applet: Don't use a handle
