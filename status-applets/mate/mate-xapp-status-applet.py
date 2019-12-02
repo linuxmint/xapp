@@ -34,7 +34,6 @@ statusicon_css_string = """
     padding-bottom: 0;
     padding-right: 2px;
 }
-
 .statuswidget-vertical {
     border: none;
     padding-top: 2px;
@@ -189,6 +188,11 @@ class StatusWidget(Gtk.ToggleButton):
         return GLib.SOURCE_REMOVE
 
     def on_button_press(self, widget, event):
+        # If the user does ctrl->right-click, open the applet's about menu
+        # instead of sending to the app.
+        if event.state & Gdk.ModifierType.CONTROL_MASK and event.button == Gdk.BUTTON_SECONDARY:
+           return Gdk.EVENT_PROPAGATE
+
         orientation = translate_applet_orientation_to_xapp(self.orientation)
 
         x, y = self.calc_menu_origin(widget, orientation)
@@ -353,12 +357,21 @@ class MateXAppStatusApplet(object):
             indicator.orientation = orient
             indicator.update_orientation()
 
-        box_orientation = Gtk.Orientation.HORIZONTAL
-
         if orient in (MatePanelApplet.AppletOrient.LEFT, MatePanelApplet.AppletOrient.RIGHT):
-            box_orientation = Gtk.Orientation.VERTICAL
+            self.indicator_box.set_orientation(Gtk.Orientation.VERTICAL)
 
-        self.indicator_box.set_orientation(box_orientation)
+            self.indicator_box.props.margin_start = 0
+            self.indicator_box.props.margin_end = 0
+            self.indicator_box.props.margin_top = 2
+            self.indicator_box.props.margin_bottom = 2
+        else:
+            self.indicator_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+
+            self.indicator_box.props.margin_start = 2
+            self.indicator_box.props.margin_end = 2
+            self.indicator_box.props.margin_top = 0
+            self.indicator_box.props.margin_bottom = 0
+
         self.indicator_box.queue_resize()
 
     def sort_icons(self):
