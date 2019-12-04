@@ -1,3 +1,10 @@
+xapp (1.6.6) tricia; urgency=medium
+
+  [ Michael Webster ]
+  * mate-xapp-status-applet.py: Add a small margin at either end of the applet, and allow ctrl-right-clicks anywhere on it, so the user can bring up the About menu.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 04 Dec 2019 16:24:15 +0000
+
 xapp (1.6.5) tricia; urgency=medium
 
   [ Michael Webster ]
