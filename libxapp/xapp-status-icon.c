@@ -159,6 +159,35 @@ state_to_str (XAppStatusIconState state)
     }
 }
 
+static gint
+adjust_y_for_monitor_bounds (gint init_x,
+                             gint init_y,
+                             gint menu_height)
+{
+    GdkDisplay *display = gdk_display_get_default ();
+    GdkMonitor *monitor;
+    GdkRectangle mrect;
+    gint bottom_edge_y;
+    gint ret_y;
+
+    ret_y = init_y;
+
+    monitor = gdk_display_get_monitor_at_point (display,
+                                                init_x,
+                                                init_y);
+
+    gdk_monitor_get_workarea (monitor, &mrect);
+
+    bottom_edge_y = mrect.y + mrect.height;
+
+    if ((init_y + menu_height) > bottom_edge_y)
+    {
+        ret_y = bottom_edge_y - menu_height;
+    }
+
+    return ret_y;
+}
+
 typedef struct {
     gint    x;
     gint    y;
@@ -187,6 +216,10 @@ position_menu_cb (GtkMenu  *menu,
             break;
         case GTK_POS_RIGHT:
             *x = *x - alloc.width;
+            *y = adjust_y_for_monitor_bounds (position_data->x, position_data->y, alloc.height);
+            break;
+        case GTK_POS_LEFT:
+            *y = adjust_y_for_monitor_bounds (position_data->x, position_data->y, alloc.height);
             break;
     }
 
