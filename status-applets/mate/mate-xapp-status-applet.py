@@ -72,7 +72,6 @@ class StatusWidget(Gtk.ToggleButton):
         self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.image = Gtk.Image(hexpand=True)
-        self.image.show()
         self.label = Gtk.Label(no_show_all=True)
         self.box.pack_start(self.image, True, False, 0)
         self.box.pack_start(self.label, False, False, 0)
@@ -82,6 +81,8 @@ class StatusWidget(Gtk.ToggleButton):
         self.set_can_focus(False)
         self.set_relief(Gtk.ReliefStyle.NONE)
         self.set_focus_on_click(False)
+
+        self.show_all()
 
         flags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
 
@@ -102,8 +103,6 @@ class StatusWidget(Gtk.ToggleButton):
 
         self.update_orientation()
         self.update_icon()
-
-        self.show_all()
 
     def _on_icon_name_changed(self, proxy, gparamspec, data=None):
         self.update_icon()

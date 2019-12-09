@@ -29,6 +29,9 @@ class StatusWidget(Gtk.Button):
 
         self.image.props.icon_size = Gtk.IconSize.DIALOG
         self.set_icon(self.proxy.props.icon_name)
+
+        self.show_all()
+
         self.proxy.bind_property("label", self.label, "label", flags)
         self.proxy.bind_property("tooltip-text", self, "tooltip-text", flags)
         self.proxy.bind_property("visible", self, "visible", flags)
@@ -134,7 +137,6 @@ class StatusApplet(GObject.Object):
 
         self.indicators[name] = StatusWidget(proxy)
         self.indicator_box.add(self.indicators[name])
-        self.window.show_all()
 
         self.sort_icons()
 
