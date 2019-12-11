@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-21 19:14+0000\n"
-"Last-Translator: Mariusz <wisniowy@g.pl>\n"
+"PO-Revision-Date: 2019-12-07 07:53+0000\n"
+"Last-Translator: Paweł Pańczyk <pawelppanczyk@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-11-26 16:03+0000\n"
+"X-Launchpad-Export-Date: 2019-12-11 11:59+0000\n"
 "X-Generator: Launchpad (build c597c3229eb023b1e626162d5947141bf7befb13)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
@@ -33,7 +33,7 @@ msgstr "Ikona"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Ciąg znaków reprezentujący ikone."
+msgstr "Ciąg znaków reprezentujący ikonę."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
@@ -148,7 +148,7 @@ msgstr ""
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Obszar, w którym pokazują się ikony stanu XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
@@ -156,4 +156,4 @@ msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "Aplet stanu XApp"

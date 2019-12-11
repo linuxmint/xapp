@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-08 23:23+0000\n"
-"Last-Translator: Jim Spentzos <Unknown>\n"
+"PO-Revision-Date: 2019-12-08 08:12+0000\n"
+"Last-Translator: Vasilis Thomopoulos <Unknown>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-11-26 16:03+0000\n"
+"X-Launchpad-Export-Date: 2019-12-11 11:59+0000\n"
 "X-Generator: Launchpad (build c597c3229eb023b1e626162d5947141bf7befb13)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
@@ -37,11 +37,11 @@ msgstr "Το κείμενο που αντιπροσωπεύει το εικον�
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Κατηγορία"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Η προεπιλεγμένη κατηγορία."
 
 #: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
@@ -101,7 +101,7 @@ msgstr "Φόρτωση..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Προεπιλεγμένη"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
@@ -122,7 +122,7 @@ msgstr "Επιλέξτε αν θα επιτρέπονται διαδρομές."
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr ""
+msgstr "Προεπιλεγμένο Εικονίδιο"
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
@@ -142,7 +142,7 @@ msgstr "Εικόνα"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "Περί"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7

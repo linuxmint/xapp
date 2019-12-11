@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-18 13:54+0000\n"
+"PO-Revision-Date: 2019-11-28 14:12+0000\n"
 "Last-Translator: Moo <hazap@hotmail.com>\n"
 "Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-11-26 16:03+0000\n"
+"X-Launchpad-Export-Date: 2019-12-11 11:59+0000\n"
 "X-Generator: Launchpad (build c597c3229eb023b1e626162d5947141bf7befb13)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
@@ -152,8 +152,8 @@ msgstr "Sritis, kurioje atsiras XApp būsenos piktogramos"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp būsenos programėlės gamykla"
+msgstr "XApp būsenos įskiepio gamykla"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr "XApp būsenos programėlė"
+msgstr "XApp būsenos įskiepis"
