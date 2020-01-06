@@ -227,13 +227,13 @@ position_menu_cb (GtkMenu  *menu,
 }
 
 static void
-popup_native_icon_menu (XAppStatusIcon *self,
-                        GtkMenu        *menu,
-                        gint            x,
-                        gint            y,
-                        guint           button,
-                        guint           _time,
-                        gint            panel_position)
+popup_menu (XAppStatusIcon *self,
+            GtkMenu        *menu,
+            gint            x,
+            gint            y,
+            guint           button,
+            guint           _time,
+            gint            panel_position)
 {
     GdkDisplay *display;
     GdkDevice *pointer;
@@ -286,15 +286,31 @@ should_send_activate (XAppStatusIcon *icon,
 }
 
 static gboolean
+appindicator_can_activate (XAppStatusIcon *icon)
+{
+    gpointer ptr;
+    gboolean has_activate = FALSE;
+
+    ptr = g_object_get_data (G_OBJECT (icon), "app-indicator-has-secondary-activate");
+
+    if (ptr && GPOINTER_TO_INT (ptr))
+    {
+        has_activate = TRUE;
+    }
+
+    return has_activate;
+}
+
+static gboolean
 handle_appindicator_button_press (XAppStatusIcon *icon,
                                   guint           button,
                                   guint           _time)
 {
     if (g_object_get_data (G_OBJECT (icon), "app-indicator"))
     {
-        if (button == GDK_BUTTON_MIDDLE)
+        if (button == GDK_BUTTON_MIDDLE || (button == GDK_BUTTON_PRIMARY && appindicator_can_activate (icon)))
         {
-            g_debug ("XAppStatusIcon: sending activate for middle-click event (libappindicator)");
+            g_debug ("XAppStatusIcon: sending activate for left- or middle-click event (libappindicator)");
 
             g_signal_emit (icon, signals[ACTIVATE], 0,
                            button,
@@ -320,20 +336,19 @@ get_menu_to_use (XAppStatusIcon *icon,
     switch (button)
     {
         case GDK_BUTTON_PRIMARY:
+            if (g_object_get_data (G_OBJECT (icon), "app-indicator"))
+            {
+                if (!appindicator_can_activate (icon))
+                {
+                    menu_to_use = icon->priv->secondary_menu;
+                    break;
+                }
+            }
+
             menu_to_use = icon->priv->primary_menu;
             break;
         case GDK_BUTTON_SECONDARY:
-            /* Icons originated in app-indicator only set a primary menu,
-             * but expect it to be opened on left and right-clicks */
-
-            if (g_object_get_data (G_OBJECT (icon), "app-indicator"))
-            {
-                menu_to_use = icon->priv->primary_menu;
-            }
-            else
-            {
-                menu_to_use = icon->priv->secondary_menu;
-            }
+            menu_to_use = icon->priv->secondary_menu;
             break;
     }
 
@@ -395,12 +410,12 @@ handle_click_method (XAppStatusIconInterface *skeleton,
 
             if (menu_to_use)
             {
-                popup_native_icon_menu (icon,
-                                        GTK_MENU (menu_to_use),
-                                        x, y,
-                                        button,
-                                        _time,
-                                        panel_position);
+                popup_menu (icon,
+                            GTK_MENU (menu_to_use),
+                            x, y,
+                            button,
+                            _time,
+                            panel_position);
             }
 
             g_signal_emit (icon, signals[BUTTON_RELEASE], 0,
