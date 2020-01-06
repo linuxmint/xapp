@@ -1,16 +1,16 @@
-# Indonesian translation for linuxmint
-# Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
+# Uzbek translation for linuxmint
+# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-09-06 09:40+0000\n"
-"Last-Translator: Abdul Munif Hanafi <amunifhanafi@gmail.com>\n"
-"Language-Team: Indonesian <id@li.org>\n"
+"PO-Revision-Date: 2019-12-31 17:18+0000\n"
+"Last-Translator: Saidazim Nazirov <Unknown>\n"
+"Language-Team: Uzbek <uz@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,140 +20,140 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
 msgid "Icon size"
-msgstr "Ukuran ikon"
+msgstr "Nishoncha oʻlchami"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "The preferred icon size."
-msgstr ""
+msgstr "Afzal ko'rilgan nishoncha o'lchami."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Ikon"
+msgstr "Nishoncha"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "Belgini ifodalovchi satr."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Kategoriya"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Standart kategoriya."
 
 #: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
-msgstr "Aksi"
+msgstr "Amallar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Applications"
-msgstr "Aplikasi"
+msgstr "Ilovalar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Categories"
-msgstr "Kategori"
+msgstr "Kategoriyalar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Devices"
-msgstr "Perangkat"
+msgstr "Qurilmalar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Emblems"
-msgstr "Emblem"
+msgstr "Emblemalar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emoji"
-msgstr "Emoji"
+msgstr "Kulgichlar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Mime types"
-msgstr "Tipe mime"
+msgstr "MIME turlari"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Places"
-msgstr ""
+msgstr "Joylar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Status"
-msgstr "Status"
+msgstr "Xolat"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Other"
-msgstr "Lainnya"
+msgstr "Boshqa"
 
 #: libxapp/xapp-icon-chooser-dialog.c:451
 msgid "Choose an icon"
-msgstr "Pilih ikon"
+msgstr "Nishonchani tanlash"
 
 #: libxapp/xapp-icon-chooser-dialog.c:473
 msgid "Search"
-msgstr "Cari"
+msgstr "Izlash"
 
 #: libxapp/xapp-icon-chooser-dialog.c:480
 msgid "Browse"
-msgstr "Telusur"
+msgstr "Ko'rish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:536
 msgid "Loading..."
-msgstr "Memuat..."
+msgstr "Yuklanmoqda..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Standart"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
-msgstr "Pilih"
+msgstr "Tanlash"
 
 #: libxapp/xapp-icon-chooser-dialog.c:579
 #: libxapp/xapp-icon-chooser-dialog.c:1937
 msgid "Cancel"
-msgstr "Batal"
+msgstr "Bekor qilish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:626
 msgid "Allow Paths"
-msgstr "Ijinkan Path"
+msgstr "Ruxsat berilgan joylar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:627
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Joylarga ruxsat berilsinmi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr ""
+msgstr "Standart nishoncha"
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Nishonchani ishlatish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1934
 msgid "Select image file"
-msgstr "Pilih berkas citra"
+msgstr "Rasm faylini tanlash"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1939
 msgid "Open"
-msgstr "Buka"
+msgstr "Ochish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1954
 msgid "Image"
-msgstr "Citra"
+msgstr "Rasm"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "Haqida ma’lumot"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "XApp holat nishonchasi paydo bo'ladigan maydon"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp holat appletining boshlang'ich holati"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp holat appleti"
