@@ -1,3 +1,16 @@
+xapp (1.6.9) tricia; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-dialog.c: fix hidpi icon rendering and spacing.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: Allow a primary-click to activate appindicator icons when they have set a 'secondary activate' target.  Otherwise, have primary open the menu as it ordinarily would.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 07 Jan 2020 10:21:15 +0000
+
 xapp (1.6.8) tricia; urgency=medium
 
   * l10n: Update translations
