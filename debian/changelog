@@ -1,3 +1,11 @@
+xapp (1.6.10) tricia; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: Sync the visible state of the fallback GtkStatusIcon when it is first created.
+  * xapp-status-icon.c: Fix the timeout duration for xapp_status_icon_any_monitors.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 09 Jan 2020 17:13:49 +0000
+
 xapp (1.6.9) tricia; urgency=medium
 
   [ Michael Webster ]
