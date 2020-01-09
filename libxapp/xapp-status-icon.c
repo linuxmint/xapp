@@ -1607,7 +1607,7 @@ xapp_status_icon_any_monitors (void)
                                               NULL,
                                               G_VARIANT_TYPE ("(as)"),
                                               G_DBUS_CALL_FLAGS_NONE,
-                                              2, NULL, &error);
+                           /* 10 seconds */   10 * 1000, NULL, &error);
 
         if (result)
         {
