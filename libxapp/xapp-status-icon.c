@@ -788,16 +788,34 @@ connect_with_status_applet (XAppStatusIcon *self)
 }
 
 static void
-update_fallback_icon (XAppStatusIcon *self,
-                      const gchar    *icon_name)
+update_fallback_icon (XAppStatusIcon *self)
 {
-    if (g_path_is_absolute (icon_name))
+    XAppStatusIconPrivate *priv = self->priv;
+
+    if (!priv->gtk_status_icon)
     {
-        gtk_status_icon_set_from_file (self->priv->gtk_status_icon, icon_name);
+        return;
+    }
+
+    gtk_status_icon_set_tooltip_text (priv->gtk_status_icon, priv->tooltip_text);
+    gtk_status_icon_set_name (priv->gtk_status_icon, priv->name);
+
+    if (priv->icon_name)
+    {
+        gtk_status_icon_set_visible (priv->gtk_status_icon, priv->visible);
+
+        if (g_path_is_absolute (priv->icon_name))
+        {
+            gtk_status_icon_set_from_file (priv->gtk_status_icon, priv->icon_name);
+        }
+        else
+        {
+            gtk_status_icon_set_from_icon_name (priv->gtk_status_icon, priv->icon_name);
+        }
     }
     else
     {
-        gtk_status_icon_set_from_icon_name (self->priv->gtk_status_icon, icon_name);
+        gtk_status_icon_set_visible (priv->gtk_status_icon, FALSE);
     }
 }
 
@@ -852,8 +870,7 @@ use_gtk_status_icon (XAppStatusIcon *self)
                       G_CALLBACK (on_gtk_status_icon_embedded_changed),
                       self);
 
-    update_fallback_icon (self, priv->icon_name ? priv->icon_name : "");
-    gtk_status_icon_set_tooltip_text (self->priv->gtk_status_icon, priv->tooltip_text);
+    update_fallback_icon (self);
 }
 
 static void
@@ -1320,10 +1337,7 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
         xapp_status_icon_interface_set_name (icon->priv->skeleton, name);
     }
 
-    if (icon->priv->gtk_status_icon != NULL)
-    {
-        gtk_status_icon_set_name (icon->priv->gtk_status_icon, name);
-    }
+    update_fallback_icon (icon);
 }
 
 /**
@@ -1349,10 +1363,7 @@ xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
         xapp_status_icon_interface_set_icon_name (icon->priv->skeleton, icon_name);
     }
 
-    if (icon->priv->gtk_status_icon != NULL)
-    {
-        update_fallback_icon (icon, icon_name);
-    }
+    update_fallback_icon (icon);
 }
 
 /**
@@ -1378,10 +1389,7 @@ xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_te
         xapp_status_icon_interface_set_tooltip_text (icon->priv->skeleton, tooltip_text);
     }
 
-    if (icon->priv->gtk_status_icon != NULL)
-    {
-        gtk_status_icon_set_tooltip_text (icon->priv->gtk_status_icon, tooltip_text);
-    }
+    update_fallback_icon (icon);
 }
 
 /**
@@ -1430,10 +1438,7 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
         xapp_status_icon_interface_set_visible (icon->priv->skeleton, visible);
     }
 
-    if (icon->priv->gtk_status_icon != NULL)
-    {
-        gtk_status_icon_set_visible (icon->priv->gtk_status_icon, visible);
-    }
+    update_fallback_icon (icon);
 }
 
 /**
