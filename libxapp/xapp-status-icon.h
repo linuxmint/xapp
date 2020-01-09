@@ -28,6 +28,20 @@ typedef enum
     XAPP_STATUS_ICON_STATE_NO_SUPPORT
 } XAppStatusIconState;
 
+/**
+ * XAppStatusMonitorFound:
+ * @XAPP_STATUS_MONITOR_FOUND_YES: An active XAppStatusIconMonitor is detected.
+ * @XAPP_STATUS_MONITOR_FOUND_NO: No active XAppStatusIconMonitors exist.
+ * @XAPP_STATUS_MONITOR_FOUND_UNKNOWN: It is unknown whether any XAppStatusIconMonitors
+ * exist or not. This is probably due to an error during the query.
+ */
+typedef enum
+{
+    XAPP_STATUS_MONITOR_FOUND_YES,
+    XAPP_STATUS_MONITOR_FOUND_NO,
+    XAPP_STATUS_MONITOR_FOUND_UNKNOWN
+} XAppStatusMonitorFound;
+
 XAppStatusIcon *xapp_status_icon_new                (void);
 void            xapp_status_icon_set_name           (XAppStatusIcon *icon, const gchar *name);
 void            xapp_status_icon_set_icon_name      (XAppStatusIcon *icon, const gchar *icon_name);
@@ -41,7 +55,7 @@ GtkWidget      *xapp_status_icon_get_secondary_menu (XAppStatusIcon *icon);
 XAppStatusIconState xapp_status_icon_get_state      (XAppStatusIcon *icon);
 
 /* static */
-gboolean        xapp_status_icon_any_monitors       (void);
+XAppStatusMonitorFound xapp_status_icon_any_monitors (gint timeout_sec);
 G_END_DECLS
 
 #endif  /* __XAPP_STATUS_ICON_H__ */

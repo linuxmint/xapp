@@ -159,6 +159,21 @@ state_to_str (XAppStatusIconState state)
     }
 }
 
+static const gchar *
+any_to_str (XAppStatusMonitorFound any_monitors)
+{
+    switch (any_monitors)
+    {
+        case XAPP_STATUS_MONITOR_FOUND_NO:
+            return "No";
+        case XAPP_STATUS_MONITOR_FOUND_YES:
+            return "Yes";
+        case XAPP_STATUS_MONITOR_FOUND_UNKNOWN:
+        default:
+            return "Unknown";
+    }
+}
+
 static gint
 adjust_y_for_monitor_bounds (gint init_x,
                              gint init_y,
@@ -1569,24 +1584,28 @@ xapp_status_icon_get_state (XAppStatusIcon *icon)
 
 /**
  * xapp_status_icon_any_monitors:
+ * @timeout_sec: The time, in seconds, to allow for the query to complete.
  *
  * Looks for the existence of any active #XAppStatusIconMonitors on the bus.
  *
- * Returns: %TRUE if at least one monitor was found.
+ * Returns: %XAPP_STATUS_MONITOR_FOUND_YES or %XAPP_STATUS_MONITOR_FOUND_NO if
+ * it can be definitely determined whether or not any monitors exist.  If an
+ * error occurs or the timeout is reached, %XAPP_STATUS_MONITOR_FOUND_UNKNOWN
+ * is returned.
  *
  * Since: 1.6
  */
-gboolean
-xapp_status_icon_any_monitors (void)
+XAppStatusMonitorFound
+xapp_status_icon_any_monitors (gint timeout_sec)
 {
     GDBusConnection *connection;
     GError *error;
-    gboolean found;
+    XAppStatusMonitorFound any_monitors;
 
     g_debug("XAppStatusIcon: any_monitors: Looking for status monitors");
 
     error = NULL;
-    found = FALSE;
+    any_monitors = XAPP_STATUS_MONITOR_FOUND_UNKNOWN;
 
     connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
 
@@ -1602,16 +1621,15 @@ xapp_status_icon_any_monitors (void)
                                               NULL,
                                               G_VARIANT_TYPE ("(as)"),
                                               G_DBUS_CALL_FLAGS_NONE,
-                                              2, NULL, &error);
+                                              timeout_sec * 1000, NULL, &error);
 
         if (result)
         {
             GVariantIter *iter;
             gchar *str;
+            gboolean found = FALSE;
 
             g_variant_get (result, "(as)", &iter);
-
-            found = FALSE;
 
             while (g_variant_iter_loop (iter, "s", &str))
             {
@@ -1628,6 +1646,8 @@ xapp_status_icon_any_monitors (void)
 
             g_variant_iter_free (iter);
             g_variant_unref (result);
+
+            any_monitors = found ? XAPP_STATUS_MONITOR_FOUND_YES : XAPP_STATUS_MONITOR_FOUND_NO;
         }
 
         g_object_unref (connection);
@@ -1639,8 +1659,8 @@ xapp_status_icon_any_monitors (void)
         g_error_free (error);
     }
 
-    g_debug ("XAppStatusIcon: any_monitors: %s", found ? "TRUE" : "FALSE");
+    g_debug ("XAppStatusIcon: any_monitors: %s", any_to_str (any_monitors));
 
-    return found;
+    return any_monitors;
 }
 
