@@ -83,7 +83,7 @@ struct _XAppKbdLayoutControllerPrivate
     gboolean enabled;
 };
 
-G_DEFINE_TYPE (XAppKbdLayoutController, xapp_kbd_layout_controller, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (XAppKbdLayoutController, xapp_kbd_layout_controller, G_TYPE_OBJECT);
 
 static void
 clear_stores (XAppKbdLayoutController *controller)
@@ -264,7 +264,7 @@ on_configuration_group_changed (GkbdConfiguration       *config,
 static void
 xapp_kbd_layout_controller_init (XAppKbdLayoutController *controller)
 {
-    controller->priv = G_TYPE_INSTANCE_GET_PRIVATE (controller, XAPP_TYPE_KBD_LAYOUT_CONTROLLER, XAppKbdLayoutControllerPrivate);
+    controller->priv = xapp_kbd_layout_controller_get_instance_private (controller);
 
     XAppKbdLayoutControllerPrivate *priv = controller->priv;
 
@@ -369,8 +369,6 @@ xapp_kbd_layout_controller_class_init (XAppKbdLayoutControllerClass *klass)
     gobject_class->finalize = xapp_kbd_layout_controller_finalize;
     gobject_class->get_property = xapp_kbd_layout_controller_get_property;
     gobject_class->constructed = xapp_kbd_layout_controller_constructed;
-
-    g_type_class_add_private (gobject_class, sizeof (XAppKbdLayoutControllerPrivate));
 
     g_object_class_install_property (gobject_class, PROP_ENABLED,
                                      g_param_spec_boolean ("enabled",

@@ -29,7 +29,7 @@ struct _XAppMonitorBlankerPrivate
     GtkWidget **windows;
 };
 
-G_DEFINE_TYPE (XAppMonitorBlanker, xapp_monitor_blanker, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (XAppMonitorBlanker, xapp_monitor_blanker, G_TYPE_OBJECT);
 
 GtkWidget *create_blanking_window (GdkScreen *screen,
                                    int        monitor);
@@ -37,7 +37,7 @@ GtkWidget *create_blanking_window (GdkScreen *screen,
 static void
 xapp_monitor_blanker_init (XAppMonitorBlanker *self)
 {
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, XAPP_TYPE_MONITOR_BLANKER, XAppMonitorBlankerPrivate);
+    self->priv = xapp_monitor_blanker_get_instance_private (self);
     self->priv->num_outputs = 0;
     self->priv->blanked = FALSE;
     self->priv->windows = NULL;
@@ -64,7 +64,6 @@ xapp_monitor_blanker_class_init (XAppMonitorBlankerClass *klass)
 
     gobject_class->finalize = xapp_monitor_blanker_finalize;
 
-    g_type_class_add_private (gobject_class, sizeof (XAppMonitorBlankerPrivate));
 }
 
 /**
