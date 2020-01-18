@@ -1,0 +1,15 @@
+# Specify filepatterns you want git to ignore.
+
+debian/build/
+debian/tmp/
+debian/*.debhelper
+debian/gir1.2-xapp-1.0/
+debian/libxapp-dbg/
+debian/libxapp-dev/
+debian/libxapp1/
+debian/xapps-common/
+debian/xapps-doc/
+debian/*.log
+debian/*.substvars
+debian/files
+debian/debhelper-build-stamp
