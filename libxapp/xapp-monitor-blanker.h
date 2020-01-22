@@ -8,35 +8,17 @@
 
 G_BEGIN_DECLS
 
-#define XAPP_TYPE_MONITOR_BLANKER            (xapp_monitor_blanker_get_type ())
-#define XAPP_MONITOR_BLANKER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), XAPP_TYPE_MONITOR_BLANKER, XAppMonitorBlanker))
-#define XAPP_MONITOR_BLANKER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  XAPP_TYPE_MONITOR_BLANKER, XAppMonitorBlankerClass))
-#define XAPP_IS_MONITOR_BLANKER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), XAPP_TYPE_MONITOR_BLANKER))
-#define XAPP_IS_MONITOR_BLANKER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  XAPP_TYPE_MONITOR_BLANKER))
-#define XAPP_MONITOR_BLANKER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  XAPP_TYPE_MONITOR_BLANKER, XAppMonitorBlankerClass))
+#define XAPP_TYPE_MONITOR_BLANKER (xapp_monitor_blanker_get_type ())
 
-typedef struct _XAppMonitorBlankerPrivate XAppMonitorBlankerPrivate;
-typedef struct _XAppMonitorBlanker XAppMonitorBlanker;
-typedef struct _XAppMonitorBlankerClass XAppMonitorBlankerClass;
+G_DECLARE_FINAL_TYPE (XAppMonitorBlanker, xapp_monitor_blanker, XAPP, MONITOR_BLANKER, GObject)
 
-struct _XAppMonitorBlanker
-{
-    GObject parent_object;
+XAppMonitorBlanker *xapp_monitor_blanker_new (void);
 
-    XAppMonitorBlankerPrivate *priv;
-};
+void xapp_monitor_blanker_blank_other_monitors (XAppMonitorBlanker *self,
+                                                GtkWindow          *window);
+void xapp_monitor_blanker_unblank_monitors     (XAppMonitorBlanker *self);
 
-struct _XAppMonitorBlankerClass
-{
-    GObjectClass parent_class;
-};
-
-GType        xapp_monitor_blanker_get_type             (void);
-XAppMonitorBlanker *xapp_monitor_blanker_new                  (void);
-void         xapp_monitor_blanker_blank_other_monitors (XAppMonitorBlanker *self,
-                                                GtkWindow   *window);
-void         xapp_monitor_blanker_unblank_monitors     (XAppMonitorBlanker *self);
-gboolean     xapp_monitor_blanker_are_monitors_blanked (XAppMonitorBlanker *self);
+gboolean xapp_monitor_blanker_are_monitors_blanked (XAppMonitorBlanker *self);
 
 G_END_DECLS
 
