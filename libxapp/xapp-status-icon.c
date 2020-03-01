@@ -1146,9 +1146,13 @@ xapp_status_icon_dispose (GObject *object)
     g_clear_object (&self->priv->primary_menu);
     g_clear_object (&self->priv->secondary_menu);
 
-    g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_press, self);
-    g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_release, self);
-    g_clear_object (&self->priv->gtk_status_icon);
+    if (self->priv->gtk_status_icon != NULL)
+    {
+        g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_press, self);
+        g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_release, self);
+        g_object_unref (self->priv->gtk_status_icon);
+        self->priv->gtk_status_icon = NULL;
+    }
 
     tear_down_dbus (self);
 
