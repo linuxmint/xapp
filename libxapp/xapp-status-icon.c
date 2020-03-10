@@ -798,7 +798,6 @@ update_fallback_icon (XAppStatusIcon *self)
     }
 
     gtk_status_icon_set_tooltip_text (priv->gtk_status_icon, priv->tooltip_text);
-    gtk_status_icon_set_name (priv->gtk_status_icon, priv->name);
 
     if (priv->icon_name)
     {
@@ -1331,6 +1330,12 @@ void
 xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+
+    if (g_strcmp0 (name, icon->priv->name) == 0)
+    {
+        return;
+    }
+
     g_clear_pointer (&icon->priv->name, g_free);
     icon->priv->name = g_strdup (name);
 
@@ -1341,7 +1346,14 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
         xapp_status_icon_interface_set_name (icon->priv->skeleton, name);
     }
 
-    update_fallback_icon (icon);
+    /* Call this directly instead of in the update_fallback_icon() function,
+     * as every time this is called, Gtk re-creates the plug for the icon,
+     * so the tray thinks one icon has disappeared and a new one appeared,
+     * which can cause flicker and undesirable re-ordering of tray items. */
+    if (icon->priv->gtk_status_icon != NULL)
+    {
+        gtk_status_icon_set_name (icon->priv->gtk_status_icon, name);
+    }
 }
 
 /**
@@ -1357,6 +1369,12 @@ void
 xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+
+    if (g_strcmp0 (icon_name, icon->priv->icon_name) == 0)
+    {
+        return;
+    }
+
     g_clear_pointer (&icon->priv->icon_name, g_free);
     icon->priv->icon_name = g_strdup (icon_name);
 
@@ -1383,6 +1401,12 @@ void
 xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_text)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+
+    if (g_strcmp0 (tooltip_text, icon->priv->tooltip_text) == 0)
+    {
+        return;
+    }
+
     g_clear_pointer (&icon->priv->tooltip_text, g_free);
     icon->priv->tooltip_text = g_strdup (tooltip_text);
 
@@ -1409,6 +1433,12 @@ void
 xapp_status_icon_set_label (XAppStatusIcon *icon, const gchar *label)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+
+    if (g_strcmp0 (label, icon->priv->label) == 0)
+    {
+        return;
+    }
+
     g_clear_pointer (&icon->priv->label, g_free);
     icon->priv->label = g_strdup (label);
 
@@ -1433,6 +1463,12 @@ void
 xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+
+    if (visible == icon->priv->visible)
+    {
+        return;
+    }
+
     icon->priv->visible = visible;
 
     g_debug ("XAppStatusIcon set_visible: %s", visible ? "TRUE" : "FALSE");
@@ -1459,6 +1495,12 @@ xapp_status_icon_set_primary_menu (XAppStatusIcon *icon,
                                    GtkMenu        *menu)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+    g_return_if_fail (GTK_IS_MENU (menu));
+
+    if (menu == GTK_MENU (icon->priv->primary_menu))
+    {
+        return;
+    }
 
     g_clear_object (&icon->priv->primary_menu);
 
@@ -1502,9 +1544,15 @@ xapp_status_icon_get_primary_menu (XAppStatusIcon *icon)
  */
 void
 xapp_status_icon_set_secondary_menu (XAppStatusIcon *icon,
-                                   GtkMenu        *menu)
+                                     GtkMenu        *menu)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+    g_return_if_fail (GTK_IS_MENU (menu));
+
+    if (menu == GTK_MENU (icon->priv->secondary_menu))
+    {
+        return;
+    }
 
     g_clear_object (&icon->priv->secondary_menu);
 
