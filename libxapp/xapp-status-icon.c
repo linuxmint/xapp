@@ -27,6 +27,8 @@
 
 #define MAX_NAME_FAILS 3
 
+#define MAX_SANE_ICON_SIZE 96
+
 static gint unique_id = 0;
 
 enum
@@ -45,6 +47,7 @@ enum
     PROP_0,
     PROP_PRIMARY_MENU,
     PROP_SECONDARY_MENU,
+    PROP_ICON_SIZE,
     N_PROPERTIES
 };
 
@@ -78,6 +81,7 @@ typedef struct
     gchar *tooltip_text;
     gchar *label;
     gboolean visible;
+    gint icon_size;
 
     guint owner_id;
     guint listener_id;
@@ -1061,6 +1065,9 @@ xapp_status_icon_set_property (GObject    *object,
         case PROP_SECONDARY_MENU:
             xapp_status_icon_set_secondary_menu (XAPP_STATUS_ICON (object), g_value_get_object (value));
             break;
+        case PROP_ICON_SIZE:
+            XAPP_STATUS_ICON (object)->priv->icon_size = CLAMP (g_value_get_int (value), 0, MAX_SANE_ICON_SIZE);
+            break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -1082,6 +1089,9 @@ xapp_status_icon_get_property (GObject    *object,
             break;
         case PROP_SECONDARY_MENU:
             g_value_set_object (value, icon->priv->secondary_menu);
+            break;
+        case PROP_ICON_SIZE:
+            g_value_set_int (value, icon->priv->icon_size);
             break;
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1241,6 +1251,25 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
                                                            GTK_TYPE_WIDGET,
                                                            G_PARAM_READWRITE));
 
+    /**
+     * XAppStatusIcon:icon-size:
+     *
+     * The icon size that is preferred by icon monitor/host - this is usually a product
+     * of some calculation based on the panel size.  It can be used by the client to size
+     * an icon to be saved as a file and its path sent to the host.
+     *
+     * If this value is 0 it has not been set, and its value can be unreliable if the host
+     * has multiple #XAppStatusIconMonitors active.
+     */
+    g_object_class_install_property (gobject_class, PROP_ICON_SIZE,
+                                     g_param_spec_int ("icon-size",
+                                                       "The icon size the monitor/host prefers",
+                                                       "The icon size that should be used, if the client is"
+                                                       " supplying absolute icon paths",
+                                                       0,
+                                                       96,
+                                                       0,
+                                                       G_PARAM_READWRITE));
 
     /**
      * XAppStatusIcon::button-press-event:
@@ -1386,6 +1415,30 @@ xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
     }
 
     update_fallback_icon (icon);
+}
+
+/**
+ * xapp_status_icon_get_icon_size:
+ * @icon: a #XAppStatusIcon
+ *
+ * Returns: The desired icon size - usually set by the host based on panel size.
+ * This is not what it's guaranteed to get, and this is really only useful when
+ * receiving absolute icon paths from the client app.
+ *
+ * Since: 1.8
+ */
+gint
+xapp_status_icon_get_icon_size (XAppStatusIcon *icon)
+{
+    g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), 0);
+
+    gint size;
+
+    size = xapp_status_icon_interface_get_icon_size (icon->priv->skeleton);
+
+    g_debug ("XAppStatusIcon get_icon_size: %d", size);
+
+    return size;
 }
 
 /**

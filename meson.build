@@ -7,6 +7,9 @@ gnome = import('gnome')
 pkg = import('pkgconfig')
 i18n = import('i18n')
 
+dbus_services_dir = dependency('dbus-1').get_pkgconfig_variable('session_bus_services_dir',
+                                                                define_variable: ['prefix', get_option('prefix')])
+
 cdata = configuration_data()
 cdata.set('GETTEXT_PACKAGE', '"xapp"')
 
@@ -40,6 +43,7 @@ subdir('pygobject')
 subdir('schemas')
 subdir('status-applets')
 subdir('scripts')
+subdir('xapp-sn-watcher')
 
 if get_option('docs')
     subdir('docs')
