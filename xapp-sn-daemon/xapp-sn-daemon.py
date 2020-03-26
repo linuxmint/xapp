@@ -5,23 +5,21 @@ import gettext
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('XApp', '1.0')
-from gi.repository import Gtk, Gdk, Gio, XApp
+from gi.repository import Gtk, Gdk, Gio, XApp, GLib
 import setproctitle
+
+from itemwrapper import SnItemWrapper
 
 setproctitle.setproctitle("xapp-sn-daemon")
 
 NOTIFICATION_WATCHER_NAME = "org.kde.StatusNotifierWatcher"
 NOTIFICATION_WATCHER_PATH = "/StatusNotifierWatcher"
-#define NOTIFICATION_WATCHER_DBUS_IFACE   "org.kde.StatusNotifierWatcher"
 
-#define NOTIFICATION_ITEM_DBUS_IFACE      "org.kde.StatusNotifierItem"
-#define NOTIFICATION_ITEM_DEFAULT_OBJ     "/StatusNotifierItem"
-
-#define NOTIFICATION_APPROVER_DBUS_IFACE  "org.ayatana.StatusNotifierApprover"
 
 class XAppSNDaemon(Gtk.Application):
     def __init__(self):
         super(XAppSNDaemon, self).__init__(register_session=True, application_id="org.xapp.status-notifier-daemon")
+
         self.items = {}
         self.bus = None
 
@@ -46,18 +44,10 @@ class XAppSNDaemon(Gtk.Application):
         Gtk.main_quit()
 
     def on_name_acquired(self, connection, name, data=None):
-        """
-        Acquired our name - pass... The real work will begin
-        on our bus_acquired callback.
-        """
+
         print("Starting xapp-sn-daemon...")
 
     def on_bus_acquired(self, connection, name, data=None):
-        """
-        Export our interface to the session bus.  Creates the
-        ScreensaverManager.  We are now ready to respond to requests
-        by cinnamon-session and cinnamon-screensaver-command.
-        """
         self.bus = connection
 
         self.watcher = XApp.FdoSnWatcherSkeleton.new()
@@ -93,16 +83,17 @@ class XAppSNDaemon(Gtk.Application):
         key = "%s%s" % (bus_name, path)
         # print(key, bus_name, path)
         try:
-            item = XApp.FdoSnItemProxy.new(self.bus,
+            item = XApp.FdoSnItemProxy.new_sync(self.bus,
                                            Gio.DBusProxyFlags.NONE,
                                            bus_name,
                                            path,
                                            None)
-
-            self.items[key] = item
+            wrapper = SnItemWrapper(item)
+            self.items[key] = wrapper
             self.watcher.props.registered_status_notifier_items = list(self.items.keys())
 
         except GLib.Error as e:
+            print(e.message)
             invocation.return_gerror(e)
             return False
 

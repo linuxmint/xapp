@@ -16,7 +16,7 @@
 
         <!-- struct containing width, height and image data-->
         <!-- implementation has been dropped as of now -->
-        <!-- <property name="IconPixmap" type="a(iiay)" access="read" /> -->
+        <property name="IconPixmap" type="a(iiay)" access="read" />
 
         <!-- not used in ayatana code, no test case so far -->
         <property name="OverlayIconName" type="s" access="read"/>
