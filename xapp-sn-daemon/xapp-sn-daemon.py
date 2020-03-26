@@ -88,7 +88,18 @@ class XAppSNDaemon(Gtk.Application):
                                            bus_name,
                                            path,
                                            None)
+            item.connect("notify::g-name-owner", self.item_name_owner_changed, key)
+            print("NAME OWNWER:", item.props.g_name_owner)
             wrapper = SnItemWrapper(item)
+
+            try:
+                existing = self.items[key]
+            except KeyError:
+                existing = None
+
+            if existing:
+                self.remove_item(key)
+
             self.items[key] = wrapper
             self.watcher.props.registered_status_notifier_items = list(self.items.keys())
 
@@ -101,6 +112,25 @@ class XAppSNDaemon(Gtk.Application):
         watcher.emit_status_notifier_item_registered(service)
 
         return True
+
+    def item_name_owner_changed(self, item, pspec, key):
+        print("name owner changed: %s, now: '%s'" % (key, item.props.g_name_owner))
+        if item.props.g_name_owner in ("", None):
+            self.remove_item(key)
+
+    def remove_item(self, key):
+        try:
+            item = self.items[key]
+
+            try:
+                item.disconnect_by_func(self.item_name_owner_changed)
+            except:
+                pass
+
+            item.destroy()
+            del self.items[key]
+        except KeyError:
+            print("destroying non-existent item: %s" % key)
 
     def handle_register_host(self, watcher, invocation, service):
         print("register host: %s" % service)
@@ -116,9 +146,4 @@ class XAppSNDaemon(Gtk.Application):
 if __name__ == "__main__":
     d = XAppSNDaemon().run()
 
-    try:
-        d.run(sys.argv)
-    except KeyboardInterrupt:
-        print("interrupt")
-        d.destroy()
-
+    d.run(sys.argv)

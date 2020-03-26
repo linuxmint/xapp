@@ -22,5 +22,6 @@
     <property type='s' name='TooltipText' access='read'/>
     <property type='s' name='Label' access='read'/>
     <property type='b' name='Visible' access='read'/>
+    <property type='i' name='IconSize' access='readwrite'/>
   </interface>
 </node>
