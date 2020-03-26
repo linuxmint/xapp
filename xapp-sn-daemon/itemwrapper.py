@@ -194,7 +194,7 @@ class SnItemWrapper(GObject.Object):
     def surface_from_pixmap_array(self, pixmap_array):
         surface = None
 
-        width, height, b = pixmap_to_use
+        width, height, b = pixmap_array
         rowstride = width * 4 # (argb)
 
         # convert argb to rgba
