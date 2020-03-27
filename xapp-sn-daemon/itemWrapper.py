@@ -26,9 +26,10 @@ class SnItemWrapper(GObject.Object):
         self.sn_item = SnItem(sn_item_proxy)
 
         self.sn_item.connect("ready", lambda p: self.sn_item_ready())
-        self.sn_item.connect("update-status", lambda p, s: self.update_status(s))
+        self.sn_item.connect("update-status", lambda p: self.update_status())
         self.sn_item.connect("update-icon", lambda p: self.update_icon())
         self.sn_item.connect("update-menu", lambda p: self.update_menu())
+        self.sn_item.connect("update-tooltip", lambda p: self.update_tooltip())
 
         self.status = "Passive"
         self.icon_theme_path = None
@@ -54,6 +55,7 @@ class SnItemWrapper(GObject.Object):
         self.update_status()
         self.update_icon()
         self.update_menu()
+        self.update_tooltip()
 
     def destroy(self):
         # self.xapp_icon.set_visible(False)
@@ -79,12 +81,17 @@ class SnItemWrapper(GObject.Object):
             self.xapp_icon.set_secondary_menu(None)
             return
 
-        self.gtk_menu = Gtk.Menu()
         self.gtk_menu = DbusmenuGtk3.Menu.new(self.sn_item.sn_item_proxy.get_name(), menu_path)
 
         self.xapp_icon.set_secondary_menu(self.gtk_menu)
 
+    def update_tooltip(self):
+        tooltip = self.sn_item.tooltip()
+
+        self.xapp_icon.set_tooltip_text(tooltip)
+
     def update_status(self):
+        # print(self, self.sn_item)
         self.status = self.sn_item.status()
 
         if self.status == "Passive":
