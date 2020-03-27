@@ -25,6 +25,9 @@
 #define STATUS_ICON_ID_FORMAT "org.x.StatusIcon.PID-%d-%d"
 #define STATUS_ICON_PATH_PREFIX "/org/x/StatusIcon/"
 
+#define STATUS_NOTIFIER_WATCHER_NAME "org.x.StatusNotifierWatcher"
+#define WATCHER_MAX_RESTARTS 2
+
 enum
 {
     ICON_ADDED,
@@ -61,6 +64,9 @@ typedef struct
 
     guint owner_id;
     guint listener_id;
+    guint sn_watcher_id;
+
+    guint sn_watcher_retry_count;
 
 } XAppStatusIconMonitorPrivate;
 
@@ -270,6 +276,40 @@ find_and_add_icons (XAppStatusIconMonitor *self)
 }
 
 static void
+sn_watcher_appeared (GDBusConnection *connection,
+                     const gchar     *name,
+                     const gchar     *name_owner,
+                     gpointer         user_data)
+{
+    /* Nothing needs to be done ? */
+}
+
+static void
+sn_watcher_vanished (GDBusConnection *connection,
+                     const gchar     *name,
+                     gpointer         user_data)
+{
+    /* consider restarting... but there may be more than one monitor, we'd have to
+     * somehow account for that so multiple monitors aren't restarting the thing. */
+}
+
+static void
+add_sn_watcher (XAppStatusIconMonitor *self)
+{
+    XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
+
+    /* This is to start the watcher up, we don't do anything else with it for the time being.
+     * The watcher will keep itself running until it doesn't see any more of us on the bus.*/
+    priv->sn_watcher_id = g_bus_watch_name_on_connection (priv->connection,
+                                                          STATUS_NOTIFIER_WATCHER_NAME,
+                                                          G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
+                                                          sn_watcher_appeared,
+                                                          sn_watcher_vanished,
+                                                          self,
+                                                          None);
+}
+
+static void
 status_icon_name_appeared (XAppStatusIconMonitor *self,
                            const gchar           *name,
                            const gchar           *owner)
@@ -377,6 +417,7 @@ on_name_acquired (GDBusConnection *connection,
 
     add_name_listener (self);
     find_and_add_icons (self);
+    add_sn_watcher (self);
 }
 
 static void
@@ -427,6 +468,8 @@ xapp_status_icon_monitor_init (XAppStatusIconMonitor *self)
     priv->icons = g_hash_table_new_full (g_str_hash, g_str_equal,
                                          g_free, g_object_unref);
 
+    priv->sn_watcher_retry_count = 0;
+
     connect_to_bus (self);
 }
 
@@ -443,11 +486,19 @@ xapp_status_icon_monitor_dispose (GObject *object)
         if (priv->listener_id > 0)
         {
             g_dbus_connection_signal_unsubscribe (priv->connection, priv->listener_id);
+            priv->listener_id = 0;
         }
 
         if (priv->owner_id > 0)
         {
             g_bus_unown_name(priv->owner_id);
+            priv->owner_id = 0;
+        }
+
+        if (priv->sn_watcher_id > 0)
+        {
+            g_bus_unwatch_name (priv->sn_watcher_id);
+            priv->sn_watcher_id = 0;
         }
 
         g_clear_object (&priv->connection);

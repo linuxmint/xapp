@@ -11,7 +11,8 @@ class BusNameWatcher(GObject.Object):
     changes.
     """
     __gsignals__ = {
-        "owner-lost": (GObject.SignalFlags.RUN_LAST, None, (str,str))
+        "owner-lost": (GObject.SignalFlags.RUN_LAST, None, (str,str)),
+        "owner-appeared": (GObject.SignalFlags.RUN_LAST, None, (str,str))
     }
     def __init__(self):
         """
@@ -43,7 +44,13 @@ class BusNameWatcher(GObject.Object):
             # name, old_owner, new_owner
             if parameters[2] == "":
                 self.name_lost(parameters[0], parameters[1])
+            else:
+                self.name_appeared(parameters[0], parameters[2])
 
     @util._idle
     def name_lost(self, name, old_name_owner):
         self.emit("owner-lost", name, old_name_owner)
+
+    @util._idle
+    def name_appeared(self, name, new_owner):
+        self.emit("owner-appeared", name, new_owner)

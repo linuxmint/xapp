@@ -15,20 +15,37 @@ setproctitle.setproctitle("xapp-sn-daemon")
 
 NOTIFICATION_WATCHER_NAME = "org.kde.StatusNotifierWatcher"
 NOTIFICATION_WATCHER_PATH = "/StatusNotifierWatcher"
-
+STATUS_ICON_MONITOR_PREFIX = "org.x.StatusIconMonitor"
 
 class XAppSNDaemon(Gtk.Application):
     def __init__(self):
-        super(XAppSNDaemon, self).__init__(register_session=True, application_id="org.xapp.status-notifier-daemon")
+        super(XAppSNDaemon, self).__init__(register_session=True, application_id="org.x.StatusNotifierWatcher")
 
         self.items = {}
+        self.watcher = None
         self.bus = None
+        self.bus_watcher = None
+        self.shutdown_timer_id = 0
 
     def do_activate(self):
         self.hold()
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
+
+        self.bus_watcher = BusNameWatcher()
+        self.bus_watcher.connect("owner-lost", self.name_owner_lost)
+        self.bus_watcher.connect("owner-appeared", self.name_owner_appeared)
+
+        # Don't bother to continue if there are no monitors
+        if XApp.StatusIcon.any_monitors():
+            self.continue_startup()
+        else:
+            print("No active monitors, exiting in 30s")
+            self.start_shutdown_timer()
+
+    def continue_startup(self):
+        self.hold()
 
         Gio.bus_own_name(Gio.BusType.SESSION,
                          NOTIFICATION_WATCHER_NAME,
@@ -42,10 +59,9 @@ class XAppSNDaemon(Gtk.Application):
         Failed to acquire our name - just exit.
         """
         print("Something is wrong, exiting.")
-        Gtk.main_quit()
+        self.shutdown()
 
     def on_name_acquired(self, connection, name, data=None):
-
         print("Starting xapp-sn-daemon...")
 
     def on_bus_acquired(self, connection, name, data=None):
@@ -61,9 +77,6 @@ class XAppSNDaemon(Gtk.Application):
         self.watcher.connect("handle-register-status-notifier-host", self.handle_register_host)
 
         self.watcher.export(self.bus, NOTIFICATION_WATCHER_PATH)
-
-        self.bus_watcher = BusNameWatcher()
-        self.bus_watcher.connect("owner-lost", self.owner_lost)
 
     def handle_register_item(self, watcher, invocation, service):
         sender = invocation.get_sender()
@@ -123,13 +136,49 @@ class XAppSNDaemon(Gtk.Application):
     def update_published_items(self):
         self.watcher.props.registered_status_notifier_items = list(self.items.keys())
 
-    def owner_lost(self, watcher, name, old_owner):
+    def name_owner_lost(self, watcher, name, old_owner):
         for key in self.items.keys():
             if key.startswith(name):
                 # print("'%s' left the bus, owned by %s" % (name, old_owner))
                 self.remove_item(key)
                 self.update_published_items()
-                break
+                return
+
+        if name.startswith(STATUS_ICON_MONITOR_PREFIX):
+            # We lost a consumer, we'll check if there are any more and exit if not
+            print("Lost a monitor, checking for any more")
+
+            if XApp.StatusIcon.any_monitors():
+                return
+            else:
+                print("Lost our last monitor, starting countdown")
+                self.start_shutdown_timer()
+
+    def name_owner_appeared(self, watcher, name, new_owner):
+        if name.startswith(STATUS_ICON_MONITOR_PREFIX):
+            print("A monitor appeared on the bus")
+            self.cancel_shutdown_timer()
+
+            # finish setting up if we haven't yet
+            if self.watcher == None:
+                self.continue_startup()
+
+    def cancel_shutdown_timer(self):
+        if self.shutdown_timer_id > 0:
+            GLib.source_remove(self.shutdown_timer_id)
+            self.shutdown_timer_id = 0
+
+    def start_shutdown_timer(self):
+        self.cancel_shutdown_timer()
+
+        self.shutdown_timer_id = GLib.timeout_add_seconds(30, self.delayed_exit_timeout)
+
+    def delayed_exit_timeout(self):
+        if not XApp.StatusIcon.any_monitors():
+            print("No monitors after 30s, exiting")
+            self.shutdown()
+
+        return GLib.SOURCE_REMOVE
 
     def remove_item(self, key):
         try:
@@ -150,8 +199,15 @@ class XAppSNDaemon(Gtk.Application):
 
         return True
 
-    def destroy(self):
-        self.watcher.unexport()
+    def shutdown(self):
+        keys = list(self.items.keys())
+
+        for key in keys:
+            self.remove_item(key)
+
+        if self.watcher:
+            self.watcher.unexport()
+
         self.quit()
 
 if __name__ == "__main__":

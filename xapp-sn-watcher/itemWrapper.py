@@ -42,6 +42,7 @@ class SnItemWrapper(GObject.Object):
 
     def sn_item_ready(self):
         self.xapp_icon = XApp.StatusIcon()
+        self.xapp_icon.set_name(self.sn_item.id())
         self.xapp_icon.connect("activate", self.on_xapp_icon_activated)
         self.xapp_icon.connect("state-changed", self.xapp_icon_state_changed);
 
@@ -50,8 +51,6 @@ class SnItemWrapper(GObject.Object):
             self.update_all()
 
     def update_all(self):
-        self.xapp_icon.set_name(self.sn_item.id())
-
         self.update_status()
         self.update_icon()
         self.update_menu()
