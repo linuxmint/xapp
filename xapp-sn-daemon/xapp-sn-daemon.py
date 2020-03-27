@@ -8,7 +8,7 @@ gi.require_version('XApp', '1.0')
 from gi.repository import Gtk, Gdk, Gio, XApp, GLib
 import setproctitle
 
-from itemwrapper import SnItemWrapper
+from itemWrapper import SnItemWrapper
 
 setproctitle.setproctitle("xapp-sn-daemon")
 
@@ -83,14 +83,13 @@ class XAppSNDaemon(Gtk.Application):
         key = "%s%s" % (bus_name, path)
         # print(key, bus_name, path)
         try:
-            item = XApp.FdoSnItemProxy.new_sync(self.bus,
-                                           Gio.DBusProxyFlags.NONE,
-                                           bus_name,
-                                           path,
-                                           None)
-            item.connect("notify::g-name-owner", self.item_name_owner_changed, key)
-            print("NAME OWNWER:", item.props.g_name_owner)
-            wrapper = SnItemWrapper(item)
+            proxy = XApp.FdoSnItemProxy.new_sync(self.bus,
+                                                 Gio.DBusProxyFlags.NONE,
+                                                 bus_name,
+                                                 path,
+                                                 None)
+
+            wrapper = SnItemWrapper(proxy)
 
             try:
                 existing = self.items[key]

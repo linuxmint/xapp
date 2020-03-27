@@ -15,98 +15,107 @@ gi.require_version("XApp", "1.0")
 gi.require_version("DbusmenuGtk3", "0.4")
 from gi.repository import Gtk, GdkPixbuf, Gdk, GObject, Gio, XApp, GLib, DbusmenuGtk3
 
+from notifierItem import SnItem
+
 FALLBACK_ICON_SIZE = 24
 
 class SnItemWrapper(GObject.Object):
     def __init__(self, sn_item_proxy):
         GObject.Object.__init__(self)
 
-        self.sn_item_proxy = sn_item_proxy
-        self.xapp_icon = XApp.StatusIcon()
+        self.sn_item = SnItem(sn_item_proxy)
 
-        self.icon_theme_path = self.sn_item_proxy.props.icon_theme_path
-        self.xapp_icon.set_name(self.sn_item_proxy.props.id)
+        self.sn_item.connect("ready", lambda p: self.sn_item_ready())
+        self.sn_item.connect("update-status", lambda p, s: self.update_status(s))
+        self.sn_item.connect("update-icon", lambda p: self.update_icon())
+        self.sn_item.connect("update-menu", lambda p: self.update_menu())
 
-        self.sn_item_proxy.connect("new-title", lambda p: self.update_tooltip())
-        self.sn_item_proxy.connect("new-icon", lambda p: self.update_icon())
-        # self.sn_item_proxy.connect("new-overlay-icon", lambda p: self.update_icon())
-        self.sn_item_proxy.connect("new-attention-icon", lambda p: self.update_icon())
-        self.sn_item_proxy.connect("new-icon-theme-path", lambda p, s: self.update_icon())
-        # self.sn_item_proxy.connect("new-tooltip", lambda p: self.update_tooltip())
-        self.sn_item_proxy.connect("new-status", lambda p, s: self.update_icon())
-        self.sn_item_proxy.connect("new-menu", lambda p: self.update_menu())
-
-        self.xapp_icon.connect("activate", self.on_xapp_icon_activated)
-
+        self.status = "Passive"
+        self.icon_theme_path = None
+        self.menu = None
         self.gtk_menu = None
+
         self.old_png_path = None
         self.png_path = None
         self.current_icon_id = 0
 
+    def sn_item_ready(self):
+        self.xapp_icon = XApp.StatusIcon()
+        self.xapp_icon.connect("activate", self.on_xapp_icon_activated)
+        self.xapp_icon.connect("state-changed", self.xapp_icon_state_changed);
+
+    def xapp_icon_state_changed(self, state, data=None):
+        if state != XApp.StatusIconState.NO_SUPPORT:
+            self.update_all()
+
+    def update_all(self):
+        self.xapp_icon.set_name(self.sn_item.id())
+
+        self.update_status()
         self.update_icon()
-        # self.update_title()
-        self.update_tooltip()
         self.update_menu()
 
     def destroy(self):
         # self.xapp_icon.set_visible(False)
-        self.sn_item_proxy = None
+        self.sn_item = None
         self.xapp_icon = None
 
         print("item destroyed")
 
     def on_xapp_icon_activated(self, button, time, data=None):
         try:
-            self.sn_item_proxy.call_activate_sync(1, 1, None) # does it matter?
+            #FIXME async
+            self.sn_item.sn_item_proxy.call_activate_sync(1, 1, None) # does it matter?
         except GLib.Error as e:
-            print("why does this happen?", e.message)
-
-    def update_tooltip(self):
-        pass
-        # This is useless, title gets used like an identifier.  tooltip needs a lot of
-        # implementation (icons, html, etc..)
-
-        # self.xapp_icon.set_tooltip_text(self.sn_item_proxy.props.title)
+            pass
 
     def update_menu(self):
-        if self.sn_item_proxy.props.menu == None:
+        # print("ItemIsMenu: ", self.sn_item.item_is_menu())
+        menu_path = self.sn_item.menu()
+
+        if menu_path == None or menu_path == "":
+            self.menu = None
+            self.gtk_menu = None
+            self.xapp_icon.set_secondary_menu(None)
             return
 
         self.gtk_menu = Gtk.Menu()
-        self.gtk_menu = DbusmenuGtk3.Menu.new(self.sn_item_proxy.props.g_name, self.sn_item_proxy.props.menu)
+        self.gtk_menu = DbusmenuGtk3.Menu.new(self.sn_item.sn_item_proxy.get_name(), menu_path)
 
         self.xapp_icon.set_secondary_menu(self.gtk_menu)
 
-    def update_icon(self):
-        props = self.sn_item_proxy.props
+    def update_status(self):
+        self.status = self.sn_item.status()
 
-        # print("IconName: '%s', OverlayIconName: '%s', AttentionIconName: '%s', \n"
-        #       "IconPixmap: %d, OverlayIconPixmap: %d, AttentionIconPixmap: %d, \n"
-        #       "Path: %s"
-        #           % (props.icon_name, props.overlay_icon_name, props.attention_icon_name,
-        #              props.icon_pixmap != None, props.overlay_icon_pixmap != None, props.attention_icon_pixmap != None,
-        #              props.icon_theme_path))
-
-        status = props.status
-
-        if status == "Passive":
+        if self.status == "Passive":
             self.xapp_icon.set_visible(False)
             return
 
         self.xapp_icon.set_visible(True)
 
-        if status == "NeedsAttention":
-            if props.attention_icon_name or props.attention_icon_pixmap:
-                self.set_icon(props.attention_icon_name,
-                              props.attention_icon_pixmap,
-                              props.overlay_icon_name,
-                              props.ovrelay_icon_pixmap)
+    def update_icon(self):
+        i = self.sn_item
+        self.icon_theme_path = i.icon_theme_path()
+
+        # print("IconName: '%s', OverlayIconName: '%s', AttentionIconName: '%s', \n"
+        #       "IconPixmap: %d, OverlayIconPixmap: %d, AttentionIconPixmap: %d, \n"
+        #       "Path: %s, Status: %s"
+        #           % (i.icon_name(), i.overlay_icon_name(), i.att_icon_name(),
+        #              i.icon_pixmap() != None, i.overlay_icon_pixmap() != None, i.att_icon_pixmap() != None,
+        #              i.icon_theme_path(), i.status()))
+
+        if self.status == "NeedsAttention":
+            if i.att_icon_name() or i.att_icon_pixmap():
+                self.set_icon(i.att_icon_name(),
+                              i.att_icon_pixmap(),
+                              i.overlay_icon_name(),
+                              i.ovrelay_icon_pixmap())
                 return
 
-        self.set_icon(props.icon_name,
-                      props.icon_pixmap,
-                      props.overlay_icon_name,
-                      props.overlay_icon_pixmap)
+        self.set_icon(i.icon_name(),
+                      i.icon_pixmap(),
+                      i.overlay_icon_name(),
+                      i.overlay_icon_pixmap())
 
     def set_icon(self, primary_name, primary_pixmap, overlay_name, overlay_pixmap):
         if overlay_name or overlay_pixmap:
