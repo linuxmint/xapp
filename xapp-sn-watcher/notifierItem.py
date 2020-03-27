@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import gi
-from gi.repository import GObject, Gio, GLib
+from gi.repository import GObject, Gio, GLib, Gdk
 
 # We shouldn't need this class but appindicator doesn't cache their properties so it's better
 # to hide the ugliness of fetching properties in here. If this situation changes it will be easier
@@ -131,3 +131,23 @@ class SnItem(GObject.Object):
         else:
             # For everything else, no tooltip
             return ""
+
+    def activate(self, button, x, y):
+        if button == Gdk.BUTTON_PRIMARY:
+            try:
+                # This sucks, nothing is consistent.  Most programs don't have a primary
+                # activate (all appindicator ones).  One that I checked that does, claims
+                # (according to proxyinfo.get_method_info()) it only accepts SecondaryActivate,
+                # but only listens for "Activate", so we attempt a sync primary call, and async
+                # secondary if needed.  Otherwise we're waiting for the first to finish in a
+                # callback before we can try the secondary.  Maybe we just call secondary alwayS??
+                self.sn_item_proxy.call_activate_sync(x, y, None)
+            except GLib.Error:
+                self.sn_item_proxy.call_secondary_activate(x, y, None, None)
+        elif button == Gdk.BUTTON_MIDDLE:
+            self.sn_item_proxy.call_secondary_activate(x, y, None, None)
+
+    def show_context_menu(self, button, x, y):
+        if button == Gdk.BUTTON_SECONDARY:
+            self.sn_item_proxy.call_context_menu(x, y, None, None)
+

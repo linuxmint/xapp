@@ -44,6 +44,8 @@ class SnItemWrapper(GObject.Object):
         self.xapp_icon = XApp.StatusIcon()
         self.xapp_icon.set_name(self.sn_item.id())
         self.xapp_icon.connect("activate", self.on_xapp_icon_activated)
+        self.xapp_icon.connect("button-press-event", self.on_xapp_button_pressed)
+        self.xapp_icon.connect("button-release-event", self.on_xapp_button_released)
         self.xapp_icon.connect("state-changed", self.xapp_icon_state_changed);
 
     def xapp_icon_state_changed(self, state, data=None):
@@ -63,12 +65,16 @@ class SnItemWrapper(GObject.Object):
 
         print("item destroyed")
 
-    def on_xapp_icon_activated(self, button, time, data=None):
-        try:
-            #FIXME async
-            self.sn_item.sn_item_proxy.call_activate_sync(1, 1, None) # does it matter?
-        except GLib.Error as e:
-            pass
+    def on_xapp_icon_activated(self, icon, button, time, data=None):
+        pass
+
+    def on_xapp_button_pressed(self, icon, x, y, button, _time, panel_position):
+        # Use this for activate so we can pass the x,y coordinates
+        self.sn_item.activate(button, x, y)
+
+    def on_xapp_button_released(self, icon, x, y, button, _time, panel_position):
+        if not self.gtk_menu:
+            self.sn_item.show_context_menu(button, x, y)
 
     def update_menu(self):
         # print("ItemIsMenu: ", self.sn_item.item_is_menu())
