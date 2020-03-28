@@ -137,7 +137,7 @@ libxapp_dep = declare_dependency(
 gir = gnome.generate_gir(libxapp,
     namespace: 'XApp',
     nsversion: '1.0',
-    sources: xapp_headers + xapp_sources + dbus_headers,
+    sources: xapp_headers + xapp_sources + dbus_headers + xapp_enums,
     identifier_prefix: 'XApp',
     symbol_prefix: 'xapp_',
     includes: ['GObject-2.0', 'Gtk-3.0'],

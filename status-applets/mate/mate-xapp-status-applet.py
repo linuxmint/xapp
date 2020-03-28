@@ -67,6 +67,8 @@ class StatusWidget(Gtk.ToggleButton):
         # this is the bus owned name
         self.name = self.proxy.get_name()
 
+        self.add_events(Gdk.EventMask.SCROLL_MASK)
+
         # this is (usually) the name of the remote process
         self.proc_name = self.proxy.props.name
 
@@ -99,6 +101,7 @@ class StatusWidget(Gtk.ToggleButton):
 
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
+        self.connect("scroll-event", self.on_scroll)
         self.connect("enter-notify-event", self.on_enter_notify)
         self.connect("leave-notify-event", self.on_leave_notify)
 
@@ -218,6 +221,26 @@ class StatusWidget(Gtk.ToggleButton):
         GObject.timeout_add(200, self.after_release_idle)
 
         return Gdk.EVENT_PROPAGATE
+
+    def on_scroll(self, widget, event):
+        has, direction = event.get_scroll_direction()
+
+        x_dir = XApp.ScrollDirection.UP
+        delta = 0
+
+        if direction != Gdk.ScrollDirection.SMOOTH:
+            x_dir = XApp.ScrollDirection(int(direction))
+
+            if direction == Gdk.ScrollDirection.UP:
+                delta = -1
+            elif direction == Gdk.ScrollDirection.DOWN:
+                delta = 1
+            elif direction == Gdk.ScrollDirection.LEFT:
+                delta = -1
+            elif direction == Gdk.ScrollDirection.RIGHT:
+                delta = 1
+
+        self.proxy.call_scroll_sync(delta, x_dir, event.time, None)
 
     def calc_menu_origin(self, widget, orientation):
         alloc = widget.get_allocation()

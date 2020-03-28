@@ -2,7 +2,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('XApp', '1.0')
-from gi.repository import Gio, GLib, GObject, Gtk, XApp
+from gi.repository import Gio, GLib, GObject, Gtk, XApp, Gdk
 import os
 import sys
 
@@ -16,6 +16,7 @@ class StatusWidget(Gtk.Button):
 
         self.proxy = icon
         self.name = self.proxy.get_name()
+        self.add_events(Gdk.EventMask.SCROLL_MASK)
 
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -40,6 +41,7 @@ class StatusWidget(Gtk.Button):
 
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
+        self.connect("scroll-event", self.on_scroll)
 
     def on_icon_name_changed(self, proxy, gparamspec, data=None):
         string = self.proxy.props.icon_name
@@ -76,6 +78,27 @@ class StatusWidget(Gtk.Button):
         time = event.time
         print ("Button release : %d:%d" % (x, y))
         self.proxy.call_button_release_sync(x, y, event.button, event.time, Gtk.PositionType.TOP, None)
+
+    def on_scroll(self, widget, event):
+        has, direction = event.get_scroll_direction()
+
+        x_dir = XApp.ScrollDirection.UP
+        delta = 0
+
+        if direction != Gdk.ScrollDirection.SMOOTH:
+            x_dir = XApp.ScrollDirection(int(direction))
+
+            if direction == Gdk.ScrollDirection.UP:
+                delta = -1
+            elif direction == Gdk.ScrollDirection.DOWN:
+                delta = 1
+            elif direction == Gdk.ScrollDirection.LEFT:
+                delta = -1
+            elif direction == Gdk.ScrollDirection.RIGHT:
+                delta = 1
+
+        print ("Scroll : delta: %d, orientation: %d" % (delta, x_dir))
+        self.proxy.call_scroll_sync(delta, x_dir, event.time, None)
 
 class StatusApplet(GObject.Object):
 

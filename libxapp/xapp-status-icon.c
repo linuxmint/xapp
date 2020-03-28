@@ -37,6 +37,7 @@ enum
     BUTTON_RELEASE,
     ACTIVATE,
     STATE_CHANGED,
+    SCROLL,
     LAST_SIGNAL
 };
 
@@ -158,6 +159,24 @@ state_to_str (XAppStatusIconState state)
             return "Fallback";
         case XAPP_STATUS_ICON_STATE_NO_SUPPORT:
             return "NoSupport";
+        default:
+            return "Unknown";
+    }
+}
+
+static const gchar *
+direction_to_str (XAppScrollDirection direction)
+{
+    switch (direction)
+    {
+        case XAPP_SCROLL_UP:
+            return "Up";
+        case XAPP_SCROLL_DOWN:
+            return "Down";
+        case XAPP_SCROLL_LEFT:
+            return "Left";
+        case XAPP_SCROLL_RIGHT:
+            return "Right";
         default:
             return "Unknown";
     }
@@ -434,6 +453,30 @@ handle_click_method (XAppStatusIconInterface *skeleton,
         xapp_status_icon_interface_complete_button_release (skeleton,
                                                             invocation);
     }
+
+    return TRUE;
+}
+
+static gboolean
+handle_scroll_method (XAppStatusIconInterface *skeleton,
+                      GDBusMethodInvocation   *invocation,
+                      gint                     delta,
+                      XAppScrollDirection      direction,
+                      guint                    _time,
+                      XAppStatusIcon          *icon)
+{
+    g_debug ("XAppStatusIcon: received Scroll from monitor %s: "
+             "delta: %d , direction: %s , time: %u",
+             g_dbus_method_invocation_get_sender (invocation),
+             delta, direction_to_str (direction), _time);
+
+    g_signal_emit(icon, signals[SCROLL], 0,
+                  delta,
+                  direction,
+                  _time);
+
+    xapp_status_icon_interface_complete_scroll (skeleton,
+                                                invocation);
 
     return TRUE;
 }
@@ -724,7 +767,8 @@ typedef struct
 static SkeletonSignal skeleton_signals[] = {
     // signal name                                callback
     { "handle-button-press",                      handle_click_method },
-    { "handle-button-release",                    handle_click_method }
+    { "handle-button-release",                    handle_click_method },
+    { "handle-scroll",                            handle_scroll_method }
 };
 
 static gboolean
@@ -1344,6 +1388,25 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
                       0,
                       NULL, NULL, NULL,
                       G_TYPE_NONE, 1, XAPP_TYPE_STATUS_ICON_STATE);
+
+    /**
+     * XAppStatusIcon::scroll-event:
+     * @icon: The #XAppStatusIcon
+     * @amount: The amount of movement for the scroll event
+     * @direction: the #XAppScrollDirection of the scroll event
+     * @time: The time supplied by the event, or 0
+     *
+     * Gets emitted when the user uses the mouse scroll wheel over the status icon.
+     * For the most part, amounts will always be 1, unless an applet supports smooth
+     * scrolling.  Generally the direction value is most important.
+     */
+    signals [SCROLL] =
+        g_signal_new ("scroll-event",
+                      XAPP_TYPE_STATUS_ICON,
+                      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+                      0,
+                      NULL, NULL, NULL,
+                      G_TYPE_NONE, 3, G_TYPE_INT, XAPP_TYPE_SCROLL_DIRECTION, G_TYPE_UINT);
 }
 
 /**

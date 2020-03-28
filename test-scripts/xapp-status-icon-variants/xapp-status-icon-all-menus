@@ -22,8 +22,12 @@ class App(GObject.Object):
         self.status_icon.set_tooltip_text("Testing primary and secondary menus")
         self.status_icon.set_label("label 1")
         self.status_icon.set_visible(True)
+        self.status_icon.connect("scroll-event", self.handle_scroll_event)
 
         self.counter = 1
+
+        self.label = None
+        self.window = None
 
         menu = Gtk.Menu()
         menu.append(Gtk.MenuItem.new_with_label("Engage the hyperdrive"))
@@ -50,6 +54,29 @@ class App(GObject.Object):
         self.counter += 1
         self.status_icon.set_label("label %d" % self.counter)
         return True
+
+    def make_window(self):
+        w = Gtk.Window(default_width=300, default_height=130)
+        b = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        w.add(b)
+        self.label = Gtk.Label("How can I help you?")
+        b.pack_start(self.label, True, True, 0)
+
+        self.window = w
+        w.show_all()
+
+    def handle_scroll_event(self, icon, amount, orientation, time, data=None):
+        if self.window == None:
+            self.make_window()
+
+        if orientation == XApp.ScrollDirection.UP:
+            self.label.set_text("Scrolled Up !")
+        elif orientation == XApp.ScrollDirection.DOWN:
+            self.label.set_text("Scrolled Down!")
+        elif orientation == XApp.ScrollDirection.LEFT:
+            self.label.set_text("Scrolled Left!")
+        else:
+            self.label.set_text("Scrolled Right!")
 
 if __name__ == '__main__':
     GLib.setenv ("G_MESSAGES_DEBUG", "all", True)
