@@ -60,6 +60,7 @@ class StatusWidget(Gtk.ToggleButton):
         self.theme = Gtk.IconTheme.get_default()
         self.orientation = orientation
         self.size = size
+        self.proxy.props.icon_size = size
 
         self.proxy = icon
 
@@ -109,6 +110,7 @@ class StatusWidget(Gtk.ToggleButton):
 
     def update_icon(self):
         string = self.proxy.props.icon_name
+        self.proxy.props.icon_size = self.size
 
         self.set_icon(string)
 
