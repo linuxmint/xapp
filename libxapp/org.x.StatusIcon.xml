@@ -17,6 +17,11 @@
         <arg name='time' direction='in' type='u'/>
         <arg name='panel_position' direction='in' type='i'/>
     </method>
+    <method name='Scroll'>
+        <arg name='delta' direction='in' type='i'/>
+        <arg name='orientation' direction='in' type='i'/>
+        <arg name='time' direction='in' type='u'/>
+    </method>
     <property type='s' name='Name' access='read'/>
     <property type='s' name='IconName' access='read'/>
     <property type='s' name='TooltipText' access='read'/>

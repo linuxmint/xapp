@@ -28,6 +28,24 @@ typedef enum
     XAPP_STATUS_ICON_STATE_NO_SUPPORT
 } XAppStatusIconState;
 
+/**
+ * XAppScrollDirection:
+ * @XAPP_SCROLL_UP: Scroll theoretical content up.
+ * @XAPP_SCROLL_DOWN: Scroll theoretical content down.
+ * @XAPP_SCROLL_LEFT: Scroll theoretical content left.
+ * @XAPP_SCROLL_RIGHT: Scroll theoretical content right.
+ *
+ * Represents the direction of icon scroll events.
+ */
+typedef enum
+{
+  XAPP_SCROLL_UP,
+  XAPP_SCROLL_DOWN,
+  XAPP_SCROLL_LEFT,
+  XAPP_SCROLL_RIGHT
+} XAppScrollDirection;
+
+
 XAppStatusIcon *xapp_status_icon_new                (void);
 void            xapp_status_icon_set_name           (XAppStatusIcon *icon, const gchar *name);
 void            xapp_status_icon_set_icon_name      (XAppStatusIcon *icon, const gchar *icon_name);

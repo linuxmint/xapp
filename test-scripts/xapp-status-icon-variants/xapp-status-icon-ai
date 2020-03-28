@@ -17,6 +17,8 @@ sets both primary and secondary menus on the XAppStatusIcon.
 class App(GObject.Object):
     def __init__(self):
         super(App, self).__init__()
+        self.window = None
+
         self.indicator = AppIndicator3.Indicator.new("xapp-status-icon-via-libappindicator",
                                                        "info",
                                                        AppIndicator3.IndicatorCategory.SYSTEM_SERVICES)
@@ -39,14 +41,31 @@ class App(GObject.Object):
 
         self.indicator.set_menu(self.menu)
 
+        self.indicator.connect("scroll-event", self.handle_scroll_event)
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
 
     def activate_window(self, item, data=None):
         w = Gtk.Window(default_width=300, default_height=130)
         b = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         w.add(b)
-        b.pack_start(Gtk.Label("How can I help you?"), True, True, 0)
+        self.label = Gtk.Label("How can I help you?")
+        b.pack_start(self.label, True, True, 0)
+
+        self.window = w
         w.show_all()
+
+    def handle_scroll_event(self, icon, amount, direction, data=None):
+        if self.window == None:
+            self.activate_window(None)
+
+        if direction == Gdk.ScrollDirection.UP:
+            self.label.set_text("Scrolled Up!")
+        elif direction == Gdk.ScrollDirection.DOWN:
+            self.label.set_text("Scrolled Down!")
+        elif direction == Gdk.ScrollDirection.LEFT:
+            self.label.set_text("Scrolled Left!")
+        else:
+            self.label.set_text("Scrolled Right!")
 
     def on_timeout_cb(self):
         self.counter += 1

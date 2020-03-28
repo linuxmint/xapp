@@ -151,3 +151,5 @@ class SnItem(GObject.Object):
         if button == Gdk.BUTTON_SECONDARY:
             self.sn_item_proxy.call_context_menu(x, y, None, None)
 
+    def scroll(self, delta, o_str):
+        self.sn_item_proxy.call_scroll(delta, o_str, None, None)

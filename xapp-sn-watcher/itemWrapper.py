@@ -46,6 +46,7 @@ class SnItemWrapper(GObject.Object):
         self.xapp_icon.connect("activate", self.on_xapp_icon_activated)
         self.xapp_icon.connect("button-press-event", self.on_xapp_button_pressed)
         self.xapp_icon.connect("button-release-event", self.on_xapp_button_released)
+        self.xapp_icon.connect("scroll-event", self.on_xapp_scroll_event)
         self.xapp_icon.connect("state-changed", self.xapp_icon_state_changed);
 
     def xapp_icon_state_changed(self, state, data=None):
@@ -75,6 +76,11 @@ class SnItemWrapper(GObject.Object):
     def on_xapp_button_released(self, icon, x, y, button, _time, panel_position):
         if not self.gtk_menu:
             self.sn_item.show_context_menu(button, x, y)
+
+    def on_xapp_scroll_event(self, icon, delta, direction, _time):
+        o_str = "horizontal" if direction in (XApp.ScrollDirection.LEFT, XApp.ScrollDirection.RIGHT) else "vertical"
+
+        self.sn_item.scroll(delta, o_str)
 
     def update_menu(self):
         # print("ItemIsMenu: ", self.sn_item.item_is_menu())
