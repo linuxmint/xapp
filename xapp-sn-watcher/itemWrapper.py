@@ -63,7 +63,7 @@ class SnItemWrapper(GObject.Object):
         self.sn_item = None
         self.xapp_icon = None
 
-        print("item destroyed")
+        # print("item destroyed")
 
     def on_xapp_icon_activated(self, icon, button, time, data=None):
         pass

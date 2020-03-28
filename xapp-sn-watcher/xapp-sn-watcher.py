@@ -11,7 +11,7 @@ import setproctitle
 from itemWrapper import SnItemWrapper
 from nameWatcher import BusNameWatcher
 
-setproctitle.setproctitle("xapp-sn-daemon")
+setproctitle.setproctitle("xapp-sn-watcher")
 
 NOTIFICATION_WATCHER_NAME = "org.kde.StatusNotifierWatcher"
 NOTIFICATION_WATCHER_PATH = "/StatusNotifierWatcher"
@@ -80,7 +80,7 @@ class XAppSNDaemon(Gtk.Application):
 
     def handle_register_item(self, watcher, invocation, service):
         sender = invocation.get_sender()
-        print("register item: %s,  %s" % (service, sender))
+        # print("register item: %s,  %s" % (service, sender))
 
         key, bus_name, path = self.create_key(sender, service)
 
@@ -141,7 +141,6 @@ class XAppSNDaemon(Gtk.Application):
             if key.startswith(name):
                 # print("'%s' left the bus, owned by %s" % (name, old_owner))
                 self.remove_item(key)
-                self.update_published_items()
                 return
 
         if name.startswith(STATUS_ICON_MONITOR_PREFIX):
@@ -191,6 +190,9 @@ class XAppSNDaemon(Gtk.Application):
 
             item.destroy()
             del self.items[key]
+
+            self.update_published_items()
+
         except KeyError:
             print("destroying non-existent item: %s" % key)
 
