@@ -62,6 +62,7 @@ class StatusWidget(Gtk.ToggleButton):
         self.size = size
 
         self.proxy = icon
+        self.proxy.props.icon_size = size
 
         # this is the bus owned name
         self.name = self.proxy.get_name()
@@ -109,6 +110,7 @@ class StatusWidget(Gtk.ToggleButton):
 
     def update_icon(self):
         string = self.proxy.props.icon_name
+        self.proxy.props.icon_size = self.size
 
         self.set_icon(string)
 
