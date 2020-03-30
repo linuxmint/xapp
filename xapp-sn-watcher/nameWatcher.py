@@ -54,3 +54,11 @@ class BusNameWatcher(GObject.Object):
     @util._idle
     def name_appeared(self, name, new_owner):
         self.emit("owner-appeared", name, new_owner)
+
+    def destroy(self):
+        try:
+            # print("Destroying nameWatcher")
+            self.proxy.disconnect_by_func(self.signal_received)
+            self.proxy = None
+        except Exception as e:
+            print(str(e))

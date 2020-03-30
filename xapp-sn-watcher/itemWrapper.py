@@ -60,11 +60,19 @@ class SnItemWrapper(GObject.Object):
         self.update_tooltip()
 
     def destroy(self):
-        # self.xapp_icon.set_visible(False)
-        self.sn_item = None
-        self.xapp_icon = None
+        # print("Destroying itemWrapper")
+        try:
+            os.unlink(self.png_path)
+        except:
+            pass
 
-        # print("item destroyed")
+        try:
+            self.sn_item.destroy()
+            self.sn_item = None
+        except Exception as e:
+            print(str(e))
+
+        self.xapp_icon = None
 
     def on_xapp_icon_activated(self, icon, button, time, data=None):
         pass

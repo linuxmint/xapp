@@ -23,6 +23,7 @@ class SnItem(GObject.Object):
         self.sn_item_proxy = sn_item_proxy
         self.prop_proxy = None
         self.ready = False
+        self.update_icon_id = 0
 
         self._status = "Active"
 
@@ -39,6 +40,7 @@ class SnItem(GObject.Object):
         try:
             self.prop_proxy = Gio.DBusProxy.new_for_bus_finish(result)
         except GLib.Error as e:
+            print(e.message)
             # FIXME: what to do here?
             return
 
@@ -48,11 +50,14 @@ class SnItem(GObject.Object):
         self.emit("ready")
 
     def signal_received(self, proxy, sender, signal, parameters, data=None):
+        if self.prop_proxy == None:
+            return
+
         # print("Signal from %s: %s" % (self.sn_item_proxy.get_name(), signal))
         if signal in ("NewIcon",
                       "NewAttentionIcon",
                       "NewOverlayIcon"):
-            self.emit("update-icon")
+            self._emit_update_icon_signal()
         elif signal == "NewStatus":
             # libappindicator sends NewStatus during its dispose phase - by the time we want to act
             # on it, we can no longer fetch the status via Get, so we'll cache the status we receive
@@ -65,6 +70,20 @@ class SnItem(GObject.Object):
         elif signal in ("XAyatanaNewLabel",
                         "Tooltip"):
             self.emit("update-tooltip")
+
+    def _emit_update_icon_signal(self):
+        if self.update_icon_id > 0:
+            GLib.source_remove(self.update_icon_id)
+            self.update_icon_id = 0
+
+        self.update_icon_id = GLib.timeout_add(25, self._emit_update_icon_cb)
+
+    def _emit_update_icon_cb(self):
+        if self.sn_item_proxy != None:
+            self.emit("update-icon")
+
+        self.update_icon_id = 0
+        return GLib.SOURCE_REMOVE
 
     def _get_property(self, name):
         res = self.prop_proxy.call_sync("Get",
@@ -153,3 +172,10 @@ class SnItem(GObject.Object):
 
     def scroll(self, delta, o_str):
         self.sn_item_proxy.call_scroll(delta, o_str, None, None)
+
+    def destroy(self):
+        try:
+            self.sn_item_proxy.disconnect_by_func(self.signal_received)
+            self.prop_proxy = None
+        except Exception as e:
+            print(str(e))

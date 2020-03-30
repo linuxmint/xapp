@@ -7,6 +7,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('XApp', '1.0')
 from gi.repository import Gtk, Gdk, Gio, XApp, GLib
 import setproctitle
+import signal
 
 from itemWrapper import SnItemWrapper
 from nameWatcher import BusNameWatcher
@@ -27,8 +28,13 @@ class XAppSNDaemon(Gtk.Application):
         self.bus_watcher = None
         self.shutdown_timer_id = 0
 
+        signal.signal(signal.SIGINT, self.interrupt)
+
     def do_activate(self):
         self.hold()
+
+    def interrupt(self, signal, frame):
+        self.shutdown()
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -82,9 +88,16 @@ class XAppSNDaemon(Gtk.Application):
         sender = invocation.get_sender()
         # print("register item: %s,  %s" % (service, sender))
 
-        key, bus_name, path = self.create_key(sender, service)
 
         try:
+            key, bus_name, path = self.create_key(sender, service)
+
+            if key == None:
+                invocation.return_error_literal(domain=int(Gio.dbus_error_quark()),
+                                        code=Gio.DBusError.INVALID_ARGS,
+                                        message="Invalid bus name from : %s, %s" % (service, sender))
+                return False
+
             try:
                 existing = self.items[key]
             except KeyError:
@@ -121,11 +134,7 @@ class XAppSNDaemon(Gtk.Application):
             path = "/StatusNotifierItem"
 
         if not Gio.dbus_is_name(bus_name):
-            invocation.return_error(Gio.io_error_quark(),
-                                    Gio.IOErrorEnum.INVALID_ARGUMENT,
-                                    "Invalid bus name: %s" % bus_name)
-
-            return None, None
+            return None, None, None
 
         key = "%s%s" % (bus_name, path)
 
@@ -183,11 +192,6 @@ class XAppSNDaemon(Gtk.Application):
         try:
             item = self.items[key]
 
-            try:
-                item.disconnect_by_func(self.item_name_owner_changed)
-            except:
-                pass
-
             item.destroy()
             del self.items[key]
 
@@ -202,6 +206,10 @@ class XAppSNDaemon(Gtk.Application):
         return True
 
     def shutdown(self):
+        print("Shutting down")
+
+        self.bus_watcher.destroy()
+
         keys = list(self.items.keys())
 
         for key in keys:
@@ -217,5 +225,5 @@ if __name__ == "__main__":
 
     try:
         d.run(sys.argv)
-    except KeyboardInterrupt:
-        Gtk.main_quit()
+    except:
+        d.shutdown()
