@@ -1,17 +1,16 @@
+sn_watcher_generated = gnome.gdbus_codegen(
+  'sn-watcher-interface',
+  'sn-watcher.xml',
+  interface_prefix: 'org.x.'
+)
 
-libexec_files = [
-    'itemWrapper.py',
-    'nameWatcher.py',
-    'notifierItem.py',
-    'util.py',
-    'xapp-sn-watcher.py'
-]
+sn_item_generated = gnome.gdbus_codegen(
+  'sn-item-interface',
+  'sn-item.xml',
+  interface_prefix: 'org.x.'
+)
 
 libexec_path = join_paths(get_option('prefix'), get_option('libexecdir'), 'xapps', 'sn-watcher')
-
-install_data(libexec_files,
-  install_dir: libexec_path
-)
 
 ## DBus service file
 
@@ -26,4 +25,22 @@ service_file = configure_file(
 
 install_data(service_file,
   install_dir: dbus_services_dir
+)
+
+dbusmenu = dependency('dbusmenu-gtk3-0.4', required: true)
+cairo = dependency('cairo-gobject', required: true)
+
+watcher_sources = [
+  sn_watcher_generated,
+  sn_item_generated,
+  'xapp-sn-watcher.c',
+  'sn-item.c'
+]
+
+watcher = executable('xapp-sn-watcher',
+  watcher_sources,
+  include_directories: [ top_inc ],
+  dependencies: [libxapp_dep, dbusmenu, cairo],
+  install_dir: libexec_path,
+  install: true
 )

@@ -34,8 +34,6 @@ xapp_sources = [
     'xapp-status-icon-monitor.c'
 ]
 
-codegen = find_program('g-codegen.py')
-
 dbus_headers = []
 
 # FIXME: Ugly workaround that simulates the generation of
@@ -61,48 +59,15 @@ xapp_statusicon_interface_sources = custom_target(
 dbus_headers += xapp_statusicon_interface_sources[0]
 xapp_sources += xapp_statusicon_interface_sources[1]
 
-fdo_sn_watcher_interface_sources = custom_target(
-    'fdo-sn-watcher-interface',
-    input: 'sn-watcher.xml',
-    output: ['fdo-sn-watcher-interface.h', 'fdo-sn-watcher-interface.c'],
-    command: [
-        codegen,
-        'org.kde.StatusNotifierWatcher',
-        'fdo-sn-watcher-interface',
-        'FdoSnWatcher',
-        meson.current_build_dir(),
-        '@INPUT@', '@OUTPUT@'
-    ]
-)
-
-dbus_headers += fdo_sn_watcher_interface_sources[0]
-xapp_sources += fdo_sn_watcher_interface_sources[1]
-
-fdo_sn_item_interface_sources = custom_target(
-    'fdo-sn-item-interface',
-    input: 'sn-item.xml',
-    output: ['fdo-sn-item-interface.h', 'fdo-sn-item-interface.c'],
-    command: [
-        codegen,
-        'org.kde.StatusNotifierItem',
-        'fdo-sn-item-interface',
-        'FdoSnItem',
-        meson.current_build_dir(),
-        '@INPUT@', '@OUTPUT@'
-    ]
-)
-
-dbus_headers += fdo_sn_item_interface_sources[0]
-xapp_sources += fdo_sn_item_interface_sources[1]
-
 # You can't actually access the generated header udring the install_header command below,
 # because the command is evaluated prior to the files being generated.  So we need to manually
 # install the dbus header file (custom install scripts really *do* get evaluated after build,
 # during the install phase.)
-meson.add_install_script('install_generated_header.py', 'xapp-statusicon-interface.h')
+codegen = find_program(join_paths(meson.source_root(), 'meson-scripts', 'g-codegen.py'))
 
-# dbus_headers += generated_sources[0]
-# xapp_sources += generated_sources[1]
+meson.add_install_script(join_paths(meson.source_root(), 'meson-scripts', 'install_generated_header.py'),
+  'xapp-statusicon-interface.h'
+)
 
 xapp_enums = gnome.mkenums('xapp-enums',
     sources : xapp_headers,

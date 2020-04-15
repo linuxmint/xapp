@@ -2,6 +2,7 @@
 
 <node>
     <interface name="org.kde.StatusNotifierItem">
+        <annotation name="org.gtk.GDBus.C.Name" value="SnItemInterface" />
         <property name="Category" type="s" access="read"/>
         <property name="Id" type="s" access="read"/>
         <property name="Title" type="s" access="read"/>

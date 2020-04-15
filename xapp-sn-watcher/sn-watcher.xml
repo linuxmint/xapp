@@ -2,7 +2,7 @@
 
 <node name="/StatusNotifierWatcher">
   <interface name="org.kde.StatusNotifierWatcher">
-    <annotation name="org.gtk.GDBus.C.Name" value="SnWatcher" />
+    <annotation name="org.gtk.GDBus.C.Name" value="SnWatcherInterface" />
 
     <method name="RegisterStatusNotifierItem">
       <arg name="service" type="s" direction="in" />

@@ -28,6 +28,7 @@
 #define MAX_NAME_FAILS 3
 
 #define MAX_SANE_ICON_SIZE 96
+#define FALLBACK_ICON_SIZE 24
 
 static gint unique_id = 0;
 
@@ -1493,7 +1494,14 @@ xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
 gint
 xapp_status_icon_get_icon_size (XAppStatusIcon *icon)
 {
-    g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), 0);
+    g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), FALLBACK_ICON_SIZE);
+
+    if (icon->priv->skeleton == NULL)
+    {
+        g_debug ("XAppStatusIcon get_icon_size: %d (fallback)", FALLBACK_ICON_SIZE);
+
+        return FALLBACK_ICON_SIZE;
+    }
 
     gint size;
 
