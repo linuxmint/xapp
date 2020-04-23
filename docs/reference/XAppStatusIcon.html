@@ -68,6 +68,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppStatusIcon.html#xapp-status-icon-get-icon-size" title="xapp_status_icon_get_icon_size ()">xapp_status_icon_get_icon_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
@@ -151,6 +159,11 @@
 </colgroup>
 <tbody>
 <tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon--icon-size" title="The “icon-size” property">icon-size</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
 <td class="property_type">
 <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</td>
 <td class="property_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon--primary-menu" title="The “primary-menu” property">primary-menu</a></td>
@@ -191,6 +204,11 @@
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-scroll-event" title="The “scroll-event” signal">scroll-event</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-state-changed" title="The “state-changed” signal">state-changed</a></td>
 <td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
 </tr>
@@ -214,6 +232,10 @@
 <td class="function_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState">XAppStatusIconState</a></td>
 </tr>
 <tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="XAppStatusIcon.html#XAppScrollDirection" title="enum XAppScrollDirection">XAppScrollDirection</a></td>
+</tr>
+<tr>
 <td class="datatype_keyword"> </td>
 <td class="function_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-struct" title="XAppStatusIcon">XAppStatusIcon</a></td>
 </tr>
@@ -223,6 +245,7 @@
 <div class="refsect1">
 <a name="XAppStatusIcon.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
+    <span class="lineart">├──</span> XAppScrollDirection
     <span class="lineart">╰──</span> XAppStatusIconState
     <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> XAppStatusIcon
@@ -311,6 +334,34 @@ xapp_status_icon_set_icon_name (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-status-icon-get-icon-size"></a><h3>xapp_status_icon_get_icon_size ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+xapp_status_icon_get_icon_size (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>);</pre>
+<div class="refsect3">
+<a name="xapp-status-icon-get-icon-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>icon</p></td>
+<td class="parameter_description"><p>a <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-status-icon-get-icon-size.returns"></a><h4>Returns</h4>
+<p> The desired icon size - usually set by the host based on panel size.
+This is not what it's guaranteed to get, and this is really only useful when
+receiving absolute icon paths from the client app.</p>
+</div>
+<p class="since">Since: 1.8</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -617,12 +668,70 @@ kind of status icon implementation.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="XAppScrollDirection"></a><h3>enum XAppScrollDirection</h3>
+<p>Represents the direction of icon scroll events.</p>
+<div class="refsect3">
+<a name="XAppScrollDirection.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-SCROLL-UP:CAPS"></a>XAPP_SCROLL_UP</p></td>
+<td class="enum_member_description">
+<p>Scroll theoretical content up.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-SCROLL-DOWN:CAPS"></a>XAPP_SCROLL_DOWN</p></td>
+<td class="enum_member_description">
+<p>Scroll theoretical content down.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-SCROLL-LEFT:CAPS"></a>XAPP_SCROLL_LEFT</p></td>
+<td class="enum_member_description">
+<p>Scroll theoretical content left.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="XAPP-SCROLL-RIGHT:CAPS"></a>XAPP_SCROLL_RIGHT</p></td>
+<td class="enum_member_description">
+<p>Scroll theoretical content right.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XAppStatusIcon-struct"></a><h3>XAppStatusIcon</h3>
 <pre class="programlisting">typedef struct _XAppStatusIcon XAppStatusIcon;</pre>
 </div>
 </div>
 <div class="refsect1">
 <a name="XAppStatusIcon.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="XAppStatusIcon--icon-size"></a><h3>The <code class="literal">“icon-size”</code> property</h3>
+<pre class="programlisting">  “icon-size”                <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>The icon size that is preferred by icon monitor/host - this is usually a product
+of some calculation based on the panel size.  It can be used by the client to size
+an icon to be saved as a file and its path sent to the host.</p>
+<p>If this value is 0 it has not been set, and its value can be unreliable if the host
+has multiple <a href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-struct"><span class="type">XAppStatusIconMonitors</span></a> active.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,96]</p>
+<p>Default value: 0</p>
+</div>
+<hr>
 <div class="refsect2">
 <a name="XAppStatusIcon--primary-menu"></a><h3>The <code class="literal">“primary-menu”</code> property</h3>
 <pre class="programlisting">  “primary-menu”             <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</pre>
@@ -815,6 +924,57 @@ user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"
 <tr>
 <td class="parameter_name"><p>panel_position</p></td>
 <td class="parameter_description"><p>The <a href="../gtk3/gtk3-Standard-Enumerations.html#GtkPositionType"><span class="type">GtkPositionType</span></a> to use for menu positioning</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XAppStatusIcon-scroll-event"></a><h3>The <code class="literal">“scroll-event”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>     *icon,
+               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                amount,
+               <a class="link" href="XAppStatusIcon.html#XAppScrollDirection" title="enum XAppScrollDirection"><span class="type">XAppScrollDirection</span></a> direction,
+               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>               time,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)</pre>
+<p>Gets emitted when the user uses the mouse scroll wheel over the status icon.
+For the most part, amounts will always be 1, unless an applet supports smooth
+scrolling.  Generally the direction value is most important.</p>
+<div class="refsect3">
+<a name="XAppStatusIcon-scroll-event.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>icon</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>amount</p></td>
+<td class="parameter_description"><p>The amount of movement for the scroll event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>direction</p></td>
+<td class="parameter_description"><p>the <a class="link" href="XAppStatusIcon.html#XAppScrollDirection" title="enum XAppScrollDirection"><span class="type">XAppScrollDirection</span></a> of the scroll event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>time</p></td>
+<td class="parameter_description"><p>The time supplied by the event, or 0</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

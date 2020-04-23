@@ -24,6 +24,14 @@
 <a name="object-tree"></a>Object Hierarchy</h1></div></div></div>
 <pre class="screen">
     <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">├──</span> <a href="../gio/GDBusProxy.html#GDBusProxy-struct">GDBusProxy</a>
+    <span class="lineart">│</span>   <span class="lineart">├──</span> XAppFdoSnItemProxy
+    <span class="lineart">│</span>   <span class="lineart">├──</span> XAppFdoSnWatcherProxy
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterfaceProxy">XAppStatusIconInterfaceProxy</a>
+    <span class="lineart">├──</span> <a href="../gio/GDBusInterfaceSkeleton.html#GDBusInterfaceSkeleton-struct">GDBusInterfaceSkeleton</a>
+    <span class="lineart">│</span>   <span class="lineart">├──</span> XAppFdoSnItemSkeleton
+    <span class="lineart">│</span>   <span class="lineart">├──</span> XAppFdoSnWatcherSkeleton
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html" title="XAppStatusIconInterfaceSkeleton">XAppStatusIconInterfaceSkeleton</a>
     <span class="lineart">├──</span> <a href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
     <span class="lineart">│</span>   <span class="lineart">╰──</span> <a href="../gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
     <span class="lineart">│</span>       <span class="lineart">╰──</span> <a href="../gtk3/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
@@ -38,15 +46,14 @@
     <span class="lineart">├──</span> <a class="link" href="XAppKbdLayoutController.html" title="XAppKbdLayoutController">XAppKbdLayoutController</a>
     <span class="lineart">├──</span> <a class="link" href="XAppMonitorBlanker.html" title="XAppMonitorBlanker">XAppMonitorBlanker</a>
     <span class="lineart">├──</span> <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon">XAppStatusIcon</a>
-    <span class="lineart">├──</span> <a href="../gio/GDBusProxy.html#GDBusProxy-struct">GDBusProxy</a>
-    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterfaceProxy">XAppStatusIconInterfaceProxy</a>
-    <span class="lineart">├──</span> <a href="../gio/GDBusInterfaceSkeleton.html#GDBusInterfaceSkeleton-struct">GDBusInterfaceSkeleton</a>
-    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html" title="XAppStatusIconInterfaceSkeleton">XAppStatusIconInterfaceSkeleton</a>
     <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor">XAppStatusIconMonitor</a>
     <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
+    <span class="lineart">├──</span> XAppFdoSnItem
+    <span class="lineart">├──</span> XAppFdoSnWatcher
     <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface">XAppStatusIconInterface</a>
     <a href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
     <span class="lineart">├──</span> <a class="link" href="XAppIconChooserDialog.html#XAppIconSize" title="enum XAppIconSize">XAppIconSize</a>
+    <span class="lineart">├──</span> <a class="link" href="XAppStatusIcon.html#XAppScrollDirection" title="enum XAppScrollDirection">XAppScrollDirection</a>
     <span class="lineart">╰──</span> <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState">XAppStatusIconState</a>
 </pre>
 </div>

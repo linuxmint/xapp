@@ -88,6 +88,8 @@
     <keyword type="function" name="xapp_monitor_blanker_blank_other_monitors ()" link="XAppMonitorBlanker.html#xapp-monitor-blanker-blank-other-monitors"/>
     <keyword type="function" name="xapp_monitor_blanker_unblank_monitors ()" link="XAppMonitorBlanker.html#xapp-monitor-blanker-unblank-monitors"/>
     <keyword type="function" name="xapp_monitor_blanker_are_monitors_blanked ()" link="XAppMonitorBlanker.html#xapp-monitor-blanker-are-monitors-blanked"/>
+    <keyword type="macro" name="XAPP_TYPE_MONITOR_BLANKER" link="XAppMonitorBlanker.html#XAPP-TYPE-MONITOR-BLANKER:CAPS"/>
+    <keyword type="struct" name="XAppMonitorBlanker" link="XAppMonitorBlanker.html#XAppMonitorBlanker-struct"/>
     <keyword type="function" name="xapp_preferences_window_new ()" link="XAppPreferencesWindow.html#xapp-preferences-window-new"/>
     <keyword type="function" name="xapp_preferences_window_add_page ()" link="XAppPreferencesWindow.html#xapp-preferences-window-add-page"/>
     <keyword type="function" name="xapp_preferences_window_add_button ()" link="XAppPreferencesWindow.html#xapp-preferences-window-add-button"/>
@@ -104,6 +106,7 @@
     <keyword type="function" name="xapp_status_icon_new ()" link="XAppStatusIcon.html#xapp-status-icon-new" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_name ()" link="XAppStatusIcon.html#xapp-status-icon-set-name" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_icon_name ()" link="XAppStatusIcon.html#xapp-status-icon-set-icon-name" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_get_icon_size ()" link="XAppStatusIcon.html#xapp-status-icon-get-icon-size" since="1.8"/>
     <keyword type="function" name="xapp_status_icon_set_tooltip_text ()" link="XAppStatusIcon.html#xapp-status-icon-set-tooltip-text" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_label ()" link="XAppStatusIcon.html#xapp-status-icon-set-label" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_visible ()" link="XAppStatusIcon.html#xapp-status-icon-set-visible" since="1.6"/>
@@ -115,12 +118,15 @@
     <keyword type="function" name="xapp_status_icon_any_monitors ()" link="XAppStatusIcon.html#xapp-status-icon-any-monitors" since="1.6"/>
     <keyword type="macro" name="XAPP_TYPE_STATUS_ICON" link="XAppStatusIcon.html#XAPP-TYPE-STATUS-ICON:CAPS"/>
     <keyword type="enum" name="enum XAppStatusIconState" link="XAppStatusIcon.html#XAppStatusIconState"/>
+    <keyword type="enum" name="enum XAppScrollDirection" link="XAppStatusIcon.html#XAppScrollDirection"/>
     <keyword type="struct" name="XAppStatusIcon" link="XAppStatusIcon.html#XAppStatusIcon-struct"/>
+    <keyword type="property" name="The “icon-size” property" link="XAppStatusIcon.html#XAppStatusIcon--icon-size"/>
     <keyword type="property" name="The “primary-menu” property" link="XAppStatusIcon.html#XAppStatusIcon--primary-menu"/>
     <keyword type="property" name="The “secondary-menu” property" link="XAppStatusIcon.html#XAppStatusIcon--secondary-menu"/>
     <keyword type="signal" name="The “activate” signal" link="XAppStatusIcon.html#XAppStatusIcon-activate"/>
     <keyword type="signal" name="The “button-press-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-button-press-event"/>
     <keyword type="signal" name="The “button-release-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-button-release-event"/>
+    <keyword type="signal" name="The “scroll-event” signal" link="XAppStatusIcon.html#XAppStatusIcon-scroll-event"/>
     <keyword type="signal" name="The “state-changed” signal" link="XAppStatusIcon.html#XAppStatusIcon-state-changed"/>
     <keyword type="function" name="xapp_status_icon_monitor_new ()" link="XAppStatusIconMonitor.html#xapp-status-icon-monitor-new" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_monitor_list_icons ()" link="XAppStatusIconMonitor.html#xapp-status-icon-monitor-list-icons" since="1.6"/>
@@ -132,12 +138,16 @@
     <keyword type="function" name="xapp_status_icon_interface_override_properties ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-override-properties"/>
     <keyword type="function" name="xapp_status_icon_interface_complete_button_press ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-complete-button-press"/>
     <keyword type="function" name="xapp_status_icon_interface_complete_button_release ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-complete-button-release"/>
+    <keyword type="function" name="xapp_status_icon_interface_complete_scroll ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-complete-scroll"/>
     <keyword type="function" name="xapp_status_icon_interface_call_button_press ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-button-press"/>
     <keyword type="function" name="xapp_status_icon_interface_call_button_press_finish ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-button-press-finish"/>
     <keyword type="function" name="xapp_status_icon_interface_call_button_press_sync ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-button-press-sync"/>
     <keyword type="function" name="xapp_status_icon_interface_call_button_release ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-button-release"/>
     <keyword type="function" name="xapp_status_icon_interface_call_button_release_finish ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-button-release-finish"/>
     <keyword type="function" name="xapp_status_icon_interface_call_button_release_sync ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-button-release-sync"/>
+    <keyword type="function" name="xapp_status_icon_interface_call_scroll ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-scroll"/>
+    <keyword type="function" name="xapp_status_icon_interface_call_scroll_finish ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-scroll-finish"/>
+    <keyword type="function" name="xapp_status_icon_interface_call_scroll_sync ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-call-scroll-sync"/>
     <keyword type="function" name="xapp_status_icon_interface_get_name ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-get-name"/>
     <keyword type="function" name="xapp_status_icon_interface_dup_name ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-dup-name"/>
     <keyword type="function" name="xapp_status_icon_interface_set_name ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-set-name"/>
@@ -152,6 +162,8 @@
     <keyword type="function" name="xapp_status_icon_interface_set_label ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-set-label"/>
     <keyword type="function" name="xapp_status_icon_interface_get_visible ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-get-visible"/>
     <keyword type="function" name="xapp_status_icon_interface_set_visible ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-set-visible"/>
+    <keyword type="function" name="xapp_status_icon_interface_get_icon_size ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-get-icon-size"/>
+    <keyword type="function" name="xapp_status_icon_interface_set_icon_size ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-set-icon-size"/>
     <keyword type="function" name="xapp_status_icon_interface_proxy_new ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-proxy-new"/>
     <keyword type="function" name="xapp_status_icon_interface_proxy_new_finish ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-proxy-new-finish"/>
     <keyword type="function" name="xapp_status_icon_interface_proxy_new_sync ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-proxy-new-sync"/>
@@ -160,12 +172,14 @@
     <keyword type="function" name="xapp_status_icon_interface_proxy_new_for_bus_sync ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-proxy-new-for-bus-sync"/>
     <keyword type="function" name="xapp_status_icon_interface_skeleton_new ()" link="XAppStatusIconInterfaceSkeleton.html#xapp-status-icon-interface-skeleton-new"/>
     <keyword type="property" name="The “icon-name” property" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface--icon-name"/>
+    <keyword type="property" name="The “icon-size” property" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface--icon-size"/>
     <keyword type="property" name="The “label” property" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface--label"/>
     <keyword type="property" name="The “name” property" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface--name"/>
     <keyword type="property" name="The “tooltip-text” property" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface--tooltip-text"/>
     <keyword type="property" name="The “visible” property" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface--visible"/>
     <keyword type="signal" name="The “handle-button-press” signal" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface-handle-button-press"/>
     <keyword type="signal" name="The “handle-button-release” signal" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface-handle-button-release"/>
+    <keyword type="signal" name="The “handle-scroll” signal" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface-handle-scroll"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_16" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-16:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_22" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-22:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_24" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-24:CAPS"/>
@@ -175,5 +189,9 @@
     <keyword type="constant" name="XAPP_STATUS_ICON_STATE_NATIVE" link="XAppStatusIcon.html#XAPP-STATUS-ICON-STATE-NATIVE:CAPS"/>
     <keyword type="constant" name="XAPP_STATUS_ICON_STATE_FALLBACK" link="XAppStatusIcon.html#XAPP-STATUS-ICON-STATE-FALLBACK:CAPS"/>
     <keyword type="constant" name="XAPP_STATUS_ICON_STATE_NO_SUPPORT" link="XAppStatusIcon.html#XAPP-STATUS-ICON-STATE-NO-SUPPORT:CAPS"/>
+    <keyword type="constant" name="XAPP_SCROLL_UP" link="XAppStatusIcon.html#XAPP-SCROLL-UP:CAPS"/>
+    <keyword type="constant" name="XAPP_SCROLL_DOWN" link="XAppStatusIcon.html#XAPP-SCROLL-DOWN:CAPS"/>
+    <keyword type="constant" name="XAPP_SCROLL_LEFT" link="XAppStatusIcon.html#XAPP-SCROLL-LEFT:CAPS"/>
+    <keyword type="constant" name="XAPP_SCROLL_RIGHT" link="XAppStatusIcon.html#XAPP-SCROLL-RIGHT:CAPS"/>
   </functions>
 </book>
