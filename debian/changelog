@@ -1,3 +1,39 @@
+xapp (1.8.0) ulyana; urgency=medium
+
+  [ worldofpeace ]
+  * Add option to specify path to pygobject override directory
+  * Install icons and scripts using meson options
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: Sync the visible state of the fallback GtkStatusIcon when it is first created.
+  * xapp-status-icon.c: Fix the timeout duration for xapp_status_icon_any_monitors.
+
+  [ leigh123linux ]
+  * Remove use of deprecated g_type_class_add_private function
+
+  [ Stephen Collins ]
+  * Add gitignore
+
+  [ JosephMcc ]
+  * xapp-monitor-blanker: Use G_DECLARE_FINAL_TYPE
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: check if we have a fallback status icon before disconnecting signals from it.
+  * xapp-status-icon.c: Only call gtk_status_icon_set_name() when explicitly requested.
+  * Add StatusNotifier watcher.
+  * mate applet: Set the new icon size property (this provides a hint to xapp-sn-watcher or any client app to provide a correct icon size in some situations).
+  * status icon: Add support for scroll events
+  * debian: Remove python2 deps.
+  * debian/control: Add missing dbusmenu dependency.
+
+  [ Clement Lefebvre ]
+  * Packaging: Re-add python-gi-dev as build-dep
+
+  [ Michael Webster ]
+  * xapp-sn-watcher: rewrite in C due to leaky dbus python bindings.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 23 Apr 2020 15:49:33 +0100
+
 xapp (1.6.9) tricia; urgency=medium
 
   [ Michael Webster ]
