@@ -38,6 +38,8 @@ G_DEFINE_TYPE (XAppSnWatcher, xapp_sn_watcher, GTK_TYPE_APPLICATION)
 #define STATUS_ICON_MONITOR_MATCH "org.x.StatusIconMonitor"
 #define APPINDICATOR_PATH_PREFIX "/org/ayatana/NotificationItem/"
 
+GSettings *xapp_settings;
+
 static void continue_startup (XAppSnWatcher *watcher);
 static void update_published_items (XAppSnWatcher *watcher);
 
@@ -406,6 +408,20 @@ on_interrupt (XAppSnWatcher *watcher)
 }
 
 static void
+update_item_menus (const gchar *key,
+                   gpointer     item,
+                   gpointer     user_data)
+{
+    sn_item_update_menus (SN_ITEM (item));
+}
+
+static void
+whitelist_changed (XAppSnWatcher *watcher)
+{
+    g_hash_table_foreach (watcher->items, (GHFunc) update_item_menus, NULL);
+}
+
+static void
 continue_startup (XAppSnWatcher *watcher)
 {
     g_debug ("Trying to acquire session bus connection");
@@ -431,6 +447,12 @@ watcher_startup (GApplication *application)
     GError *error;
 
     G_APPLICATION_CLASS (xapp_sn_watcher_parent_class)->startup (application);
+
+    xapp_settings = g_settings_new ("org.x.apps");
+    g_signal_connect_swapped (xapp_settings,
+                              "changed::" WHITELIST_KEY,
+                              G_CALLBACK (whitelist_changed),
+                              watcher);
 
     watcher->items = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, g_object_unref);
@@ -475,6 +497,8 @@ static void
 watcher_shutdown (GApplication *application)
 {
     XAppSnWatcher *watcher = (XAppSnWatcher *) application;
+
+    g_clear_object (&xapp_settings);
 
     if (watcher->name_listener_id > 0)
     {

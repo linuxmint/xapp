@@ -309,48 +309,6 @@ should_send_activate (XAppStatusIcon *icon,
     return do_activate;
 }
 
-static gboolean
-appindicator_can_activate (XAppStatusIcon *icon)
-{
-    gpointer ptr;
-    gboolean has_activate = FALSE;
-
-    ptr = g_object_get_data (G_OBJECT (icon), "app-indicator-has-secondary-activate");
-
-    if (ptr && GPOINTER_TO_INT (ptr))
-    {
-        has_activate = TRUE;
-    }
-
-    return has_activate;
-}
-
-static gboolean
-handle_appindicator_button_press (XAppStatusIcon *icon,
-                                  guint           button,
-                                  guint           _time)
-{
-    if (g_object_get_data (G_OBJECT (icon), "app-indicator"))
-    {
-        if (button == GDK_BUTTON_MIDDLE || (button == GDK_BUTTON_PRIMARY && appindicator_can_activate (icon)))
-        {
-            g_debug ("XAppStatusIcon: sending activate for left- or middle-click event (libappindicator)");
-
-            g_signal_emit (icon, signals[ACTIVATE], 0,
-                           button,
-                           _time);
-        }
-        else
-        {
-            g_debug ("XAppStatusIcon: GtkStatusIcon (app-indicator) ignoring %s button press.", button_to_str (button));
-        }
-
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
 static GtkWidget *
 get_menu_to_use (XAppStatusIcon *icon,
                  guint           button)
@@ -360,15 +318,6 @@ get_menu_to_use (XAppStatusIcon *icon,
     switch (button)
     {
         case GDK_BUTTON_PRIMARY:
-            if (g_object_get_data (G_OBJECT (icon), "app-indicator"))
-            {
-                if (!appindicator_can_activate (icon))
-                {
-                    menu_to_use = icon->priv->secondary_menu;
-                    break;
-                }
-            }
-
             menu_to_use = icon->priv->primary_menu;
             break;
         case GDK_BUTTON_SECONDARY:
@@ -398,15 +347,12 @@ handle_click_method (XAppStatusIconInterface *skeleton,
                  g_dbus_method_invocation_get_sender (invocation),
                  x, y, button_to_str (button), _time, panel_position_to_str (panel_position));
 
-        if (!handle_appindicator_button_press (icon, button, _time))
+        if (should_send_activate (icon, button))
         {
-            if (should_send_activate (icon, button))
-            {
-                g_debug ("XAppStatusIcon: native sending 'activate' for %s button", button_to_str (button));
-                g_signal_emit (icon, signals[ACTIVATE], 0,
-                               button,
-                               _time);
-            }
+            g_debug ("XAppStatusIcon: native sending 'activate' for %s button", button_to_str (button));
+            g_signal_emit (icon, signals[ACTIVATE], 0,
+                           button,
+                           _time);
         }
 
         icon->priv->have_button_press = TRUE;
@@ -579,24 +525,17 @@ on_gtk_status_icon_button_press (GtkStatusIcon *status_icon,
     button = event->button.button;
     _time = event->button.time;
 
-    /* Button press equates to activate when there's no menu,
-     * but for appindicator, left click and right click will always
-     * bring up the same menu, and only a middle click should activate. */
-
     g_debug ("XAppStatusIcon: GtkStatusIcon button-press-event with %s button", button_to_str (button));
 
-    if (!handle_appindicator_button_press (icon, button, _time))
-    {
         /* We always send 'activate' for a button that has no corresponding menu,
          * and for middle clicks. */
-        if (should_send_activate (icon, button))
-        {
-            g_debug ("XAppStatusIcon: GtkStatusIcon activated by %s button", button_to_str (button));
+    if (should_send_activate (icon, button))
+    {
+        g_debug ("XAppStatusIcon: GtkStatusIcon activated by %s button", button_to_str (button));
 
-            g_signal_emit (icon, signals[ACTIVATE], 0,
-                           button,
-                           _time);
-        }
+        g_signal_emit (icon, signals[ACTIVATE], 0,
+                       button,
+                       _time);
     }
 
     calculate_gtk_status_icon_position_and_orientation (icon,
@@ -1619,7 +1558,7 @@ xapp_status_icon_set_primary_menu (XAppStatusIcon *icon,
                                    GtkMenu        *menu)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
-    g_return_if_fail (GTK_IS_MENU (menu));
+    g_return_if_fail (GTK_IS_MENU (menu) || menu == NULL);
 
     if (menu == GTK_MENU (icon->priv->primary_menu))
     {
@@ -1671,7 +1610,7 @@ xapp_status_icon_set_secondary_menu (XAppStatusIcon *icon,
                                      GtkMenu        *menu)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
-    g_return_if_fail (GTK_IS_MENU (menu));
+    g_return_if_fail (GTK_IS_MENU (menu) || menu == NULL);
 
     if (menu == GTK_MENU (icon->priv->secondary_menu))
     {

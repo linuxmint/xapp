@@ -13,6 +13,10 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (SnItem, sn_item, SN, ITEM, GObject)
 
 SnItem *sn_item_new (GDBusProxy *sn_item_proxy, gboolean is_ai);
+void    sn_item_update_menus (SnItem *item);
+
+#define WHITELIST_KEY "left-click-activate-apps"
+extern GSettings *xapp_settings;
 
 G_END_DECLS
 

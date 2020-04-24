@@ -41,6 +41,7 @@ struct _SnItem
     gchar *png_path;
 
     gint current_icon_id;
+    gchar *sortable_name;
 
     gboolean is_ai;
 };
@@ -51,6 +52,20 @@ static void update_menu (SnItem *item);
 static void update_status (SnItem *item);
 static void update_tooltip (SnItem *item);
 static void update_icon (SnItem *item);
+
+static gboolean
+should_activate (SnItem *item)
+{
+    gboolean should;
+
+    gchar **whitelist = g_settings_get_strv (xapp_settings,
+                                             WHITELIST_KEY);
+
+    should = g_strv_contains ((const gchar * const *) whitelist, item->sortable_name);
+    g_strfreev (whitelist);
+
+    return should;
+}
 
 static void
 sn_item_init (SnItem *self)
@@ -77,6 +92,7 @@ sn_item_dispose (GObject *object)
         item->last_png_path = NULL;
     }
 
+    g_clear_pointer (&item->sortable_name, g_free);
     g_clear_object (&item->status_icon);
     g_clear_object (&item->menu);
     g_clear_object (&item->prop_proxy);
@@ -519,18 +535,25 @@ update_menu (SnItem *item)
 {
     gchar *menu_path;
 
+    g_clear_object (&item->menu);
+
+    xapp_status_icon_set_primary_menu (item->status_icon, NULL);
+    xapp_status_icon_set_secondary_menu (item->status_icon, NULL);
+
     menu_path = get_string_property (item, "Menu");
 
     if (menu_path == NULL)
     {
-        g_clear_object (&item->menu);
-
-        xapp_status_icon_set_secondary_menu (item->status_icon, NULL);
         return;
     }
 
     item->menu = GTK_WIDGET (dbusmenu_gtkmenu_new ((gchar *) g_dbus_proxy_get_name (item->sn_item_proxy), menu_path));
     g_object_ref_sink (item->menu);
+
+    if (item->is_ai && !should_activate (item))
+    {
+        xapp_status_icon_set_primary_menu (item->status_icon, GTK_MENU (item->menu));
+    }
 
     xapp_status_icon_set_secondary_menu (item->status_icon, GTK_MENU (item->menu));
 
@@ -729,24 +752,18 @@ xapp_icon_button_press (XAppStatusIcon *status_icon,
 {
     SnItem *item = SN_ITEM (user_data);
 
-    GError *error = NULL;
-
     if (button == GDK_BUTTON_PRIMARY)
     {
-     /* This sucks, nothing is consistent.  Most programs don't have a primary
-        activate (all appindicator ones).  One that I checked that does, claims
-        (according to proxyinfo.get_method_info()) it only accepts SecondaryActivate,
-        but only listens for "Activate", so we attempt a sync primary call, and async
-        secondary if needed.  Otherwise we're waiting for the first to finish in a
-        callback before we can try the secondary.  Maybe we just call secondary always?? */
-
-        sn_item_interface_call_activate_sync (SN_ITEM_INTERFACE (item->sn_item_proxy), x, y, NULL, &error);
-
-        if (error != NULL)
+        if (item->is_ai)
         {
-            g_error_free (error);
-
-            sn_item_interface_call_secondary_activate (SN_ITEM_INTERFACE (item->sn_item_proxy), x, y, NULL, NULL, NULL);
+            if (should_activate (item))
+            {
+                sn_item_interface_call_secondary_activate (SN_ITEM_INTERFACE (item->sn_item_proxy), x, y, NULL, NULL, NULL);
+                return;
+            }
+        } else
+        {
+            sn_item_interface_call_activate (SN_ITEM_INTERFACE (item->sn_item_proxy), x, y, NULL, NULL, NULL);
         }
     }
     else
@@ -829,7 +846,7 @@ assign_sortable_name (SnItem         *item,
     g_debug ("Sort name for %s is '%s'", g_dbus_proxy_get_name (G_DBUS_PROXY (item->sn_item_proxy)), sortable_name);
     xapp_status_icon_set_name (status_icon, sortable_name);
 
-    g_free (sortable_name);
+    item->sortable_name = sortable_name;
 }
 
 static void
@@ -895,4 +912,10 @@ sn_item_new (GDBusProxy *sn_item_proxy,
 
     initialize_item (item);
     return item;
+}
+
+void
+sn_item_update_menus (SnItem *item)
+{
+    update_menu (item);
 }
