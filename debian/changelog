@@ -1,3 +1,24 @@
+xapp (1.8.1) ulyana; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update documentation
+  * CI: Update targets
+  * l10n: Fix makepot picking up unwanted service file
+
+  [ Michael Webster ]
+  * Eliminate all appindicator-specific code from xapp-status-icon.c, Add a whitelist for xapp-sn-watcher to list ai icons  that should left-click to activate.
+
+  [ Clement Lefebvre ]
+  * Update documentation
+  * CI: Update targets
+  * l10n: Fix makepot picking up unwanted service file
+
+  [ Michael Webster ]
+  * Eliminate all appindicator-specific code from xapp-status-icon.c, Add a whitelist for xapp-sn-watcher to list ai icons  that should left-click to activate.
+  * xapp-sn-watcher: Add a whitelist to manage what desktop environments to start in.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 25 Apr 2020 18:37:40 +0100
+
 xapp (1.8.0) ulyana; urgency=medium
 
   [ worldofpeace ]
