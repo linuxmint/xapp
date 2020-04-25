@@ -276,37 +276,17 @@ find_and_add_icons (XAppStatusIconMonitor *self)
 }
 
 static void
-sn_watcher_appeared (GDBusConnection *connection,
-                     const gchar     *name,
-                     const gchar     *name_owner,
-                     gpointer         user_data)
-{
-    /* Nothing needs to be done ? */
-}
-
-static void
-sn_watcher_vanished (GDBusConnection *connection,
-                     const gchar     *name,
-                     gpointer         user_data)
-{
-    /* consider restarting... but there may be more than one monitor, we'd have to
-     * somehow account for that so multiple monitors aren't restarting the thing. */
-}
-
-static void
 add_sn_watcher (XAppStatusIconMonitor *self)
 {
-    XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
+    GError *error = NULL;
 
-    /* This is to start the watcher up, we don't do anything else with it for the time being.
-     * The watcher will keep itself running until it doesn't see any more of us on the bus.*/
-    priv->sn_watcher_id = g_bus_watch_name_on_connection (priv->connection,
-                                                          STATUS_NOTIFIER_WATCHER_NAME,
-                                                          G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
-                                                          sn_watcher_appeared,
-                                                          sn_watcher_vanished,
-                                                          self,
-                                                          None);
+    if (!g_spawn_command_line_async (XAPP_SN_WATCHER_PATH, &error))
+    {
+        g_warning ("Could not spawn StatusNotifier watcher (xapp-sn-watcher): %s", error->message);
+        g_warning ("Support will be limited to native XAppStatusIcons only");
+
+        g_error_free (error);
+    }
 }
 
 static void

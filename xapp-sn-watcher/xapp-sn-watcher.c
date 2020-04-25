@@ -448,7 +448,7 @@ watcher_startup (GApplication *application)
 
     G_APPLICATION_CLASS (xapp_sn_watcher_parent_class)->startup (application);
 
-    xapp_settings = g_settings_new ("org.x.apps");
+    xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
     g_signal_connect_swapped (xapp_settings,
                               "changed::" WHITELIST_KEY,
                               G_CALLBACK (whitelist_changed),
@@ -556,7 +556,6 @@ watcher_new (void)
   watcher = g_object_new (xapp_sn_watcher_get_type (),
                           "application-id", "org.x.StatusNotifierWatcher",
                           "inactivity-timeout", 30000,
-                          "register-session", TRUE,
                           NULL);
 
   return watcher;
@@ -566,7 +565,30 @@ int
 main (int argc, char **argv)
 {
     XAppSnWatcher *watcher;
+    gchar **whitelist;
+    const gchar *current_desktop;
+    gboolean should_start;
     int status;
+
+    current_desktop = g_getenv ("XDG_CURRENT_DESKTOP");
+    xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
+    g_printerr ("current: %s\n", current_desktop);
+
+    whitelist = g_settings_get_strv (xapp_settings,
+                                     VALID_XDG_DESKTOPS_KEY);
+
+    should_start = g_strv_contains ((const gchar * const *) whitelist, current_desktop);
+
+    g_strfreev (whitelist);
+    g_clear_object (&xapp_settings);
+
+    if (!should_start)
+    {
+        g_debug ("XDG_CURRENT_DESKTOP is '%s' - not starting XApp's StatusNotifierWatcher service."
+                 "If you want to change this, add your desktop's name to the dconf org.x.apps.statusicon "
+                 "'status-notifier-enabled-desktops' setting key.", current_desktop);
+        exit(0);
+    }
 
     watcher = watcher_new ();
 

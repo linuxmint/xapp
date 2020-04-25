@@ -10,8 +10,6 @@ sn_item_generated = gnome.gdbus_codegen(
   interface_prefix: 'org.x.'
 )
 
-libexec_path = join_paths(get_option('prefix'), get_option('libexecdir'), 'xapps', 'sn-watcher')
-
 ## DBus service file
 
 conf = configuration_data()

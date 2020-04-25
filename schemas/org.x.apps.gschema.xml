@@ -1,11 +1,22 @@
 <?xml version="1.0"?>
 <schemalist>
   <schema id="org.x.apps" path="/org/x/apps/">
+    <child name="status-icon" schema="org.x.apps.statusicon"/>
+  </schema>
+
+  <schema id="org.x.apps.statusicon" path="/org/x/apps/statusicon/">
      <key name="left-click-activate-apps" type="as">
        <default>["Onboard"]</default>
        <summary>A list of appindicator-based apps where left-click should trigger the 'secondary activation' action, rather than open the menu.</summary>
        <description>The name to be put here will be the icon's "Name" (not icon name).  You can see what name to use by running xapp-sn-watcher from a terminal (or in .xsession-properties in some DEs).
        </description>
      </key>
+     <key name="status-notifier-enabled-desktops" type="as">
+       <default>["MATE", "Cinnamon", "X-Cinnamon"]</default>
+       <summary>List of desktops to run the XApp StatusNotifierWatcher service on..</summary>
+       <description>The name in the session's XDG_CURRENT_DESKTOP environment variable is checked against this list.  If the name is here, the service is started to allow XApp status applets to support the StatusNotifer spec (this includes appindicator).
+       </description>
+     </key>
   </schema>
+
 </schemalist>
