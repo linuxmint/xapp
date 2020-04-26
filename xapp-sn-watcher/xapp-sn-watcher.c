@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <gtk/gtk.h>
 
 #include <libxapp/xapp-status-icon.h>
@@ -508,6 +509,13 @@ watcher_shutdown (GApplication *application)
 
     g_clear_pointer (&watcher->items, g_hash_table_unref);
 
+    sn_watcher_interface_set_is_status_notifier_host_registered (watcher->skeleton,
+                                                                 FALSE);
+    g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (watcher->skeleton));
+    sn_watcher_interface_emit_status_notifier_host_registered (watcher->skeleton);
+
+    update_published_items (watcher);
+
     if (watcher->owner_id > 0)
     {
         g_bus_unown_name (watcher->owner_id);
@@ -547,16 +555,21 @@ xapp_sn_watcher_class_init (XAppSnWatcherClass *class)
 }
 
 XAppSnWatcher *
-watcher_new (void)
+watcher_new (const gchar *current_desktop)
 {
-  XAppSnWatcher *watcher;
+    XAppSnWatcher *watcher;
+    gboolean _register;
 
-  g_set_application_name ("xapp-sn-watcher");
+    g_set_application_name ("xapp-sn-watcher");
 
-  watcher = g_object_new (xapp_sn_watcher_get_type (),
-                          "application-id", "org.x.StatusNotifierWatcher",
-                          "inactivity-timeout", 30000,
-                          NULL);
+    // FIXME: xfce-session crashes if we try to register.
+    _register = g_strcmp0 (current_desktop, "XFCE") != 0;
+
+    watcher = g_object_new (xapp_sn_watcher_get_type (),
+                            "application-id", "org.x.StatusNotifierWatcher",
+                            "inactivity-timeout", 30000,
+                            "register-session", _register,
+                            NULL);
 
   return watcher;
 }
@@ -570,9 +583,15 @@ main (int argc, char **argv)
     gboolean should_start;
     int status;
 
+    sleep (1);
+
     current_desktop = g_getenv ("XDG_CURRENT_DESKTOP");
     xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
-    g_printerr ("current: %s\n", current_desktop);
+
+    if (g_settings_get_boolean (xapp_settings, DEBUG_KEY))
+    {
+        g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+    }
 
     whitelist = g_settings_get_strv (xapp_settings,
                                      VALID_XDG_DESKTOPS_KEY);
@@ -590,7 +609,7 @@ main (int argc, char **argv)
         exit(0);
     }
 
-    watcher = watcher_new ();
+    watcher = watcher_new (current_desktop);
 
     status = g_application_run (G_APPLICATION (watcher), argc, argv);
 

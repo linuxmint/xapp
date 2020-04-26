@@ -5,3 +5,4 @@ usr/share/locale
 usr/libexec/xapps/*.py
 usr/share/mate-panel/applets
 usr/share/dbus-1/services
+etc/xdg/autostart

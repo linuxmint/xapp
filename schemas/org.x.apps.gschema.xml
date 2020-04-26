@@ -17,6 +17,10 @@
        <description>The name in the session's XDG_CURRENT_DESKTOP environment variable is checked against this list.  If the name is here, the service is started to allow XApp status applets to support the StatusNotifer spec (this includes appindicator).
        </description>
      </key>
+     <key name="sn-watcher-debug" type="b">
+        <default>false</default>
+        <summary>Print debug messages for the xapp-sn-watcher service</summary>
+     </key>
   </schema>
 
 </schemalist>

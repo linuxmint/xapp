@@ -18,6 +18,7 @@ void    sn_item_update_menus (SnItem *item);
 #define STATUS_ICON_SCHEMA "org.x.apps.statusicon"
 #define WHITELIST_KEY "left-click-activate-apps"
 #define VALID_XDG_DESKTOPS_KEY "status-notifier-enabled-desktops"
+#define DEBUG_KEY "sn-watcher-debug"
 extern GSettings *xapp_settings;
 
 G_END_DECLS

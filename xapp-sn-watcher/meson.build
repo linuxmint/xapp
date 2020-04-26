@@ -10,19 +10,26 @@ sn_item_generated = gnome.gdbus_codegen(
   interface_prefix: 'org.x.'
 )
 
-## DBus service file
 
 conf = configuration_data()
 conf.set('launch_folder', libexec_path)
 
+## DBus service file
 service_file = configure_file(
   input : 'org.x.StatusNotifierWatcher.service.in',
   output: 'org.x.StatusNotifierWatcher.service',
   configuration: conf,
+  install_dir: dbus_services_dir,
+  install: true
 )
 
-install_data(service_file,
-  install_dir: dbus_services_dir
+## Autostart desktop file
+autostart_file = configure_file(
+  input : 'xapp-sn-watcher.desktop.in',
+  output: 'xapp-sn-watcher.desktop',
+  configuration: conf,
+  install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'autostart'),
+  install: true
 )
 
 dbusmenu = dependency('dbusmenu-gtk3-0.4', required: true)
