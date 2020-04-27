@@ -12,7 +12,7 @@
        </description>
      </key>
      <key name="status-notifier-enabled-desktops" type="as">
-       <default>["MATE", "Cinnamon", "X-Cinnamon"]</default>
+       <default>["Cinnamon", "X-Cinnamon"]</default>
        <summary>List of desktops to run the XApp StatusNotifierWatcher service on..</summary>
        <description>The name in the session's XDG_CURRENT_DESKTOP environment variable is checked against this list.  If the name is here, the service is started to allow XApp status applets to support the StatusNotifer spec (this includes appindicator).
        </description>
