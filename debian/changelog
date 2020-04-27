@@ -1,3 +1,9 @@
+xapp (1.8.2) ulyana; urgency=medium
+
+  * xapp-sn-watcher: Don't enable in MATE
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 27 Apr 2020 12:03:41 +0100
+
 xapp (1.8.1) ulyana; urgency=medium
 
   [ Clement Lefebvre ]
