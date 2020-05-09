@@ -18,7 +18,8 @@ xapp_headers = [
     'xapp-preferences-window.h',
     'xapp-stack-sidebar.h',
     'xapp-status-icon.h',
-    'xapp-status-icon-monitor.h'
+    'xapp-status-icon-monitor.h',
+    'xapp-util.h'
 ]
 
 xapp_sources = [
@@ -31,7 +32,8 @@ xapp_sources = [
     'xapp-preferences-window.c',
     'xapp-stack-sidebar.c',
     'xapp-status-icon.c',
-    'xapp-status-icon-monitor.c'
+    'xapp-status-icon-monitor.c',
+    'xapp-util.c'
 ]
 
 dbus_headers = []
