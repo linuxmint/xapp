@@ -22,8 +22,8 @@
 gboolean
 xapp_util_gpu_offload_supported (void)
 {
-    g_autoptr(GFile) modefile;
-    g_autofree gchar *contents;
+    g_autoptr(GFile) modefile = NULL;
+    g_autofree gchar *contents = NULL;
 
     if (!g_file_test (PRIME_SUPPORTED_TEST_FILE, G_FILE_TEST_EXISTS))
     {
