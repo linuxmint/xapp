@@ -1,3 +1,14 @@
+xapp (1.8.3) ulyana; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-sn-watcher: Add autostart file, to start at session, to start at the session initialization phase.
+  * Add a utility function to check for nvidia on-demand mode.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 11 May 2020 12:14:06 +0100
+
 xapp (1.8.2) ulyana; urgency=medium
 
   * xapp-sn-watcher: Don't enable in MATE
