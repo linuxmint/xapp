@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-12-07 07:53+0000\n"
-"Last-Translator: Paweł Pańczyk <pawelppanczyk@gmail.com>\n"
+"PO-Revision-Date: 2020-04-11 19:23+0000\n"
+"Last-Translator: Mateusz Łukasik <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-01-06 10:08+0000\n"
-"X-Generator: Launchpad (build bceb5ef013b87ef7aafe0755545ceb689ca7ac60)\n"
+"X-Launchpad-Export-Date: 2020-05-11 11:04+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
@@ -101,7 +101,7 @@ msgstr "Wczytywanie…"
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Domyślny"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
@@ -142,7 +142,7 @@ msgstr "Obraz"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "O programie"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
@@ -152,7 +152,7 @@ msgstr "Obszar, w którym pokazują się ikony stanu XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp Status Applet Factory"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"

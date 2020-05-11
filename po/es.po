@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-12 21:28+0000\n"
+"PO-Revision-Date: 2020-01-08 18:37+0000\n"
 "Last-Translator: Toni Estevez <toni.estevez@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-01-06 10:08+0000\n"
-"X-Generator: Launchpad (build bceb5ef013b87ef7aafe0755545ceb689ca7ac60)\n"
+"X-Launchpad-Export-Date: 2020-05-11 11:04+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
@@ -25,7 +25,7 @@ msgstr "Tamaño de Icono"
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "The preferred icon size."
-msgstr "Tamaño preferido de Icono."
+msgstr "Tamaño de icono preferido."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -53,7 +53,7 @@ msgstr "Aplicaciones"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Categories"
-msgstr "Categorías"
+msgstr "Categorías"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Devices"
@@ -152,8 +152,8 @@ msgstr "Área donde aparecen los iconos de estado de XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp Status Applet Factory"
+msgstr "Fábrica de la miniaplicación del estado de XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr "XApp Status Applet"
+msgstr "Miniaplicación del estado de XApp"

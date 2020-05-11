@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-09-06 09:40+0000\n"
-"Last-Translator: Abdul Munif Hanafi <amunifhanafi@gmail.com>\n"
+"PO-Revision-Date: 2020-03-29 07:51+0000\n"
+"Last-Translator: Arief Setiadi Wibowo <q_thrynx@yahoo.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-01-06 10:08+0000\n"
-"X-Generator: Launchpad (build bceb5ef013b87ef7aafe0755545ceb689ca7ac60)\n"
+"X-Launchpad-Export-Date: 2020-05-11 11:04+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
@@ -25,7 +25,7 @@ msgstr "Ukuran ikon"
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "The preferred icon size."
-msgstr ""
+msgstr "Ukuran ikon yang disarankan."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -33,15 +33,15 @@ msgstr "Ikon"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "String yang mewakili ikon."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Kategori"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Kategori baku."
 
 #: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
@@ -73,7 +73,7 @@ msgstr "Tipe mime"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Places"
-msgstr ""
+msgstr "Tempat"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Status"
@@ -101,7 +101,7 @@ msgstr "Memuat..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Baku"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
@@ -118,15 +118,15 @@ msgstr "Ijinkan Path"
 
 #: libxapp/xapp-icon-chooser-dialog.c:627
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Apakah mengizinkan path."
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr ""
+msgstr "Ikon Baku"
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Ikon yang akan digunakan secara baku"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1934
 msgid "Select image file"
@@ -142,18 +142,18 @@ msgstr "Citra"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "Perihal"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Area dimana ikon status XApp muncul"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "Pabrik Applet Status XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "Applet Status XApp"

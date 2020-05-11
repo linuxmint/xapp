@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-04-13 15:49+0000\n"
+"PO-Revision-Date: 2020-04-18 05:06+0000\n"
 "Last-Translator: mahfiaz <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-01-06 10:08+0000\n"
-"X-Generator: Launchpad (build bceb5ef013b87ef7aafe0755545ceb689ca7ac60)\n"
+"X-Launchpad-Export-Date: 2020-05-11 11:04+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
@@ -37,11 +37,11 @@ msgstr "Sõne, mis viitab ikoonile."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Kategooria"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Vaikimisi kategooria."
 
 #: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
@@ -101,7 +101,7 @@ msgstr "Laadimine..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Vaikimisi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
@@ -122,11 +122,11 @@ msgstr "Kas asukohad lubada."
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr ""
+msgstr "Vaikeikoon"
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Vaikimisi kasutatav ikoon"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1934
 msgid "Select image file"
@@ -142,18 +142,18 @@ msgstr "Pilt"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "Lähemalt"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Piirkond, kus XApp olekuikoone näidatakse"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp olekuikoonide rakend"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp olekuikoonide rakend"

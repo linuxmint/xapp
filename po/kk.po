@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2018-12-22 01:17+0000\n"
-"Last-Translator: Murat Káribaı <d2vsd1@mail.ru>\n"
+"PO-Revision-Date: 2020-03-18 03:19+0000\n"
+"Last-Translator: Murat Käribay <Unknown>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-01-06 10:08+0000\n"
-"X-Generator: Launchpad (build bceb5ef013b87ef7aafe0755545ceb689ca7ac60)\n"
+"X-Launchpad-Export-Date: 2020-05-11 11:04+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
@@ -37,7 +37,7 @@ msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Санат"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
@@ -101,7 +101,7 @@ msgstr "Жүктеу..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Әдепкі"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
@@ -122,7 +122,7 @@ msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr ""
+msgstr "Әдепкі таңба"
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
@@ -142,7 +142,7 @@ msgstr "Сурет"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "Бағдарлама туралы"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7

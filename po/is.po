@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2018-12-05 17:38+0000\n"
+"PO-Revision-Date: 2020-02-25 07:27+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <is@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-01-06 10:08+0000\n"
-"X-Generator: Launchpad (build bceb5ef013b87ef7aafe0755545ceb689ca7ac60)\n"
+"X-Launchpad-Export-Date: 2020-05-11 11:04+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
@@ -37,11 +37,11 @@ msgstr "Textastrengurinn sem stendur fyrir táknmyndina."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Flokkur"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Sjálfgefinn flokkur."
 
 #: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
@@ -101,7 +101,7 @@ msgstr "Hleð inn..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr ""
+msgstr "Sjálfgefið"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
@@ -122,11 +122,11 @@ msgstr "Hvort leyfa eigi slóðir."
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr ""
+msgstr "Sjálfgefin táknmynd"
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Táknmyndin sem skal nota sjálfgefið"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1934
 msgid "Select image file"
@@ -142,18 +142,18 @@ msgstr "Mynd"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr ""
+msgstr "Um hugbúnaðinn"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Svæði þar sem XApp stöðutákn birtast"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp stöðusmáforritasmiðja"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp stöðusmáforrit"
