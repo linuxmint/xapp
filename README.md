@@ -18,7 +18,7 @@ You are welcome to use libxapp or xapps-common in your application, but if you d
 
 # API Reference
 
-http://developer.linuxmint.com/xapps/reference/index.html
+https://projects.linuxmint.com/xapps/reference/index.html
 
 ## XAppMonitorBlanker
 
