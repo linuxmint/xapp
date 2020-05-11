@@ -12,6 +12,7 @@
       <sub name="XAppStatusIcon" link="XAppStatusIcon.html"/>
       <sub name="XAppStatusIconMonitor" link="XAppStatusIconMonitor.html"/>
       <sub name="XAppStatusIconInterfaceSkeleton" link="XAppStatusIconInterfaceSkeleton.html"/>
+      <sub name="xapp-util" link="libxapp-xapp-util.html"/>
     </sub>
     <sub name="Object Hierarchy" link="object-tree.html"/>
     <sub name="API Index" link="api-index-full.html"/>
@@ -180,6 +181,7 @@
     <keyword type="signal" name="The “handle-button-press” signal" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface-handle-button-press"/>
     <keyword type="signal" name="The “handle-button-release” signal" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface-handle-button-release"/>
     <keyword type="signal" name="The “handle-scroll” signal" link="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface-handle-scroll"/>
+    <keyword type="function" name="xapp_util_gpu_offload_supported ()" link="libxapp-xapp-util.html#xapp-util-gpu-offload-supported" since="1.8"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_16" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-16:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_22" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-22:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_24" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-24:CAPS"/>
