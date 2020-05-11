@@ -1,6 +1,6 @@
 project('xapp',
     'c',
-    version : '1.8.3'
+    version : '1.8.4'
 )
 
 gnome = import('gnome')

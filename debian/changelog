@@ -1,3 +1,21 @@
+xapp (1.8.4) ulyana; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update documentation
+  * README: Update link to docs
+  * Update README.md
+
+  [ Michael Webster ]
+  * xapp-util.c: Initialize auto variables.
+
+  [ NikoKrause ]
+  * Icons: add pin/unpin symbolic (#90)
+
+  [ Clement Lefebvre ]
+  * Icons: Add xapp-diaporama-symbolic
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 11 May 2020 15:44:39 +0100
+
 xapp (1.8.3) ulyana; urgency=medium
 
   [ Michael Webster ]
