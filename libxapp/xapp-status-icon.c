@@ -1545,6 +1545,26 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
 }
 
 /**
+ * xapp_status_icon_get_visible:
+ * @icon: an #XAppStatusIcon
+ *
+ * Returns whether or not the icon should currently be visible.
+ *
+ * Returns: the current visibility state.
+
+ * Since: 1.8.4
+ */
+gboolean
+xapp_status_icon_get_visible (XAppStatusIcon *icon)
+{
+    g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), FALSE);
+
+    g_debug ("XAppStatusIcon get_visible: %s", icon->priv->visible ? "TRUE" : "FALSE");
+
+    return icon->priv->visible;
+}
+
+/**
  * xapp_status_icon_set_primary_menu:
  * @icon: an #XAppStatusIcon
  * @menu: (nullable): A #GtkMenu to display when the primary mouse button is released.

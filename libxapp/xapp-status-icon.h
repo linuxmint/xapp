@@ -53,6 +53,7 @@ gint            xapp_status_icon_get_icon_size      (XAppStatusIcon *icon);
 void            xapp_status_icon_set_tooltip_text   (XAppStatusIcon *icon, const gchar *tooltip_text);
 void            xapp_status_icon_set_label          (XAppStatusIcon *icon, const gchar *label);
 void            xapp_status_icon_set_visible        (XAppStatusIcon *icon, const gboolean visible);
+gboolean        xapp_status_icon_get_visible        (XAppStatusIcon *icon);
 void            xapp_status_icon_set_primary_menu   (XAppStatusIcon *icon, GtkMenu *menu);
 GtkWidget      *xapp_status_icon_get_primary_menu   (XAppStatusIcon *icon);
 void            xapp_status_icon_set_secondary_menu (XAppStatusIcon *icon, GtkMenu *menu);
