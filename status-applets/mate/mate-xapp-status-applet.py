@@ -144,16 +144,16 @@ class StatusWidget(Gtk.ToggleButton):
             self.label.set_margin_start(0)
 
     def set_icon(self, string):
-        if "symbolic" in string:
-            size = SYMBOLIC_ICON_SIZE
-        else:
-            size = self.size - ICON_SIZE_REDUCTION
-
-        self.image.set_pixel_size(size)
-
         fallback = True
 
         if string:
+            if "symbolic" in string:
+                size = SYMBOLIC_ICON_SIZE
+            else:
+                size = self.size - ICON_SIZE_REDUCTION
+
+            self.image.set_pixel_size(size)
+
             try:
                 if os.path.exists(string):
                     icon_file = Gio.File.new_for_path(string)
@@ -172,6 +172,7 @@ class StatusWidget(Gtk.ToggleButton):
 
         #fallback
         if fallback:
+            self.image.set_pixel_size(self.size - ICON_SIZE_REDUCTION)
             self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
 
     # TODO?
