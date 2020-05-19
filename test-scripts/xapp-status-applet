@@ -34,7 +34,7 @@ class StatusWidget(Gtk.Button):
         self.show_all()
 
         self.proxy.bind_property("label", self.label, "label", flags)
-        self.proxy.bind_property("tooltip-text", self, "tooltip-text", flags)
+        self.proxy.bind_property("tooltip-text", self, "tooltip-markup", flags)
         self.proxy.bind_property("visible", self, "visible", flags)
 
         self.proxy.connect("notify::icon-name", self.on_icon_name_changed)

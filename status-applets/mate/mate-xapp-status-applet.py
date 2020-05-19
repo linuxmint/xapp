@@ -90,7 +90,7 @@ class StatusWidget(Gtk.ToggleButton):
         flags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
 
         self.proxy.bind_property("label", self.label, "label", flags)
-        self.proxy.bind_property("tooltip-text", self, "tooltip-text", flags)
+        self.proxy.bind_property("tooltip-text", self, "tooltip-markup", flags)
         self.proxy.bind_property("visible", self, "visible", flags)
 
         self.proxy.connect("notify::icon-name", self._on_icon_name_changed)
