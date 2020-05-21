@@ -111,6 +111,7 @@
     <keyword type="function" name="xapp_status_icon_set_tooltip_text ()" link="XAppStatusIcon.html#xapp-status-icon-set-tooltip-text" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_label ()" link="XAppStatusIcon.html#xapp-status-icon-set-label" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_visible ()" link="XAppStatusIcon.html#xapp-status-icon-set-visible" since="1.6"/>
+    <keyword type="function" name="xapp_status_icon_get_visible ()" link="XAppStatusIcon.html#xapp-status-icon-get-visible" since="1.8.5"/>
     <keyword type="function" name="xapp_status_icon_set_primary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-set-primary-menu" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_get_primary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-get-primary-menu" since="1.6"/>
     <keyword type="function" name="xapp_status_icon_set_secondary_menu ()" link="XAppStatusIcon.html#xapp-status-icon-set-secondary-menu" since="1.6"/>
