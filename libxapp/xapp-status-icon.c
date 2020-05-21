@@ -1552,7 +1552,7 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
  *
  * Returns: the current visibility state.
 
- * Since: 1.8.5
+ * Since: 1.8.4
  */
 gboolean
 xapp_status_icon_get_visible (XAppStatusIcon *icon)
@@ -1562,6 +1562,55 @@ xapp_status_icon_get_visible (XAppStatusIcon *icon)
     g_debug ("XAppStatusIcon get_visible: %s", icon->priv->visible ? "TRUE" : "FALSE");
 
     return icon->priv->visible;
+}
+
+/**
+ * xapp_status_icon_popup_menu:
+ * @icon: an #XAppStatusIcon
+ * @menu: (nullable): A #GtkMenu to display when the primary mouse button is released.
+ * @x: The x anchor position for the menu.
+ * @y: The y anchor position for the menu.
+ * @button: The button used to initiate this action (or 0)
+ * @_time: The event time (or 0)
+ * @panel_position: The #GtkPositionType for the position of the icon.
+ *
+ * Pop up @menu using the positioning arguments. These arguments should be
+ * those provided by a #XAppStatusIcon::button-release-event.
+ *
+ * Since: 1.8.5
+ */
+void
+xapp_status_icon_popup_menu (XAppStatusIcon *icon,
+                             GtkMenu        *menu,
+                             gint            x,
+                             gint            y,
+                             guint           button,
+                             guint           _time,
+                             gint            panel_position)
+
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+    g_return_if_fail (GTK_IS_MENU (menu) || menu == NULL);
+    g_return_if_fail (icon->priv->state != XAPP_STATUS_ICON_STATE_NO_SUPPORT);
+
+    if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
+    {
+        popup_menu (icon,
+                    menu,
+                    x, y,
+                    button,
+                    _time,
+                    panel_position);
+    }
+    else
+    if (icon->priv->state == XAPP_STATUS_ICON_STATE_FALLBACK)
+    {
+        popup_gtk_status_icon_with_menu (icon,
+                                         menu,
+                                         icon->priv->gtk_status_icon,
+                                         button,
+                                         _time);
+    }
 }
 
 /**
