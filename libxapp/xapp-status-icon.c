@@ -234,8 +234,8 @@ synthesize_event (XAppStatusIcon *self,
   }
 
   attributes.window_type = GDK_WINDOW_CHILD;
-  win_rect->x = fx;
-  win_rect->y = fy;
+  win_rect->x = 0;
+  win_rect->y = 0;
   win_rect->width = self->priv->icon_size;
   win_rect->height = self->priv->icon_size;
   attributes.x = fx;
@@ -274,14 +274,13 @@ popup_menu (XAppStatusIcon *self,
                               x, y, button, _time, panel_position,
                               &rect_window, &win_rect, &rect_anchor, &menu_anchor);
 
-    // gtk_menu_popup_at_rect (menu,
-    //                         rect_window,
-    //                         &win_rect,
-    //                         rect_anchor,
-    //                         menu_anchor,
-    //                         event);
+    gtk_menu_popup_at_rect (menu,
+                            rect_window,
+                            &win_rect,
+                            rect_anchor,
+                            menu_anchor,
+                            event);
 
-    gtk_menu_popup_at_pointer (menu, event);
     gdk_event_free (event);
     gdk_window_destroy (rect_window);
 }
