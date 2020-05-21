@@ -183,71 +183,75 @@ direction_to_str (XAppScrollDirection direction)
     }
 }
 
-static gint
-adjust_y_for_monitor_bounds (gint init_x,
-                             gint init_y,
-                             gint menu_height)
+static GdkEvent *
+synthesize_event (XAppStatusIcon *self,
+                  gint            x,
+                  gint            y,
+                  guint           button,
+                  guint           _time,
+                  gint            position,
+                  GdkWindow     **rect_window,
+                  GdkRectangle   *win_rect,
+                  GdkGravity     *rect_anchor,
+                  GdkGravity     *menu_anchor)
 {
-    GdkDisplay *display = gdk_display_get_default ();
-    GdkMonitor *monitor;
-    GdkRectangle mrect;
-    gint bottom_edge_y;
-    gint ret_y;
+  GdkDisplay *display;
+  GdkWindow *window;
+  GdkSeat *seat;
+  GdkWindowAttr attributes;
+  gint attributes_mask;
+  gint fx, fy;
 
-    ret_y = init_y;
+  display = gdk_display_get_default ();
+  seat = gdk_display_get_default_seat (display);
 
-    monitor = gdk_display_get_monitor_at_point (display,
-                                                init_x,
-                                                init_y);
+  switch (position)
+  {
+      case GTK_POS_TOP:
+        fx = x;
+        fy = y - self->priv->icon_size;
+        *rect_anchor = GDK_GRAVITY_SOUTH_WEST;
+        *menu_anchor = GDK_GRAVITY_NORTH_WEST;
+        break;
+      case GTK_POS_BOTTOM:
+        fx = x;
+        fy = y;
+        *rect_anchor = GDK_GRAVITY_NORTH_WEST;
+        *menu_anchor = GDK_GRAVITY_SOUTH_WEST;
+        break;
+      case GTK_POS_LEFT:
+        fx = x - self->priv->icon_size;
+        fy = y;
+        *rect_anchor = GDK_GRAVITY_NORTH_EAST;
+        *menu_anchor = GDK_GRAVITY_NORTH_WEST;
+        break;
+      case GTK_POS_RIGHT:
+        fx = x;
+        fy = y;
+        *rect_anchor = GDK_GRAVITY_NORTH_WEST;
+        *menu_anchor = GDK_GRAVITY_NORTH_EAST;
+        break;
+  }
 
-    gdk_monitor_get_workarea (monitor, &mrect);
+  attributes.window_type = GDK_WINDOW_CHILD;
+  win_rect->x = 0;
+  win_rect->y = 0;
+  win_rect->width = self->priv->icon_size;
+  win_rect->height = self->priv->icon_size;
+  attributes.x = fx;
+  attributes.y = fy;
+  attributes.width = self->priv->icon_size;
+  attributes.height = self->priv->icon_size;
+  attributes_mask = GDK_WA_X | GDK_WA_Y;
 
-    bottom_edge_y = mrect.y + mrect.height;
+  window = gdk_window_new (NULL, &attributes, attributes_mask);
+  *rect_window = window;
 
-    if ((init_y + menu_height) > bottom_edge_y)
-    {
-        ret_y = bottom_edge_y - menu_height;
-    }
+  GdkEvent *event = gdk_event_new (GDK_BUTTON_RELEASE);
+  event->any.window = window;
+  event->button.device = gdk_seat_get_pointer (seat);
 
-    return ret_y;
-}
-
-typedef struct {
-    gint    x;
-    gint    y;
-    gint    position;
-    guint32 t;
-} PositionData;
-
-static void
-position_menu_cb (GtkMenu  *menu,
-                  gint     *x,
-                  gint     *y,
-                  gboolean *push_in,
-                  gpointer  user_data)
-{
-    GtkAllocation alloc;
-    PositionData *position_data = (PositionData *) user_data;
-
-    *x = position_data->x;
-    *y = position_data->y;
-
-    gtk_widget_get_allocation (GTK_WIDGET (menu), &alloc);
-
-    switch (position_data->position) {
-        case GTK_POS_BOTTOM:
-            *y = *y - alloc.height;
-            break;
-        case GTK_POS_RIGHT:
-            *x = *x - alloc.width;
-            *y = adjust_y_for_monitor_bounds (position_data->x, position_data->y, alloc.height);
-            break;
-        case GTK_POS_LEFT:
-            *y = adjust_y_for_monitor_bounds (position_data->x, position_data->y, alloc.height);
-            break;
-    }
-
-    *push_in = TRUE;
+  return event;
 }
 
 static void
@@ -259,27 +263,31 @@ popup_menu (XAppStatusIcon *self,
             guint           _time,
             gint            panel_position)
 {
-    GdkDisplay *display;
-    GdkDevice *pointer;
+    GdkWindow *rect_window;
+    GdkEvent *event;
+    GdkRectangle win_rect;
+    GdkGravity rect_anchor, menu_anchor;
 
     g_debug ("XAppStatusIcon: Popup menu on behalf of application");
 
-    PositionData position_data = {
-        x, y, panel_position, _time
-    };
+    event = synthesize_event (self,
+                              x, y, button, _time, panel_position,
+                              &rect_window, &win_rect, &rect_anchor, &menu_anchor);
 
-    display = gdk_display_get_default ();
-    pointer = gdk_device_manager_get_client_pointer (gdk_display_get_device_manager (display));
+    g_object_set (G_OBJECT (menu),
+                  "anchor-hints", GDK_ANCHOR_SLIDE_X  | GDK_ANCHOR_SLIDE_Y  |
+                                  GDK_ANCHOR_RESIZE_X | GDK_ANCHOR_RESIZE_Y,
+                  NULL);
 
-    gtk_menu_popup_for_device (menu,
-                               pointer,
-                               NULL,
-                               NULL,
-                               position_menu_cb,
-                               &position_data,
-                               NULL,
-                               button,
-                               _time);
+    gtk_menu_popup_at_rect (menu,
+                            rect_window,
+                            &win_rect,
+                            rect_anchor,
+                            menu_anchor,
+                            event);
+
+    gdk_event_free (event);
+    gdk_window_destroy (rect_window);
 }
 
 static gboolean
@@ -429,22 +437,6 @@ handle_scroll_method (XAppStatusIconInterface *skeleton,
 }
 
 static void
-popup_gtk_status_icon_with_menu (XAppStatusIcon *icon,
-                                 GtkMenu        *menu,
-                                 GtkStatusIcon  *gtk_status_icon,
-                                 guint           button,
-                                 guint           activate_time)
-{
-    gtk_menu_popup (menu,
-                    NULL,
-                    NULL,
-                    gtk_status_icon_position_menu,
-                    gtk_status_icon,
-                    button,
-                    activate_time);
-}
-
-static void
 calculate_gtk_status_icon_position_and_orientation (XAppStatusIcon *icon,
                                                     GtkStatusIcon  *status_icon,
                                                     gint *x, gint *y, gint *orientation)
@@ -559,6 +551,7 @@ on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
                                    gpointer       user_data)
 {
     XAppStatusIcon *icon = user_data;
+    GtkWidget *menu_to_use;
     guint _time;
     guint button;
     gint x, y, orientation;
@@ -568,44 +561,29 @@ on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
 
     g_debug ("XAppStatusIcon: GtkStatusIcon button-release-event with %s button", button_to_str (button));
 
-    /* Icons originated in app-indicator have only a single menu, which displays on either
-     * right or left-click. */
-    if (g_object_get_data (G_OBJECT (status_icon), "app-indicator"))
-    {
-        if (button == GDK_BUTTON_PRIMARY || button == GDK_BUTTON_SECONDARY)
-        {
-            popup_gtk_status_icon_with_menu (icon,
-                                             GTK_MENU (icon->priv->primary_menu),
-                                             status_icon,
-                                             button,
-                                             _time);
-        }
-    }
-    else
-    {
-        /* Native icons can have two menus, so we must determine which to use based
-         * on the gtk icon event's button. */
-        GtkWidget *menu_to_use;
+    /* Native icons can have two menus, so we must determine which to use based
+     * on the gtk icon event's button. */
 
-        menu_to_use = get_menu_to_use (icon, button);
-
-        if (menu_to_use)
-        {
-            g_debug ("XAppStatusIcon: GtkStatusIcon popup menu for %s button", button_to_str (button));
-
-            popup_gtk_status_icon_with_menu (icon,
-                                             GTK_MENU (menu_to_use),
-                                             status_icon,
-                                             button,
-                                             _time);
-        }
-    }
+    menu_to_use = get_menu_to_use (icon, button);
 
     calculate_gtk_status_icon_position_and_orientation (icon,
                                                         status_icon,
                                                         &x,
                                                         &y,
                                                         &orientation);
+
+    if (menu_to_use)
+    {
+        g_debug ("XAppStatusIcon: GtkStatusIcon popup menu for %s button", button_to_str (button));
+
+        popup_menu (icon,
+                    GTK_MENU (menu_to_use),
+                    x,
+                    y,
+                    button,
+                    _time,
+                    orientation);
+    }
 
     icon->priv->have_button_press = FALSE;
 
@@ -1090,6 +1068,7 @@ xapp_status_icon_init (XAppStatusIcon *self)
 
     self->priv->name = g_strdup_printf("%s", g_get_application_name());
     self->priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
+    self->priv->icon_size = FALLBACK_ICON_SIZE;
 
     g_debug ("XAppStatusIcon: init: application name: '%s'", self->priv->name);
 
@@ -1552,7 +1531,7 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
  *
  * Returns: the current visibility state.
 
- * Since: 1.8.5
+ * Since: 1.8.4
  */
 gboolean
 xapp_status_icon_get_visible (XAppStatusIcon *icon)
@@ -1562,6 +1541,43 @@ xapp_status_icon_get_visible (XAppStatusIcon *icon)
     g_debug ("XAppStatusIcon get_visible: %s", icon->priv->visible ? "TRUE" : "FALSE");
 
     return icon->priv->visible;
+}
+
+/**
+ * xapp_status_icon_popup_menu:
+ * @icon: an #XAppStatusIcon
+ * @menu: (nullable): A #GtkMenu to display when the primary mouse button is released.
+ * @x: The x anchor position for the menu.
+ * @y: The y anchor position for the menu.
+ * @button: The button used to initiate this action (or 0)
+ * @_time: The event time (or 0)
+ * @panel_position: The #GtkPositionType for the position of the icon.
+ *
+ * Pop up @menu using the positioning arguments. These arguments should be
+ * those provided by a #XAppStatusIcon::button-release-event.
+ *
+ * Since: 1.8.6
+ */
+void
+xapp_status_icon_popup_menu (XAppStatusIcon *icon,
+                             GtkMenu        *menu,
+                             gint            x,
+                             gint            y,
+                             guint           button,
+                             guint           _time,
+                             gint            panel_position)
+
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+    g_return_if_fail (GTK_IS_MENU (menu) || menu == NULL);
+    g_return_if_fail (icon->priv->state != XAPP_STATUS_ICON_STATE_NO_SUPPORT);
+
+    popup_menu (icon,
+                menu,
+                x, y,
+                button,
+                _time,
+                panel_position);
 }
 
 /**
