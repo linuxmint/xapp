@@ -1,3 +1,15 @@
+xapp (1.8.5) ulyana; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-status-icon: Add a get_visible method.
+  * mate applet: Use markup for tooltips, and update test script to reflect this as well.
+  * mate-xapp-status-applet: Fix set icon error handling when an icon name is missing.
+  * xapp-status-icon: Add a get_visible method.
+  * mate applet: Use markup for tooltips, and update test script to reflect this as well.
+  * mate-xapp-status-applet: Fix set icon error handling when an icon name is missing.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 21 May 2020 11:23:00 +0100
+
 xapp (1.8.4) ulyana; urgency=medium
 
   [ Clement Lefebvre ]
