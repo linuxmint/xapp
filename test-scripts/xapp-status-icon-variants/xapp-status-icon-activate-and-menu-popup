@@ -37,7 +37,6 @@ class App(GObject.Object):
 
         self.status_icon.connect("activate", self.on_status_icon_activate)
         self.status_icon.connect("button-release-event", self.on_status_icon_button_release)
-        self.status_icon.connect("button-press-event", self.on_status_icon_button_press)
 
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
 
@@ -69,17 +68,12 @@ class App(GObject.Object):
         self.window = w
         w.show_all()
 
-
-    def on_status_icon_button_press(self, icon, x, y, button, time, position, data=None):
-        if button in (Gdk.BUTTON_PRIMARY, Gdk.BUTTON_MIDDLE):
-            return
-        self.menu.append(Gtk.MenuItem.new_with_label("Added new menu %d" % self.counter))
-        self.menu.show_all()
-        self.menu.queue_resize()
-
     def on_status_icon_button_release(self, icon, x, y, button, time, position, data=None):
         if button in (Gdk.BUTTON_PRIMARY, Gdk.BUTTON_MIDDLE):
             return
+
+        self.menu.append(Gtk.MenuItem.new_with_label("Added new menu %d" % self.counter))
+        self.menu.show_all()
 
         self.status_icon.popup_menu(self.menu, x, y, button, time, position)
 
