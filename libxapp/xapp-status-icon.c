@@ -1531,7 +1531,7 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
  *
  * Returns: the current visibility state.
 
- * Since: 1.8.4
+ * Since: 1.8.5
  */
 gboolean
 xapp_status_icon_get_visible (XAppStatusIcon *icon)
