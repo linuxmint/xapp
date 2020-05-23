@@ -1,3 +1,17 @@
+xapp (1.8.6) ulyana; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update docs
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: Add xapp_status_icon_popup_menu() and use a more reliable GtkMenu popup method.
+  * xapp-status-icon.c: Fix inadvertant verison change in doc string.
+
+  [ NikoKrause ]
+  * Icons: Add symbolic icons for xreaders annotation features (#92)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 23 May 2020 12:48:43 +0100
+
 xapp (1.8.5) ulyana; urgency=medium
 
   [ Michael Webster ]
