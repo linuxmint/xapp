@@ -270,6 +270,25 @@ popup_menu (XAppStatusIcon *self,
 
     g_debug ("XAppStatusIcon: Popup menu on behalf of application");
 
+    if (!gtk_widget_get_realized (GTK_WIDGET (menu)))
+    {
+        GtkWidget *toplevel;
+        GtkStyleContext *context;
+
+        gtk_widget_realize (GTK_WIDGET (menu));
+        toplevel = gtk_widget_get_toplevel (GTK_WIDGET (menu));
+        context = gtk_widget_get_style_context (toplevel);
+
+        /* GtkMenu uses a GtkWindow as its toplevel that is explicitly set to
+         * be client-decorated, and applies shadows outside the visible part of
+         * the menu. They interfere with clicks on the icon while the menu is open,
+         * as the invisible part takes the events instead (and this ends up doing
+         * nothing).  It makes the menu a littly ugly, so here's a new class name we
+         * can use for themes to restore things bit if we want.  Just avoid shadows. */
+        gtk_style_context_remove_class (context, "csd");
+        gtk_style_context_add_class (context, "xapp-status-icon-menu-window");
+    }
+
     event = synthesize_event (self,
                               x, y, button, _time, panel_position,
                               &rect_window, &win_rect, &rect_anchor, &menu_anchor);
