@@ -270,6 +270,17 @@ popup_menu (XAppStatusIcon *self,
 
     g_debug ("XAppStatusIcon: Popup menu on behalf of application");
 
+    if (!gtk_widget_get_realized (GTK_WIDGET (menu))) {
+        GtkWidget *toplevel;
+        GtkStyleContext *context;
+
+        gtk_widget_realize (GTK_WIDGET (menu));
+        toplevel = gtk_widget_get_toplevel (GTK_WIDGET (menu));
+        context = gtk_widget_get_style_context (toplevel);
+        gtk_style_context_remove_class (context, "csd");
+        // gtk_style_context_add_class (context, "xapp-menu");
+    }
+
     event = synthesize_event (self,
                               x, y, button, _time, panel_position,
                               &rect_window, &win_rect, &rect_anchor, &menu_anchor);
