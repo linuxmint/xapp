@@ -856,6 +856,7 @@ property_proxy_acquired (GObject      *source,
 {
     SnItem *item = SN_ITEM (user_data);
     GError *error = NULL;
+    gchar *json = NULL;
 
     item->prop_proxy = g_dbus_proxy_new_finish (res, &error);
 
@@ -872,6 +873,10 @@ property_proxy_acquired (GObject      *source,
                       item);
 
     item->status_icon = xapp_status_icon_new ();
+
+    json = g_strdup_printf ("{ 'highlight-both-menus': %s }", item->is_ai ? "true" : "false");
+    xapp_status_icon_set_metadata (item->status_icon, json);
+    g_free (json);
 
     g_signal_connect (item->status_icon, "activate", G_CALLBACK (xapp_icon_activated), item);
     g_signal_connect (item->status_icon, "button-press-event", G_CALLBACK (xapp_icon_button_press), item);
