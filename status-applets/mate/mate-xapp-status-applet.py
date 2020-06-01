@@ -2,6 +2,7 @@
 
 import locale
 import gettext
+import json
 import os
 import sys
 import setproctitle
@@ -56,7 +57,7 @@ def translate_applet_orientation_to_xapp(mate_applet_orientation):
 
 class StatusWidget(Gtk.ToggleButton):
     def __init__(self, icon, orientation, size):
-        super(Gtk.Button, self).__init__()
+        super(Gtk.ToggleButton, self).__init__()
         self.theme = Gtk.IconTheme.get_default()
         self.orientation = orientation
         self.size = size
@@ -93,11 +94,26 @@ class StatusWidget(Gtk.ToggleButton):
         self.proxy.bind_property("tooltip-text", self, "tooltip-markup", flags)
         self.proxy.bind_property("visible", self, "visible", flags)
 
+        self.proxy.connect("notify::primary-menu-is-open", self.menu_state_changed)
+        self.proxy.connect("notify::secondary-menu-is-open", self.menu_state_changed)
+
+        self.highlight_both_menus = False
+
+        if self.proxy.props.metadata not in ("", None):
+            try:
+                meta = json.loads(self.proxy.props.metadata)
+                if meta["highlight-both-menus"]:
+                    self.highlight_both_menus = True
+            except json.JSONDecodeError as e:
+                print("Could not read metadata: %s" % e)
+
         self.proxy.connect("notify::icon-name", self._on_icon_name_changed)
 
         self.in_widget = False
         self.plain_surface = None
         self.saturated_surface = None
+
+        self.menu_opened = False
 
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
@@ -175,6 +191,19 @@ class StatusWidget(Gtk.ToggleButton):
             self.image.set_pixel_size(self.size - ICON_SIZE_REDUCTION)
             self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
 
+    def menu_state_changed(self, proxy, pspec, data=None):
+        if pspec.name == "primary-menu-is-open":
+            prop = proxy.props.primary_menu_is_open
+        else:
+            prop = proxy.props.secondary_menu_is_open
+
+        if not self.menu_opened or prop == False:
+            self.set_active(False)
+            return
+
+        self.set_active(prop)
+        self.menu_opened = False
+
     # TODO?
     def on_enter_notify(self, widget, event):
         self.in_widget = True
@@ -187,12 +216,9 @@ class StatusWidget(Gtk.ToggleButton):
         return Gdk.EVENT_PROPAGATE
     # /TODO
 
-    def after_release_idle(self, data=None):
-        self.set_active(False)
-
-        return GLib.SOURCE_REMOVE
-
     def on_button_press(self, widget, event):
+        self.menu_opened = False
+
         # If the user does ctrl->right-click, open the applet's about menu
         # instead of sending to the app.
         if event.state & Gdk.ModifierType.CONTROL_MASK and event.button == Gdk.BUTTON_SECONDARY:
@@ -203,23 +229,23 @@ class StatusWidget(Gtk.ToggleButton):
         x, y = self.calc_menu_origin(widget, orientation)
         self.proxy.call_button_press(x, y, event.button, event.time, orientation, None, None)
 
-        if event.button != Gdk.BUTTON_PRIMARY:
-            self.set_active(True)
-
         if event.button in (Gdk.BUTTON_MIDDLE, Gdk.BUTTON_SECONDARY):
             # Block the 'remove from panel' menu, and the middle-click drag.
             # They can still accomplish these things along the edges of the applet
             return Gdk.EVENT_STOP
 
-        return Gdk.EVENT_PROPAGATE
+        return Gdk.EVENT_STOP
 
     def on_button_release(self, widget, event):
         orientation = translate_applet_orientation_to_xapp(self.orientation)
 
+        if event.button == Gdk.BUTTON_PRIMARY:
+            self.menu_opened = True
+        elif event.button == Gdk.BUTTON_SECONDARY and self.highlight_both_menus:
+            self.menu_opened = True
+
         x, y = self.calc_menu_origin(widget, orientation)
         self.proxy.call_button_release(x, y, event.button, event.time, orientation, None, None)
-
-        GObject.timeout_add(200, self.after_release_idle)
 
         return Gdk.EVENT_PROPAGATE
 
