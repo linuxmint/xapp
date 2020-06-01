@@ -5,14 +5,15 @@ gi.require_version('XApp', '1.0')
 from gi.repository import Gio, GLib, GObject, Gtk, XApp, Gdk
 import os
 import sys
+import json
 
 DBUS_NAME = "org.x.StatusIcon"
 DBUS_PATH = "/org/x/StatusIcon"
 
-class StatusWidget(Gtk.Button):
+class StatusWidget(Gtk.ToggleButton):
 
     def __init__(self, icon):
-        super(Gtk.Button, self).__init__()
+        super(Gtk.ToggleButton, self).__init__()
 
         self.proxy = icon
         self.name = self.proxy.get_name()
@@ -36,6 +37,9 @@ class StatusWidget(Gtk.Button):
         self.proxy.bind_property("label", self.label, "label", flags)
         self.proxy.bind_property("tooltip-text", self, "tooltip-markup", flags)
         self.proxy.bind_property("visible", self, "visible", flags)
+
+        self.proxy.bind_property("primary-menu-is-open", self, "active", flags)
+        self.proxy.bind_property("secondary-menu-is-open", self, "active", flags)
 
         self.proxy.connect("notify::icon-name", self.on_icon_name_changed)
 
