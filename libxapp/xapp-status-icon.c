@@ -84,6 +84,7 @@ typedef struct
     gchar *label;
     gboolean visible;
     gint icon_size;
+    gchar *metadata;
 
     guint owner_id;
     guint listener_id;
@@ -255,6 +256,40 @@ synthesize_event (XAppStatusIcon *self,
 }
 
 static void
+primary_menu_unmapped (GtkWidget  *widget,
+                       gpointer    user_data)
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (user_data));
+    XAppStatusIcon *icon = XAPP_STATUS_ICON (user_data);
+
+    g_debug ("XAppStatusIcon: Primary menu unmapped");
+
+    if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
+    {
+        xapp_status_icon_interface_set_primary_menu_is_open (icon->priv->skeleton, FALSE);
+    }
+
+    g_signal_handlers_disconnect_by_func (widget, primary_menu_unmapped, icon);
+}
+
+static void
+secondary_menu_unmapped (GtkWidget  *widget,
+                         gpointer    user_data)
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (user_data));
+    XAppStatusIcon *icon = XAPP_STATUS_ICON (user_data);
+
+    g_debug ("XAppStatusIcon: Secondary menu unmapped");
+
+    if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
+    {
+        xapp_status_icon_interface_set_secondary_menu_is_open (icon->priv->skeleton, FALSE);
+    }
+
+    g_signal_handlers_disconnect_by_func (widget, secondary_menu_unmapped, icon);
+}
+
+static void
 popup_menu (XAppStatusIcon *self,
             GtkMenu        *menu,
             gint            x,
@@ -287,6 +322,32 @@ popup_menu (XAppStatusIcon *self,
          * can use for themes to restore things bit if we want.  Just avoid shadows. */
         gtk_style_context_remove_class (context, "csd");
         gtk_style_context_add_class (context, "xapp-status-icon-menu-window");
+    }
+
+    if (button == GDK_BUTTON_PRIMARY)
+    {
+        if (self->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
+        {
+            xapp_status_icon_interface_set_primary_menu_is_open (self->priv->skeleton, TRUE);
+        }
+
+        g_signal_connect (gtk_widget_get_toplevel (GTK_WIDGET (menu)),
+                          "unmap",
+                          G_CALLBACK (primary_menu_unmapped),
+                          self);
+    }
+    else
+    if (button == GDK_BUTTON_SECONDARY)
+    {
+        if (self->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
+        {
+            xapp_status_icon_interface_set_secondary_menu_is_open (self->priv->skeleton, TRUE);
+        }
+
+        g_signal_connect (gtk_widget_get_toplevel (GTK_WIDGET (menu)),
+                          "unmap",
+                          G_CALLBACK (secondary_menu_unmapped),
+                          self);
     }
 
     event = synthesize_event (self,
@@ -674,6 +735,7 @@ sync_skeleton (XAppStatusIcon *self)
                   "icon-name", priv->icon_name,
                   "tooltip-text", priv->tooltip_text,
                   "visible", priv->visible,
+                  "metadata", priv->metadata,
                   NULL);
 
     g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (priv->skeleton));
@@ -1740,6 +1802,41 @@ xapp_status_icon_get_state (XAppStatusIcon *icon)
     g_debug ("XAppStatusIcon get_state: %s", state_to_str (icon->priv->state));
 
     return icon->priv->state;
+}
+
+/**
+ * xapp_status_icon_set_metadata:
+ * @icon: an #XAppStatusIcon
+ * @metadata: (nullable): A json-formatted string of key:values.
+ *
+ * Sets metadata to pass to the icon proxy for an applet's use. Right now this is only so
+ * xapp-sn-watcher can tell the applets when the icon is originating from appindicator so panel
+ * button 'highlighting' can behave correctly.
+ *
+ * Since: 1.8.7
+ */
+void
+xapp_status_icon_set_metadata (XAppStatusIcon  *icon,
+                               const gchar     *metadata)
+{
+    g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
+    gchar *old_meta;
+
+    g_debug ("XAppStatusIcon set_metadata: '%s'", metadata);
+
+    if (g_strcmp0 (metadata, icon->priv->metadata) == 0)
+    {
+        return;
+    }
+
+    old_meta = icon->priv->metadata;
+    icon->priv->metadata = g_strdup (metadata);
+    g_free (old_meta);
+
+    if (icon->priv->skeleton)
+    {
+        xapp_status_icon_interface_set_metadata (icon->priv->skeleton, metadata);
+    }
 }
 
 /**

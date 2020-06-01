@@ -28,5 +28,8 @@
     <property type='s' name='Label' access='read'/>
     <property type='b' name='Visible' access='read'/>
     <property type='i' name='IconSize' access='readwrite'/>
+    <property type='b' name='PrimaryMenuIsOpen' access='read'/>
+    <property type='b' name='SecondaryMenuIsOpen' access='read'/>
+    <property type='s' name='Metadata' access='read' />
   </interface>
 </node>
