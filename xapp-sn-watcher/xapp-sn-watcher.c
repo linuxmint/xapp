@@ -507,14 +507,13 @@ watcher_shutdown (GApplication *application)
         watcher->name_listener_id = 0;
     }
 
+    update_published_items (watcher);
     g_clear_pointer (&watcher->items, g_hash_table_unref);
 
     sn_watcher_interface_set_is_status_notifier_host_registered (watcher->skeleton,
                                                                  FALSE);
     g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (watcher->skeleton));
     sn_watcher_interface_emit_status_notifier_host_registered (watcher->skeleton);
-
-    update_published_items (watcher);
 
     if (watcher->owner_id > 0)
     {
