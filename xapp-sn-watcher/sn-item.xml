@@ -71,13 +71,13 @@
         <!-- These are commented out because GDBusProxy would otherwise require them,
              but they are not available for KDE indicators
         -->
-        <signal name="XAyatanaNewLabel">
+<!--         <signal name="XAyatanaNewLabel">
             <arg type="s" name="label" direction="out" />
             <arg type="s" name="guide" direction="out" />
         </signal>
         <property name="XAyatanaLabel" type="s" access="read" />
         <property name="XAyatanaLabelGuide" type="s" access="read" />
 
-
+ -->
     </interface>
 </node>

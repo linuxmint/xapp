@@ -588,22 +588,6 @@ update_tooltip (SnItem *item)
 {
     g_autoptr(GVariant) tt_var;
 
-    if (item->is_ai)
-    {
-        gchar *text;
-
-        text = get_string_property (item, "XAyatanaLabel");
-
-        if (text)
-        {
-            xapp_status_icon_set_tooltip_text (item->status_icon, text);
-            g_debug ("Tooltip text from XAyatanaLabel: %s", text);
-
-            g_free (text);
-            return;
-        }
-    }
-
     tt_var = get_property (item, "ToolTip");
 
     if (tt_var)
@@ -725,8 +709,7 @@ sn_signal_received (GDBusProxy  *sn_item_proxy,
         update_menu (item);
     }
     else
-    if (g_strcmp0 (signal_name, "XAyatanaNewLabel") ||
-        g_strcmp0 (signal_name, "NewToolTip") ||
+    if (g_strcmp0 (signal_name, "NewToolTip") ||
         g_strcmp0 (signal_name, "NewTitle"))
     {
         update_tooltip (item);
