@@ -1,3 +1,19 @@
+xapp (1.8.7) ulyana; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update docs
+
+  [ Michael Webster ]
+  * xapp-status-icon.c: Get rid of the dead 'shadow' region around menus, as they can interfere with clicking on the icon to close the menu.
+  * xapp-status-icon: Add new properties for menu/button state handling and one for metadata (miscellaneous info to help define behavior in the status applets).
+  * xapp-sn-watcher: Set status icon metadata for appindicator icons, to inform the applet to highlight/toggle the panel icon with either button click when opening the menu.
+  * mate-xapp-status-applet.py: Use new properties to sync button toggle state with the menu state.
+  * test-scripts: Update some scripts to demonstrate new property use.
+  * sn-item: Remove support for XAyatanaLabel.
+  * xapp-sn-watcher: Update clear the registration list before freeing the table of registered items.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 06 Jun 2020 14:29:58 +0100
+
 xapp (1.8.6) ulyana; urgency=medium
 
   [ Clement Lefebvre ]
