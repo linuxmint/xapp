@@ -53,7 +53,7 @@ ensure_dialog (XAppIconChooserButton *button)
     {
         return;
     }
-    g_printerr ("ENSURE\n");
+
     priv->dialog = xapp_icon_chooser_dialog_new ();
 }
 
