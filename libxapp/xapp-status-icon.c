@@ -1193,6 +1193,7 @@ xapp_status_icon_dispose (GObject *object)
     g_free (self->priv->icon_name);
     g_free (self->priv->tooltip_text);
     g_free (self->priv->label);
+    g_free (self->priv->metadata);
 
     g_clear_object (&self->priv->cancellable);
 

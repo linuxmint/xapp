@@ -204,7 +204,7 @@ on_name_acquired (GDBusConnection *connection,
     XAppSnWatcher *watcher = XAPP_SN_WATCHER (user_data);
 
     g_debug ("Name acquired on dbus");
-
+    sn_watcher_interface_set_protocol_version (watcher->skeleton, 0);
     sn_watcher_interface_set_is_status_notifier_host_registered (watcher->skeleton,
                                                                  TRUE);
     g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (watcher->skeleton));
@@ -295,6 +295,55 @@ create_key (const gchar  *sender,
     return TRUE;
 }
 
+typedef struct
+{
+    XAppSnWatcher *watcher;
+    gchar *key;
+    gchar *path;
+    gchar *bus_name;
+    gchar *service;
+} NewSnProxyData;
+
+static void
+sn_item_proxy_new_completed (GObject      *source,
+                             GAsyncResult *res,
+                             gpointer      user_data)
+{
+    NewSnProxyData *data = (NewSnProxyData *) user_data;
+    XAppSnWatcher *watcher = data->watcher;
+    SnItem *item;
+    GError *error = NULL;
+
+    SnItemInterface *proxy;
+
+    proxy = sn_item_interface_proxy_new_finish (res, &error);
+
+    if (error != NULL)
+    {
+        g_debug ("Could not create new status notifier proxy item for item at %s: %s",
+                 data->bus_name, error->message);
+        return;
+    }
+
+    item = sn_item_new ((GDBusProxy *) proxy,
+                        g_str_has_prefix (data->path, APPINDICATOR_PATH_PREFIX));
+
+    g_hash_table_insert (watcher->items,
+                         g_strdup (data->key),
+                         item);
+
+    update_published_items (watcher);
+
+    sn_watcher_interface_emit_status_notifier_item_registered (watcher->skeleton,
+                                                               data->service);
+
+    g_free (data->key);
+    g_free (data->path);
+    g_free (data->bus_name);
+    g_free (data->service);
+    g_slice_free (NewSnProxyData, data);
+}
+
 static gboolean
 handle_register_item (SnWatcherInterface     *skeleton,
                       GDBusMethodInvocation  *invocation,
@@ -322,40 +371,27 @@ handle_register_item (SnWatcherInterface     *skeleton,
 
     if (item == NULL)
     {
-        SnItemInterface *proxy;
+        NewSnProxyData *data;
         error = NULL;
         g_debug ("Key: '%s'", key);
 
-        proxy = sn_item_interface_proxy_new_sync (watcher->connection,
-                                                  G_DBUS_PROXY_FLAGS_NONE,
-                                                  bus_name,
-                                                  path,
-                                                  NULL,
-                                                  &error);
+        data = g_slice_new0 (NewSnProxyData);
+        data->watcher = watcher;
+        data->key = g_strdup (key);
+        data->path = g_strdup (path);
+        data->bus_name = g_strdup (bus_name);
+        data->service = g_strdup (service);
 
-        if (error != NULL)
-        {
-            g_debug ("Could not create new status notifier proxy item for item at %s: %s", bus_name, error->message);
-
-            g_dbus_method_invocation_return_gerror (invocation, error);
-
-            return FALSE;
-        }
-
-        item = sn_item_new ((GDBusProxy *) proxy,
-                            g_str_has_prefix (path, APPINDICATOR_PATH_PREFIX));
-
-        g_hash_table_insert (watcher->items,
-                             g_strdup (key),
-                             item);
-
-        update_published_items (watcher);
-
-        sn_watcher_interface_emit_status_notifier_item_registered (skeleton,
-                                                                   service);
+        sn_item_interface_proxy_new (watcher->connection,
+                                     G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
+                                     bus_name,
+                                     path,
+                                     NULL,
+                                     sn_item_proxy_new_completed,
+                                     data);
     }
 
-    sn_watcher_interface_complete_register_status_notifier_item (skeleton,
+    sn_watcher_interface_complete_register_status_notifier_item (watcher->skeleton,
                                                                  invocation);
 
     return TRUE;
