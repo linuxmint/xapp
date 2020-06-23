@@ -43,6 +43,8 @@ struct _SnItem
     gint current_icon_id;
     gchar *sortable_name;
 
+    gboolean should_activate;
+    gboolean should_replace_tooltip;
     gboolean is_ai;
 };
 
@@ -63,6 +65,20 @@ should_activate (SnItem *item)
 
     should = g_strv_contains ((const gchar * const *) whitelist, item->sortable_name);
     g_strfreev (whitelist);
+
+    return should;
+}
+
+static gboolean
+should_replace_tooltip (SnItem *item)
+{
+    gboolean should;
+
+    gchar **ids = g_settings_get_strv (xapp_settings,
+                                       REPLACE_TOOLTIP_KEY);
+
+    should = g_strv_contains ((const gchar * const *) ids, item->sortable_name);
+    g_strfreev (ids);
 
     return should;
 }
@@ -550,7 +566,7 @@ update_menu (SnItem *item)
     item->menu = GTK_WIDGET (dbusmenu_gtkmenu_new ((gchar *) g_dbus_proxy_get_name (item->sn_item_proxy), menu_path));
     g_object_ref_sink (item->menu);
 
-    if (item->is_ai && !should_activate (item))
+    if (item->is_ai && !item->should_activate)
     {
         xapp_status_icon_set_primary_menu (item->status_icon, GTK_MENU (item->menu));
     }
@@ -586,9 +602,12 @@ capitalize (const gchar *string)
 static void
 update_tooltip (SnItem *item)
 {
-    g_autoptr(GVariant) tt_var;
+    g_autoptr(GVariant) tt_var = NULL;
 
-    tt_var = get_property (item, "ToolTip");
+    if (!item->should_replace_tooltip)
+    {
+        tt_var = get_property (item, "ToolTip");
+    }
 
     if (tt_var)
     {
@@ -739,7 +758,7 @@ xapp_icon_button_press (XAppStatusIcon *status_icon,
     {
         if (item->is_ai)
         {
-            if (should_activate (item))
+            if (item->should_activate)
             {
                 sn_item_interface_call_secondary_activate (SN_ITEM_INTERFACE (item->sn_item_proxy), x, y, NULL, NULL, NULL);
                 return;
@@ -817,19 +836,28 @@ static void
 assign_sortable_name (SnItem         *item,
                       XAppStatusIcon *status_icon)
 {
-    gchar *sortable_name;
+    gchar *init_name, *normalized, *sortable_name;
 
-    sortable_name = sn_item_interface_dup_id (SN_ITEM_INTERFACE (item->sn_item_proxy));
+    init_name = sn_item_interface_dup_id (SN_ITEM_INTERFACE (item->sn_item_proxy));
 
-    if (sortable_name == NULL)
+    if (init_name == NULL)
     {
-        sortable_name = get_string_property (item, "Title");
+        init_name = get_string_property (item, "Title");
     }
+
+    normalized = g_utf8_normalize (init_name,
+                                   -1,
+                                   G_NORMALIZE_DEFAULT);
+
+    sortable_name = g_utf8_strdown (normalized, -1);
 
     g_debug ("Sort name for %s is '%s'", g_dbus_proxy_get_name (G_DBUS_PROXY (item->sn_item_proxy)), sortable_name);
     xapp_status_icon_set_name (status_icon, sortable_name);
 
     item->sortable_name = sortable_name;
+
+    g_free (init_name);
+    g_free (normalized);
 }
 
 static void
@@ -868,6 +896,9 @@ property_proxy_acquired (GObject      *source,
     g_signal_connect (item->status_icon, "state-changed", G_CALLBACK (xapp_icon_state_changed), item);
 
     assign_sortable_name (item, item->status_icon);
+
+    item->should_activate = should_activate (item);
+    item->should_replace_tooltip = should_replace_tooltip (item);
 
     update_status (item);
     update_menu (item);

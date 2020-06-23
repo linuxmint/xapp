@@ -6,7 +6,7 @@
 
   <schema id="org.x.apps.statusicon" path="/org/x/apps/statusicon/">
      <key name="left-click-activate-apps" type="as">
-       <default>["Onboard"]</default>
+       <default>["onboard"]</default>
        <summary>A list of appindicator-based apps where left-click should trigger the 'secondary activation' action, rather than open the menu.</summary>
        <description>The name to be put here will be the icon's "Name" (not icon name).  You can see what name to use by running xapp-sn-watcher from a terminal (or in .xsession-properties in some DEs).
        </description>
@@ -20,6 +20,10 @@
      <key name="sn-watcher-debug" type="b">
         <default>false</default>
         <summary>Print debug messages for the xapp-sn-watcher service</summary>
+     </key>
+     <key name="sn-watcher-replace-tooltip" type="as">
+        <default>["qbittorrent"]</default>
+        <summary>Use the Title property in place of the Tooltip for programs with these IDs.</summary>
      </key>
   </schema>
 
