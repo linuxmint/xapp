@@ -25,6 +25,7 @@ struct _XAppSnWatcher
     GHashTable *items;
 
     gboolean shutdown_pending;
+    gboolean advertise_host;
 };
 
 G_DEFINE_TYPE (XAppSnWatcher, xapp_sn_watcher, GTK_TYPE_APPLICATION)
@@ -66,7 +67,7 @@ handle_status_applet_name_owner_appeared (XAppSnWatcher *watcher,
             else
             {
                 sn_watcher_interface_set_is_status_notifier_host_registered (watcher->skeleton,
-                                                                             TRUE);
+                                                                             watcher->advertise_host);
                 g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (watcher->skeleton));
                 sn_watcher_interface_emit_status_notifier_host_registered (watcher->skeleton);
             }
@@ -206,7 +207,7 @@ on_name_acquired (GDBusConnection *connection,
     g_debug ("Name acquired on dbus");
     sn_watcher_interface_set_protocol_version (watcher->skeleton, 0);
     sn_watcher_interface_set_is_status_notifier_host_registered (watcher->skeleton,
-                                                                 TRUE);
+                                                                 watcher->advertise_host);
     g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (watcher->skeleton));
     sn_watcher_interface_emit_status_notifier_host_registered (watcher->skeleton);
 }
@@ -353,7 +354,7 @@ handle_register_item (SnWatcherInterface     *skeleton,
     SnItem *item;
     GError *error;
     const gchar *sender;
-    g_autofree gchar *key, *bus_name, *path;
+    g_autofree gchar *key = NULL, *bus_name = NULL, *path = NULL;
 
     sender = g_dbus_method_invocation_get_sender (invocation);
 
@@ -510,6 +511,8 @@ watcher_startup (GApplication *application)
         g_critical ("Could not get session bus: %s\n", error->message);
         g_application_quit (application);
     }
+
+    watcher->advertise_host = g_settings_get_boolean (xapp_settings, ADVERTISE_SNH_KEY);
 
     add_name_listener (watcher);
 

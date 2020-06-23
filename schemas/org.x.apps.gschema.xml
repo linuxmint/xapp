@@ -25,6 +25,12 @@
         <default>["qbittorrent"]</default>
         <summary>Use the Title property in place of the Tooltip for programs with these IDs.</summary>
      </key>
+      <key name="sn-watcher-advertise-host" type="b">
+        <default>true</default>
+        <summary>Whether to invite true StatusNotifierItem implementations to connect.</summary>
+        <description>StatusNotifierItem implementations (like kde's) check for StatusNotifierWather::IsStatusNotifierHostRegistered to be true before attempting to connect with us. Appindicator implementations only look to see if StatusNotifierWatcher is owned on the bus. Setting IsStatusNotifierHostRegistered to false effectively disabled StatusNotifier support while still handling appindicator icons.
+        </description>
+     </key>
   </schema>
 
 </schemalist>

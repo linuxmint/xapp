@@ -20,6 +20,7 @@ void    sn_item_update_menus (SnItem *item);
 #define VALID_XDG_DESKTOPS_KEY "status-notifier-enabled-desktops"
 #define DEBUG_KEY "sn-watcher-debug"
 #define REPLACE_TOOLTIP_KEY "sn-watcher-replace-tooltip"
+#define ADVERTISE_SNH_KEY "sn-watcher-advertise-host"
 extern GSettings *xapp_settings;
 
 G_END_DECLS
