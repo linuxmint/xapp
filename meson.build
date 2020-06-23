@@ -48,7 +48,10 @@ subdir('pygobject')
 subdir('schemas')
 subdir('status-applets')
 subdir('scripts')
-subdir('xapp-sn-watcher')
+
+if get_option('status-notifier')
+    subdir('xapp-sn-watcher')
+endif
 
 if get_option('docs')
     subdir('docs')

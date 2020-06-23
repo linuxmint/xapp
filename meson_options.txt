@@ -13,3 +13,8 @@ option('py-overrides-dir',
     value : '',
     description: 'Path to pygobject overrides directory'
 )
+option('status-notifier',
+    type: 'boolean',
+    value: true,
+    description: 'Build the XApp StatusNotifier service.'
+)
