@@ -1,3 +1,17 @@
+xapp (1.8.8) ulyana; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-button.c: Remove leftover debugging line.
+  * xapp-sn-watcher: Create StatusNotifierItem proxies asynchronously, and don't try to load their properties.
+  * xapp-sn-watcher: Add an app list to flag items that should have their tooltip replaced by the application name.
+  * build: Make build of xapp-sn-watcher optional, defaulting to true.
+  * xapp-sn-watcher: Add key to disable StatusNotifier support, but leave appindicator support enabled.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 24 Jun 2020 13:21:16 +0100
+
 xapp (1.8.7) ulyana; urgency=medium
 
   [ Clement Lefebvre ]
