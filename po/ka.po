@@ -1,16 +1,16 @@
-# Swedish translation for linuxmint
-# Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
+# Georgian translation for linuxmint
+# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-12 19:52+0000\n"
-"Last-Translator: Jan-Olof Svensson <jan-olof.svensson@abc.se>\n"
-"Language-Team: Swedish <sv@li.org>\n"
+"PO-Revision-Date: 2020-06-13 08:25+0000\n"
+"Last-Translator: Romeo Khazalia <Unknown>\n"
+"Language-Team: Georgian <ka@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,140 +20,140 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:613
 msgid "Icon size"
-msgstr "Ikonstorlek"
+msgstr "ხატულას ზომა"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:614
 msgid "The preferred icon size."
-msgstr "Föredragen ikonstorlek."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Ikon"
+msgstr "ხატულა"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Strängen som representerar ikonen."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Kategori"
+msgstr "კატეგორია"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Förvald kategori"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:95
 msgid "Actions"
-msgstr "Åtgärder"
+msgstr "მოქმედებები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Applications"
-msgstr "Program"
+msgstr "აპლიკაციები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Categories"
-msgstr "Kategorier"
+msgstr "კატეგორიები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Devices"
-msgstr "Enheter"
+msgstr "მოწყობილობები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Emblems"
-msgstr "Emblem"
+msgstr "ემბლემები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emoji"
-msgstr "Emojier"
+msgstr "ემოჯი"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Mime types"
-msgstr "Mimetyper"
+msgstr "MIME ტიპები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Places"
-msgstr "Platser"
+msgstr "ადგილები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Status"
-msgstr "Status"
+msgstr "სტატუსი"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Other"
-msgstr "Annan"
+msgstr "სხვა"
 
 #: libxapp/xapp-icon-chooser-dialog.c:451
 msgid "Choose an icon"
-msgstr "Välj en ikon"
+msgstr "ხატულის არჩევა"
 
 #: libxapp/xapp-icon-chooser-dialog.c:473
 msgid "Search"
-msgstr "Sök"
+msgstr "ძებნა"
 
 #: libxapp/xapp-icon-chooser-dialog.c:480
 msgid "Browse"
-msgstr "Bläddra"
+msgstr "დათვალიერება"
 
 #: libxapp/xapp-icon-chooser-dialog.c:536
 msgid "Loading..."
-msgstr "Hämtar..."
+msgstr "იტვირთება..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:560
 msgid "Default"
-msgstr "Standardvärde"
+msgstr "ნაგულისხმები"
 
 #: libxapp/xapp-icon-chooser-dialog.c:570
 msgid "Select"
-msgstr "Välj"
+msgstr "მონიშვნა"
 
 #: libxapp/xapp-icon-chooser-dialog.c:579
 #: libxapp/xapp-icon-chooser-dialog.c:1937
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr "გაუქმება"
 
 #: libxapp/xapp-icon-chooser-dialog.c:626
 msgid "Allow Paths"
-msgstr "Tillåt sökvägar"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:627
 msgid "Whether to allow paths."
-msgstr "Om du vill tillåta sökvägar."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:638
 msgid "Default Icon"
-msgstr "Förvald ikon"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "The icon to use by default"
-msgstr "Den ikon som används som standard"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1934
 msgid "Select image file"
-msgstr "Välj bildfil"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1939
 msgid "Open"
-msgstr "Öppna"
+msgstr "გახსნა"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1954
 msgid "Image"
-msgstr "Bild"
+msgstr "გამოსახულება"
 
 #: status-applets/mate/mate-xapp-status-applet.py:260
 msgid "About"
-msgstr "Om"
+msgstr "შესახებ"
 
 #: status-applets/mate/mate-xapp-status-applet.py:280
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Det område där XApp visar status-ikoner"
+msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
 msgid "XApp Status Applet Factory"
-msgstr "Verktyg för status-appen XApp"
+msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
 msgid "XApp Status Applet"
-msgstr "Status-appen XApp"
+msgstr ""
