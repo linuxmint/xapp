@@ -299,6 +299,7 @@ create_key (const gchar  *sender,
 typedef struct
 {
     XAppSnWatcher *watcher;
+    GDBusMethodInvocation *invocation;
     gchar *key;
     gchar *path;
     gchar *bus_name;
@@ -338,10 +339,14 @@ sn_item_proxy_new_completed (GObject      *source,
     sn_watcher_interface_emit_status_notifier_item_registered (watcher->skeleton,
                                                                data->service);
 
+    sn_watcher_interface_complete_register_status_notifier_item (watcher->skeleton,
+                                                                 data->invocation);
+
     g_free (data->key);
     g_free (data->path);
     g_free (data->bus_name);
     g_free (data->service);
+    g_object_unref (data->invocation);
     g_slice_free (NewSnProxyData, data);
 }
 
@@ -382,6 +387,7 @@ handle_register_item (SnWatcherInterface     *skeleton,
         data->path = g_strdup (path);
         data->bus_name = g_strdup (bus_name);
         data->service = g_strdup (service);
+        data->invocation = g_object_ref (invocation);
 
         sn_item_interface_proxy_new (watcher->connection,
                                      G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
@@ -391,9 +397,6 @@ handle_register_item (SnWatcherInterface     *skeleton,
                                      sn_item_proxy_new_completed,
                                      data);
     }
-
-    sn_watcher_interface_complete_register_status_notifier_item (watcher->skeleton,
-                                                                 invocation);
 
     return TRUE;
 }
