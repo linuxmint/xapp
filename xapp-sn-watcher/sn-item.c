@@ -250,18 +250,12 @@ get_string_property (SnItem               *item,
 static cairo_surface_t *
 surface_from_pixmap_data (gint          width,
                           gint          height,
-                          GBytes       *bytes)
+                          guchar       *data)
 {
     cairo_surface_t *surface;
     GdkPixbuf *pixbuf;
     gint rowstride, i;
-    gsize size;
-    gconstpointer data;
-    guchar *copy;
     guchar alpha;
-
-    data = g_bytes_get_data (bytes, &size);
-    copy = g_memdup ((guchar *) data, size);
 
     surface = NULL;
     rowstride = width * 4;
@@ -269,15 +263,15 @@ surface_from_pixmap_data (gint          width,
 
     while (i < 4 * width * height)
     {
-        alpha       = copy[i    ];
-        copy[i    ] = copy[i + 1];
-        copy[i + 1] = copy[i + 2];
-        copy[i + 2] = copy[i + 3];
-        copy[i + 3] = alpha;
+        alpha       = data[i    ];
+        data[i    ] = data[i + 1];
+        data[i + 1] = data[i + 2];
+        data[i + 2] = data[i + 3];
+        data[i + 3] = alpha;
         i += 4;
     }
 
-    pixbuf = gdk_pixbuf_new_from_data (copy,
+    pixbuf = gdk_pixbuf_new_from_data (data,
                                        GDK_COLORSPACE_RGB,
                                        TRUE, 8,
                                        width, height,
@@ -301,42 +295,57 @@ process_pixmaps (SnItem    *item,
                  GVariant  *pixmaps,
                  gchar    **image_path)
 {
-    GVariantIter iter;
+    GVariantIter *iter;
     cairo_surface_t *surface;
     gint width, height;
     gint largest_width, largest_height;
     GVariant *byte_array_var;
-    GBytes *best_image_bytes = NULL;
+    gconstpointer data;
+    guchar *best_image_array = NULL;
 
     largest_width = largest_height = 0;
 
-    g_variant_iter_init (&iter, pixmaps);
+    g_variant_get (pixmaps, "a(iiay)", &iter);
 
-    while (g_variant_iter_loop (&iter, "(ii@ay)", &width, &height, &byte_array_var))
+    if (iter == NULL)
     {
-        if (width > 0 & height > 0 &&
+        return FALSE;
+    }
+
+    while (g_variant_iter_loop (iter, "(ii@ay)", &width, &height, &byte_array_var))
+    {
+        if (width > 0 & height > 0 && byte_array_var != NULL &&
             ((width * height) > (largest_width * largest_height)))
         {
             gsize data_size = g_variant_get_size (byte_array_var);
 
             if (data_size == width * height * 4)
             {
-                g_clear_pointer (&best_image_bytes, g_bytes_unref);
+                data = g_variant_get_data (byte_array_var);
 
-                largest_width = width;
-                largest_height = height;
-                best_image_bytes = g_variant_get_data_as_bytes (byte_array_var);
+                if (data != NULL)
+                {
+                    if (best_image_array != NULL)
+                    {
+                        g_free (best_image_array);
+                    }
+
+                    best_image_array = g_memdup (data, data_size);
+
+                    largest_width = width;
+                    largest_height = height;
+                }
             }
         }
     }
 
-    if (best_image_bytes == NULL)
+    if (best_image_array == NULL)
     {
         g_warning ("No valid pixmaps found.");
         return FALSE;
     }
 
-    surface = surface_from_pixmap_data (largest_width, largest_height, best_image_bytes);
+    surface = surface_from_pixmap_data (largest_width, largest_height, best_image_array);
 
     if (cairo_surface_status (surface) != CAIRO_STATUS_SUCCESS)
     {
@@ -370,7 +379,7 @@ process_pixmaps (SnItem    *item,
 static void
 set_icon_from_pixmap (SnItem *item)
 {
-    GVariant *pixmaps;
+    GVariant *pixmaps = NULL;
     gchar *image_path;
 
     if (item->status == STATUS_ACTIVE)
