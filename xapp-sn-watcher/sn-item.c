@@ -26,6 +26,35 @@ typedef enum
     STATUS_NEEDS_ATTENTION
 } Status;
 
+typedef struct
+{
+    gchar               *id;
+    gchar               *title;
+    gchar               *status;
+    gchar               *tooltip_heading;
+    gchar               *tooltip_body;
+    gchar               *icon_desc;
+    gchar               *attention_desc;
+    gchar               *menu_path;
+
+    gchar               *icon_theme_path;
+    gchar               *icon_name;
+    gchar               *attention_icon_name;
+    gchar               *overlay_icon_name;
+
+    gchar               *icon_md5;
+    gchar               *attention_icon_md5;
+    gchar               *overlay_icon_md5;
+    cairo_surface_t     *icon_surface;
+    cairo_surface_t     *attention_icon_surface;
+    cairo_surface_t     *overlay_icon_surface;
+
+    gboolean             update_status;
+    gboolean             update_tooltip;
+    gboolean             update_menu;
+    gboolean             update_icon;
+} SnItemPropertiesResult;
+
 struct _SnItem
 {
     GObject parent_instance;
@@ -33,27 +62,65 @@ struct _SnItem
     GDBusProxy *sn_item_proxy; // SnItemProxy
     GDBusProxy *prop_proxy; // dbus properties (we can't trust SnItemProxy)
 
-    GtkWidget *menu;
     XAppStatusIcon *status_icon;
+
+    SnItemPropertiesResult *current_props;
 
     Status status;
     gchar *last_png_path;
     gchar *png_path;
 
     gint current_icon_id;
+
+    guint update_properties_timeout;
     gchar *sortable_name;
 
     gboolean should_activate;
     gboolean should_replace_tooltip;
     gboolean is_ai;
+
+    GtkWidget *menu;
 };
 
 G_DEFINE_TYPE (SnItem, sn_item, G_TYPE_OBJECT)
 
-static void update_menu (SnItem *item);
-static void update_status (SnItem *item);
-static void update_tooltip (SnItem *item);
-static void update_icon (SnItem *item);
+static void update_menu (SnItem *item, SnItemPropertiesResult *new_props);
+static void update_status (SnItem *item, SnItemPropertiesResult *new_props);
+static void update_tooltip (SnItem *item, SnItemPropertiesResult *new_props);
+static void update_icon (SnItem *item, SnItemPropertiesResult *new_props);
+static void assign_sortable_name (SnItem *item, const gchar *title);
+
+static void
+props_free (SnItemPropertiesResult *props)
+{
+    if (props == NULL)
+    {
+        return;
+    }
+
+    g_free (props->id);
+    g_free (props->title);
+    g_free (props->status);
+    g_free (props->tooltip_heading);
+    g_free (props->tooltip_body);
+    g_free (props->icon_desc);
+    g_free (props->attention_desc);
+    g_free (props->menu_path);
+    g_free (props->icon_theme_path);
+    g_free (props->icon_name);
+    g_free (props->attention_icon_name);
+    g_free (props->overlay_icon_name);
+
+    g_free (props->icon_md5);
+    g_free (props->attention_icon_md5);
+    g_free (props->overlay_icon_md5);
+
+    cairo_surface_destroy (props->icon_surface);
+    cairo_surface_destroy (props->attention_icon_surface);
+    cairo_surface_destroy (props->overlay_icon_surface);
+
+    g_slice_free (SnItemPropertiesResult, props);
+}
 
 static gboolean
 should_activate (SnItem *item)
@@ -81,6 +148,13 @@ should_replace_tooltip (SnItem *item)
     g_strfreev (ids);
 
     return should;
+}
+
+static void
+update_conditionals (SnItem *item)
+{
+    item->should_replace_tooltip = should_replace_tooltip (item);
+    item->should_activate = should_activate (item);
 }
 
 static void
@@ -113,6 +187,7 @@ sn_item_dispose (GObject *object)
     g_clear_object (&item->menu);
     g_clear_object (&item->prop_proxy);
     g_clear_object (&item->sn_item_proxy);
+    props_free (item->current_props);
 
     G_OBJECT_CLASS (sn_item_parent_class)->dispose (object);
 }
@@ -177,76 +252,6 @@ get_icon_size (SnItem *item)
     return FALLBACK_ICON_SIZE;
 }
 
-static GVariant *
-get_property (SnItem      *item,
-              const gchar *prop_name)
-{
-    GVariant *res, *var;
-    GError *error = NULL;
-
-    res = g_dbus_proxy_call_sync (item->prop_proxy,
-                                  "Get",
-                                  g_variant_new ("(ss)",
-                                                 g_dbus_proxy_get_interface_name (item->sn_item_proxy),
-                                                 prop_name),
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  5 * 1000,
-                                  NULL,
-                                  &error);
-
-    if (error != NULL)
-    {
-        g_error_free (error);
-        return NULL;
-    }
-
-    g_variant_get (res, "(v)", &var);
-    g_variant_unref (res);
-
-    return var;
-}
-
-static GVariant *
-get_pixmap_property (SnItem               *item,
-                     const gchar          *name)
-{
-    GVariant *var = NULL;
-
-    var = get_property (item, name);
-
-    if (var == NULL)
-    {
-        return NULL;
-    }
-
-    return var;
-}
-
-static gchar *
-get_string_property (SnItem               *item,
-                     const gchar          *name)
-{
-    GVariant *var = NULL;
-    gchar *result = NULL;
-
-    var = get_property (item, name);
-
-    if (var == NULL)
-    {
-        return NULL;
-    }
-
-    result = g_variant_dup_string (var, NULL);
-    g_variant_unref (var);
-
-    if (g_strcmp0 (result, "") == 0)
-    {
-        g_clear_pointer (&result, g_free);
-    }
-
-    return result;
-}
-
 static cairo_surface_t *
 surface_from_pixmap_data (gint          width,
                           gint          height,
@@ -290,26 +295,29 @@ surface_from_pixmap_data (gint          width,
     }
 }
 
-static gboolean
-process_pixmaps (SnItem    *item,
-                 GVariant  *pixmaps,
-                 gchar    **image_path)
+static cairo_surface_t *
+get_icon_surface (SnItem    *item,
+                  GVariant  *pixmaps,
+                  gchar    **md5)
 {
     GVariantIter *iter;
     cairo_surface_t *surface;
     gint width, height;
     gint largest_width, largest_height;
+    gsize largest_data_size;
     GVariant *byte_array_var;
     gconstpointer data;
     guchar *best_image_array = NULL;
 
     largest_width = largest_height = 0;
 
+    *md5 = NULL;
+
     g_variant_get (pixmaps, "a(iiay)", &iter);
 
     if (iter == NULL)
     {
-        return FALSE;
+        return NULL;
     }
 
     while (g_variant_iter_loop (iter, "(ii@ay)", &width, &height, &byte_array_var))
@@ -332,6 +340,7 @@ process_pixmaps (SnItem    *item,
 
                     best_image_array = g_memdup (data, data_size);
 
+                    largest_data_size = data_size;
                     largest_width = width;
                     largest_height = height;
                 }
@@ -339,82 +348,77 @@ process_pixmaps (SnItem    *item,
         }
     }
 
+    g_variant_iter_free (iter);
+
     if (best_image_array == NULL)
     {
-        g_warning ("No valid pixmaps found.");
-        return FALSE;
+        g_debug ("No valid pixmaps found.");
+        return NULL;
     }
 
     surface = surface_from_pixmap_data (largest_width, largest_height, best_image_array);
+    *md5 = g_compute_checksum_for_data (G_CHECKSUM_MD5, best_image_array, largest_data_size);
 
     if (cairo_surface_status (surface) != CAIRO_STATUS_SUCCESS)
     {
         cairo_surface_destroy (surface);
-        return FALSE;
+        return NULL;
     }
 
-    item->last_png_path = item->png_path;
-
-    gchar *filename = g_strdup_printf ("xapp-tmp-%p-%d.png", item, get_icon_id (item));
-    gchar *save_filename = g_build_path ("/", g_get_tmp_dir (), filename, NULL);
-    g_free (filename);
-
-    cairo_status_t status = CAIRO_STATUS_SUCCESS;
-    status = cairo_surface_write_to_png (surface, save_filename);
-
-    if (status != CAIRO_STATUS_SUCCESS)
-    {
-        g_warning ("Failed to save png of status icon");
-        g_free (image_path);
-        cairo_surface_destroy (surface);
-        return FALSE;
-    }
-
-    *image_path = save_filename;
-    cairo_surface_destroy (surface);
-
-    return TRUE;
+    return surface;
 }
 
 static void
-set_icon_from_pixmap (SnItem *item)
+set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
 {
-    GVariant *pixmaps = NULL;
-    gchar *image_path;
+    cairo_surface_t *surface;
+    gchar *filename, *save_filename;
+
+    surface = NULL;
 
     if (item->status == STATUS_ACTIVE)
     {
-        pixmaps = get_pixmap_property (item, "IconPixmap");
+        if (new_props->icon_surface)
+        {
+            surface = new_props->icon_surface;
+        }
     }
     else
     if (item->status == STATUS_NEEDS_ATTENTION)
     {
-        pixmaps = get_pixmap_property (item, "AttentionIconPixmap");
-
-        if (!pixmaps)
+        if (new_props->attention_icon_surface)
         {
-            pixmaps = get_pixmap_property (item, "IconPixmap");
+            surface = new_props->attention_icon_surface;
         }
     }
 
-    if (!pixmaps)
+    if (surface != NULL)
     {
-        xapp_status_icon_set_icon_name (item->status_icon, "image-missing");
-        g_warning ("No pixmaps to use");
+        item->last_png_path = item->png_path;
+
+        filename = g_strdup_printf ("xapp-tmp-%p-%d.png", item, get_icon_id (item));
+        save_filename = g_build_path ("/", g_get_tmp_dir (), filename, NULL);
+        g_free (filename);
+
+        cairo_status_t status = CAIRO_STATUS_SUCCESS;
+        status = cairo_surface_write_to_png (surface, save_filename);
+
+        if (status != CAIRO_STATUS_SUCCESS)
+        {
+            g_warning ("Failed to save png of status icon");
+        }
+
+        xapp_status_icon_set_icon_name (item->status_icon, save_filename);
+        g_free (save_filename);
         return;
     }
 
-    if (process_pixmaps (item, pixmaps, &image_path))
-    {
-        xapp_status_icon_set_icon_name (item->status_icon, image_path);
-        g_free (image_path);
-    }
-
-    g_variant_unref (pixmaps);
+    g_debug ("No pixmaps to use");
+    xapp_status_icon_set_icon_name (item->status_icon, "image-missing");
 }
 
 static gchar *
-get_icon_filename_from_theme (SnItem *item,
+get_icon_filename_from_theme (SnItem      *item,
                               const gchar *theme_path,
                               const gchar *icon_name)
 {
@@ -461,14 +465,20 @@ get_icon_filename_from_theme (SnItem *item,
     return filename;
 }
 
-static void
-process_icon_name (SnItem *item,
-                   const gchar *icon_theme_path,
-                   const gchar *icon_name)
+static gboolean
+set_icon_name (SnItem      *item,
+               const gchar *icon_theme_path,
+               const gchar *icon_name)
 {
-    if (g_path_is_absolute (icon_name) || !icon_theme_path)
+    if (icon_name == NULL)
+    {
+        return FALSE;
+    }
+
+    if (g_path_is_absolute (icon_name))
     {
         xapp_status_icon_set_icon_name (item->status_icon, icon_name);
+        return TRUE;
     }
     else
     {
@@ -478,101 +488,67 @@ process_icon_name (SnItem *item,
         {
             xapp_status_icon_set_icon_name (item->status_icon, filename);
             g_free (filename);
-        }
-        else
-        {
-            xapp_status_icon_set_icon_name (item->status_icon, "image-missing");
+            return TRUE;
         }
     }
+
+    return FALSE;
 }
 
-static void
-set_icon_name_or_path (SnItem *item,
-                       const gchar *icon_theme_path,
-                       const gchar *icon_name,
-                       const gchar *att_icon_name,
-                       const gchar *olay_icon_name)
+static gboolean
+set_icon_name_or_path (SnItem                 *item,
+                       SnItemPropertiesResult *new_props)
 {
     const gchar *name_to_use = NULL;
 
     if (item->status == STATUS_ACTIVE)
     {
-        if (icon_name)
+        if (new_props->icon_name)
         {
-            name_to_use = icon_name;
+            name_to_use = new_props->icon_name;
         }
     }
     else
     if (item->status == STATUS_NEEDS_ATTENTION)
     {
-        if (att_icon_name)
+        if (new_props->attention_icon_name)
         {
-            name_to_use = att_icon_name;
+            name_to_use = new_props->attention_icon_name;
         }
         else
-        if (icon_name)
+        if (new_props->icon_name)
         {
-            name_to_use = icon_name;
+            name_to_use = new_props->icon_name;
         }
     }
 
-    if (name_to_use == NULL)
-    {
-        name_to_use = "image-missing";
-    }
-
-    process_icon_name (item, icon_theme_path, name_to_use);
+    return set_icon_name (item, new_props->icon_theme_path, name_to_use);
 }
 
 static void
-update_icon (SnItem *item)
+update_icon (SnItem *item, SnItemPropertiesResult *new_props)
 {
-    gchar *icon_theme_path;
-    gchar *icon_name, *att_icon_name, *olay_icon_name;
-
-    icon_theme_path = get_string_property (item, "IconThemePath");
-    icon_name = get_string_property (item, "IconName");
-    att_icon_name = get_string_property (item, "AttentionIconName");
-    olay_icon_name = get_string_property (item, "OverlayIconName");
-
-    if (icon_name || att_icon_name || olay_icon_name)
+    if (!set_icon_name_or_path (item, new_props))
     {
-        // g_printerr ("icon name '%s' '%s' '%s'\n", icon_name, att_icon_name, olay_icon_name);
-        set_icon_name_or_path (item,
-                               icon_theme_path,
-                               icon_name,
-                               att_icon_name,
-                               olay_icon_name);
+        set_icon_from_pixmap (item, new_props);
     }
-    else
-    {
-        set_icon_from_pixmap (item);
-    }
-
-    g_free (icon_theme_path);
-    g_free (icon_name);
-    g_free (att_icon_name);
-    g_free (olay_icon_name);
 }
 
 static void
-update_menu (SnItem *item)
+update_menu (SnItem *item, SnItemPropertiesResult *new_props)
 {
-    gchar *menu_path;
-
     g_clear_object (&item->menu);
 
     xapp_status_icon_set_primary_menu (item->status_icon, NULL);
     xapp_status_icon_set_secondary_menu (item->status_icon, NULL);
 
-    menu_path = get_string_property (item, "Menu");
-
-    if (menu_path == NULL)
+    if (new_props->menu_path == NULL)
     {
         return;
     }
 
-    item->menu = GTK_WIDGET (dbusmenu_gtkmenu_new ((gchar *) g_dbus_proxy_get_name (item->sn_item_proxy), menu_path));
+    item->menu = GTK_WIDGET (dbusmenu_gtkmenu_new ((gchar *) g_dbus_proxy_get_name (item->sn_item_proxy),
+                                                   new_props->menu_path));
     g_object_ref_sink (item->menu);
 
     if (item->is_ai && !item->should_activate)
@@ -581,8 +557,6 @@ update_menu (SnItem *item)
     }
 
     xapp_status_icon_set_secondary_menu (item->status_icon, GTK_MENU (item->menu));
-
-    g_free (menu_path);
 }
 
 static gchar *
@@ -609,62 +583,47 @@ capitalize (const gchar *string)
 }
 
 static void
-update_tooltip (SnItem *item)
+update_tooltip (SnItem *item, SnItemPropertiesResult *new_props)
 {
-    g_autoptr(GVariant) tt_var = NULL;
+    if (new_props->title)
+    {
+        assign_sortable_name (item, new_props->title);
+    }
 
     if (!item->should_replace_tooltip)
     {
-        tt_var = get_property (item, "ToolTip");
-    }
-
-    if (tt_var)
-    {
-        const gchar *type_str;
-        type_str = g_variant_get_type_string (tt_var);
-
-        if (g_strcmp0 (type_str, "(sa(iiay)ss)") == 0)
+        if (new_props->tooltip_heading != NULL)
         {
-            const gchar *tooltip_title, *tooltip_body;
-
-            g_variant_get (tt_var, "(sa(iiay)&s&s)", NULL, NULL, &tooltip_title, &tooltip_body);
-
-            if (g_strcmp0 (tooltip_title, "") != 0)
+            if (new_props->tooltip_body != NULL)
             {
+                gchar *text;
+                text = g_strdup_printf ("%s\n%s",
+                                        new_props->tooltip_heading,
+                                        new_props->tooltip_body);
 
-                if (g_strcmp0 (tooltip_body, "") != 0)
-                {
-                    gchar *text;
-                    text = g_strdup_printf ("%s\n%s", tooltip_title, tooltip_body);
+                xapp_status_icon_set_tooltip_text (item->status_icon, text);
+                g_debug ("Tooltip text from ToolTip: %s", text);
 
-                    xapp_status_icon_set_tooltip_text (item->status_icon, text);
-                    g_debug ("Tooltip text from ToolTip: %s", text);
-
-                    g_free (text);
-                }
-                else
-                {
-                    g_debug ("Tooltip text from ToolTip: %s", tooltip_title);
-                    xapp_status_icon_set_tooltip_text (item->status_icon, tooltip_title);
-                }
-
-                return;
+                g_free (text);
             }
+            else
+            {
+                g_debug ("Tooltip text from ToolTip: %s", new_props->tooltip_heading);
+                xapp_status_icon_set_tooltip_text (item->status_icon, new_props->tooltip_heading);
+            }
+
+            return;
         }
     }
 
-    gchar *title_string;
-    title_string = get_string_property (item, "Title");
-
-    if (title_string != NULL)
+    if (new_props->title != NULL)
     {
         gchar *capped_string;
 
-        capped_string = capitalize (title_string);
+        capped_string = capitalize (new_props->title);
         xapp_status_icon_set_tooltip_text (item->status_icon, capped_string);
         g_debug ("Tooltip text from Title: %s", capped_string);
 
-        g_free (title_string);
         g_free (capped_string);
         return;
     }
@@ -673,21 +632,15 @@ update_tooltip (SnItem *item)
 }
 
 static void
-update_status (SnItem *item)
+update_status (SnItem *item, SnItemPropertiesResult *new_props)
 {
-    Status old_status;
-    gchar *status;
-
-    old_status = item->status;
-
-    status = get_string_property (item, "Status");
-
-    if (g_strcmp0 (status, "Passive") == 0)
+    if (g_strcmp0 (new_props->status, "Passive") == 0)
     {
         item->status = STATUS_PASSIVE;
         xapp_status_icon_set_visible (item->status_icon, FALSE);
     }
-    else if (g_strcmp0 (status, "NeedsAttention") == 0)
+    else
+    if (g_strcmp0 (new_props->status, "NeedsAttention") == 0)
     {
         item->status = STATUS_NEEDS_ATTENTION;
         xapp_status_icon_set_visible (item->status_icon, TRUE);
@@ -697,13 +650,252 @@ update_status (SnItem *item)
         item->status = STATUS_ACTIVE;
         xapp_status_icon_set_visible (item->status_icon, TRUE);
     }
+}
 
-    g_free (status);
-
-    if (old_status != item->status)
+static gchar *
+null_or_string_from_string (const gchar *str)
+{
+    if (str != NULL && strlen(str) > 0)
     {
-        update_icon (item);
+        return g_strdup (str);
     }
+    else
+    {
+        return NULL;
+    }
+}
+
+static gchar *
+null_or_string_from_variant (GVariant *variant)
+{
+    const gchar *str;
+
+    str = g_variant_get_string (variant, NULL);
+
+    return null_or_string_from_string (str);
+}
+
+static void
+get_all_properties_callback (GObject      *source_object,
+                             GAsyncResult *res,
+                             gpointer      user_data)
+{
+    SnItem *item = SN_ITEM (user_data);
+    SnItemPropertiesResult *new_props;
+    GError       *error = NULL;
+    GVariant     *properties;
+    GVariantIter *iter = NULL;
+    const gchar  *name;
+    GVariant     *value;
+
+    properties = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object), res, &error);
+    // free_error_and_return_if_cancelled (error);
+    if (properties == NULL)
+    {
+        return;
+    }
+
+    new_props = g_slice_new0 (SnItemPropertiesResult);
+
+    g_variant_get (properties, "(a{sv})", &iter);
+
+    while (g_variant_iter_loop (iter, "{&sv}", &name, &value))
+    {
+        if (g_strcmp0 (name, "Title") == 0)
+        {
+            new_props->title = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->title, item->current_props->title) != 0)
+            {
+                new_props->update_tooltip = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "Status") == 0)
+        {
+            new_props->status = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->status, item->current_props->status) != 0)
+            {
+                new_props->update_status = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "ToolTip") == 0)
+        {
+            const gchar *ts;
+
+            ts = g_variant_get_type_string (value);
+
+            if (g_strcmp0 (ts, "(sa(iiay)ss)") == 0)
+            {
+                gchar *heading, *body;
+
+                g_variant_get (value, "(sa(iiay)ss)", NULL, NULL,
+                               &heading,
+                               &body);
+
+                new_props->tooltip_heading = null_or_string_from_string (heading);
+                new_props->tooltip_body = null_or_string_from_string (body);
+
+                g_free (heading);
+                g_free (body);
+            }
+            else
+            if (g_strcmp0 (ts, "s") == 0)
+            {
+                new_props->tooltip_body = null_or_string_from_variant (value);
+            }
+
+            if (g_strcmp0 (new_props->tooltip_heading, item->current_props->tooltip_heading) != 0 ||
+                g_strcmp0 (new_props->tooltip_body, item->current_props->tooltip_body) != 0)
+            {
+                new_props->update_tooltip = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "Menu") == 0)
+        {
+            new_props->menu_path = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->menu_path, item->current_props->menu_path) != 0)
+            {
+                new_props->update_menu = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "IconThemePath") == 0)
+        {
+            new_props->icon_theme_path = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->icon_theme_path, item->current_props->icon_theme_path) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "IconName") == 0)
+        {
+            new_props->icon_name = null_or_string_from_variant (value);
+            if (g_strcmp0 (new_props->icon_name, item->current_props->icon_name) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "IconPixmap") == 0)
+        {
+            new_props->icon_surface = get_icon_surface (item, value, &new_props->icon_md5);
+
+            if (g_strcmp0 (new_props->icon_md5, item->current_props->icon_md5) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "AttentionIconName") == 0)
+        {
+            new_props->attention_icon_name = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->attention_icon_name, item->current_props->attention_icon_name) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "AttentionIconPixmap") == 0)
+        {
+            new_props->attention_icon_surface = get_icon_surface (item, value, &new_props->attention_icon_md5);
+
+            if (g_strcmp0 (new_props->attention_icon_md5, item->current_props->attention_icon_md5) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "OverlayIconName") == 0)
+        {
+            new_props->overlay_icon_name = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->overlay_icon_name, item->current_props->overlay_icon_name) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+        else
+        if (g_strcmp0 (name, "OverlayIconPixmap") == 0)
+        {
+            new_props->overlay_icon_surface = get_icon_surface (item, value, &new_props->overlay_icon_md5);
+
+            if (g_strcmp0 (new_props->overlay_icon_md5, item->current_props->overlay_icon_md5) != 0)
+            {
+                new_props->update_icon = TRUE;
+            }
+        }
+    }
+
+    g_variant_iter_free (iter);
+    g_variant_unref (properties);
+
+    if (new_props->update_status)
+    {
+        update_status (item, new_props);
+    }
+
+    if (new_props->update_tooltip)
+    {
+        update_tooltip (item, new_props);
+    }
+
+    if (new_props->update_menu)
+    {
+        update_menu (item, new_props);
+    }
+
+    if (new_props->update_icon)
+    {
+        update_icon (item, new_props);
+    }
+
+    props_free (item->current_props);
+    item->current_props = new_props;
+}
+
+static gboolean
+update_all_properties (gpointer data)
+{
+    SnItem *item = SN_ITEM (data);
+
+    g_dbus_proxy_call (item->prop_proxy,
+                       "GetAll",
+                       g_variant_new ("(s)",
+                                      g_dbus_proxy_get_interface_name (item->sn_item_proxy)),
+                       G_DBUS_CALL_FLAGS_NONE,
+                       5 * 1000,
+                       NULL,
+                       get_all_properties_callback,
+                       item);
+
+    item->update_properties_timeout = 0;
+
+    return G_SOURCE_REMOVE;
+}
+
+static void
+queue_update_properties (SnItem *item, gboolean force)
+{
+    if (item->update_properties_timeout > 0)
+    {
+        g_source_remove (item->update_properties_timeout);
+    }
+
+    if (force)
+    {
+        props_free (item->current_props);
+        item->current_props = g_slice_new0 (SnItemPropertiesResult);
+    }
+
+    item->update_properties_timeout = g_timeout_add (10, G_SOURCE_FUNC (update_all_properties), item);
 }
 
 static void
@@ -719,28 +911,16 @@ sn_signal_received (GDBusProxy  *sn_item_proxy,
     {
         return;
     }
-
+g_printerr ("sig nmae: %s\n", signal_name);
     if (g_strcmp0 (signal_name, "NewIcon") == 0 ||
         g_strcmp0 (signal_name, "NewAttentionIcon") == 0 ||
-        g_strcmp0 (signal_name, "NewOverlayIcon") == 0)
+        g_strcmp0 (signal_name, "NewOverlayIcon") == 0 ||
+        g_strcmp0 (signal_name, "NewToolTip") == 0 ||
+        g_strcmp0 (signal_name, "NewTitle") == 0 ||
+        g_strcmp0 (signal_name, "NewStatus") == 0 ||
+        g_strcmp0 (signal_name, "NewMenu") == 0)
     {
-        update_icon (item);
-    }
-    else
-    if (g_strcmp0 (signal_name, "NewStatus") == 0)
-    {
-        update_status (item); // This will update_icon(item) also.
-    }
-    else
-    if (g_strcmp0 (signal_name, "NewMenu") == 0)
-    {
-        update_menu (item);
-    }
-    else
-    if (g_strcmp0 (signal_name, "NewToolTip") ||
-        g_strcmp0 (signal_name, "NewTitle"))
-    {
-        update_tooltip (item);
+        queue_update_properties (item, FALSE);
     }
 }
 
@@ -835,23 +1015,25 @@ xapp_icon_state_changed (XAppStatusIcon      *status_icon,
         return;
     }
 
-    update_icon (item);
-    update_status (item);
-    update_icon (item);
-    update_tooltip (item);
+    queue_update_properties (item, TRUE);
 }
 
 static void
 assign_sortable_name (SnItem         *item,
-                      XAppStatusIcon *status_icon)
+                      const gchar    *title)
 {
-    gchar *init_name, *normalized, *sortable_name;
+    gchar *init_name, *normalized;
+    gchar *sortable_name, *old_sortable_name;
 
     init_name = sn_item_interface_dup_id (SN_ITEM_INTERFACE (item->sn_item_proxy));
 
-    if (init_name == NULL)
+    if (init_name == NULL && title != NULL)
     {
-        init_name = get_string_property (item, "Title");
+        init_name = g_strdup (title);
+    }
+    else
+    {
+        init_name = g_strdup (g_dbus_proxy_get_name (G_DBUS_PROXY (item->sn_item_proxy)));
     }
 
     normalized = g_utf8_normalize (init_name,
@@ -860,13 +1042,23 @@ assign_sortable_name (SnItem         *item,
 
     sortable_name = g_utf8_strdown (normalized, -1);
 
-    g_debug ("Sort name for %s is '%s'", g_dbus_proxy_get_name (G_DBUS_PROXY (item->sn_item_proxy)), sortable_name);
-    xapp_status_icon_set_name (status_icon, sortable_name);
-
-    item->sortable_name = sortable_name;
-
     g_free (init_name);
     g_free (normalized);
+
+    if (g_strcmp0 (sortable_name, item->sortable_name) == 0)
+    {
+        g_free (sortable_name);
+        return;
+    }
+
+    g_debug ("Sort name for %s is '%s'", g_dbus_proxy_get_name (G_DBUS_PROXY (item->sn_item_proxy)), sortable_name);
+    xapp_status_icon_set_name (item->status_icon, sortable_name);
+
+    old_sortable_name = item->sortable_name;
+    item->sortable_name = sortable_name;
+    g_free (old_sortable_name);
+
+    update_conditionals (item);
 }
 
 static void
@@ -904,15 +1096,10 @@ property_proxy_acquired (GObject      *source,
     g_signal_connect (item->status_icon, "scroll-event", G_CALLBACK (xapp_icon_scroll), item);
     g_signal_connect (item->status_icon, "state-changed", G_CALLBACK (xapp_icon_state_changed), item);
 
-    assign_sortable_name (item, item->status_icon);
+    assign_sortable_name (item, NULL);
+    update_conditionals (item);
 
-    item->should_activate = should_activate (item);
-    item->should_replace_tooltip = should_replace_tooltip (item);
-
-    update_status (item);
-    update_menu (item);
-    update_tooltip (item);
-    update_icon (item);
+    queue_update_properties (item, TRUE);
 }
 
 static void
@@ -942,8 +1129,3 @@ sn_item_new (GDBusProxy *sn_item_proxy,
     return item;
 }
 
-void
-sn_item_update_menus (SnItem *item)
-{
-    update_menu (item);
-}

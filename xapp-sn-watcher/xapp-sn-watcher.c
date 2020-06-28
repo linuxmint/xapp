@@ -314,6 +314,7 @@ sn_item_proxy_new_completed (GObject      *source,
     NewSnProxyData *data = (NewSnProxyData *) user_data;
     XAppSnWatcher *watcher = data->watcher;
     SnItem *item;
+    gpointer stolen_ptr;
     GError *error = NULL;
 
     SnItemInterface *proxy;
@@ -330,8 +331,13 @@ sn_item_proxy_new_completed (GObject      *source,
     item = sn_item_new ((GDBusProxy *) proxy,
                         g_str_has_prefix (data->path, APPINDICATOR_PATH_PREFIX));
 
+    g_hash_table_steal_extended (watcher->items,
+                                 data->key,
+                                 &stolen_ptr,
+                                 NULL);
+
     g_hash_table_insert (watcher->items,
-                         g_strdup (data->key),
+                         stolen_ptr,
                          item);
 
     update_published_items (watcher);
@@ -356,7 +362,6 @@ handle_register_item (SnWatcherInterface     *skeleton,
                       const gchar*            service,
                       XAppSnWatcher          *watcher)
 {
-    SnItem *item;
     GError *error;
     const gchar *sender;
     g_autofree gchar *key = NULL, *bus_name = NULL, *path = NULL;
@@ -373,13 +378,11 @@ handle_register_item (SnWatcherInterface     *skeleton,
         return FALSE;
     }
 
-    item = g_hash_table_lookup (watcher->items, key);
-
-    if (item == NULL)
+    if (!g_hash_table_contains (watcher->items, (const gchar *) key))
     {
         NewSnProxyData *data;
         error = NULL;
-        g_debug ("Key: '%s'", key);
+        // g_debug ("Key: '%s'", key);
 
         data = g_slice_new0 (NewSnProxyData);
         data->watcher = watcher;
@@ -389,6 +392,12 @@ handle_register_item (SnWatcherInterface     *skeleton,
         data->service = g_strdup (service);
         data->invocation = g_object_ref (invocation);
 
+        /* Save a place in the hash table, some programs re-register frequently,
+         * and we don't want the same app have two registrations here. */
+        g_hash_table_insert (watcher->items,
+                             g_strdup (key),
+                             NULL);
+
         sn_item_interface_proxy_new (watcher->connection,
                                      G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
                                      bus_name,
@@ -396,6 +405,11 @@ handle_register_item (SnWatcherInterface     *skeleton,
                                      NULL,
                                      sn_item_proxy_new_completed,
                                      data);
+    }
+    else
+    {
+        sn_watcher_interface_complete_register_status_notifier_item (watcher->skeleton,
+                                                                     invocation);
     }
 
     return TRUE;
@@ -449,20 +463,6 @@ on_interrupt (XAppSnWatcher *watcher)
 }
 
 static void
-update_item_menus (const gchar *key,
-                   gpointer     item,
-                   gpointer     user_data)
-{
-    sn_item_update_menus (SN_ITEM (item));
-}
-
-static void
-whitelist_changed (XAppSnWatcher *watcher)
-{
-    g_hash_table_foreach (watcher->items, (GHFunc) update_item_menus, NULL);
-}
-
-static void
 continue_startup (XAppSnWatcher *watcher)
 {
     g_debug ("Trying to acquire session bus connection");
@@ -490,10 +490,6 @@ watcher_startup (GApplication *application)
     G_APPLICATION_CLASS (xapp_sn_watcher_parent_class)->startup (application);
 
     xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
-    g_signal_connect_swapped (xapp_settings,
-                              "changed::" WHITELIST_KEY,
-                              G_CALLBACK (whitelist_changed),
-                              watcher);
 
     watcher->items = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, g_object_unref);

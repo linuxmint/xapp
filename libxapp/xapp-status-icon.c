@@ -1150,6 +1150,7 @@ xapp_status_icon_init (XAppStatusIcon *self)
     self->priv->name = g_strdup_printf("%s", g_get_application_name());
     self->priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
     self->priv->icon_size = FALLBACK_ICON_SIZE;
+    self->priv->icon_name = g_strdup (" ");
 
     g_debug ("XAppStatusIcon: init: application name: '%s'", self->priv->name);
 
