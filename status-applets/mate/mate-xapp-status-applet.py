@@ -56,6 +56,10 @@ def translate_applet_orientation_to_xapp(mate_applet_orientation):
         return Gtk.PositionType.LEFT
 
 class StatusWidget(Gtk.ToggleButton):
+    __gsignals__ = {
+        "re-sort": (GObject.SignalFlags.RUN_LAST, None, ())
+    }
+
     def __init__(self, icon, orientation, size):
         super(Gtk.ToggleButton, self).__init__()
         self.theme = Gtk.IconTheme.get_default()
@@ -108,6 +112,7 @@ class StatusWidget(Gtk.ToggleButton):
                 print("Could not read metadata: %s" % e)
 
         self.proxy.connect("notify::icon-name", self._on_icon_name_changed)
+        self.proxy.connect("notify::name", self._on_name_changed)
 
         self.in_widget = False
         self.plain_surface = None
@@ -126,6 +131,9 @@ class StatusWidget(Gtk.ToggleButton):
 
     def _on_icon_name_changed(self, proxy, gparamspec, data=None):
         self.update_icon()
+
+    def _on_name_changed(self, proxy, gparamspec, data=None):
+        self.emit("re-sort")
 
     def update_icon(self):
         string = self.proxy.props.icon_name
@@ -376,6 +384,7 @@ class MateXAppStatusApplet(object):
 
         self.indicators[name] = StatusWidget(proxy, self.applet.get_orient(), self.applet.get_size())
         self.indicator_box.add(self.indicators[name])
+        self.indicators[name].connect("re-sort", self.sort_icons)
 
         self.sort_icons()
 
@@ -383,6 +392,7 @@ class MateXAppStatusApplet(object):
         name = proxy.get_name()
 
         self.indicator_box.remove(self.indicators[name])
+        self.indicators[name].disconnect_by_func(self.sort_icons)
         del(self.indicators[name])
 
         self.sort_icons()
@@ -425,7 +435,7 @@ class MateXAppStatusApplet(object):
 
         self.indicator_box.queue_resize()
 
-    def sort_icons(self):
+    def sort_icons(self, status_widget=None):
         icon_list = list(self.indicators.values())
 
         # for i in icon_list:

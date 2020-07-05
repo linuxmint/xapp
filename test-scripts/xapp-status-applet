@@ -11,6 +11,9 @@ DBUS_NAME = "org.x.StatusIcon"
 DBUS_PATH = "/org/x/StatusIcon"
 
 class StatusWidget(Gtk.ToggleButton):
+    __gsignals__ = {
+        "re-sort": (GObject.SignalFlags.RUN_LAST, None, ())
+    }
 
     def __init__(self, icon):
         super(Gtk.ToggleButton, self).__init__()
@@ -42,6 +45,7 @@ class StatusWidget(Gtk.ToggleButton):
         self.proxy.bind_property("secondary-menu-is-open", self, "active", flags)
 
         self.proxy.connect("notify::icon-name", self.on_icon_name_changed)
+        self.proxy.connect("notify::name", self.on_name_changed)
 
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
@@ -51,6 +55,9 @@ class StatusWidget(Gtk.ToggleButton):
         string = self.proxy.props.icon_name
 
         self.set_icon(string)
+
+    def on_name_changed(self, proxy, gparamspec, data=None):
+        self.emit("re-sort")
 
     def set_icon(self, string):
         if string:
@@ -164,6 +171,7 @@ class StatusApplet(GObject.Object):
 
         self.indicators[name] = StatusWidget(proxy)
         self.indicator_box.add(self.indicators[name])
+        self.indicators[name].connect("re-sort", self.sort_icons)
 
         self.sort_icons()
 
@@ -171,6 +179,7 @@ class StatusApplet(GObject.Object):
         name = proxy.get_name()
 
         self.indicator_box.remove(self.indicators[name])
+        self.indicators[name].disconnect_by_func(self.sort_icons)
         del(self.indicators[name])
 
         self.sort_icons()
