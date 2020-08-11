@@ -18,3 +18,9 @@ option('status-notifier',
     value: true,
     description: 'Build the XApp StatusNotifier service.'
 )
+option('app-lib-only',
+    type: 'boolean',
+    value: false,
+    description: 'Limit build to core library only and without the keyboard layout controller. This is to allow flatpak bundlings.'
+)
+

@@ -11,8 +11,6 @@ dbus_services_dir = dependency('dbus-1').get_pkgconfig_variable('session_bus_ser
                                                                 define_variable: ['prefix', get_option('prefix')])
 libexec_path = join_paths(get_option('prefix'), get_option('libexecdir'), 'xapps', 'sn-watcher')
 
-
-
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', 'xapp')
 cdata.set_quoted('XAPP_SN_WATCHER_PATH', join_paths([libexec_path, 'xapp-sn-watcher']))
@@ -34,6 +32,8 @@ if not get_option('deprecated_warnings')
   )
 endif
 
+app_lib_only = get_option('app-lib-only')
+
 c = configure_file(output : 'config.h',
     configuration : cdata
 )
@@ -41,15 +41,18 @@ c = configure_file(output : 'config.h',
 top_inc = include_directories('.')
 codegen = find_program(join_paths(meson.source_root(), 'meson-scripts', 'g-codegen.py'))
 
-subdir('icons')
 subdir('libxapp')
 subdir('po')
-subdir('pygobject')
 subdir('schemas')
-subdir('status-applets')
-subdir('scripts')
+subdir('pygobject')
 
-if get_option('status-notifier')
+if not app_lib_only
+    subdir('icons')
+    subdir('status-applets')
+    subdir('scripts')
+endif
+
+if get_option('status-notifier') and not app_lib_only
     subdir('xapp-sn-watcher')
 endif
 

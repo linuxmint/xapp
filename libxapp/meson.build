@@ -6,14 +6,12 @@ libdeps += dependency('glib-2.0', version: glib_min_ver, required: true)
 libdeps += dependency('gtk+-3.0', version: '>=3.3.16', required: true)
 libdeps += dependency('gdk-pixbuf-2.0', version: '>=2.22.0', required: true)
 libdeps += dependency('cairo', required: true)
-libdeps += dependency('libgnomekbdui', required: true)
 libdeps += dependency('x11', required: true)
 
 xapp_headers = [
     'xapp-gtk-window.h',
     'xapp-icon-chooser-button.h',
     'xapp-icon-chooser-dialog.h',
-    'xapp-kbd-layout-controller.h',
     'xapp-monitor-blanker.h',
     'xapp-preferences-window.h',
     'xapp-stack-sidebar.h',
@@ -27,7 +25,6 @@ xapp_sources = [
     'xapp-gtk-window.c',
     'xapp-icon-chooser-button.c',
     'xapp-icon-chooser-dialog.c',
-    'xapp-kbd-layout-controller.c',
     'xapp-monitor-blanker.c',
     'xapp-preferences-window.c',
     'xapp-stack-sidebar.c',
@@ -35,6 +32,12 @@ xapp_sources = [
     'xapp-status-icon-monitor.c',
     'xapp-util.c'
 ]
+
+if not app_lib_only
+    libdeps += dependency('libgnomekbdui', required: true)
+    xapp_headers += 'xapp-kbd-layout-controller.h'
+    xapp_sources += 'xapp-kbd-layout-controller.c'
+endif
 
 dbus_headers = []
 

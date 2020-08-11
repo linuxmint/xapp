@@ -406,6 +406,8 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
         cairo_status_t status = CAIRO_STATUS_SUCCESS;
         status = cairo_surface_write_to_png (surface, save_filename);
 
+        g_debug ("Saving tmp image file for '%s' to '%s'", item->sortable_name, save_filename);
+
         if (status != CAIRO_STATUS_SUCCESS)
         {
             g_warning ("Failed to save png of status icon");
