@@ -1,3 +1,14 @@
+xapp (1.8.9) ulyana; urgency=medium
+
+  [ Michael Webster ]
+  * sn-watcher.c: Move invocation completion to the registration callback.
+  * sn-item.c: use a different method of fetching the pixmap.
+  * Make property-retrieval fully asynchronous.
+  * mate-xapp-status-applet.py: Adapt to change brought by 9c4d5e92d2eb288.
+  * build: Allow making a library-only build for flatpak packaging.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 14 Aug 2020 14:16:01 +0100
+
 xapp (1.8.8) ulyana; urgency=medium
 
   [ Michael Webster ]
