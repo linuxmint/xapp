@@ -21,9 +21,10 @@
 #define MONITOR_NAME "org.x.StatusIconMonitor"
 
 #define STATUS_ICON_MATCH "org.x.StatusIcon."
+#define STATUS_ICON_INTERFACE "org.x.StatusIcon"
 
-#define STATUS_ICON_ID_FORMAT "org.x.StatusIcon.PID-%d-%d"
-#define STATUS_ICON_PATH_PREFIX "/org/x/StatusIcon/"
+#define STATUS_ICON_PATH "/org/x/StatusIcon"
+#define STATUS_ICON_PATH_PREFIX STATUS_ICON_PATH "/"
 
 #define STATUS_NOTIFIER_WATCHER_NAME "org.x.StatusNotifierWatcher"
 #define WATCHER_MAX_RESTARTS 2
@@ -59,15 +60,10 @@ typedef struct
 {
     GDBusConnection *connection;
 
-    GHashTable *icons;
-    gchar *name;
+    GHashTable *object_managers;
 
     guint owner_id;
     guint listener_id;
-    guint sn_watcher_id;
-
-    guint sn_watcher_retry_count;
-
 } XAppStatusIconMonitorPrivate;
 
 struct _XAppStatusIconMonitor
@@ -77,132 +73,150 @@ struct _XAppStatusIconMonitor
 
 G_DEFINE_TYPE_WITH_PRIVATE (XAppStatusIconMonitor, xapp_status_icon_monitor, G_TYPE_OBJECT)
 
-static void remove_icon (XAppStatusIconMonitor *self, const gchar *name);
-
 static void
-on_proxy_name_owner_changed (GObject    *object,
-                             GParamSpec *pspec,
-                             gpointer    user_data)
+on_object_manager_name_owner_changed (GObject    *object,
+                                      GParamSpec *pspec,
+                                      gpointer    user_data)
 {
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
-
-    gchar *name_owner = NULL;
-    gchar *proxy_name = NULL;
+    XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
+    gchar *name, *owner;
 
     g_object_get (object,
-                  "g-name-owner", &name_owner,
-                  "g-name", &proxy_name,
+                  "name-owner", &owner,
+                  "name", &name,
                   NULL);
 
-    g_debug("XAppStatusIconMonitor: proxy name owner changed - name owner '%s' is now '%s')", proxy_name, name_owner);
+    g_debug("XAppStatusIconMonitor: app name owner changed - name '%s' is now %s)",
+            name, owner != NULL ? "owned" : "unowned");
 
-    if (name_owner == NULL)
+    if (owner == NULL)
     {
-        remove_icon (self, proxy_name);
+        g_hash_table_remove (priv->object_managers, name);
     }
 
-    g_free (name_owner);
-    g_free (proxy_name);
+    g_free (owner);
+    g_free (name);
 }
 
 static void
-remove_icon (XAppStatusIconMonitor *self,
-             const gchar           *name)
+object_manager_object_added (XAppObjectManagerClient *manager,
+                             GDBusObject             *object,
+                             gpointer                 user_data)
 {
-    XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
-    XAppStatusIconInterface *proxy;
+    XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
+    GDBusInterface *proxy;
 
-    proxy = g_hash_table_lookup (priv->icons, name);
+    proxy = g_dbus_object_get_interface (object, STATUS_ICON_INTERFACE);
 
-    if (proxy)
-    {
-        g_object_ref (proxy);
+    g_signal_emit (self, signals[ICON_ADDED], 0, XAPP_STATUS_ICON_INTERFACE_PROXY (proxy));
 
-        g_signal_handlers_disconnect_by_func (proxy,
-                                              on_proxy_name_owner_changed,
-                                              self);
-
-        if (g_hash_table_remove (priv->icons, name))
-        {
-            g_debug("XAppStatusIconMonitor: removing icon: '%s'", name);
-
-            g_signal_emit (self, signals[ICON_REMOVED], 0, proxy);
-        }
-        else
-        {
-            g_assert_not_reached ();
-        }
-
-        g_object_unref (proxy);
-    }
+    g_object_unref (proxy);
 }
 
 static void
-new_status_icon_proxy_complete (GObject      *object,
-                                GAsyncResult *res,
-                                gpointer      user_data)
+object_manager_object_removed (XAppObjectManagerClient *manager,
+                               GDBusObject             *object,
+                               gpointer                 user_data)
+{
+    XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
+    GDBusInterface *proxy;
+
+    proxy = g_dbus_object_get_interface (object, STATUS_ICON_INTERFACE);
+
+    g_signal_emit (self, signals[ICON_REMOVED], 0, XAPP_STATUS_ICON_INTERFACE_PROXY (proxy));
+
+    g_object_unref (proxy);
+}
+
+static void
+new_object_manager_created (GObject      *object,
+                            GAsyncResult *res,
+                            gpointer      user_data)
 {
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
-    XAppStatusIconInterface *proxy;
+    GDBusObjectManager *obj_mgr;
+    GList *objects = NULL, *iter;
+
     GError *error;
-    gchar *g_name;
+    gchar *name;
 
     error = NULL;
 
-    proxy = xapp_status_icon_interface_proxy_new_finish (res,
-                                                         &error);
+    obj_mgr = xapp_object_manager_client_new_finish (res,
+                                                     &error);
 
     if (error)
     {
-        g_warning ("Couldn't add status icon: %s", error->message);
+        g_warning ("Couldn't create object manager for bus name: %s", error->message);
         g_error_free (error);
         return;
     }
 
-    g_signal_connect_object (proxy,
-                             "notify::g-name-owner",
-                             G_CALLBACK (on_proxy_name_owner_changed),
-                             self,
-                             0);
+    g_object_get (obj_mgr, "name", &name, NULL);
 
-    g_object_get (proxy, "g-name", &g_name, NULL);
+    g_debug("XAppStatusIconMonitor: Object manager added for new bus name: '%s'", name);
 
-    g_hash_table_insert (priv->icons,
-                         g_name,
-                         proxy);
+    g_signal_connect (obj_mgr,
+                      "notify::name-owner",
+                      G_CALLBACK (on_object_manager_name_owner_changed),
+                      self);
 
-    g_signal_emit (self, signals[ICON_ADDED], 0, proxy);
+    g_signal_connect (obj_mgr,
+                      "object-added",
+                      G_CALLBACK (object_manager_object_added),
+                      self);
+
+    g_signal_connect (obj_mgr,
+                      "object-removed",
+                      G_CALLBACK (object_manager_object_removed),
+                      self);
+
+    g_hash_table_insert (priv->object_managers,
+                         name,
+                         obj_mgr);
+
+    objects = g_dbus_object_manager_get_objects (obj_mgr);
+
+    for (iter = objects; iter != NULL; iter = iter->next)
+    {
+        GDBusObject *object = G_DBUS_OBJECT (iter->data);
+        GDBusInterface *proxy = g_dbus_object_get_interface (object, STATUS_ICON_INTERFACE);
+
+        g_signal_emit (self, signals[ICON_ADDED], 0, proxy);
+
+        g_object_unref (proxy);
+    }
+
+    g_list_free_full (objects, g_object_unref);
 }
 
 static void
-add_icon (XAppStatusIconMonitor *self,
-          const gchar           *name)
+add_object_manager_for_name (XAppStatusIconMonitor *self,
+                             const gchar           *name)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
-    gchar *unique_path;
-    gint pid, id;
+    gchar **name_parts = NULL;
 
-    if (sscanf (name, STATUS_ICON_ID_FORMAT, &pid, &id) == 2)
+    name_parts = g_strsplit (name, ".", -1);
+
+    if (g_strv_length (name_parts) == 4)
     {
-        unique_path = g_strdup_printf (STATUS_ICON_PATH_PREFIX "%d", id);
-
-        g_debug("XAppStatusIconMonitor: adding icon: '%s' with path '%s'", name, unique_path);
-
-        xapp_status_icon_interface_proxy_new (priv->connection,
-                                              G_DBUS_PROXY_FLAGS_NONE,
-                                              name,
-                                              unique_path,
-                                              NULL,
-                                              new_status_icon_proxy_complete,
-                                              self);
-
-        g_free (unique_path);
+        xapp_object_manager_client_new (priv->connection,
+                                        G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START,
+                                        name,
+                                        STATUS_ICON_PATH,
+                                        NULL,
+                                        new_object_manager_created,
+                                        self);
     }
     else
     {
-        g_debug ("XAppStatusIconMonitor: adding icon failed, name '%s' is invalid", name);
+        g_debug ("XAppStatusIconMonitor: adding object manager failed, bus name '%s' is invalid", name);
     }
+
+    g_strfreev (name_parts);
 }
 
 static void
@@ -236,8 +250,8 @@ on_list_names_completed (GObject      *source,
         /* the '.' at the end so we don't catch ourselves in this */
         if (g_str_has_prefix (str, STATUS_ICON_MATCH))
         {
-            g_debug ("XAppStatusIconMonitor: found icon: %s", str);
-            add_icon (self, str);
+            g_debug ("XAppStatusIconMonitor: found new status icon app: %s", str);
+            add_object_manager_for_name (self, str);
         }
     }
 
@@ -250,8 +264,7 @@ find_and_add_icons (XAppStatusIconMonitor *self)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-
-    g_debug("XAppStatusIconMonitor: looking for status icons on the bus");
+    g_debug("XAppStatusIconMonitor: looking for status icon apps on the bus");
 
     /* If there are no monitors (applets) already running when this is set up,
      * this won't find anything.  The XAppStatusIcons will be in fallback mode,
@@ -290,42 +303,6 @@ add_sn_watcher (XAppStatusIconMonitor *self)
 }
 
 static void
-status_icon_name_appeared (XAppStatusIconMonitor *self,
-                           const gchar           *name,
-                           const gchar           *owner)
-{
-    XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
-
-    if (!g_str_has_prefix (name, STATUS_ICON_MATCH))
-    {
-        return;
-    }
-
-    if (g_hash_table_contains (priv->icons, name))
-    {
-        return;
-    }
-
-    g_debug ("XAppStatusIconMonitor: new icon appeared: %s", name);
-
-    add_icon (self, name);
-}
-
-static void
-status_icon_name_vanished (XAppStatusIconMonitor *self,
-                           const gchar           *name)
-{
-    if (!g_str_has_prefix (name, STATUS_ICON_MATCH))
-    {
-        return;
-    }
-
-    g_debug ("XAppStatusIconMonitor: icon presence vanished: %s", name);
-
-    remove_icon (self, name);
-}
-
-static void
 name_owner_changed (GDBusConnection *connection,
                     const gchar     *sender_name,
                     const gchar     *object_path,
@@ -344,24 +321,18 @@ name_owner_changed (GDBusConnection *connection,
 
     g_variant_get (parameters, "(&s&s&s)", &name, &old_owner, &new_owner);
 
-    if (old_owner[0] != '\0')
-    {
-        status_icon_name_vanished (self, name);
-    }
-
     if (new_owner[0] != '\0')
     {
-        status_icon_name_appeared (self, name, new_owner);
+        add_object_manager_for_name (self, name);
     }
 }
-
 
 static void
 add_name_listener (XAppStatusIconMonitor *self)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    g_debug ("XAppStatusIconMonitor: Adding NameOwnerChanged listener for status icons");
+    g_debug ("XAppStatusIconMonitor: Adding NameOwnerChanged listener for status icon apps");
 
     priv->listener_id = g_dbus_connection_signal_subscribe (priv->connection,
                                                             "org.freedesktop.DBus",
@@ -393,7 +364,7 @@ on_name_acquired (GDBusConnection *connection,
 {
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
 
-    g_debug ("XAppStatusIconMonitor: name acquired on dbus");
+    g_debug ("XAppStatusIconMonitor: Name owned on bus: %s", name);
 
     add_name_listener (self);
     find_and_add_icons (self);
@@ -408,7 +379,7 @@ on_bus_acquired (GDBusConnection *connection,
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    g_debug ("XAppStatusIconMonitor: session bus connection acquired");
+    g_debug ("XAppStatusIconMonitor: Connected to bus: %s", name);
 
     priv->connection = connection;
 }
@@ -417,17 +388,17 @@ static void
 connect_to_bus (XAppStatusIconMonitor *self)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
-
+    gchar *valid_app_name, *owned_name;
     static gint unique_id = 0;
 
-    char *owner_name = g_strdup_printf("%s.PID-%d-%d", MONITOR_NAME, getpid (), unique_id);
+    valid_app_name = g_strdelimit (g_strdup (g_get_application_name ()), ".-,=+~`/", '_');
+    owned_name = g_strdup_printf ("%s.%s_%d", MONITOR_NAME, valid_app_name, unique_id++);
+    g_free (valid_app_name);
 
-    unique_id++;
-
-    g_debug ("XAppStatusIconMonitor: Attempting to acquire presence on dbus as %s", owner_name);
+    g_debug ("XAppStatusIconMonitor: Attempting to own name on bus: %s", owned_name);
 
     priv->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                                     owner_name,
+                                     owned_name,
                                      G_DBUS_CONNECTION_FLAGS_NONE,
                                      on_bus_acquired,
                                      on_name_acquired,
@@ -435,7 +406,7 @@ connect_to_bus (XAppStatusIconMonitor *self)
                                      self,
                                      NULL);
 
-    g_free(owner_name);
+    g_free(owned_name);
 }
 
 static void
@@ -443,12 +414,8 @@ xapp_status_icon_monitor_init (XAppStatusIconMonitor *self)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    priv->name = g_strdup_printf("%s", g_get_application_name());
-
-    priv->icons = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                         g_free, g_object_unref);
-
-    priv->sn_watcher_retry_count = 0;
+    priv->object_managers = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                   g_free, g_object_unref);
 
     connect_to_bus (self);
 }
@@ -469,23 +436,20 @@ xapp_status_icon_monitor_dispose (GObject *object)
             priv->listener_id = 0;
         }
 
+        if (priv->object_managers != NULL)
+        {
+            g_hash_table_unref (priv->object_managers);
+            priv->object_managers = NULL;
+        }
+
         if (priv->owner_id > 0)
         {
             g_bus_unown_name(priv->owner_id);
             priv->owner_id = 0;
         }
 
-        if (priv->sn_watcher_id > 0)
-        {
-            g_bus_unwatch_name (priv->sn_watcher_id);
-            priv->sn_watcher_id = 0;
-        }
-
         g_clear_object (&priv->connection);
     }
-
-    g_free (priv->name);
-    g_clear_pointer (&priv->icons, g_hash_table_unref);
 
     G_OBJECT_CLASS (xapp_status_icon_monitor_parent_class)->dispose (object);
 }
@@ -539,6 +503,31 @@ xapp_status_icon_monitor_class_init (XAppStatusIconMonitorClass *klass)
                       G_TYPE_NONE, 1, XAPP_TYPE_STATUS_ICON_INTERFACE_PROXY);
 }
 
+static void
+gather_objects_foreach_func (gpointer key,
+                             gpointer value,
+                             gpointer user_data)
+{
+    GDBusObjectManager *obj_mgr = G_DBUS_OBJECT_MANAGER (value);
+    GList **ret = (GList **) user_data;
+
+    GList *objects = NULL, *iter;
+
+    objects = g_dbus_object_manager_get_objects (obj_mgr);
+
+    for (iter = objects; iter != NULL; iter = iter->next)
+    {
+        GDBusObject *object = G_DBUS_OBJECT (iter->data);
+        GDBusInterface *proxy = g_dbus_object_get_interface (object, STATUS_ICON_INTERFACE);
+
+        *ret = g_list_prepend (*ret, proxy);
+
+        g_object_unref (proxy);
+    }
+
+    g_list_free_full (objects, g_object_unref);
+}
+
 /**
  * xapp_status_icon_monitor_list_icons:
  * @monitor: a #XAppStatusIconMonitor
@@ -553,10 +542,15 @@ GList *
 xapp_status_icon_monitor_list_icons (XAppStatusIconMonitor *monitor)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON_MONITOR (monitor), NULL);
+    GList *ret = NULL;
 
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (monitor);
 
-    return g_hash_table_get_values (priv->icons);
+    g_hash_table_foreach (priv->object_managers,
+                          (GHFunc) gather_objects_foreach_func,
+                          &ret);
+
+    return ret;
 }
 
 /**

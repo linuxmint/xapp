@@ -20,7 +20,8 @@
 #define FDO_DBUS_NAME "org.freedesktop.DBus"
 #define FDO_DBUS_PATH "/org/freedesktop/DBus"
 
-#define ICON_PATH "/org/x/StatusIcon"
+#define ICON_BASE_PATH "/org/x/StatusIcon"
+#define ICON_SUB_PATH (ICON_BASE_PATH "/Icon")
 #define ICON_NAME "org.x.StatusIcon"
 
 #define STATUS_ICON_MONITOR_MATCH "org.x.StatusIconMonitor"
@@ -30,7 +31,9 @@
 #define MAX_SANE_ICON_SIZE 96
 #define FALLBACK_ICON_SIZE 24
 
-static gint unique_id = 0;
+static GDBusObjectManagerServer *obj_server = NULL;
+static GDBusConnection *bus_connection = NULL;
+static guint name_owner_id = 0;
 
 enum
 {
@@ -67,8 +70,8 @@ enum
  */
 typedef struct
 {
-    XAppStatusIconInterface *skeleton;
-    GDBusConnection *connection;
+    XAppStatusIconInterface *interface_skeleton;
+    XAppObjectSkeleton *object_skeleton;
 
     GCancellable *cancellable;
 
@@ -86,7 +89,6 @@ typedef struct
     gint icon_size;
     gchar *metadata;
 
-    guint owner_id;
     guint listener_id;
 
     gint fail_counter;
@@ -103,7 +105,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (XAppStatusIcon, xapp_status_icon, G_TYPE_OBJECT)
 
 static void refresh_icon        (XAppStatusIcon *self);
 static void use_gtk_status_icon (XAppStatusIcon *self);
-static void tear_down_dbus      (XAppStatusIcon *self);
+static void remove_icon_path_from_bus (XAppStatusIcon *self);
 
 static void
 cancellable_reset (XAppStatusIcon *self)
@@ -266,7 +268,7 @@ primary_menu_unmapped (GtkWidget  *widget,
 
     if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
     {
-        xapp_status_icon_interface_set_primary_menu_is_open (icon->priv->skeleton, FALSE);
+        xapp_status_icon_interface_set_primary_menu_is_open (icon->priv->interface_skeleton, FALSE);
     }
 
     g_signal_handlers_disconnect_by_func (widget, primary_menu_unmapped, icon);
@@ -283,7 +285,7 @@ secondary_menu_unmapped (GtkWidget  *widget,
 
     if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
     {
-        xapp_status_icon_interface_set_secondary_menu_is_open (icon->priv->skeleton, FALSE);
+        xapp_status_icon_interface_set_secondary_menu_is_open (icon->priv->interface_skeleton, FALSE);
     }
 
     g_signal_handlers_disconnect_by_func (widget, secondary_menu_unmapped, icon);
@@ -328,7 +330,7 @@ popup_menu (XAppStatusIcon *self,
     {
         if (self->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
         {
-            xapp_status_icon_interface_set_primary_menu_is_open (self->priv->skeleton, TRUE);
+            xapp_status_icon_interface_set_primary_menu_is_open (self->priv->interface_skeleton, TRUE);
         }
 
         g_signal_connect (gtk_widget_get_toplevel (GTK_WIDGET (menu)),
@@ -341,7 +343,7 @@ popup_menu (XAppStatusIcon *self,
     {
         if (self->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
         {
-            xapp_status_icon_interface_set_secondary_menu_is_open (self->priv->skeleton, TRUE);
+            xapp_status_icon_interface_set_secondary_menu_is_open (self->priv->interface_skeleton, TRUE);
         }
 
         g_signal_connect (gtk_widget_get_toplevel (GTK_WIDGET (menu)),
@@ -694,7 +696,7 @@ add_name_listener (XAppStatusIcon *self)
 {
     g_debug ("XAppStatusIcon: Adding NameOwnerChanged listener for status monitors");
 
-    self->priv->listener_id = g_dbus_connection_signal_subscribe (self->priv->connection,
+    self->priv->listener_id = g_dbus_connection_signal_subscribe (bus_connection,
                                                                   FDO_DBUS_NAME,
                                                                   FDO_DBUS_NAME,
                                                                   "NameOwnerChanged",
@@ -729,7 +731,7 @@ sync_skeleton (XAppStatusIcon *self)
 
     g_clear_object (&self->priv->gtk_status_icon);
 
-    g_object_set (G_OBJECT (priv->skeleton),
+    g_object_set (G_OBJECT (priv->interface_skeleton),
                   "name", priv->name,
                   "label", priv->label,
                   "icon-name", priv->icon_name,
@@ -738,7 +740,7 @@ sync_skeleton (XAppStatusIcon *self)
                   "metadata", priv->metadata,
                   NULL);
 
-    g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (priv->skeleton));
+    g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (priv->interface_skeleton));
 }
 
 static void
@@ -770,41 +772,68 @@ static SkeletonSignal skeleton_signals[] = {
     { "handle-scroll",                            handle_scroll_method }
 };
 
+static void
+obj_server_finalized (gpointer  data,
+                      GObject  *object)
+{
+    g_debug ("XAppStatusIcon: Final icon removed, clearing object manager and connection (%s)", g_get_application_name ());
+
+    if (name_owner_id > 0)
+    {
+        g_bus_unown_name(name_owner_id);
+        name_owner_id = 0;
+    }
+
+    obj_server = NULL;
+
+    g_clear_object (&bus_connection);
+}
+
+static void
+ensure_object_manager (XAppStatusIcon *self)
+{
+    if (obj_server == NULL)
+    {
+        g_debug ("XAppStatusIcon: New object manager for (%s)", g_get_application_name ());
+
+        obj_server = g_dbus_object_manager_server_new (ICON_BASE_PATH);
+        g_dbus_object_manager_server_set_connection (obj_server, bus_connection);
+        g_object_weak_ref (G_OBJECT (obj_server),(GWeakNotify) obj_server_finalized, self);
+    }
+    else
+    {
+        g_object_ref (obj_server);
+    }
+}
+
 static gboolean
 export_icon_interface (XAppStatusIcon *self)
 {
-    GError *error = NULL;
     gint i;
-    gchar *unique_path;
 
-    if (self->priv->skeleton) {
+    ensure_object_manager (self);
+
+    if (self->priv->interface_skeleton)
+    {
         return TRUE;
     }
 
-    self->priv->skeleton = xapp_status_icon_interface_skeleton_new ();
+    self->priv->object_skeleton = xapp_object_skeleton_new (ICON_SUB_PATH);
+    self->priv->interface_skeleton = xapp_status_icon_interface_skeleton_new ();
 
-    unique_path = g_strdup_printf (ICON_PATH "/%d", unique_id);
+    xapp_object_skeleton_set_status_icon_interface (self->priv->object_skeleton,
+                                                    self->priv->interface_skeleton);
 
-    g_debug ("XAppStatusIcon: exporting StatusIcon dbus interface to %s", unique_path);
+    g_dbus_object_manager_server_export_uniquely (obj_server,
+                                                  G_DBUS_OBJECT_SKELETON (self->priv->object_skeleton));
 
-    g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (self->priv->skeleton),
-                                      self->priv->connection,
-                                      unique_path,
-                                      &error);
-
-    g_free (unique_path);
-
-    if (error != NULL) {
-        g_critical ("XAppStatusIcon: could not export StatusIcon interface: %s", error->message);
-        g_error_free (error);
-
-        return FALSE;
-    }
+    g_object_unref (self->priv->object_skeleton);
+    g_object_unref (self->priv->interface_skeleton);
 
     for (i = 0; i < G_N_ELEMENTS (skeleton_signals); i++) {
             SkeletonSignal sig = skeleton_signals[i];
 
-            g_signal_connect (self->priv->skeleton,
+            g_signal_connect (self->priv->interface_skeleton,
                               sig.signal_name,
                               G_CALLBACK (sig.callback),
                               self);
@@ -816,20 +845,40 @@ export_icon_interface (XAppStatusIcon *self)
 static void
 connect_with_status_applet (XAppStatusIcon *self)
 {
+    gchar **name_parts = NULL;
+    gchar *owner_name;
 
-    char *owner_name = g_strdup_printf("%s.PID-%d-%d", ICON_NAME, getpid (), unique_id);
+    name_parts = g_strsplit (self->priv->name, ".", -1);
 
-    unique_id++;
+    if (g_dbus_is_name (self->priv->name) &&
+        g_str_has_prefix (self->priv->name, ICON_NAME) &&
+        g_strv_length (name_parts) == 4)
+    {
+        owner_name = g_strdup (self->priv->name);
+    }
+    else
+    {
+        gchar *valid_app_name = g_strdelimit (g_strdup (g_get_application_name ()), ".-,=+~`/", '_');
 
-    g_debug ("XAppStatusIcon: Attempting to acquire presence on dbus as %s", owner_name);
+        owner_name = g_strdup_printf ("%s.%s",
+                                      ICON_NAME,
+                                      valid_app_name);
+        g_free (valid_app_name);
+    }
 
-    self->priv->owner_id = g_bus_own_name_on_connection (self->priv->connection,
-                                                         owner_name,
-                                                         G_DBUS_CONNECTION_FLAGS_NONE,
-                                                         on_name_acquired,
-                                                         on_name_lost,
-                                                         self,
-                                                         NULL);
+    g_strfreev (name_parts);
+
+    if (name_owner_id == 0)
+    {
+        g_debug ("XAppStatusIcon: Attempting to own name on bus '%s'", owner_name);
+        name_owner_id = g_bus_own_name_on_connection (bus_connection,
+                                                      owner_name,
+                                                      G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE,
+                                                      on_name_acquired,
+                                                      on_name_lost,
+                                                      self,
+                                                      NULL);
+    }
 
     g_free(owner_name);
 }
@@ -896,7 +945,7 @@ use_gtk_status_icon (XAppStatusIcon *self)
 
     g_debug ("XAppStatusIcon: falling back to GtkStatusIcon");
 
-    tear_down_dbus (self);
+    remove_icon_path_from_bus (self);
 
     // Make sure there wasn't already one
     g_clear_object (&self->priv->gtk_status_icon);
@@ -971,9 +1020,8 @@ on_list_names_completed (GObject      *source,
 
     if (found && export_icon_interface (self))
     {
-        if (self->priv->owner_id > 0)
+        if (name_owner_id > 0)
         {
-            g_debug ("XAppStatusIcon: We already exist on the bus, syncing icon properties");
             sync_skeleton (self);
         }
         else
@@ -997,7 +1045,7 @@ look_for_status_applet (XAppStatusIcon *self)
 
     cancellable_reset (self);
 
-    g_dbus_connection_call (self->priv->connection,
+    g_dbus_connection_call (bus_connection,
                             FDO_DBUS_NAME,
                             FDO_DBUS_PATH,
                             FDO_DBUS_NAME,
@@ -1042,7 +1090,7 @@ on_session_bus_connected (GObject      *source,
 
     error = NULL;
 
-    self->priv->connection = g_bus_get_finish (res, &error);
+    bus_connection = g_bus_get_finish (res, &error);
 
     if (error != NULL)
     {
@@ -1065,7 +1113,7 @@ on_session_bus_connected (GObject      *source,
         return;
     }
 
-    if (self->priv->connection)
+    if (bus_connection)
     {
         complete_icon_setup (self);
         return;
@@ -1077,9 +1125,9 @@ on_session_bus_connected (GObject      *source,
 static void
 refresh_icon (XAppStatusIcon *self)
 {
-    if (!self->priv->connection)
+    if (!bus_connection)
     {
-        g_debug ("XAppStatusIcon: Trying to acquire session bus connection");
+        g_debug ("XAppStatusIcon: Connecting to session bus");
 
         cancellable_reset (self);
 
@@ -1148,6 +1196,7 @@ xapp_status_icon_init (XAppStatusIcon *self)
     self->priv = xapp_status_icon_get_instance_private (self);
 
     self->priv->name = g_strdup_printf("%s", g_get_application_name());
+
     self->priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
     self->priv->icon_size = FALLBACK_ICON_SIZE;
     self->priv->icon_name = g_strdup (" ");
@@ -1161,25 +1210,28 @@ xapp_status_icon_init (XAppStatusIcon *self)
 }
 
 static void
-tear_down_dbus (XAppStatusIcon *self)
+remove_icon_path_from_bus (XAppStatusIcon *self)
 {
     g_return_if_fail (XAPP_IS_STATUS_ICON (self));
 
-    if (self->priv->owner_id > 0)
+    if (self->priv->object_skeleton)
     {
-        g_debug ("XAppStatusIcon: removing dbus presence (%p)", self);
+        const gchar *path;
+        path = g_dbus_object_get_object_path (G_DBUS_OBJECT (self->priv->object_skeleton));
 
-        g_bus_unown_name(self->priv->owner_id);
-        self->priv->owner_id = 0;
-    }
+        g_debug ("XAppStatusIcon: removing interface at path '%s'", path);
 
-    if (self->priv->skeleton)
-    {
-        g_debug ("XAppStatusIcon: removing dbus interface (%p)", self);
+        g_dbus_object_manager_server_unexport (obj_server, path);
+        self->priv->interface_skeleton = NULL;
+        self->priv->object_skeleton = NULL;
 
-        g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (self->priv->skeleton));
-        g_object_unref (self->priv->skeleton);
-        self->priv->skeleton = NULL;
+        if (self->priv->listener_id > 0)
+        {
+            g_dbus_connection_signal_unsubscribe (bus_connection, self->priv->listener_id);
+            self->priv->listener_id = 0;
+        }
+
+        g_object_unref (obj_server);
     }
 }
 
@@ -1209,14 +1261,7 @@ xapp_status_icon_dispose (GObject *object)
         self->priv->gtk_status_icon = NULL;
     }
 
-    tear_down_dbus (self);
-
-    if (self->priv->listener_id > 0)
-    {
-        g_dbus_connection_signal_unsubscribe (self->priv->connection, self->priv->listener_id);
-    }
-
-    g_clear_object (&self->priv->connection);
+    remove_icon_path_from_bus (self);
 
     G_OBJECT_CLASS (xapp_status_icon_parent_class)->dispose (object);
 }
@@ -1430,14 +1475,20 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
         return;
     }
 
+    if (name == NULL || name[0] == '\0')
+    {
+        g_warning ("Can't set icon the name to null or empty string");
+        return;
+    }
+
     g_clear_pointer (&icon->priv->name, g_free);
     icon->priv->name = g_strdup (name);
 
     g_debug ("XAppStatusIcon set_name: %s", name);
 
-    if (icon->priv->skeleton)
+    if (icon->priv->interface_skeleton)
     {
-        xapp_status_icon_interface_set_name (icon->priv->skeleton, name);
+        xapp_status_icon_interface_set_name (icon->priv->interface_skeleton, name);
     }
 
     /* Call this directly instead of in the update_fallback_icon() function,
@@ -1474,9 +1525,9 @@ xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
 
     g_debug ("XAppStatusIcon set_icon_name: %s", icon_name);
 
-    if (icon->priv->skeleton)
+    if (icon->priv->interface_skeleton)
     {
-        xapp_status_icon_interface_set_icon_name (icon->priv->skeleton, icon_name);
+        xapp_status_icon_interface_set_icon_name (icon->priv->interface_skeleton, icon_name);
     }
 
     update_fallback_icon (icon);
@@ -1497,7 +1548,7 @@ xapp_status_icon_get_icon_size (XAppStatusIcon *icon)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), FALLBACK_ICON_SIZE);
 
-    if (icon->priv->skeleton == NULL)
+    if (icon->priv->interface_skeleton == NULL)
     {
         g_debug ("XAppStatusIcon get_icon_size: %d (fallback)", FALLBACK_ICON_SIZE);
 
@@ -1506,7 +1557,7 @@ xapp_status_icon_get_icon_size (XAppStatusIcon *icon)
 
     gint size;
 
-    size = xapp_status_icon_interface_get_icon_size (icon->priv->skeleton);
+    size = xapp_status_icon_interface_get_icon_size (icon->priv->interface_skeleton);
 
     g_debug ("XAppStatusIcon get_icon_size: %d", size);
 
@@ -1537,9 +1588,9 @@ xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_te
 
     g_debug ("XAppStatusIcon set_tooltip_text: %s", tooltip_text);
 
-    if (icon->priv->skeleton)
+    if (icon->priv->interface_skeleton)
     {
-        xapp_status_icon_interface_set_tooltip_text (icon->priv->skeleton, tooltip_text);
+        xapp_status_icon_interface_set_tooltip_text (icon->priv->interface_skeleton, tooltip_text);
     }
 
     update_fallback_icon (icon);
@@ -1569,9 +1620,9 @@ xapp_status_icon_set_label (XAppStatusIcon *icon, const gchar *label)
 
     g_debug ("XAppStatusIcon set_label: '%s'", label);
 
-    if (icon->priv->skeleton)
+    if (icon->priv->interface_skeleton)
     {
-        xapp_status_icon_interface_set_label (icon->priv->skeleton, label);
+        xapp_status_icon_interface_set_label (icon->priv->interface_skeleton, label);
     }
 }
 
@@ -1598,9 +1649,9 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
 
     g_debug ("XAppStatusIcon set_visible: %s", visible ? "TRUE" : "FALSE");
 
-    if (icon->priv->skeleton)
+    if (icon->priv->interface_skeleton)
     {
-        xapp_status_icon_interface_set_visible (icon->priv->skeleton, visible);
+        xapp_status_icon_interface_set_visible (icon->priv->interface_skeleton, visible);
     }
 
     update_fallback_icon (icon);
@@ -1835,9 +1886,9 @@ xapp_status_icon_set_metadata (XAppStatusIcon  *icon,
     icon->priv->metadata = g_strdup (metadata);
     g_free (old_meta);
 
-    if (icon->priv->skeleton)
+    if (icon->priv->interface_skeleton)
     {
-        xapp_status_icon_interface_set_metadata (icon->priv->skeleton, metadata);
+        xapp_status_icon_interface_set_metadata (icon->priv->interface_skeleton, metadata);
     }
 }
 
