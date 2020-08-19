@@ -47,6 +47,7 @@ typedef enum
 
 
 XAppStatusIcon *xapp_status_icon_new                (void);
+XAppStatusIcon *xapp_status_icon_new_with_name      (const gchar *name);
 void            xapp_status_icon_set_name           (XAppStatusIcon *icon, const gchar *name);
 void            xapp_status_icon_set_icon_name      (XAppStatusIcon *icon, const gchar *icon_name);
 gint            xapp_status_icon_get_icon_size      (XAppStatusIcon *icon);

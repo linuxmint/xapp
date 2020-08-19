@@ -167,7 +167,7 @@ class StatusApplet(GObject.Object):
         self.disco_button.set_label("Connect monitor")
 
     def on_icon_added(self, monitor, proxy):
-        name = proxy.get_name()
+        name = proxy.get_name() + proxy.get_object_path()
 
         self.indicators[name] = StatusWidget(proxy)
         self.indicator_box.add(self.indicators[name])
@@ -176,7 +176,7 @@ class StatusApplet(GObject.Object):
         self.sort_icons()
 
     def on_icon_removed(self, monitor, proxy):
-        name = proxy.get_name()
+        name = proxy.get_name() + proxy.get_object_path()
 
         self.indicator_box.remove(self.indicators[name])
         self.indicators[name].disconnect_by_func(self.sort_icons)

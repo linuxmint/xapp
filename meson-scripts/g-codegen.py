@@ -27,6 +27,7 @@ subprocess.call([
   '--interface-prefix=' + sys.argv[1],
   '--generate-c-code=' + os.path.join(sys.argv[4], sys.argv[2]),
   '--c-namespace=XApp',
+  '--c-generate-object-manager',
   '--annotate', sys.argv[1], 'org.gtk.GDBus.C.Name', sys.argv[3],
   sys.argv[5]
 ])
