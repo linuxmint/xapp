@@ -423,9 +423,9 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
 }
 
 static gchar *
-get_icon_filename_from_theme (SnItem      *item,
-                              const gchar *theme_path,
-                              const gchar *icon_name)
+get_name_or_path_from_theme (SnItem      *item,
+                             const gchar *theme_path,
+                             const gchar *icon_name)
 {
     GtkIconInfo *info;
     gchar *filename;
@@ -435,7 +435,7 @@ get_icon_filename_from_theme (SnItem      *item,
     array[0] = icon_name;
     array[1] = NULL;
 
-    // We have a theme path, but try the system theme first
+    // We may have a theme path, but try the system theme first
     GtkIconTheme *theme = gtk_icon_theme_get_default ();
     host_icon_size = get_icon_size (item);
 
@@ -445,7 +445,15 @@ get_icon_filename_from_theme (SnItem      *item,
                                                  lookup_ui_scale (),
                                                  GTK_ICON_LOOKUP_FORCE_SVG | GTK_ICON_LOOKUP_FORCE_SYMBOLIC);
 
-    if (info == NULL)
+    if (info != NULL)
+    {
+        // If the icon is found in the system theme, we can just pass along the icon name
+        // as is, this way symbolics work properly.
+        g_object_unref (info);
+        return g_strdup (icon_name);
+    }
+
+    if (theme_path != NULL)
     {
         // Make a temp theme based off of the provided path
         GtkIconTheme *theme = gtk_icon_theme_new ();
@@ -477,8 +485,10 @@ set_icon_name (SnItem      *item,
                const gchar *icon_theme_path,
                const gchar *icon_name)
 {
-    g_debug ("Checking for icon name for %s",
-             item->sortable_name);
+    g_debug ("Checking for icon name for %s - theme path: '%s', icon name: '%s'",
+             item->sortable_name,
+             icon_theme_path,
+             icon_name);
 
     if (icon_name == NULL)
     {
@@ -488,17 +498,16 @@ set_icon_name (SnItem      *item,
     if (g_path_is_absolute (icon_name))
     {
         xapp_status_icon_set_icon_name (item->status_icon, icon_name);
-
         return TRUE;
     }
     else
     {
-        gchar *filename = get_icon_filename_from_theme (item, icon_theme_path, icon_name);
+        gchar *used_name = get_name_or_path_from_theme (item, icon_theme_path, icon_name);
 
-        if (filename != NULL)
+        if (used_name != NULL)
         {
-            xapp_status_icon_set_icon_name (item->status_icon, filename);
-            g_free (filename);
+            xapp_status_icon_set_icon_name (item->status_icon, used_name);
+            g_free (used_name);
             return TRUE;
         }
     }
