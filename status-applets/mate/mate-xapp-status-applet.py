@@ -372,6 +372,13 @@ class MateXAppStatusApplet(object):
         self.monitor.connect("icon-added", self.on_icon_added)
         self.monitor.connect("icon-removed", self.on_icon_removed)
 
+    def make_key(self, proxy):
+        name = proxy.get_name()
+        path = proxy.get_object_path()
+
+        print("Key: %s" % (name+path))
+        return name + path
+
     def destroy_monitor (self):
         for key in self.indicators.keys():
             self.indicator_box.remove(self.indicators[key])
@@ -380,20 +387,20 @@ class MateXAppStatusApplet(object):
         self.indicators = {}
 
     def on_icon_added(self, monitor, proxy):
-        name = proxy.get_name()
+        key = self.make_key(proxy)
 
-        self.indicators[name] = StatusWidget(proxy, self.applet.get_orient(), self.applet.get_size())
-        self.indicator_box.add(self.indicators[name])
-        self.indicators[name].connect("re-sort", self.sort_icons)
+        self.indicators[key] = StatusWidget(proxy, self.applet.get_orient(), self.applet.get_size())
+        self.indicator_box.add(self.indicators[key])
+        self.indicators[key].connect("re-sort", self.sort_icons)
 
         self.sort_icons()
 
     def on_icon_removed(self, monitor, proxy):
-        name = proxy.get_name()
+        key = self.make_key(proxy)
 
-        self.indicator_box.remove(self.indicators[name])
-        self.indicators[name].disconnect_by_func(self.sort_icons)
-        del(self.indicators[name])
+        self.indicator_box.remove(self.indicators[key])
+        self.indicators[key].disconnect_by_func(self.sort_icons)
+        del(self.indicators[key])
 
         self.sort_icons()
 
