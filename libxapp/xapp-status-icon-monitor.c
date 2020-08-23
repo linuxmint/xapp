@@ -17,7 +17,6 @@
 #include "xapp-status-icon-monitor.h"
 #include "xapp-statusicon-interface.h"
 
-#define MONITOR_PATH "/org/x/StatusIconMonitor"
 #define MONITOR_NAME "org.x.StatusIconMonitor"
 
 #define STATUS_ICON_MATCH "org.x.StatusIcon."
@@ -26,7 +25,6 @@
 #define STATUS_ICON_PATH "/org/x/StatusIcon"
 #define STATUS_ICON_PATH_PREFIX STATUS_ICON_PATH "/"
 
-#define STATUS_NOTIFIER_WATCHER_NAME "org.x.StatusNotifierWatcher"
 #define WATCHER_MAX_RESTARTS 2
 
 enum
