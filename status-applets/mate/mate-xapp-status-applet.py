@@ -376,7 +376,7 @@ class MateXAppStatusApplet(object):
         name = proxy.get_name()
         path = proxy.get_object_path()
 
-        print("Key: %s" % (name+path))
+        # print("Key: %s" % (name+path))
         return name + path
 
     def destroy_monitor (self):
@@ -448,7 +448,7 @@ class MateXAppStatusApplet(object):
         # for i in icon_list:
         #     print("before: ", i.proxy.props.icon_name, i.proxy.props.name.lower())
 
-        icon_list.sort(key=lambda icon: icon.proxy.props.name.lower())
+        icon_list.sort(key=lambda icon: icon.proxy.props.name.replace("org.x.StatusIcon.", "").lower())
         icon_list.sort(key=lambda icon: icon.proxy.props.icon_name.lower().endswith("symbolic"))
 
         # for i in icon_list:

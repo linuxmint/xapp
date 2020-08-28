@@ -190,7 +190,7 @@ class StatusApplet(GObject.Object):
         # for i in icon_list:
         #     print("before: ", i.proxy.props.icon_name, i.proxy.props.name.lower())
 
-        icon_list.sort(key=lambda icon: icon.proxy.props.name.lower())
+        icon_list.sort(key=lambda icon: icon.proxy.props.name.replace("org.x.StatusIcon.", "").lower())
         icon_list.sort(key=lambda icon: icon.proxy.props.icon_name.lower().endswith("symbolic"))
 
         # for i in icon_list:
