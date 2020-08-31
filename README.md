@@ -6,7 +6,7 @@ A library available in C, Python and other languages (via Gobject Introspection)
 
 # API Reference
 
-https://projects.linuxmint.com/xapps/reference/index.html
+https://projects.linuxmint.com/xapp/reference/index.html
 
 # xapp-common
 
