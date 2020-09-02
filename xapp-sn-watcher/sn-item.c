@@ -393,6 +393,11 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
         {
             surface = new_props->attention_icon_surface;
         }
+        else
+        if (new_props->icon_surface)
+        {
+            surface = new_props->icon_surface;
+        }
     }
 
     if (surface != NULL)
@@ -521,7 +526,10 @@ set_icon_name_or_path (SnItem                 *item,
 {
     const gchar *name_to_use = NULL;
 
-    if (item->status == STATUS_ACTIVE)
+    // Set an icon here, even if we're passive (hidden) - eventually only the
+    // status property might change, but we wouldn't have an icon then (unless
+    // the app sets the icon at the same time).
+    if (item->status == STATUS_ACTIVE || item->status == STATUS_PASSIVE)
     {
         if (new_props->icon_name)
         {
@@ -726,7 +734,7 @@ get_all_properties_callback (GObject      *source_object,
     {
         if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         {
-            g_critical ("Could get propertyies for %s: %s\n",
+            g_critical ("Could not get properties for %s: %s\n",
                         g_dbus_proxy_get_name (item->sn_item_proxy),
                         error->message);
         }
