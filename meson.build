@@ -8,7 +8,7 @@ pkg = import('pkgconfig')
 i18n = import('i18n')
 
 dbus_services_dir = dependency('dbus-1').get_pkgconfig_variable('session_bus_services_dir',
-                                                                define_variable: ['prefix', get_option('prefix')])
+                                                                define_variable: ['datadir', get_option('datadir')])
 libexec_path = join_paths(get_option('prefix'), get_option('libexecdir'), 'xapps', 'sn-watcher')
 
 cdata = configuration_data()
