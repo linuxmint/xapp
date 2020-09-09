@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # Author: Weitian Leung <weitianleung@gmail.com>
-# Version: 2.0
+# Version: 2.1
 # License: GPL-3.0
 # Description: set a picture as xfce4 wallpaper
 
-wallpaper=$1
+# xfce4-desktop requires an absolute path.
+wallpaper="$(realpath "$1")"
 
 # check image
 mime_type=`file --mime-type -b "$wallpaper"`
