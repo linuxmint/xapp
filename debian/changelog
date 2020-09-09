@@ -1,3 +1,11 @@
+xapp (1.8.10) ulyana; urgency=medium
+
+  [ Michael Webster ]
+  * sn-item.c: Prefer an icon name from the system theme instead of always sending an icon path. This doesn't work for symbolic icons.
+  * sn-item.c: Always set an available icon, regardless of visibility state requested by an app.  The icon and visibility state aren't necessarily set at the same time.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 09 Sep 2020 10:39:34 +0100
+
 xapp (1.8.9) ulyana; urgency=medium
 
   [ Michael Webster ]
