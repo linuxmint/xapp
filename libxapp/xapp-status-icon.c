@@ -1158,6 +1158,15 @@ xapp_status_icon_set_property (GObject    *object,
             XAPP_STATUS_ICON (object)->priv->icon_size = CLAMP (g_value_get_int (value), 0, MAX_SANE_ICON_SIZE);
             break;
         case PROP_NAME:
+            {
+                const gchar *name = g_value_get_string (value);
+                // Can't be null. We set to g_get_application_name() by default.
+                if (name == NULL || name[0] == '\0')
+                {
+                    break;
+                }
+            }
+
             xapp_status_icon_set_name (XAPP_STATUS_ICON (object), g_value_get_string (value));
             break;
         default:
@@ -1500,6 +1509,9 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
 
     if (name == NULL || name[0] == '\0')
     {
+        // name can't be null. We set to g_get_application_name() at startup,
+        // and the set_property handler silently ignores nulls, but if this
+        // is explicit, warn about it.
         g_warning ("Can't set icon the name to null or empty string");
         return;
     }
