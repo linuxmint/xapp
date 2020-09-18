@@ -905,7 +905,7 @@ get_all_properties_callback (GObject      *source_object,
         update_menu (item, new_props);
     }
 
-    if (new_props->update_icon)
+    if (new_props->update_icon || new_props->update_status)
     {
         update_icon (item, new_props);
     }
