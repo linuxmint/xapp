@@ -308,6 +308,18 @@ typedef struct
 } NewSnProxyData;
 
 static void
+free_sn_proxy_data (NewSnProxyData *data)
+{
+    g_free (data->key);
+    g_free (data->path);
+    g_free (data->bus_name);
+    g_free (data->service);
+    g_object_unref (data->invocation);
+
+    g_slice_free (NewSnProxyData, data);
+}
+
+static void
 sn_item_proxy_new_completed (GObject      *source,
                              GAsyncResult *res,
                              gpointer      user_data)
@@ -322,6 +334,24 @@ sn_item_proxy_new_completed (GObject      *source,
 
     proxy = sn_item_interface_proxy_new_finish (res, &error);
 
+    g_hash_table_steal_extended (watcher->items,
+                                 data->key,
+                                 &stolen_ptr,
+                                 NULL);
+
+    if ((gchar *) stolen_ptr == NULL)
+    {
+        g_dbus_method_invocation_return_error (data->invocation,
+                                               G_DBUS_ERROR,
+                                               G_DBUS_ERROR_FAILED,
+                                               "New StatusNotifierItem disappeared before "
+                                               "its registration was complete.");
+
+        free_sn_proxy_data (data);
+        g_clear_object (&proxy);
+        return;
+    }
+
     if (error != NULL)
     {
         if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
@@ -330,11 +360,8 @@ sn_item_proxy_new_completed (GObject      *source,
                      data->bus_name, error->message);
         }
 
-        g_hash_table_steal_extended (watcher->items,
-                                     data->key,
-                                     &stolen_ptr,
-                                     NULL);
         g_free (stolen_ptr);
+        free_sn_proxy_data (data);
 
         g_dbus_method_invocation_take_error (data->invocation, error);
         return;
@@ -342,11 +369,6 @@ sn_item_proxy_new_completed (GObject      *source,
 
     item = sn_item_new ((GDBusProxy *) proxy,
                         g_str_has_prefix (data->path, APPINDICATOR_PATH_PREFIX));
-
-    g_hash_table_steal_extended (watcher->items,
-                                 data->key,
-                                 &stolen_ptr,
-                                 NULL);
 
     g_hash_table_insert (watcher->items,
                          stolen_ptr,
@@ -360,12 +382,7 @@ sn_item_proxy_new_completed (GObject      *source,
     sn_watcher_interface_complete_register_status_notifier_item (watcher->skeleton,
                                                                  data->invocation);
 
-    g_free (data->key);
-    g_free (data->path);
-    g_free (data->bus_name);
-    g_free (data->service);
-    g_object_unref (data->invocation);
-    g_slice_free (NewSnProxyData, data);
+    free_sn_proxy_data (data);
 }
 
 static gboolean
@@ -494,6 +511,26 @@ continue_startup (XAppSnWatcher *watcher)
 }
 
 static void
+unref_proxy (gpointer data)
+{
+    // if g_hash_table_remove is called from handle_sn_item_name_owner_lost
+    // *before* sn_item_proxy_new_completed is complete, the key will be
+    // pointing to a NULL value, so avoid trying to free it.
+
+    if (data == NULL)
+    {
+        return;
+    }
+
+    SnItem *item = SN_ITEM (data);
+
+    if (item)
+    {
+        g_object_unref (item);
+    }
+}
+
+static void
 watcher_startup (GApplication *application)
 {
     XAppSnWatcher *watcher = (XAppSnWatcher*) application;
@@ -504,7 +541,7 @@ watcher_startup (GApplication *application)
     xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
 
     watcher->items = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                            g_free, g_object_unref);
+                                            g_free, (GDestroyNotify) unref_proxy);
 
     /* This buys us 30 seconds (gapp timeout) - we'll either be re-held immediately
      * because there's a monitor or exit after the 30 seconds. */
