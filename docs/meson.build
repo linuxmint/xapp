@@ -11,4 +11,5 @@ gnome.gtkdoc('libxapp',
     main_xml: 'xapp-docs.xml',
     scan_args: ['--rebuild-types'],
     mkdb_args: ['--xml-mode', '--output-format=xml'],
+    ignore_headers: ['favorite-vfs-file.h', 'favorite-vfs-file-enumerator.h', 'favorite-vfs-file-monitor.h']
 )

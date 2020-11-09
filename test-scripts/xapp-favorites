@@ -1,0 +1,159 @@
+#!/usr/bin/python3
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('XApp', '1.0')
+from gi.repository import Gio, GLib, GObject, Gtk, XApp, Pango
+import sys
+import signal
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+
+DBUS_NAME = "org.x.StatusIcon"
+DBUS_PATH = "/org/x/StatusIcon"
+
+class ListItem(Gtk.ListBoxRow):
+    def __init__(self, favinfo, mgr):
+        super(Gtk.ListBoxRow, self).__init__()
+        self.favinfo = favinfo
+        self.mgr = mgr
+
+        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.add(self.box)
+
+        label = Gtk.Label(label=self.favinfo.display_name, xalign=0)
+        self.box.pack_start(label, False, False, 6)
+
+        delete = Gtk.Button.new_from_icon_name("edit-delete-symbolic", Gtk.IconSize.BUTTON)
+        delete.set_relief(Gtk.ReliefStyle.NONE)
+        self.box.pack_end(delete, False, False, 6)
+        delete.connect("clicked", self.on_delete_clicked)
+
+        self.show_all()
+
+    def on_delete_clicked(self, widget, data=None):
+        self.mgr.remove(self.favinfo.uri)
+
+class FavoriteList(GObject.Object):
+
+    def __init__(self):
+        super(FavoriteList, self).__init__()
+        self.window = None
+        self.manager = XApp.Favorites.get_default()
+        self.manager.connect("changed", self.on_manager_changed)
+
+        self.window = Gtk.Window()
+        self.window.set_default_size(600, 400)
+        self.window.connect("destroy", self.on_window_destroy)
+        self.window_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL,
+                                margin=6,
+                                spacing=0)
+
+        bar = Gtk.MenuBar()
+        menu_item = Gtk.MenuItem.new_with_label("Favorites")
+        favorites = self.manager.create_menu(None, self.favorite_menu_item_activated)
+        menu_item.set_submenu(favorites)
+        bar.append(menu_item)
+
+        self.window_box.pack_start(bar, False, False, 0)
+        self.window_box.pack_start(self.main_box, True, True, 0)
+
+        # list stuff
+        sw_frame = Gtk.Frame()
+        sw = Gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
+        sw_frame.add(sw)
+
+        self.list_box = Gtk.ListBox(activate_on_single_click=False)
+        self.list_box.connect("selected-rows-changed", self.on_selection_changed)
+        self.list_box.connect("row-activated", self.on_row_activated)
+        sw.add(self.list_box)
+
+        self.main_box.pack_start(sw_frame, True, True, 6)
+        self.window.add(self.window_box)
+
+        # controls
+
+        control_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.add_button = Gtk.Button.new_from_icon_name("list-add-symbolic", Gtk.IconSize.BUTTON)
+        self.add_button.connect("clicked", self.on_add_clicked)
+
+        control_box.pack_start(self.add_button, False, False, 6)
+
+        self.main_box.pack_start(control_box, False, False, 6)
+
+        self.window.show_all()
+
+        self.selected_uri = None
+        self.loading = False
+
+        self.load_favorites()
+
+    def favorite_menu_item_activated(self, manager, uri, data=None):
+        print("activated", uri)
+        self.manager.launch(uri, Gtk.get_current_event_time())
+
+    def load_favorites(self):
+        self.loading = True # this will preserve the last selection
+
+        for child in self.list_box.get_children():
+            self.list_box.remove(child)
+
+        previously_selected = None
+
+        favorites = self.manager.get_favorites(None)
+
+        for info in favorites:
+            row = ListItem(info, self.manager)
+
+            self.list_box.insert(row, -1)
+
+            if self.selected_uri == info.uri:
+                previously_selected = row
+
+        self.loading = False
+
+        if previously_selected:
+            self.list_box.select_row(previously_selected)
+
+    def on_row_activated(self, box, row, data=None):
+        self.manager.launch(row.favinfo.uri, Gtk.get_current_event_time())
+
+    def on_selection_changed(self, box, data=None):
+        if self.loading:
+            return
+
+        row = self.list_box.get_selected_row()
+
+        if row:
+            self.selected_uri = row.favinfo.uri
+        else:
+            self.selected_uri = None
+
+    def on_add_clicked(self, widget, data=None):
+        dialog = Gtk.FileChooserDialog(title="Add file to favorites",
+                                       parent=self.window,
+                                       action=Gtk.FileChooserAction.OPEN)
+
+        dialog.add_buttons("Add", Gtk.ResponseType.OK,
+                           "Cancel", Gtk.ResponseType.CANCEL)
+
+        # dialog.add_shortcut_folder_uri ("favorites:///")
+
+        res = dialog.run()
+        if res == Gtk.ResponseType.OK:
+            uri = dialog.get_uri()
+
+            self.manager.add(uri)
+
+        dialog.destroy()
+
+    def on_manager_changed(self, manager, data=None):
+        self.load_favorites()
+
+    def on_window_destroy(self, widget, data=None):
+        Gtk.main_quit()
+
+if __name__ == '__main__':
+    test = FavoriteList()
+    Gtk.main()

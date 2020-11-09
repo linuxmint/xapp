@@ -1,14 +1,25 @@
 glib_min_ver = '>=2.37.3'
 
+gio_dep = dependency('gio-2.0', version: glib_min_ver, required: true)
+glib_dep = dependency('glib-2.0', version: glib_min_ver, required: true)
+gtk3_dep = dependency('gtk+-3.0', version: '>=3.3.16', required: true)
+
 libdeps = []
-libdeps += dependency('gio-2.0', version: glib_min_ver, required: true)
-libdeps += dependency('glib-2.0', version: glib_min_ver, required: true)
-libdeps += dependency('gtk+-3.0', version: '>=3.3.16', required: true)
+libdeps += gio_dep
+libdeps += glib_dep
+libdeps += gtk3_dep
 libdeps += dependency('gdk-pixbuf-2.0', version: '>=2.22.0', required: true)
 libdeps += dependency('cairo', required: true)
 libdeps += dependency('x11', required: true)
 
+favorite_vfs_sources = [
+  'favorite-vfs-file.c',
+  'favorite-vfs-file-enumerator.c',
+  'favorite-vfs-file-monitor.c'
+]
+
 xapp_headers = [
+    'xapp-favorites.h',
     'xapp-gtk-window.h',
     'xapp-icon-chooser-button.h',
     'xapp-icon-chooser-dialog.h',
@@ -21,6 +32,7 @@ xapp_headers = [
 ]
 
 xapp_sources = [
+    'xapp-favorites.c',
     'xapp-glade-catalog.c',
     'xapp-gtk-window.c',
     'xapp-icon-chooser-button.c',
@@ -83,7 +95,7 @@ xapp_enums = gnome.mkenums('xapp-enums',
 )
 
 libxapp = library('xapp',
-    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers,
+    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers + favorite_vfs_sources,
     include_directories: [top_inc],
     version: meson.project_version(),
     soversion: '1',
@@ -133,4 +145,12 @@ gnome.generate_vapi('xapp',
     sources: gir[0],
     metadata_dirs: meson.current_source_dir(),
     install: true
+)
+
+gtk3_module = shared_module(
+    'xapp-gtk3-module', ['xapp-gtk3-module.c'],
+    include_directories: [top_inc],
+    dependencies: [gtk3_dep, libxapp_dep],
+    install: true,
+    install_dir: join_paths(gtk3_dep.get_pkgconfig_variable('libdir'),'gtk-3.0','modules')
 )

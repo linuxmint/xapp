@@ -16,6 +16,7 @@
 
   <chapter>
     <title>API reference</title>
+    <xi:include href="xml/xapp-favorites.xml"/>
     <xi:include href="xml/xapp-gtk-window.xml"/>
     <xi:include href="xml/xapp-icon-chooser-button.xml"/>
     <xi:include href="xml/xapp-icon-chooser-dialog.xml"/>

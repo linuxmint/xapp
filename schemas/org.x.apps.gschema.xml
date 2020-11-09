@@ -2,6 +2,18 @@
 <schemalist>
   <schema id="org.x.apps" path="/org/x/apps/">
     <child name="status-icon" schema="org.x.apps.statusicon"/>
+    <child name="favorites" schema="org.x.apps.favorites"/>
+  </schema>
+
+  <schema id="org.x.apps.favorites" path="/org/x/apps/favorites/" gettext-domain="xapps">
+    <key name="list" type="as">
+      <default>[]</default>
+      <summary>List of favorites, stored in display order, with the format of uri::mimetype</summary>
+    </key>
+    <key name="root-metadata" type="as">
+      <default>[]</default>
+      <summary>List of gvfs metadata for the favorites:/// root (for remembering sort order in nemo, etc).</summary>
+    </key>
   </schema>
 
   <schema id="org.x.apps.statusicon" path="/org/x/apps/statusicon/">

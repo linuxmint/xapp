@@ -1,0 +1,9 @@
+# This file is sourced by Xsession(5), not executed.
+
+if [ -z "$GTK_MODULES" ] ; then
+    GTK_MODULES="xapp-gtk3-module"
+else
+    GTK_MODULES="$GTK_MODULES:xapp-gtk3-module"
+fi
+
+export GTK_MODULES

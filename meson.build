@@ -50,6 +50,7 @@ if not app_lib_only
     subdir('icons')
     subdir('status-applets')
     subdir('scripts')
+    subdir('data')
 endif
 
 if get_option('status-notifier') and not app_lib_only
