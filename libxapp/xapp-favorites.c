@@ -1046,6 +1046,28 @@ xapp_favorites_launch (XAppFavorites *favorites,
     g_object_unref (launch_context);
 }
 
+/**
+ * xapp_favorites_rename:
+ * @old_uri: the old favorite's uri.
+ * @new_uri: The new uri.
+ *
+ * Removes old_uri and adds new_uri. This is mainly for file managers to use as
+ * a convenience instead of add/remove, and guarantees the result, without having to
+ * worry about multiple dbus calls (gsettings).
+ *
+ * Since: 2.0
+ */
+void
+xapp_favorites_rename (XAppFavorites *favorites,
+                       const gchar   *old_uri,
+                       const gchar   *new_uri)
+{
+    g_return_if_fail (XAPP_IS_FAVORITES (favorites));
+    g_return_if_fail (old_uri != NULL && new_uri != NULL);
+
+    rename_favorite (favorites, old_uri, new_uri);
+}
+
 typedef struct {
     XAppFavorites *favorites;
     guint update_id;
@@ -1328,17 +1350,4 @@ _xapp_favorites_get_display_names (XAppFavorites *favorites)
     ret = g_list_reverse (ret);
     return ret;
 }
-
-/* private for favorite-vfs-file-monitor */
-void
-_xapp_favorites_rename (XAppFavorites *favorites,
-                       const gchar   *old_uri,
-                       const gchar   *new_uri)
-{
-    g_return_if_fail (XAPP_IS_FAVORITES (favorites));
-    g_return_if_fail (old_uri != NULL && new_uri != NULL);
-
-    rename_favorite (favorites, old_uri, new_uri);
-}
-/* private */
 

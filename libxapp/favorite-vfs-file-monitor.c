@@ -22,9 +22,6 @@ G_DEFINE_TYPE_WITH_PRIVATE(FavoriteVfsFileMonitor, \
                            G_TYPE_FILE_MONITOR)
 
 GFile *_favorite_vfs_file_new_for_info (XAppFavoriteInfo *info);
-void _xapp_favorites_rename (XAppFavorites *favorites,
-                             const gchar   *old_uri,
-                             const gchar   *new_uri);
 
 // static void
 // rename_favorite (GFile *old_file,

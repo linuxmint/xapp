@@ -30,6 +30,9 @@ void                  xapp_favorites_remove                 (XAppFavorites *favo
 void                  xapp_favorites_launch                 (XAppFavorites *favorites,
                                                              const gchar   *uri,
                                                              guint32        timestamp);
+void                  xapp_favorites_rename                 (XAppFavorites *favorites,
+                                                             const gchar   *old_uri,
+                                                             const gchar   *new_uri);
 
 /**
  * XAppFavoriteInfo:
