@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 
 #include "xapp-favorites.h"
+#include "favorite-vfs-file.h"
 
 /* Gtk module justification:
  *
@@ -67,6 +68,11 @@ add_chooser_hook (GType type)
 }
 
 G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
+    // This won't instantiate XAppFavorites but will register the uri so
+    // it can be used by apps (like pix which doesn't use the favorites api,
+    // but just adds favorites:/// to its sidebar.)
+    init_favorite_vfs ();
+
     add_chooser_hook (GTK_TYPE_FILE_CHOOSER_WIDGET);
     add_chooser_hook (GTK_TYPE_FILE_CHOOSER_DIALOG);
     add_chooser_hook (GTK_TYPE_FILE_CHOOSER_BUTTON);

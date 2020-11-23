@@ -708,8 +708,6 @@ xapp_favorites_init (XAppFavorites *favorites)
 
     g_debug ("XAppFavorites: init:");
 
-    init_favorite_vfs ();
-
     priv->settings = g_settings_new (FAVORITES_SCHEMA);
     priv->settings_listener_id = g_signal_connect (priv->settings,
                                                    "changed::" FAVORITES_KEY,
