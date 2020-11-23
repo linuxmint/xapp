@@ -1240,6 +1240,7 @@ xapp_favorites_create_menu (XAppFavorites                      *favorites,
     DestroyData *dd = g_slice_new0 (DestroyData);
     dd->destroy_func = func;
     dd->user_data = user_data;
+    dd->favorites = favorites;
     dd->update_id = g_signal_connect (favorites,
                                       "changed",
                                       G_CALLBACK (refresh_menu_items),
