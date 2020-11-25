@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppStackSidebar.html" title="XAppStackSidebar">
 <link rel="next" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -38,8 +38,8 @@
 <a name="XAppStatusIcon.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
 </colgroup>
 <tbody>
 <tr>
@@ -48,6 +48,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="XAppStatusIcon.html#xapp-status-icon-new" title="xapp_status_icon_new ()">xapp_status_icon_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="returnvalue">XAppStatusIcon</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppStatusIcon.html#xapp-status-icon-new-with-name" title="xapp_status_icon_new_with_name ()">xapp_status_icon_new_with_name</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -156,6 +164,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppStatusIcon.html#xapp-status-icon-set-metadata" title="xapp_status_icon_set_metadata ()">xapp_status_icon_set_metadata</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
@@ -181,6 +197,12 @@
 </tr>
 <tr>
 <td class="property_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon--name" title="The “name” property">name</a></td>
+<td class="property_flags">Read / Write / Construct</td>
+</tr>
+<tr>
+<td class="property_type">
 <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</td>
 <td class="property_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon--primary-menu" title="The “primary-menu” property">primary-menu</a></td>
 <td class="property_flags">Read / Write</td>
@@ -198,9 +220,9 @@
 <a name="XAppStatusIcon.signals"></a><h2>Signals</h2>
 <div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
-<col width="150px" class="signals_return">
-<col width="300px" class="signals_name">
-<col width="200px" class="signals_flags">
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
 </colgroup>
 <tbody>
 <tr>
@@ -235,8 +257,8 @@
 <a name="XAppStatusIcon.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="name">
-<col class="description">
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
 </colgroup>
 <tbody>
 <tr>
@@ -284,6 +306,19 @@ xapp_status_icon_new (<em class="parameter"><code><span class="type">void</span>
 <p>Creates a new <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> instance</p>
 <div class="refsect3">
 <a name="xapp-status-icon-new.returns"></a><h4>Returns</h4>
+<p>a new <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>. Use g_object_unref when finished. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-status-icon-new-with-name"></a><h3>xapp_status_icon_new_with_name ()</h3>
+<pre class="programlisting"><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="returnvalue">XAppStatusIcon</span></a> *
+xapp_status_icon_new_with_name (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
+<p>Creates a new <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> instance and sets its name to <code class="literal">name</code>.</p>
+<div class="refsect3">
+<a name="xapp-status-icon-new-with-name.returns"></a><h4>Returns</h4>
 <p>a new <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>. Use g_object_unref when finished. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -714,6 +749,39 @@ or not being displayed at all.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xapp-status-icon-set-metadata"></a><h3>xapp_status_icon_set_metadata ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_status_icon_set_metadata (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *metadata</code></em>);</pre>
+<p>Sets metadata to pass to the icon proxy for an applet's use. Right now this is only so
+xapp-sn-watcher can tell the applets when the icon is originating from appindicator so panel
+button 'highlighting' can behave correctly.</p>
+<div class="refsect3">
+<a name="xapp-status-icon-set-metadata.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>icon</p></td>
+<td class="parameter_description"><p>an <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>metadata</p></td>
+<td class="parameter_description"><p>A json-formatted string of key:values. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.8.7</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xapp-status-icon-any-monitors"></a><h3>xapp_status_icon_any_monitors ()</h3>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 xapp_status_icon_any_monitors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -833,9 +901,25 @@ of some calculation based on the panel size.  It can be used by the client to si
 an icon to be saved as a file and its path sent to the host.</p>
 <p>If this value is 0 it has not been set, and its value can be unreliable if the host
 has multiple <a href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-struct"><span class="type">XAppStatusIconMonitors</span></a> active.</p>
+<p>Owner: XAppStatusIcon</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: [0,96]</p>
 <p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XAppStatusIcon--name"></a><h3>The <code class="literal">“name”</code> property</h3>
+<pre class="programlisting">  “name”                     <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>The name of the icon for sorting purposes. If this is in the form of 'org.x.StatusIcon.foo`
+and set immediately upon creation of the icon, it will also attempt to own this dbus name;
+this can be useful in sandboxed environments where a well-defined name is required. If
+
+additional icons are created, only the name given to the initial one will be used for dbus,
+though different names can still affect the sort order. This is set to the value of
+<a href="../glib/glib-Miscellaneous-Utility-Functions.html#g-get-application-name"><code class="function">g_get_application_name()</code></a> if no other name is provided.</p>
+<p>Owner: XAppStatusIcon</p>
+<p>Flags: Read / Write / Construct</p>
+<p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -853,6 +937,7 @@ As a result, it is not necessary to maintain a reference to it in the parent
 application (or unref it when finished with it - if you wish to replace the menu,
 simply call this method again with a new menu.</p>
 <p>The same <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> widget can be set as both the primary and secondary.</p>
+<p>Owner: XAppStatusIcon</p>
 <p>Flags: Read / Write</p>
 </div>
 <hr>
@@ -871,6 +956,7 @@ As a result, it is not necessary to maintain a reference to it in the parent
 application (or unref it when finished with it - if you wish to replace the menu,
 simply call this method again with a new menu.</p>
 <p>The same <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> widget can be set as both the primary and secondary.</p>
+<p>Owner: XAppStatusIcon</p>
 <p>Flags: Read / Write</p>
 </div>
 </div>
@@ -1136,6 +1222,6 @@ connect to this - see <a class="link" href="XAppStatusIcon.html#XAppStatusIconSt
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.32</div>
 </body>
 </html>

@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="XApp Reference Manual">
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppStatusIcon.html" title="XAppStatusIcon">
-<link rel="next" href="XAppStatusIconInterfaceSkeleton.html" title="XAppStatusIconInterfaceSkeleton">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<link rel="next" href="XAppObjectManagerClient.html" title="XAppObjectManagerClient">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,7 +22,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="XAppStatusIcon.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="XAppStatusIconInterfaceSkeleton.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="XAppObjectManagerClient.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="XAppStatusIconMonitor"></a><div class="titlepage"></div>
@@ -38,8 +38,8 @@ info to an applet to represent the icons.</p>
 <a name="XAppStatusIconMonitor.functions"></a><h2>Functions</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="functions_return">
-<col class="functions_name">
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
 </colgroup>
 <tbody>
 <tr>
@@ -65,9 +65,9 @@ info to an applet to represent the icons.</p>
 <a name="XAppStatusIconMonitor.signals"></a><h2>Signals</h2>
 <div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
-<col width="150px" class="signals_return">
-<col width="300px" class="signals_name">
-<col width="200px" class="signals_flags">
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
 </colgroup>
 <tbody>
 <tr>
@@ -87,8 +87,8 @@ info to an applet to represent the icons.</p>
 <a name="XAppStatusIconMonitor.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
-<col width="150px" class="name">
-<col class="description">
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
 </colgroup>
 <tbody>
 <tr>
@@ -114,7 +114,7 @@ info to an applet to represent the icons.</p>
 to display info about an app.</p>
 <p>The simplest way to use is to make a new instance of this monitor, and connect
 to the <a class="link" href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-icon-added" title="The “icon-added” signal"><span class="type">“icon-added”</span></a> and <a class="link" href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-icon-removed" title="The “icon-removed” signal"><span class="type">“icon-removed”</span></a> signals.
-The received object for both of these signals is an <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a>.
+The received object for both of these signals is an <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a>.
 It represents an application's <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>, and has properties available for
 describing the icon name, tooltip, label and visibility.</p>
 <p>The proxy also provides methods to handle clicks, which can be called by the applet,
@@ -182,7 +182,7 @@ xapp_status_icon_monitor_list_icons (<em class="parameter"><code><a class="link"
 <a name="XAppStatusIconMonitor-icon-added"></a><h3>The <code class="literal">“icon-added”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor"><span class="type">XAppStatusIconMonitor</span></a>        *monitor,
-               <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a> *proxy,
+               <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a> *proxy,
                <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                      user_data)</pre>
 <p>This signal is emitted by the monitor when it has discovered a new
 <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> on the bus.</p>
@@ -220,7 +220,7 @@ user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStat
 <a name="XAppStatusIconMonitor-icon-removed"></a><h3>The <code class="literal">“icon-removed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor"><span class="type">XAppStatusIconMonitor</span></a>        *monitor,
-               <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a> *proxy,
+               <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a> *proxy,
                <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                      user_data)</pre>
 <p>This signal is emitted by the monitor when an <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> has disappeared
 from the bus.</p>
@@ -256,6 +256,6 @@ from the bus.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.32</div>
 </body>
 </html>

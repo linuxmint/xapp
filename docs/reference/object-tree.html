@@ -8,7 +8,7 @@
 <link rel="up" href="index.html" title="XApp Reference Manual">
 <link rel="prev" href="libxapp-xapp-util.html" title="xapp-util">
 <link rel="next" href="api-index-full.html" title="API Index">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,6 +24,7 @@
 <a name="object-tree"></a>Object Hierarchy</h1></div></div></div>
 <pre class="screen">
     <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">├──</span> <a class="link" href="XAppFavorites.html" title="XAppFavorites">XAppFavorites</a>
     <span class="lineart">├──</span> <a href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
     <span class="lineart">│</span>   <span class="lineart">╰──</span> <a href="../gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
     <span class="lineart">│</span>       <span class="lineart">╰──</span> <a href="../gtk3/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
@@ -37,14 +38,23 @@
     <span class="lineart">│</span>               <span class="lineart">╰──</span> <a class="link" href="XAppStackSidebar.html" title="XAppStackSidebar">XAppStackSidebar</a>
     <span class="lineart">├──</span> <a class="link" href="XAppKbdLayoutController.html" title="XAppKbdLayoutController">XAppKbdLayoutController</a>
     <span class="lineart">├──</span> <a class="link" href="XAppMonitorBlanker.html" title="XAppMonitorBlanker">XAppMonitorBlanker</a>
+    <span class="lineart">├──</span> <a href="../gio/GDBusObjectManagerClient.html#GDBusObjectManagerClient-struct">GDBusObjectManagerClient</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppObjectManagerClient.html" title="XAppObjectManagerClient">XAppObjectManagerClient</a>
+    <span class="lineart">├──</span> <a href="../gio/GDBusObjectProxy.html#GDBusObjectProxy-struct">GDBusObjectProxy</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppObjectManagerClient.html#XAppObjectProxy">XAppObjectProxy</a>
+    <span class="lineart">├──</span> <a href="../gio/GDBusObjectSkeleton.html#GDBusObjectSkeleton-struct">GDBusObjectSkeleton</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppObjectManagerClient.html#XAppObjectSkeleton">XAppObjectSkeleton</a>
     <span class="lineart">├──</span> <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon">XAppStatusIcon</a>
     <span class="lineart">├──</span> <a href="../gio/GDBusProxy.html#GDBusProxy-struct">GDBusProxy</a>
-    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterfaceProxy">XAppStatusIconInterfaceProxy</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceProxy">XAppStatusIconInterfaceProxy</a>
     <span class="lineart">├──</span> <a href="../gio/GDBusInterfaceSkeleton.html#GDBusInterfaceSkeleton-struct">GDBusInterfaceSkeleton</a>
-    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html" title="XAppStatusIconInterfaceSkeleton">XAppStatusIconInterfaceSkeleton</a>
+    <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceSkeleton">XAppStatusIconInterfaceSkeleton</a>
     <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor">XAppStatusIconMonitor</a>
     <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
-    <span class="lineart">╰──</span> <a class="link" href="XAppStatusIconInterfaceSkeleton.html#XAppStatusIconInterface">XAppStatusIconInterface</a>
+    <span class="lineart">├──</span> <a class="link" href="XAppObjectManagerClient.html#XAppObject">XAppObject</a>
+    <span class="lineart">╰──</span> <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface">XAppStatusIconInterface</a>
+    <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> <a class="link" href="XAppFavorites.html#XAppFavoriteInfo">XAppFavoriteInfo</a>
     <a href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
     <span class="lineart">├──</span> <a class="link" href="XAppIconChooserDialog.html#XAppIconSize" title="enum XAppIconSize">XAppIconSize</a>
     <span class="lineart">├──</span> <a class="link" href="XAppStatusIcon.html#XAppScrollDirection" title="enum XAppScrollDirection">XAppScrollDirection</a>
@@ -52,6 +62,6 @@
 </pre>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.32</div>
 </body>
 </html>
