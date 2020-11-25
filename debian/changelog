@@ -1,8 +1,17 @@
-xapp (1.9.0) UNRELEASED; urgency=medium
+xapp (2.0.0) ulyssa; urgency=medium
 
+  [ Michael Webster ]
   * Bump for favorites support
+  * .gitignore: Ignore the new debian build folder.
+  * favorites: expose xapp_favorites_rename (), it was mistakenly made private during some cleanup.
+  * xapp-gtk3-module.c: Don't initialize favorites until they're needed.
+  * xapp-gtk3-module.c: Register the favorites uri scheme immediately, rather than when XAppFavorites is instantiated.
+  * xapp-favorites: Add missing pointer to the DestroyData.
 
- -- Michael Webster <miketwebster@gmail.com>  Wed, 11 Nov 2020 13:30:14 -0500
+  [ Clement Lefebvre ]
+  * l10n: Update POT
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 25 Nov 2020 11:27:06 +0000
 
 xapp (1.8.9) ulyana; urgency=medium
 

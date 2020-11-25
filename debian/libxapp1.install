@@ -1,4 +1,4 @@
-usr/lib/*/libxapp.so.1*
+usr/lib/*/libxapp.so.*
 usr/libexec/xapps/sn-watcher/*
 usr/lib/*/gtk-3.0/modules
 /etc/X11
