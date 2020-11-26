@@ -1,4 +1,4 @@
-# This file is sourced by Xsession(5), not executed.
+# This file is sourced by xinit(1) or a display manager's Xsession, not executed.
 
 if [ -z "$GTK_MODULES" ] ; then
     GTK_MODULES="xapp-gtk3-module"
