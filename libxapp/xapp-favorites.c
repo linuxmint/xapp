@@ -35,6 +35,9 @@ G_DEFINE_BOXED_TYPE (XAppFavoriteInfo, xapp_favorite_info, xapp_favorite_info_co
  *
  * A list of #XAppFavoriteInfos can be retrieved in full, or only for specific mimetypes.
  *
+ * A favorites uri scheme is also available if the xapp gtk3 module is loaded and this also makes the
+ * uri available as a shortcut in file dialogs.
+ *
  * XAppFavorites are new for 2.0
  */
 
