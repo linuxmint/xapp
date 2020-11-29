@@ -1491,11 +1491,17 @@ favorite_vfs_lookup (GVfs       *vfs,
 void
 init_favorite_vfs (void)
 {
-    GVfs *vfs;
-    vfs = g_vfs_get_default ();
+    static gsize once_init_value = 0;
 
-    g_vfs_register_uri_scheme (vfs, "favorites",
-                               favorite_vfs_lookup, NULL, NULL,
-                               favorite_vfs_lookup, NULL, NULL);
+    if (g_once_init_enter (&once_init_value))
+    {
+        GVfs *vfs;
+        vfs = g_vfs_get_default ();
+
+        g_vfs_register_uri_scheme (vfs, "favorites",
+                                   favorite_vfs_lookup, NULL, NULL,
+                                   favorite_vfs_lookup, NULL, NULL);
+
+        g_once_init_leave (&once_init_value, 1);
+    }
 }
-

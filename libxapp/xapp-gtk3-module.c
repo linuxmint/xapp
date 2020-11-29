@@ -46,7 +46,6 @@ selection_changed_cb (GSignalInvocationHint *ihint,
 
     if (!already_applied)
     {
-        xapp_favorites_get_default ();
         gtk_file_chooser_add_shortcut_folder_uri (chooser, "favorites:///", NULL);
     }
 

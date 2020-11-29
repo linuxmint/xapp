@@ -775,6 +775,7 @@ xapp_favorites_get_default (void)
 {
     if (global_favorites == NULL)
     {
+        init_favorite_vfs ();
         global_favorites = g_object_new (XAPP_TYPE_FAVORITES, NULL);
     }
 
