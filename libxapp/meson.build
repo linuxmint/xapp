@@ -1,8 +1,8 @@
-glib_min_ver = '>=2.37.3'
+glib_min_ver = '>=2.44.0'
 
 gio_dep = dependency('gio-2.0', version: glib_min_ver, required: true)
 glib_dep = dependency('glib-2.0', version: glib_min_ver, required: true)
-gtk3_dep = dependency('gtk+-3.0', version: '>=3.3.16', required: true)
+gtk3_dep = dependency('gtk+-3.0', version: '>=3.16', required: true)
 
 libdeps = []
 libdeps += gio_dep
