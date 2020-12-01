@@ -9,7 +9,8 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		--libexecdir=/usr/libexec \
 		-D docs=true \
-		-D deprecated_warnings=false
+		-D deprecated_warnings=false \
+		--buildtype=debugoptimized
 
 override_dh_strip:
 	dh_strip --dbg-package=libxapp-dbg
