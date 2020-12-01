@@ -323,7 +323,7 @@ get_icon_surface (SnItem    *item,
 
     while (g_variant_iter_loop (iter, "(ii@ay)", &width, &height, &byte_array_var))
     {
-        if (width > 0 & height > 0 && byte_array_var != NULL &&
+        if (width > 0 && height > 0 && byte_array_var != NULL &&
             ((width * height) > (largest_width * largest_height)))
         {
             gsize data_size = g_variant_get_size (byte_array_var);
