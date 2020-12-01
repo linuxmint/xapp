@@ -45,7 +45,6 @@ next_file (GFileEnumerator *enumerator,
 
     while (priv->current_pos != NULL && info == NULL)
     {
-        GFile *file;
         gchar *uri;
 
         uri = path_to_fav_uri ((const gchar *) priv->current_pos->data);
@@ -57,17 +56,19 @@ next_file (GFileEnumerator *enumerator,
         }
         else
         {
-            file = g_file_new_for_uri (uri);
+            GFile *file;
 
+            file = g_file_new_for_uri (uri);
             info = g_file_query_info (file,
                                       priv->attributes,
                                       priv->flags,
                                       cancellable,
                                       error);
+
+            g_object_unref (file);
         }
 
         g_free (uri);
-        g_object_unref (file);
     }
 
     if (priv->current_pos)

@@ -222,12 +222,6 @@ synthesize_event (XAppStatusIcon *self,
         *rect_anchor = GDK_GRAVITY_SOUTH_WEST;
         *menu_anchor = GDK_GRAVITY_NORTH_WEST;
         break;
-      case GTK_POS_BOTTOM:
-        fx = x;
-        fy = y;
-        *rect_anchor = GDK_GRAVITY_NORTH_WEST;
-        *menu_anchor = GDK_GRAVITY_SOUTH_WEST;
-        break;
       case GTK_POS_LEFT:
         fx = x - self->priv->icon_size;
         fy = y;
@@ -239,6 +233,13 @@ synthesize_event (XAppStatusIcon *self,
         fy = y;
         *rect_anchor = GDK_GRAVITY_NORTH_WEST;
         *menu_anchor = GDK_GRAVITY_NORTH_EAST;
+        break;
+      case GTK_POS_BOTTOM:
+      default:
+        fx = x;
+        fy = y;
+        *rect_anchor = GDK_GRAVITY_NORTH_WEST;
+        *menu_anchor = GDK_GRAVITY_SOUTH_WEST;
         break;
   }
 
@@ -631,6 +632,8 @@ on_gtk_status_icon_button_press (GtkStatusIcon *status_icon,
                    button,
                    _time,
                    orientation);
+
+    return GDK_EVENT_PROPAGATE;
 }
 
 static void

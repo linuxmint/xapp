@@ -294,6 +294,8 @@ surface_from_pixmap_data (gint          width,
 
         return surface;
     }
+
+    return NULL;
 }
 
 static cairo_surface_t *

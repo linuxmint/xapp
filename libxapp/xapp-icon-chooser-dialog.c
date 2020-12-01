@@ -178,7 +178,7 @@ static void on_select_button_clicked (GtkButton *button,
 static void on_cancel_button_clicked (GtkButton *button,
                                       gpointer   user_data);
 
-static gboolean on_default_button_clicked (GtkButton *button,
+static void on_default_button_clicked (GtkButton *button,
                                            gpointer   user_data);
 
 static gboolean on_search_bar_key_pressed (GtkWidget *widget,
@@ -2026,7 +2026,7 @@ on_search_bar_key_pressed (GtkWidget *widget,
     return FALSE;
 }
 
-static gboolean
+static void
 on_default_button_clicked (GtkButton *button,
                            gpointer   user_data)
 {
@@ -2035,5 +2035,4 @@ on_default_button_clicked (GtkButton *button,
     priv = xapp_icon_chooser_dialog_get_instance_private (user_data);
 
     gtk_entry_set_text (GTK_ENTRY (priv->search_bar), priv->default_icon);
-
 }

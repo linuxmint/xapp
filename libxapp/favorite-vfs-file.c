@@ -370,6 +370,8 @@ file_query_info (GFile               *file,
     GFileInfo *info;
     GIcon *icon;
 
+    info = NULL;
+
     if (priv->info != NULL)
     {
         if (!priv->info->uri)
@@ -527,7 +529,8 @@ file_query_info (GFile               *file,
         g_file_attribute_matcher_unref (matcher);
     }
 
-    return info;
+    *error = g_error_new (G_IO_ERROR, G_IO_ERROR_FAILED, "Can't retrieve info for favorite file");
+    return info; // NULL
 }
 
 GFileInfo *
@@ -732,7 +735,9 @@ set_or_update_root_metadata (const gchar        *attr_name,
             break;
         }
         default:
-            break;
+            g_warn_if_reached ();
+            g_strfreev (old_metadata);
+            return;
     }
 
     exists = FALSE;
