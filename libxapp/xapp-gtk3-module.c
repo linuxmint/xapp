@@ -24,12 +24,26 @@ static void
 xapp_sidebar_constructed (GObject *object)
 {
     GtkPlacesSidebar *sidebar = GTK_PLACES_SIDEBAR (object);
+    GSettings *fav_settings;
+    gchar **list;
 
     (* original_sidebar_constructed) (object);
 
-    GFile *favorites = g_file_new_for_uri ("favorites:///");
-    gtk_places_sidebar_add_shortcut (sidebar, favorites);
-    g_object_unref (favorites);
+    // This is better than initializing favorites to count.
+    // That way if there aren't any favorites, fav_settings
+    // will go away. XAppFavorites is a singleton.
+    fav_settings = g_settings_new ("org.x.apps.favorites");
+    list = g_settings_get_strv (fav_settings, "list");
+
+    if (g_strv_length (list) > 0)
+    {
+        GFile *favorites = g_file_new_for_uri ("favorites:///");
+        gtk_places_sidebar_add_shortcut (sidebar, favorites);
+        g_object_unref (favorites);
+    }
+
+    g_strfreev (list);
+    g_object_unref (fav_settings);
 }
 
 G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
