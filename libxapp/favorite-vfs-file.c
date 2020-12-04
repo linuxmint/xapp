@@ -469,7 +469,7 @@ file_query_info (GFile               *file,
 
         if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_ICON))
         {
-            icon = g_themed_icon_new ("xapp-favorites");
+            icon = g_themed_icon_new ("xapp-user-favorites");
             g_file_info_set_icon (info, icon);
 
             g_object_unref (icon);
@@ -477,7 +477,7 @@ file_query_info (GFile               *file,
 
         if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON))
         {
-            icon = g_themed_icon_new ("xapp-favorites-symbolic");
+            icon = g_themed_icon_new ("xapp-user-favorites-symbolic");
             g_file_info_set_symbolic_icon (info, icon);
             g_object_unref (icon);
         }
