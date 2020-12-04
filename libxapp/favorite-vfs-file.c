@@ -529,7 +529,11 @@ file_query_info (GFile               *file,
         g_file_attribute_matcher_unref (matcher);
     }
 
-    *error = g_error_new (G_IO_ERROR, G_IO_ERROR_FAILED, "Can't retrieve info for favorite file");
+    if (error)
+    {
+        *error = g_error_new (G_IO_ERROR, G_IO_ERROR_FAILED, "Can't retrieve info for favorite file");
+    }
+
     return info; // NULL
 }
 
