@@ -32,13 +32,9 @@ next_file (GFileEnumerator *enumerator,
     FavoriteVfsFileEnumeratorPrivate *priv = favorite_vfs_file_enumerator_get_instance_private (self);
     GFileInfo *info;
 
-    if (cancellable)
+    if (g_cancellable_set_error_if_cancelled (cancellable, error))
     {
-        if (g_cancellable_is_cancelled (cancellable))
-        {
-            *error = g_error_new (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Enumerate canceled");
-            return NULL;
-        }
+        return NULL;
     }
 
     info = NULL;
@@ -50,7 +46,10 @@ next_file (GFileEnumerator *enumerator,
         uri = path_to_fav_uri ((const gchar *) priv->current_pos->data);
         if (!xapp_favorites_find_by_display_name (xapp_favorites_get_default (), (gchar *) priv->current_pos->data))
         {
-            *error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "File not found");
+            if (error)
+            {
+                *error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "File not found");
+            }
 
             g_warn_if_reached ();
         }
