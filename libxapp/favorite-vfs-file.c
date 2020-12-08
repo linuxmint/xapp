@@ -1373,9 +1373,16 @@ static void favorite_vfs_file_dispose (GObject *object)
         priv->info = NULL;
     }
 
+    G_OBJECT_CLASS (favorite_vfs_file_parent_class)->dispose (object);
+}
+
+static void favorite_vfs_file_finalize (GObject *object)
+{
+    FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (object));
+
     g_clear_pointer (&priv->uri, g_free);
 
-    G_OBJECT_CLASS (favorite_vfs_file_parent_class)->dispose (object);
+    G_OBJECT_CLASS (favorite_vfs_file_parent_class)->finalize (object);
 }
 
 static void
@@ -1400,6 +1407,7 @@ static void favorite_vfs_file_class_init (FavoriteVfsFileClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
     gobject_class->dispose = favorite_vfs_file_dispose;
+    gobject_class->finalize = favorite_vfs_file_finalize;
 }
 
 static void favorite_vfs_file_init (FavoriteVfsFile *self)
