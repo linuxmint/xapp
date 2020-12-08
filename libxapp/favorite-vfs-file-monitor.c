@@ -288,6 +288,9 @@ favorites_changed (XAppFavorites *favorites,
         g_object_unref (file);
     }
 
+    g_list_free (added);
+    g_list_free (removed);
+
     GList *tmp = priv->infos;
     priv->infos = new_infos;
 

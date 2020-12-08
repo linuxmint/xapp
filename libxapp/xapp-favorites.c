@@ -266,7 +266,7 @@ store_favorites (XAppFavorites *favorites)
 
     g_debug ("XAppFavorites: store_favorites: favorites saved");
 
-    g_free (new_settings);
+    g_strfreev (new_settings);
 }
 
 static void

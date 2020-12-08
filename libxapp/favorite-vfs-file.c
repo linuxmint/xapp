@@ -376,10 +376,7 @@ file_query_info (GFile               *file,
     {
         if (!priv->info->uri)
         {
-            if (error != NULL)
-            {
-                *error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "File not found");
-            }
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "File not found");
             return NULL;
         }
 
@@ -528,13 +525,12 @@ file_query_info (GFile               *file,
 
         g_file_attribute_matcher_unref (matcher);
     }
-
-    if (error)
+    else
     {
-        *error = g_error_new (G_IO_ERROR, G_IO_ERROR_FAILED, "Can't retrieve info for favorite file");
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Can't retrieve info for favorite file");
     }
 
-    return info; // NULL
+    return info;
 }
 
 GFileInfo *
