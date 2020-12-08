@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 # This file is sourced by xinit(1) or a display manager's Xsession, not executed.
 
 if [ -z "$GTK_MODULES" ] ; then
