@@ -1,3 +1,33 @@
+xapp (2.0.1) ulyssa; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update docs
+
+  [ Eli Schwartz ]
+  * fix xorg-server startup variable
+
+  [ Michael Webster ]
+  * favorites: Make sure initializing favorites also initializes the uri scheme.
+  * xapp-favorites.c: Add a note about the favorites uri in the class description.
+  * build/install: Make the favorite gtk module's xinit file executable.
+  * build: update some dependencies.
+  * xapp-gtk3-module.c: Override GObject's constructed vfunc to inject the favorites uri into GtkPlacesSidebars rather than hooking onto a signal.
+  * build: use buildtype=debugoptimized by default.
+  * sn-item.c: Fix typo.
+  * various: Fix some previously missed build warnings.
+  * xapp-gtk3-module.c: Don't add a favorites section if there aren't any favorites.
+  * favorite-vfs-file.c: Don't assume a GError was passed in for file_query_info.
+  * favorite-vfs-file-enumerator.c: Fix a couple more places where an error was assumed.
+
+  [ NikoKrause ]
+  * change favorite icons
+
+  [ Michael Webster ]
+  * favorite-vfs-file.c: Don't free priv->uri until finalize.
+  * favorites: Fix some leaks revealed by valgrind.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 08 Dec 2020 10:07:26 +0000
+
 xapp (2.0.0) ulyssa; urgency=medium
 
   [ Michael Webster ]
