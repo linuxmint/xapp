@@ -1,3 +1,16 @@
+xapp (2.0.3) ulyssa; urgency=medium
+
+  [ Eli Schwartz ]
+  * fix "build/install: Make the favorite gtk module's xinit file executable."
+
+  [ Leigh Scott ]
+  * Add shebang to 80xapp-gtk3-module.sh
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 10 Dec 2020 12:14:28 +0000
+
 xapp (2.0.2) ulyssa; urgency=medium
 
   * Add an extra icon for favorites
