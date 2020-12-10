@@ -7,25 +7,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-19 06:31+0000\n"
+"POT-Creation-Date: 2020-11-25 11:16+0000\n"
+"PO-Revision-Date: 2020-12-03 14:23+0000\n"
 "Last-Translator: Panwar <Unknown>\n"
 "Language-Team: Hindi <hi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-06-24 10:13+0000\n"
-"X-Generator: Launchpad (build 1cbd0aa39df153c901321817f9b57cf3f232b507)\n"
+"X-Launchpad-Export-Date: 2020-12-10 10:32+0000\n"
+"X-Generator: Launchpad (build 4853cb86c14c5a9e513816c8a61121c639b30835)\n"
+
+#: libxapp/favorite-vfs-file.c:463
+msgid "Favorites"
+msgstr "पसंदीदा"
+
+#: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
+#: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
+#: libxapp/favorite-vfs-file.c:1053 libxapp/favorite-vfs-file.c:1082
+#: libxapp/favorite-vfs-file.c:1115 libxapp/favorite-vfs-file.c:1142
+#: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
+#: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
+msgid "Operation not supported"
+msgstr "असमर्थित कार्य"
 
 #: libxapp/xapp-icon-chooser-button.c:207
-#: libxapp/xapp-icon-chooser-dialog.c:613
+#: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "आइकन का आकार"
+msgstr "आइकन आकार"
 
 #: libxapp/xapp-icon-chooser-button.c:208
-#: libxapp/xapp-icon-chooser-dialog.c:614
+#: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "आइकन का पसंदीदा आकार"
+msgstr "इच्छित आइकन आकार।"
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -33,7 +46,7 @@ msgstr "आइकन"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "आइकन को वर्णित करने वाला स्ट्रिंग।"
+msgstr "आइकन हेतु स्ट्रिंग।"
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
@@ -43,117 +56,117 @@ msgstr "श्रेणी"
 msgid "The default category."
 msgstr "डिफ़ॉल्ट श्रेणी।"
 
-#: libxapp/xapp-icon-chooser-dialog.c:95
-msgid "Actions"
-msgstr "क्रियाएँ"
-
 #: libxapp/xapp-icon-chooser-dialog.c:98
+msgid "Actions"
+msgstr "कार्य"
+
+#: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
 msgstr "अनुप्रयोग"
 
-#: libxapp/xapp-icon-chooser-dialog.c:101
+#: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
 msgstr "श्रेणियाँ"
 
-#: libxapp/xapp-icon-chooser-dialog.c:104
-msgid "Devices"
-msgstr "डिवाइस"
-
 #: libxapp/xapp-icon-chooser-dialog.c:107
+msgid "Devices"
+msgstr "उपकरण"
+
+#: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
 msgstr "प्रतीक"
 
-#: libxapp/xapp-icon-chooser-dialog.c:110
+#: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
 msgstr "इमोजी"
 
-#: libxapp/xapp-icon-chooser-dialog.c:113
-msgid "Mime types"
-msgstr "MIME के प्रकार"
-
 #: libxapp/xapp-icon-chooser-dialog.c:116
+msgid "Mime types"
+msgstr "MIME प्रकार"
+
+#: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
 msgstr "स्थान"
 
-#: libxapp/xapp-icon-chooser-dialog.c:119
+#: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
 msgstr "स्थिति"
 
-#: libxapp/xapp-icon-chooser-dialog.c:122
+#: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
 msgstr "अन्य"
 
-#: libxapp/xapp-icon-chooser-dialog.c:451
+#: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
 msgstr "आइकन चुनें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:473
+#: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
 msgstr "खोजें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:480
+#: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
 msgstr "ब्राउज़ करें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:536
+#: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
 msgstr "लोड हो रहा है..."
 
-#: libxapp/xapp-icon-chooser-dialog.c:560
+#: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "डिफ़ॉल्ट रूप"
+msgstr "डिफ़ॉल्ट"
 
-#: libxapp/xapp-icon-chooser-dialog.c:570
+#: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
 msgstr "चुनें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:579
-#: libxapp/xapp-icon-chooser-dialog.c:1937
+#: libxapp/xapp-icon-chooser-dialog.c:605
+#: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
 msgstr "रद्द करें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:626
+#: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "पथों को अनुमति दें"
+msgstr "पथ स्वीकृत करें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:627
+#: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "पथों को अनुमति दें या नहीं।"
+msgstr "पथ स्वीकृत करें या नहीं।"
 
-#: libxapp/xapp-icon-chooser-dialog.c:638
+#: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
 msgstr "डिफ़ॉल्ट आइकन"
 
-#: libxapp/xapp-icon-chooser-dialog.c:639
+#: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "डिफ़ॉल्ट रूप से उपयोग हेतु आइकन"
+msgstr "डिफ़ॉल्ट उपयोग हेतु आइकन"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1934
+#: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
 msgstr "चित्र फाइल चुनें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1939
+#: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
 msgstr "खोलें"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1954
+#: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
 msgstr "चित्र"
 
-#: status-applets/mate/mate-xapp-status-applet.py:260
+#: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "के बारे में"
+msgstr "बारे में"
 
-#: status-applets/mate/mate-xapp-status-applet.py:280
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
+#: status-applets/mate/mate-xapp-status-applet.py:350
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "क्षेत्र जहाँ XApp की स्थिति हेतु आइकन प्रदर्शित होंगे"
+msgstr "XApp स्थिति हेतु आइकन क्षेत्र"
 
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
 msgstr "XApp स्थिति एप्लेट फैक्ट्री"
 
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
 msgstr "XApp स्थिति एप्लेट"

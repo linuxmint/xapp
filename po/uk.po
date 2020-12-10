@@ -7,23 +7,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-11-12 11:04+0100\n"
-"PO-Revision-Date: 2019-11-20 14:24+0000\n"
-"Last-Translator: Mykola Tkach <Stuartlittle1970@gmail.com>\n"
+"POT-Creation-Date: 2020-11-25 11:16+0000\n"
+"PO-Revision-Date: 2020-11-27 06:40+0000\n"
+"Last-Translator: Mykola Tkach <chistomov@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-06-24 10:13+0000\n"
-"X-Generator: Launchpad (build 1cbd0aa39df153c901321817f9b57cf3f232b507)\n"
+"X-Launchpad-Export-Date: 2020-12-10 10:32+0000\n"
+"X-Generator: Launchpad (build 4853cb86c14c5a9e513816c8a61121c639b30835)\n"
+
+#: libxapp/favorite-vfs-file.c:463
+msgid "Favorites"
+msgstr "Улюблені"
+
+#: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
+#: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
+#: libxapp/favorite-vfs-file.c:1053 libxapp/favorite-vfs-file.c:1082
+#: libxapp/favorite-vfs-file.c:1115 libxapp/favorite-vfs-file.c:1142
+#: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
+#: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
+msgid "Operation not supported"
+msgstr "Дія не підтримується"
 
 #: libxapp/xapp-icon-chooser-button.c:207
-#: libxapp/xapp-icon-chooser-dialog.c:613
+#: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
 msgstr "Розмір іконки"
 
 #: libxapp/xapp-icon-chooser-button.c:208
-#: libxapp/xapp-icon-chooser-dialog.c:614
+#: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
 msgstr "Бажаний розмір іконки."
 
@@ -43,117 +56,117 @@ msgstr "Категорія"
 msgid "The default category."
 msgstr "Типова категорія."
 
-#: libxapp/xapp-icon-chooser-dialog.c:95
+#: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
 msgstr "Дії"
 
-#: libxapp/xapp-icon-chooser-dialog.c:98
+#: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
 msgstr "Додатки"
 
-#: libxapp/xapp-icon-chooser-dialog.c:101
+#: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
 msgstr "Категорії"
 
-#: libxapp/xapp-icon-chooser-dialog.c:104
+#: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
 msgstr "Пристрої"
 
-#: libxapp/xapp-icon-chooser-dialog.c:107
+#: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
 msgstr "Емблеми"
 
-#: libxapp/xapp-icon-chooser-dialog.c:110
+#: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
 msgstr "Емодзі"
 
-#: libxapp/xapp-icon-chooser-dialog.c:113
+#: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
 msgstr "Типи MIME"
 
-#: libxapp/xapp-icon-chooser-dialog.c:116
+#: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
 msgstr "Місця"
 
-#: libxapp/xapp-icon-chooser-dialog.c:119
+#: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
 msgstr "Стан"
 
-#: libxapp/xapp-icon-chooser-dialog.c:122
+#: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
 msgstr "Інше"
 
-#: libxapp/xapp-icon-chooser-dialog.c:451
+#: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
 msgstr "Виберіть піктограму"
 
-#: libxapp/xapp-icon-chooser-dialog.c:473
+#: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
 msgstr "Пошук"
 
-#: libxapp/xapp-icon-chooser-dialog.c:480
+#: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
 msgstr "Перегляд"
 
-#: libxapp/xapp-icon-chooser-dialog.c:536
+#: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
 msgstr "Завантаження..."
 
-#: libxapp/xapp-icon-chooser-dialog.c:560
+#: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
 msgstr "Типово"
 
-#: libxapp/xapp-icon-chooser-dialog.c:570
+#: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
 msgstr "Вибрати"
 
-#: libxapp/xapp-icon-chooser-dialog.c:579
-#: libxapp/xapp-icon-chooser-dialog.c:1937
+#: libxapp/xapp-icon-chooser-dialog.c:605
+#: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: libxapp/xapp-icon-chooser-dialog.c:626
+#: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
 msgstr "Дозволяти шляхи"
 
-#: libxapp/xapp-icon-chooser-dialog.c:627
+#: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
 msgstr "Чи дозволяти шляхи."
 
-#: libxapp/xapp-icon-chooser-dialog.c:638
+#: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
 msgstr "Типова піктограма"
 
-#: libxapp/xapp-icon-chooser-dialog.c:639
+#: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
 msgstr "Піктограма, яка використовується усталено"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1934
+#: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
 msgstr "Вибрати файл зображення"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1939
+#: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
 msgstr "Відкрити"
 
-#: libxapp/xapp-icon-chooser-dialog.c:1954
+#: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
 msgstr "Зображення"
 
-#: status-applets/mate/mate-xapp-status-applet.py:260
+#: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
 msgstr "Про"
 
-#: status-applets/mate/mate-xapp-status-applet.py:280
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:7
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:11
+#: status-applets/mate/mate-xapp-status-applet.py:350
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
 msgstr "Ділянка, де з'являється піктограма статусу XApp"
 
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:6
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
 msgstr "Фабрика аплета статусу XApp"
 
-#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in:10
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
 msgstr "Аплет статусу XApp"

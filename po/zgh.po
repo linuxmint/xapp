@@ -1,16 +1,16 @@
-# Greek translation for linuxmint
-# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
+# Standard Moroccan Tamazight translation for linuxmint
+# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-06-26 21:36+0000\n"
-"Last-Translator: Antonis Kirikos <akirikos@gmail.com>\n"
-"Language-Team: Greek <el@li.org>\n"
+"PO-Revision-Date: 2020-10-20 05:41+0000\n"
+"Last-Translator: Hakim Oubouali <Unknown>\n"
+"Language-Team: Standard Moroccan Tamazight <zgh@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,140 +33,140 @@ msgstr ""
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Μέγεθος εικονιδίων"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "Το προτιμώμενο μέγεθος εικονιδίου."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Εικονίδιο"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Το κείμενο που αντιπροσωπεύει το εικονίδιο."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Κατηγορία"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Η προεπιλεγμένη κατηγορία."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Ενέργειες"
+msgstr "ⵜⵉⴳⴰⵡⵉⵏ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Εφαρμογές"
+msgstr "ⵜⵉⵙⵏⵙⵉⵡⵉⵏ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Κατηγορίες"
+msgstr "ⵉⵙⵎⵉⵍⵏ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Συσκευές"
+msgstr "ⴰⵍⵍⴰⵍⵏ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Εμβλήματα"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Emoji"
+msgstr "ⵉⵎⵓⵊⵉ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Τύποι Mime"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Τοποθεσίες"
+msgstr "ⵉⴷⵖⴰⵔⵏ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Κατάσταση"
+msgstr "ⴰⴷⴷⴰⴷ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Άλλα"
+msgstr "ⵢⴰⴹⵏ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Επιλογή εικονιδίου"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Aναζήτηση"
+msgstr "ⵔⵣⵓ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Περιήγηση"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Φόρτωση..."
+msgstr "ⴰⵣⴷⴰⵎ..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Προεπιλεγμένη"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Επιλέξτε"
+msgstr "ⵙⵜⵢ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Ακύρωση"
+msgstr "ⵙⵔ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Αποδοχή διαδρομών"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Επιλέξτε αν θα επιτρέπονται διαδρομές."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Προεπιλεγμένο Εικονίδιο"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "Προκαθορισμένο εικονίδιο"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Επιλογή αρχείου εικόνας"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Άνοιγμα"
+msgstr "ⵕⵥⵎ"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Εικόνα"
+msgstr ""
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Περί"
+msgstr "ⵖⴼ"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Περιοχή εμφάνισης των εικονιδίων κατάστασης XApp"
+msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "Κατασκευή μικροεφαρμογής XApp Status"
+msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "Μικροεφαρμογή XApp Status"
+msgstr ""
