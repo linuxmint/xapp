@@ -541,6 +541,10 @@ file_query_filesystem_info (GFile         *file,
                             GError       **error)
 {
     FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (file));
+    GFileInfo *info;
+    GFileAttributeMatcher *matcher;
+
+    matcher = g_file_attribute_matcher_new (attributes);
 
     if (priv->info != NULL && priv->info->uri != NULL)
     {
@@ -553,16 +557,17 @@ file_query_filesystem_info (GFile         *file,
                                              cancellable,
                                              error);
 
+        if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
+        {
+            g_file_info_set_attribute_boolean (info,
+                                               G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, TRUE);
+        }
+
         g_object_unref (real_file);
         return info;
     }
 
-    GFileInfo *info;
-    GFileAttributeMatcher *matcher;
-
     info = g_file_info_new ();
-
-    matcher = g_file_attribute_matcher_new (attributes);
 
     if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))
     {
@@ -1130,17 +1135,18 @@ file_delete (GFile         *file,
 {
     FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (file));
 
-    if (priv->info != NULL && priv->info->uri != NULL)
+    if (!is_root_file (FAVORITE_VFS_FILE (file)))
     {
-        gboolean res;
-        GFile *real_file = g_file_new_for_uri (priv->info->uri);
+        if (priv->info != NULL && priv->info->uri != NULL)
+        {
+            xapp_favorites_remove (xapp_favorites_get_default (), priv->info->uri);
+        }
+        else
+        {
+            xapp_favorites_remove (xapp_favorites_get_default (), priv->uri);
+        }
 
-        res = g_file_delete (real_file,
-                             cancellable,
-                             error);
-
-        g_object_unref (real_file);
-        return res;
+        return TRUE;
     }
 
     g_set_error_literal (error, G_IO_ERROR,
@@ -1155,30 +1161,11 @@ file_trash (GFile         *file,
             GCancellable  *cancellable,
             GError       **error)
 {
-    FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (file));
-
-    if (priv->info != NULL && priv->info->uri != NULL)
-    {
-        gboolean res;
-        GFile *real_file = g_file_new_for_uri (priv->info->uri);
-
-        res = g_file_trash (real_file,
-                            cancellable,
-                            error);
-        g_object_unref (real_file);
-
-        return res;
-    }
-
-    g_set_error_literal (error, G_IO_ERROR,
-                         G_IO_ERROR_NOT_SUPPORTED,
-                         "Not supported");
-
-    return FALSE;
+    return file_delete (file, cancellable, error);
 }
 
 gboolean
-file_move (GFile                  *source,
+file_copy (GFile                  *source,
            GFile                  *destination,
            GFileCopyFlags          flags,
            GCancellable           *cancellable,
@@ -1193,7 +1180,7 @@ file_move (GFile                  *source,
         gboolean res;
         GFile *real_file = g_file_new_for_uri (priv->info->uri);
 
-        res = g_file_move (real_file,
+        res = g_file_copy (real_file,
                            destination,
                            flags,
                            cancellable,
@@ -1353,7 +1340,7 @@ static void favorite_vfs_file_gfile_iface_init (GFileIface *iface)
     iface->trash = file_trash;
     // iface->make_directory = file_make_directory; ### Don't support
     // iface->make_symbolic_link = file_make_symbolic_link; ### Don't support
-    iface->move = file_move;
+    iface->copy = file_copy;
     iface->monitor_dir = file_monitor_dir;
     iface->monitor_file = file_monitor_file;
     iface->measure_disk_usage = file_measure_disk_usage;
