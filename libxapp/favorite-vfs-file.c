@@ -420,10 +420,10 @@ file_query_info (GFile               *file,
 
             g_file_info_set_display_name (info, priv->info->display_name);
             g_file_info_set_name (info, priv->info->display_name);
-
-            // Don't mark as symlink or there will be issues if the user tries to
-            // remove it.
-            g_file_info_set_is_symlink (info, FALSE);
+            g_file_info_set_file_type (info, G_FILE_TYPE_SYMBOLIC_LINK);
+            g_file_info_set_is_symlink (info, TRUE);
+            g_file_info_set_symlink_target (info, priv->info->uri);
+            g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI, priv->info->uri);
 
             /* Prevent showing a 'thumbnailing' icon */
             g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_THUMBNAILING_FAILED, TRUE);
