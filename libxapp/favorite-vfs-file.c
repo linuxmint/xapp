@@ -975,36 +975,6 @@ file_append_to (GFile             *file,
     return NULL;
 }
 
-GFileOutputStream *
-file_create (GFile             *file,
-             GFileCreateFlags   flags,
-             GCancellable      *cancellable,
-             GError           **error)
-{
-    FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (file));
-
-    if (priv->info != NULL && priv->info->uri != NULL)
-    {
-        GFile *real_file = g_file_new_for_uri (priv->info->uri);
-
-        GFileOutputStream *stream;
-
-        stream = g_file_create (real_file,
-                                flags,
-                                cancellable,
-                                error);
-
-        g_object_unref (real_file);
-        return stream;
-    }
-
-    g_set_error_literal (error, G_IO_ERROR,
-                         G_IO_ERROR_NOT_SUPPORTED,
-                        _("Operation not supported"));
-
-    return NULL;
-}
-
 static GFileOutputStream *
 file_replace (GFile             *file,
               const char        *etag,
@@ -1054,35 +1024,6 @@ file_open_readwrite (GFile                      *file,
         res = g_file_open_readwrite (real_file,
                                      cancellable,
                                      error);
-
-        g_object_unref (real_file);
-        return res;
-    }
-
-    g_set_error_literal (error, G_IO_ERROR,
-                         G_IO_ERROR_NOT_SUPPORTED,
-                        _("Operation not supported"));
-
-    return NULL;
-}
-
-static GFileIOStream *
-file_create_readwrite (GFile                      *file,
-                       GFileCreateFlags            flags,
-                       GCancellable               *cancellable,
-                       GError                    **error)
-{
-    FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (file));
-
-    if (priv->info != NULL && priv->info->uri != NULL)
-    {
-        GFileIOStream *res;
-        GFile *real_file = g_file_new_for_uri (priv->info->uri);
-
-        res = g_file_create_readwrite (real_file,
-                                       flags,
-                                       cancellable,
-                                       error);
 
         g_object_unref (real_file);
         return res;
@@ -1331,10 +1272,10 @@ static void favorite_vfs_file_gfile_iface_init (GFileIface *iface)
     iface->set_attributes_from_info = file_set_attributes_from_info;
     iface->read_fn = file_read_fn;
     iface->append_to = file_append_to;
-    iface->create = file_create;
+    // iface->create = file_create; ### Don't support
     iface->replace = file_replace;
     iface->open_readwrite = file_open_readwrite;
-    iface->create_readwrite = file_create_readwrite;
+    // iface->create_readwrite = file_create_readwrite; ### Don't support
     iface->replace_readwrite = file_replace_readwrite;
     iface->delete_file = file_delete;
     iface->trash = file_trash;
