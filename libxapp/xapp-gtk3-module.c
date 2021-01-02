@@ -4,21 +4,21 @@
 #include "xapp-favorites.h"
 #include "favorite-vfs-file.h"
 
-/* Gtk module justification:
+#define ICON_OVERRIDE_VAR "XAPP_FORCE_GTKWINDOW_ICON"
+
+/* xapp-gtk3-module:
  *
- * The sole purpose of this module currently is to add a 'Favorites'
- * shortcut to GtkFileChooser dialogs.
+ * - Initializes the favorites:// vfs and adds a Favorites shortcut
+ *   to any gtk3 sidebars (like in file dialogs).
  *
- * In gtk_module_init, the 'favorites' uri scheme is added to the default
- * vfs. Ordinarily, non-file:// schemes aren't supported in these dialogs
- * unless their 'local-only' property is set to FALSE. Since favorites
- * are shortcuts to locally-available files, we lie to the chooser setup
- * by returning "/" instead of NULL when g_file_get_path ("favorites:///")
- * is called.
+ * - Overrides the window icon for any GtkWindows when an environment
+ *   variable is set with an icon path or name.
  */
 
 void gtk_module_init (gint *argc, gchar ***argv[]);
 static void (* original_sidebar_constructed) (GObject *object);
+static void (* original_window_realize) (GtkWidget *widget);
+static void (* original_window_unrealize) (GtkWidget *widget);
 
 static void
 xapp_sidebar_constructed (GObject *object)
@@ -46,18 +46,140 @@ xapp_sidebar_constructed (GObject *object)
     g_object_unref (fav_settings);
 }
 
-G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
-    GObjectClass *object_class;
+static void
+window_icon_changed (GtkWindow *window)
+{
+    const gchar *forced_icon_str;
+    gpointer anti_recursion_ptr;
 
+    forced_icon_str = g_object_get_data (G_OBJECT (window), "xapp-forced-window-icon");
+    anti_recursion_ptr = g_object_get_data (G_OBJECT (window), "xapp-forced-icon-last-icon-ptr");
+
+    if (anti_recursion_ptr && anti_recursion_ptr == gtk_window_get_icon (window))
+    {
+        g_debug ("Window icon notify received, but anti-recurse pointer hasn't changed, returning.");
+        return;
+    }
+
+    if (forced_icon_str != NULL)
+    {
+        gboolean clear_pixbuf = FALSE;
+
+        g_debug ("Window icon changed, forcing back to '%s'", forced_icon_str);
+
+        g_signal_handlers_block_by_func (G_OBJECT (window), window_icon_changed, window);
+
+        if (g_path_is_absolute (forced_icon_str))
+        {
+            gtk_window_set_icon_name (window, NULL);
+            gtk_window_set_icon_from_file (window, forced_icon_str, NULL);
+        }
+        else
+        {
+            gtk_window_set_icon (window, NULL);
+            gtk_window_set_icon_name (window, forced_icon_str);
+            clear_pixbuf = TRUE;
+        }
+
+        g_object_set_data_full (G_OBJECT (window),
+                                "xapp-forced-icon-last-icon-ptr",
+                                clear_pixbuf ? NULL : g_object_ref (gtk_window_get_icon (window)),
+                                g_object_unref);
+
+        g_signal_handlers_unblock_by_func (G_OBJECT (window), window_icon_changed, window);
+    }
+}
+
+static void
+overridden_window_realize (GtkWidget *widget)
+{
+    (* original_window_realize) (widget);
+
+    static gint already_applied = 0;
+    if (already_applied)
+    {
+        return;
+    }
+
+    already_applied = 1;
+
+    g_debug ("Realize overridden window (%p).", widget);
+
+    const gchar *env_icon = g_getenv (ICON_OVERRIDE_VAR);
+
+    if (env_icon != NULL)
+    {
+        g_object_set_data_full (G_OBJECT (widget), "xapp-forced-window-icon", g_strdup (env_icon), g_free);
+        window_icon_changed (GTK_WINDOW (widget));
+
+        g_signal_connect_swapped (widget, "notify::icon", G_CALLBACK (window_icon_changed), widget);
+        g_signal_connect_swapped (widget, "notify::icon-name", G_CALLBACK (window_icon_changed), widget);
+    }
+}
+
+static void
+overridden_window_unrealize (GtkWidget *widget)
+{
+    (* original_window_unrealize) (widget);
+
+    g_debug ("Unrealize overridden window (%p).", widget);
+
+    g_signal_handlers_disconnect_by_func (widget, window_icon_changed, widget);
+}
+
+static void
+apply_window_icon_override (void)
+{
+    static gboolean applied = 0;
+
+    // I don't think these guards are necessary. This should only run once, but better off safe.
+    if (!applied)
+    {
+        g_debug ("XAPP_FORCE_GTKWINDOW_ICON found in environment, overriding the window icon with its contents");
+
+        applied = TRUE;
+
+        GtkWidgetClass *widget_class;
+        widget_class = g_type_class_ref (GTK_TYPE_WINDOW);
+
+        original_window_realize = widget_class->realize;
+        widget_class->realize = overridden_window_realize;
+        original_window_unrealize = widget_class->unrealize;
+        widget_class->unrealize = overridden_window_unrealize;
+    }
+}
+
+static void
+apply_sidebar_favorites_override (void)
+{
+    static gboolean applied = 0;
+
+    if (!applied)
+    {
+        g_debug ("Adding a Favorites shortcut to GtkPlacesSideBars");
+
+        applied = TRUE;
+
+        GObjectClass *object_class;
+        object_class = g_type_class_ref (GTK_TYPE_PLACES_SIDEBAR);
+
+        original_sidebar_constructed = object_class->constructed;
+        object_class->constructed = xapp_sidebar_constructed;
+    }
+}
+
+G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
+    g_debug ("Initializing XApp GtkModule");
     // This won't instantiate XAppFavorites but will register the uri so
     // it can be used by apps (like pix which doesn't use the favorites api,
     // but just adds favorites:/// to its sidebar.)
     init_favorite_vfs ();
+    apply_sidebar_favorites_override ();
 
-    object_class = g_type_class_ref (GTK_TYPE_PLACES_SIDEBAR);
-
-    original_sidebar_constructed = object_class->constructed;
-    object_class->constructed = xapp_sidebar_constructed;
+    if (g_getenv (ICON_OVERRIDE_VAR) != NULL)
+    {
+        apply_window_icon_override ();
+    }
 }
 
 G_MODULE_EXPORT gchar* g_module_check_init (GModule *module);
