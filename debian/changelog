@@ -1,3 +1,23 @@
+xapp (2.0.5) ulyssa; urgency=medium
+
+  [ Michael Webster ]
+  * favorite-vfs-file.c: Don't mark favorites that have unavailable target files as symbolic links.
+  * favorite-vfs-file.c: Remove a file from favorites when deleted or trashed (but don't actually delete or trash them) - this brings the favorites behavior in line with recents.
+  * favorite-vfs-file.c: Remove some methods that can't be supported.
+  * Go back to leaving favorites with missing targets as symlinks.
+  * favorite-vfs-file.c: Add thumbnailing preference to the filesystem info.
+  * xapp-status-icon.c: Construct fallback dbus name from a non-localized string.
+  * status icon: Replace g_get_application_name with g_get_progname everywhere else (followup to previous commit).
+  * xapp-status-icon-monitor.c: fix typo.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+  [ Michael Webster ]
+  * xapp-gtk3-module.c: Add a mechanism to allow a GtkWindow's icon (#127)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 02 Jan 2021 18:35:48 +0000
+
 xapp (2.0.4) ulyssa; urgency=medium
 
   [ Leigh Scott ]

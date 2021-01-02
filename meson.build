@@ -1,6 +1,6 @@
 project('xapp',
     'c',
-    version : '2.0.4',
+    version : '2.0.5',
     default_options : [ 'buildtype=debugoptimized' ],
 )
 
