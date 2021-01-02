@@ -389,7 +389,7 @@ connect_to_bus (XAppStatusIconMonitor *self)
     gchar *valid_app_name, *owned_name;
     static gint unique_id = 0;
 
-    valid_app_name = g_strdelimit (g_strdup (g_get_application_name ()), ".-,=+~`/", '_');
+    valid_app_name = g_strdelimit (g_strdup (g_get_prg_name ()), ".-,=+~`/", '_');
     owned_name = g_strdup_printf ("%s.%s_%d", MONITOR_NAME, valid_app_name, unique_id++);
     g_free (valid_app_name);
 

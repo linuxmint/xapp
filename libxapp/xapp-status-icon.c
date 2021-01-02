@@ -785,7 +785,7 @@ static void
 obj_server_finalized (gpointer  data,
                       GObject  *object)
 {
-    g_debug ("XAppStatusIcon: Final icon removed, clearing object manager (%s)", g_get_application_name ());
+    g_debug ("XAppStatusIcon: Final icon removed, clearing object manager (%s)", g_get_prgname ());
 
     if (name_owner_id > 0)
     {
@@ -801,7 +801,7 @@ ensure_object_manager (XAppStatusIcon *self)
 {
     if (obj_server == NULL)
     {
-        g_debug ("XAppStatusIcon: New object manager for (%s)", g_get_application_name ());
+        g_debug ("XAppStatusIcon: New object manager for (%s)", g_get_prgname ());
 
         obj_server = g_dbus_object_manager_server_new (ICON_BASE_PATH);
         g_dbus_object_manager_server_set_connection (obj_server, self->priv->connection);
@@ -1163,7 +1163,7 @@ xapp_status_icon_set_property (GObject    *object,
         case PROP_NAME:
             {
                 const gchar *name = g_value_get_string (value);
-                // Can't be null. We set to g_get_application_name() by default.
+                // Can't be null. We set to g_get_prgname() by default.
                 if (name == NULL || name[0] == '\0')
                 {
                     break;
@@ -1211,7 +1211,7 @@ xapp_status_icon_init (XAppStatusIcon *self)
 {
     self->priv = xapp_status_icon_get_instance_private (self);
 
-    self->priv->name = g_strdup (g_get_application_name());
+    self->priv->name = g_strdup (g_get_prgname());
 
     self->priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
     self->priv->icon_size = FALLBACK_ICON_SIZE;
@@ -1388,7 +1388,7 @@ xapp_status_icon_class_init (XAppStatusIconClass *klass)
      * this can be useful in sandboxed environments where a well-defined name is required. If 
      * additional icons are created, only the name given to the initial one will be used for dbus,
      * though different names can still affect the sort order. This is set to the value of
-     * g_get_application_name() if no other name is provided.
+     * g_get_prgname() if no other name is provided.
      */
     g_object_class_install_property (gobject_class, PROP_NAME,
                                      g_param_spec_string ("name",
@@ -1512,7 +1512,7 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
 
     if (name == NULL || name[0] == '\0')
     {
-        // name can't be null. We set to g_get_application_name() at startup,
+        // name can't be null. We set to g_get_prgname() at startup,
         // and the set_property handler silently ignores nulls, but if this
         // is explicit, warn about it.
         g_warning ("Can't set icon the name to null or empty string");
