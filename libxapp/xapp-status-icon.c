@@ -865,7 +865,7 @@ connect_with_status_applet (XAppStatusIcon *self)
     }
     else
     {
-        gchar *valid_app_name = g_strdelimit (g_strdup (g_get_application_name ()), " .-,=+~`/", '_');
+        gchar *valid_app_name = g_strdelimit (g_strdup (g_get_prgname ()), " .-,=+~`/", '_');
 
         owner_name = g_strdup_printf ("%s.%s",
                                       ICON_NAME,
