@@ -1,3 +1,10 @@
+xapp (2.0.6) ulyssa; urgency=medium
+
+  [ Michael Webster ]
+  * 80xapp-gtk3-module.sh: Use GTK3_MODULES instead of GTK_MODULES.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 12 Jan 2021 11:13:02 +0000
+
 xapp (2.0.5) ulyssa; urgency=medium
 
   [ Michael Webster ]
