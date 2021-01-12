@@ -147,10 +147,12 @@ gnome.generate_vapi('xapp',
     install: true
 )
 
-gtk3_module = shared_module(
-    'xapp-gtk3-module', ['xapp-gtk3-module.c'],
-    include_directories: [top_inc],
-    dependencies: [gtk3_dep, libxapp_dep],
-    install: true,
-    install_dir: join_paths(gtk3_dep.get_pkgconfig_variable('libdir'),'gtk-3.0','modules')
-)
+if not app_lib_only
+    gtk3_module = shared_module(
+        'xapp-gtk3-module', ['xapp-gtk3-module.c'],
+        include_directories: [top_inc],
+        dependencies: [gtk3_dep, libxapp_dep],
+        install: true,
+        install_dir: join_paths(gtk3_dep.get_pkgconfig_variable('libdir'),'gtk-3.0','modules')
+    )
+endif
