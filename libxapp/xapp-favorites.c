@@ -402,6 +402,8 @@ remove_favorite (XAppFavorites *favorites,
         real_uri = g_strdup (uri);
     }
 
+    g_return_if_fail (real_uri != NULL);
+
     g_debug ("XAppFavorites: remove favorite: %s", real_uri);
 
     // It may be orphaned for some reason.. even if it's not in gsettings, still try
