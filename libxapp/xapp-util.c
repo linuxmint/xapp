@@ -44,3 +44,63 @@ xapp_util_gpu_offload_supported (void)
 
     return g_strstr_len (contents, -1, "on-demand") != NULL;
 }
+
+// Copied from cinnamon:main.c
+/**
+ * xapp_util_get_session_is_running:
+ *
+ * Check if the Session Manager is currently in the "Running" phase.
+ *
+ * Returns: %TRUE if the session is running.
+ *
+ * Since: 2.0
+ */
+gboolean
+xapp_util_get_session_is_running (void)
+{
+    GDBusConnection *session_bus;
+    GError *error;
+    GVariant *session_result;
+    gboolean session_running;
+
+    error = NULL;
+
+    session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION,
+                                  NULL,
+                                  &error);
+
+    if (error != NULL)
+    {
+        g_critical ("Unable to determine if session is running, could not get session bus: %s\n", error->message);
+        g_clear_error (&error);
+
+        return FALSE;
+    }
+
+    session_result = g_dbus_connection_call_sync (session_bus,
+                                                  "org.gnome.SessionManager",
+                                                  "/org/gnome/SessionManager",
+                                                  "org.gnome.SessionManager",
+                                                  "IsSessionRunning",
+                                                  NULL,
+                                                  G_VARIANT_TYPE ("(b)"),
+                                                  G_DBUS_CALL_FLAGS_NONE,
+                                                  1000,
+                                                  NULL,
+                                                  &error);
+
+    if (session_result != NULL)
+    {
+        g_variant_get (session_result, "(b)", &session_running);
+        g_variant_unref (session_result);
+    }
+    else
+    {
+        session_running = FALSE;
+        g_clear_error (&error);
+    }
+
+    g_object_unref (session_bus);
+
+    return session_running;
+}
