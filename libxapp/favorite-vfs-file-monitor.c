@@ -206,6 +206,7 @@ find_info_by_uri (gconstpointer ptr_a,
     XAppFavoriteInfo *info = (XAppFavoriteInfo *) ptr_a;
     const gchar *uri = (gchar *) ptr_b;
 
+    // GCompareFunc returns 0 when there's a match.
     return g_strcmp0 (info->uri, uri);
 }
 
@@ -254,23 +255,6 @@ favorites_changed (XAppFavorites *favorites,
         }
     }
 
-    for (iter = added; iter != NULL; iter = iter->next)
-    {
-        XAppFavoriteInfo *added_info = (XAppFavoriteInfo *) iter->data;
-
-        GFile *file = _favorite_vfs_file_new_for_info (added_info);
-
-        g_file_monitor_emit_event (G_FILE_MONITOR (monitor),
-                                   file,
-                                   NULL,
-                                   G_FILE_MONITOR_EVENT_CREATED);
-        g_file_monitor_emit_event (G_FILE_MONITOR (monitor),
-                                   file,
-                                   NULL,
-                                   G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
-        g_object_unref (file);
-    }
-
     for (iter = removed; iter != NULL; iter = iter->next)
     {
         XAppFavoriteInfo *removed_info = (XAppFavoriteInfo *) iter->data;
@@ -281,6 +265,23 @@ favorites_changed (XAppFavorites *favorites,
                                    file,
                                    NULL,
                                    G_FILE_MONITOR_EVENT_DELETED);
+        g_file_monitor_emit_event (G_FILE_MONITOR (monitor),
+                                   file,
+                                   NULL,
+                                   G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
+        g_object_unref (file);
+    }
+
+    for (iter = added; iter != NULL; iter = iter->next)
+    {
+        XAppFavoriteInfo *added_info = (XAppFavoriteInfo *) iter->data;
+
+        GFile *file = _favorite_vfs_file_new_for_info (added_info);
+
+        g_file_monitor_emit_event (G_FILE_MONITOR (monitor),
+                                   file,
+                                   NULL,
+                                   G_FILE_MONITOR_EVENT_CREATED);
         g_file_monitor_emit_event (G_FILE_MONITOR (monitor),
                                    file,
                                    NULL,
