@@ -3,6 +3,7 @@
 #include <gtk/gtk.h>
 
 #include <libxapp/xapp-status-icon.h>
+#include <libxapp/xapp-util.h>
 #include <glib-unix.h>
 
 #include "sn-watcher-interface.h"
@@ -672,7 +673,16 @@ main (int argc, char **argv)
     gboolean should_start;
     int status;
 
-    sleep (1);
+    if (xapp_util_get_session_is_running ())
+    {
+        // The session manager tries to restart this immediately in the event of a crash,
+        // and we need a small delay between instances of xapp-sn-watcher to allow dbus and
+        // status-notifier apps to cleanly process removal of the old one.
+        //
+        // Skip this at startup, as it would cause a delay during login, and there's no
+        // existing process to replace anyhow.
+        sleep (2);
+    }
 
     current_desktop = g_getenv ("XDG_CURRENT_DESKTOP");
     xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
