@@ -17,6 +17,9 @@
 #include "xapp-status-icon-monitor.h"
 #include "xapp-statusicon-interface.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_STATUS_ICON
+#include "xapp-debug.h"
+
 #define MONITOR_NAME "org.x.StatusIconMonitor"
 
 #define STATUS_ICON_MATCH "org.x.StatusIcon."
@@ -85,7 +88,7 @@ on_object_manager_name_owner_changed (GObject    *object,
                   "name", &name,
                   NULL);
 
-    g_debug("XAppStatusIconMonitor: app name owner changed - name '%s' is now %s)",
+    DEBUG("App name owner changed - name '%s' is now %s)",
             name, owner != NULL ? "owned" : "unowned");
 
     if (owner == NULL)
@@ -154,7 +157,7 @@ new_object_manager_created (GObject      *object,
 
     g_object_get (obj_mgr, "name", &name, NULL);
 
-    g_debug("XAppStatusIconMonitor: Object manager added for new bus name: '%s'", name);
+    DEBUG("Object manager added for new bus name: '%s'", name);
 
     g_signal_connect (obj_mgr,
                       "notify::name-owner",
@@ -211,7 +214,7 @@ add_object_manager_for_name (XAppStatusIconMonitor *self,
     }
     else
     {
-        g_debug ("XAppStatusIconMonitor: adding object manager failed, bus name '%s' is invalid", name);
+        DEBUG ("Adding object manager failed, bus name '%s' is invalid", name);
     }
 
     g_strfreev (name_parts);
@@ -248,7 +251,7 @@ on_list_names_completed (GObject      *source,
         /* the '.' at the end so we don't catch ourselves in this */
         if (g_str_has_prefix (str, STATUS_ICON_MATCH))
         {
-            g_debug ("XAppStatusIconMonitor: found new status icon app: %s", str);
+            DEBUG ("Found new status icon app: %s", str);
             add_object_manager_for_name (self, str);
         }
     }
@@ -262,7 +265,7 @@ find_and_add_icons (XAppStatusIconMonitor *self)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    g_debug("XAppStatusIconMonitor: looking for status icon apps on the bus");
+    DEBUG("Looking for status icon apps on the bus");
 
     /* If there are no monitors (applets) already running when this is set up,
      * this won't find anything.  The XAppStatusIcons will be in fallback mode,
@@ -315,7 +318,7 @@ name_owner_changed (GDBusConnection *connection,
     const gchar *old_owner;
     const gchar *new_owner;
 
-    g_debug("XAppStatusIconMonitor: NameOwnerChanged signal received: %s)", sender_name);
+    DEBUG ("NameOwnerChanged signal received: %s)", sender_name);
 
     g_variant_get (parameters, "(&s&s&s)", &name, &old_owner, &new_owner);
 
@@ -330,7 +333,7 @@ add_name_listener (XAppStatusIconMonitor *self)
 {
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    g_debug ("XAppStatusIconMonitor: Adding NameOwnerChanged listener for status icon apps");
+    DEBUG ("Adding NameOwnerChanged listener for status icon apps");
 
     priv->listener_id = g_dbus_connection_signal_subscribe (priv->connection,
                                                             "org.freedesktop.DBus",
@@ -362,7 +365,7 @@ on_name_acquired (GDBusConnection *connection,
 {
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
 
-    g_debug ("XAppStatusIconMonitor: Name owned on bus: %s", name);
+    DEBUG ("Name owned on bus: %s", name);
 
     add_name_listener (self);
     find_and_add_icons (self);
@@ -377,7 +380,7 @@ on_bus_acquired (GDBusConnection *connection,
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (user_data);
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    g_debug ("XAppStatusIconMonitor: Connected to bus: %s", name);
+    DEBUG ("Connected to bus: %s", name);
 
     priv->connection = connection;
 }
@@ -393,7 +396,7 @@ connect_to_bus (XAppStatusIconMonitor *self)
     owned_name = g_strdup_printf ("%s.%s_%d", MONITOR_NAME, valid_app_name, unique_id++);
     g_free (valid_app_name);
 
-    g_debug ("XAppStatusIconMonitor: Attempting to own name on bus: %s", owned_name);
+    DEBUG ("Attempting to own name on bus: %s", owned_name);
 
     priv->owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                      owned_name,
@@ -424,7 +427,7 @@ xapp_status_icon_monitor_dispose (GObject *object)
     XAppStatusIconMonitor *self = XAPP_STATUS_ICON_MONITOR (object);
     XAppStatusIconMonitorPrivate *priv = xapp_status_icon_monitor_get_instance_private (self);
 
-    g_debug ("XAppStatusIconMonitor dispose (%p)", object);
+    DEBUG ("XAppStatusIconMonitor dispose (%p)", object);
 
     if (priv->connection != NULL)
     {
@@ -455,7 +458,7 @@ xapp_status_icon_monitor_dispose (GObject *object)
 static void
 xapp_status_icon_monitor_finalize (GObject *object)
 {
-    g_debug ("XAppStatusIconMonitor finalize (%p)", object);
+    DEBUG ("XAppStatusIconMonitor finalize (%p)", object);
 
     G_OBJECT_CLASS (xapp_status_icon_monitor_parent_class)->dispose (object);
 }

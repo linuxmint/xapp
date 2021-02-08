@@ -2,6 +2,9 @@
 #include "favorite-vfs-file-enumerator.h"
 #include "favorite-vfs-file.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_FAVORITE_VFS
+#include "xapp-debug.h"
+
 typedef struct
 {
     GFile *file;

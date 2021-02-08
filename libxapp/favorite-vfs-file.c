@@ -5,6 +5,9 @@
 #include "favorite-vfs-file-enumerator.h"
 #include "favorite-vfs-file-monitor.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_FAVORITE_VFS
+#include "xapp-debug.h"
+
 #define FAVORITES_SCHEMA "org.x.apps.favorites"
 #define FAVORITE_DCONF_METADATA_KEY "root-metadata"
 
@@ -1380,7 +1383,7 @@ GFile *favorite_vfs_file_new_for_uri (const char *uri)
 
     new_file = g_object_new (FAVORITE_TYPE_VFS_FILE, NULL);
 
-    g_debug ("FavoriteVfsFile new for uri: %s", uri);
+    DEBUG ("FavoriteVfsFile new for uri: %s", uri);
 
     FavoriteVfsFilePrivate *priv = favorite_vfs_file_get_instance_private (FAVORITE_VFS_FILE (new_file));
 

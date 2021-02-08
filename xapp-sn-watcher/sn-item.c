@@ -17,6 +17,9 @@
 #include "sn-item-interface.h"
 #include "sn-item.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_SN_WATCHER
+#include <libxapp/xapp-debug.h>
+
 #define FALLBACK_ICON_SIZE 24
 
 typedef enum
@@ -163,7 +166,7 @@ static void
 sn_item_dispose (GObject *object)
 {
     SnItem *item = SN_ITEM (object);
-    g_debug ("SnItem dispose (%p)", object);
+    DEBUG ("SnItem dispose (%p)", object);
 
     if (item->png_path != NULL)
     {
@@ -196,7 +199,7 @@ sn_item_dispose (GObject *object)
 static void
 sn_item_finalize (GObject *object)
 {
-    g_debug ("SnItem finalize (%p)", object);
+    DEBUG ("SnItem finalize (%p)", object);
 
     G_OBJECT_CLASS (sn_item_parent_class)->finalize (object);
 }
@@ -376,7 +379,7 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
     cairo_surface_t *surface;
     gchar *filename, *save_filename;
 
-    g_debug ("Trying to use icon pixmap for %s",
+    DEBUG ("Trying to use icon pixmap for %s",
              item->sortable_name);
 
     surface = NULL;
@@ -413,7 +416,7 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
         cairo_status_t status = CAIRO_STATUS_SUCCESS;
         status = cairo_surface_write_to_png (surface, save_filename);
 
-        g_debug ("Saving tmp image file for '%s' to '%s'", item->sortable_name, save_filename);
+        DEBUG ("Saving tmp image file for '%s' to '%s'", item->sortable_name, save_filename);
 
         if (status != CAIRO_STATUS_SUCCESS)
         {
@@ -425,7 +428,7 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
         return;
     }
 
-    g_debug ("No pixmaps to use");
+    DEBUG ("No pixmaps to use");
     xapp_status_icon_set_icon_name (item->status_icon, "image-missing");
 }
 
@@ -492,7 +495,7 @@ set_icon_name (SnItem      *item,
                const gchar *icon_theme_path,
                const gchar *icon_name)
 {
-    g_debug ("Checking for icon name for %s - theme path: '%s', icon name: '%s'",
+    DEBUG ("Checking for icon name for %s - theme path: '%s', icon name: '%s'",
              item->sortable_name,
              icon_theme_path,
              icon_name);
@@ -581,7 +584,7 @@ update_menu (SnItem *item, SnItemPropertiesResult *new_props)
                                                    new_props->menu_path));
     g_object_ref_sink (item->menu);
 
-    g_debug ("New menu for '%s'", item->sortable_name);
+    DEBUG ("New menu for '%s'", item->sortable_name);
 
     if (item->is_ai && !item->should_activate)
     {
@@ -634,7 +637,7 @@ update_tooltip (SnItem *item, SnItemPropertiesResult *new_props)
                                         new_props->tooltip_body);
 
                 xapp_status_icon_set_tooltip_text (item->status_icon, text);
-                g_debug ("Tooltip text for '%s' from ToolTip: %s",
+                DEBUG ("Tooltip text for '%s' from ToolTip: %s",
                          item->sortable_name,
                          text);
 
@@ -642,7 +645,7 @@ update_tooltip (SnItem *item, SnItemPropertiesResult *new_props)
             }
             else
             {
-                g_debug ("Tooltip text for '%s' from ToolTip: %s",
+                DEBUG ("Tooltip text for '%s' from ToolTip: %s",
                          item->sortable_name,
                          new_props->tooltip_heading);
 
@@ -660,7 +663,7 @@ update_tooltip (SnItem *item, SnItemPropertiesResult *new_props)
         capped_string = capitalize (new_props->title);
         xapp_status_icon_set_tooltip_text (item->status_icon, capped_string);
 
-        g_debug ("Tooltip text for '%s' from Title: %s",
+        DEBUG ("Tooltip text for '%s' from Title: %s",
                  item->sortable_name,
                  capped_string);
 
@@ -691,7 +694,7 @@ update_status (SnItem *item, SnItemPropertiesResult *new_props)
         xapp_status_icon_set_visible (item->status_icon, TRUE);
     }
 
-    g_debug ("Status for '%s' is now '%s'", item->sortable_name, new_props->status);
+    DEBUG ("Status for '%s' is now '%s'", item->sortable_name, new_props->status);
 }
 
 static gchar *
@@ -1106,7 +1109,7 @@ assign_sortable_name (SnItem         *item,
         return;
     }
 
-    g_debug ("Sort name for '%s' is '%s'",
+    DEBUG ("Sort name for '%s' is '%s'",
              g_dbus_proxy_get_name (G_DBUS_PROXY (item->sn_item_proxy)),
              sortable_name);
 

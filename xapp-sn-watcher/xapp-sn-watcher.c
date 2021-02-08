@@ -4,11 +4,16 @@
 
 #include <libxapp/xapp-status-icon.h>
 #include <libxapp/xapp-util.h>
+
+#define DEBUG_FLAG XAPP_DEBUG_SN_WATCHER
+#include <libxapp/xapp-debug.h>
+
 #include <glib-unix.h>
 
 #include "sn-watcher-interface.h"
 #include "sn-item-interface.h"
 #include "sn-item.h"
+
 
 #define XAPP_TYPE_SN_WATCHER xapp_sn_watcher_get_type ()
 G_DECLARE_FINAL_TYPE (XAppSnWatcher, xapp_sn_watcher, XAPP, SN_WATCHER, GtkApplication)
@@ -56,7 +61,7 @@ handle_status_applet_name_owner_appeared (XAppSnWatcher *watcher,
     {
         if (watcher->shutdown_pending)
         {
-            g_debug ("A monitor appeared on the bus, cancelling shutdown\n");
+            DEBUG ("A monitor appeared on the bus, cancelling shutdown\n");
 
             watcher->shutdown_pending = FALSE;
             g_application_hold (G_APPLICATION (watcher));
@@ -92,7 +97,7 @@ handle_sn_item_name_owner_lost (XAppSnWatcher *watcher,
 
         if (g_str_has_prefix (key, name))
         {
-            g_debug ("Client %s has exited, removing status icon", key);
+            DEBUG ("Client %s has exited, removing status icon", key);
             g_hash_table_remove (watcher->items, key);
 
             update_published_items (watcher);
@@ -110,17 +115,17 @@ handle_status_applet_name_owner_lost (XAppSnWatcher *watcher,
 {
     if (g_str_has_prefix (name, STATUS_ICON_MONITOR_PREFIX))
     {
-        g_debug ("Lost a monitor, checking for any more");
+        DEBUG ("Lost a monitor, checking for any more");
 
         if (xapp_status_icon_any_monitors ())
         {
-            g_debug ("Still have a monitor, continuing");
+            DEBUG ("Still have a monitor, continuing");
 
             return;
         }
         else
         {
-            g_debug ("Lost our last monitor, starting countdown\n");
+            DEBUG ("Lost our last monitor, starting countdown\n");
 
             if (!watcher->shutdown_pending)
             {
@@ -154,7 +159,7 @@ name_owner_changed_signal (GDBusConnection *connection,
 
     g_variant_get (parameters, "(&s&s&s)", &name, &old_owner, &new_owner);
 
-    g_debug("XAppSnWatcher: NameOwnerChanged signal received (n: %s, old: %s, new: %s", name, old_owner, new_owner);
+    DEBUG("NameOwnerChanged signal received (n: %s, old: %s, new: %s", name, old_owner, new_owner);
 
     if (!name)
     {
@@ -174,7 +179,7 @@ name_owner_changed_signal (GDBusConnection *connection,
 static void
 add_name_listener (XAppSnWatcher *watcher)
 {
-    g_debug ("XAppSnWatcher: Adding NameOwnerChanged listener for status monitor existence");
+    DEBUG ("Adding NameOwnerChanged listener for status monitor existence");
 
     watcher->name_listener_id = g_dbus_connection_signal_subscribe (watcher->connection,
                                                                     FDO_DBUS_NAME,
@@ -195,7 +200,7 @@ on_name_lost (GDBusConnection *connection,
 {
     XAppSnWatcher *watcher = XAPP_SN_WATCHER (user_data);
 
-    g_debug ("Lost StatusNotifierWatcher name (maybe something replaced us), exiting immediately");
+    DEBUG ("Lost StatusNotifierWatcher name (maybe something replaced us), exiting immediately");
     g_application_quit (G_APPLICATION (watcher));
 }
 
@@ -206,7 +211,7 @@ on_name_acquired (GDBusConnection *connection,
 {
     XAppSnWatcher *watcher = XAPP_SN_WATCHER (user_data);
 
-    g_debug ("Name acquired on dbus");
+    DEBUG ("Name acquired on dbus");
     sn_watcher_interface_set_protocol_version (watcher->skeleton, 0);
     sn_watcher_interface_set_is_status_notifier_host_registered (watcher->skeleton,
                                                                  watcher->advertise_host);
@@ -289,7 +294,7 @@ create_key (const gchar  *sender,
 
     temp_key = g_strdup_printf ("%s%s", temp_bname, temp_path);
 
-    g_debug ("Key: '%s', busname '%s', path '%s'", temp_key, temp_bname, temp_path);
+    DEBUG ("Key: '%s', busname '%s', path '%s'", temp_key, temp_bname, temp_path);
 
     *key = temp_key;
     *bus_name = temp_bname;
@@ -357,7 +362,7 @@ sn_item_proxy_new_completed (GObject      *source,
     {
         if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         {
-            g_debug ("Could not create new status notifier proxy item for item at %s: %s",
+            DEBUG ("Could not create new status notifier proxy item for item at %s: %s",
                      data->bus_name, error->message);
         }
 
@@ -412,7 +417,7 @@ handle_register_item (SnWatcherInterface     *skeleton,
     {
         NewSnProxyData *data;
         error = NULL;
-        // g_debug ("Key: '%s'", key);
+        // DEBUG ("Key: '%s'", key);
 
         data = g_slice_new0 (NewSnProxyData);
         data->watcher = watcher;
@@ -456,7 +461,7 @@ export_watcher_interface (XAppSnWatcher *watcher)
 
     watcher->skeleton = sn_watcher_interface_skeleton_new ();
 
-    g_debug ("XAppSnWatcher: exporting StatusNotifierWatcher dbus interface to %s", NOTIFICATION_WATCHER_PATH);
+    DEBUG ("Exporting StatusNotifierWatcher dbus interface to %s", NOTIFICATION_WATCHER_PATH);
 
     g_signal_connect (watcher->skeleton,
                       "handle-register-status-notifier-item",
@@ -486,7 +491,7 @@ export_watcher_interface (XAppSnWatcher *watcher)
 static gboolean
 on_interrupt (XAppSnWatcher *watcher)
 {
-    g_debug ("SIGINT - shutting down immediately");
+    DEBUG ("SIGINT - shutting down immediately");
 
     g_application_quit (G_APPLICATION (watcher));
     return FALSE;
@@ -495,7 +500,7 @@ on_interrupt (XAppSnWatcher *watcher)
 static void
 continue_startup (XAppSnWatcher *watcher)
 {
-    g_debug ("Trying to acquire session bus connection");
+    DEBUG ("Trying to acquire session bus connection");
 
     g_unix_signal_add (SIGINT, (GSourceFunc) on_interrupt, watcher);
     g_application_hold (G_APPLICATION (watcher));
@@ -573,7 +578,7 @@ watcher_startup (GApplication *application)
     }
     else
     {
-        g_debug ("No active monitors, exiting in 30s");
+        DEBUG ("No active monitors, exiting in 30s");
         watcher->shutdown_pending = TRUE;
     }
 }
@@ -702,7 +707,7 @@ main (int argc, char **argv)
 
     if (!should_start)
     {
-        g_debug ("XDG_CURRENT_DESKTOP is '%s' - not starting XApp's StatusNotifierWatcher service."
+        DEBUG ("XDG_CURRENT_DESKTOP is '%s' - not starting XApp's StatusNotifierWatcher service."
                  "If you want to change this, add your desktop's name to the dconf org.x.apps.statusicon "
                  "'status-notifier-enabled-desktops' setting key.", current_desktop);
         exit(0);

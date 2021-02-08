@@ -11,6 +11,9 @@
 #include <gdk/gdkx.h>
 #include "xapp-gtk-window.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_WINDOW
+#include "xapp-debug.h"
+
 #define ICON_NAME_HINT "_NET_WM_XAPP_ICON_NAME"
 #define PROGRESS_HINT  "_NET_WM_XAPP_PROGRESS"
 #define PROGRESS_PULSE_HINT  "_NET_WM_XAPP_PROGRESS_PULSE"
@@ -72,7 +75,7 @@ is_x11_session (void)
     if (g_once_init_enter (&once_init_value))
     {
         running_x11 = GDK_IS_X11_DISPLAY(gdk_display_get_default());
-        g_debug ("XAppGtkWindow: is_x11_session: %s\n", running_x11 ? "TRUE" : "FALSE");
+        DEBUG ("XAppGtkWindow: is_x11_session: %s\n", running_x11 ? "TRUE" : "FALSE");
 
         g_once_init_leave (&once_init_value, 1);
     }
