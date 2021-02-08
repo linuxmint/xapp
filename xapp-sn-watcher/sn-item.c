@@ -14,11 +14,11 @@
 #include <libxapp/xapp-status-icon.h>
 #include <libdbusmenu-gtk/menu.h>
 
-#define DEBUG_FLAG XAPP_DEBUG_SN_WATCHER
-#include <libxapp/xapp-debug.h>
-
 #include "sn-item-interface.h"
 #include "sn-item.h"
+
+#define DEBUG_FLAG XAPP_DEBUG_SN_WATCHER
+#include <libxapp/xapp-debug.h>
 
 #define FALLBACK_ICON_SIZE 24
 

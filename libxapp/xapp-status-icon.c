@@ -274,7 +274,7 @@ primary_menu_unmapped (GtkWidget  *widget,
     g_return_if_fail (XAPP_IS_STATUS_ICON (user_data));
     XAppStatusIcon *icon = XAPP_STATUS_ICON (user_data);
 
-    DEBUG ("XAppStatusIcon: Primary menu unmapped");
+    DEBUG ("Primary menu unmapped");
 
     if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
     {
@@ -291,7 +291,7 @@ secondary_menu_unmapped (GtkWidget  *widget,
     g_return_if_fail (XAPP_IS_STATUS_ICON (user_data));
     XAppStatusIcon *icon = XAPP_STATUS_ICON (user_data);
 
-    DEBUG ("XAppStatusIcon: Secondary menu unmapped");
+    DEBUG ("Secondary menu unmapped");
 
     if (icon->priv->state == XAPP_STATUS_ICON_STATE_NATIVE)
     {
@@ -315,7 +315,7 @@ popup_menu (XAppStatusIcon *self,
     GdkRectangle win_rect;
     GdkGravity rect_anchor, menu_anchor;
 
-    DEBUG ("XAppStatusIcon: Popup menu on behalf of application");
+    DEBUG ("Popup menu on behalf of application");
 
     if (!gtk_widget_get_realized (GTK_WIDGET (menu)))
     {
@@ -442,14 +442,14 @@ handle_click_method (XAppStatusIconInterface *skeleton,
 
     if (g_strcmp0 (name, "ButtonPress") == 0)
     {
-        DEBUG ("XAppStatusIcon: received ButtonPress from monitor %s: "
+        DEBUG ("Received ButtonPress from monitor %s: "
                  "pos:%d,%d , button: %s , time: %u , orientation: %s",
                  g_dbus_method_invocation_get_sender (invocation),
                  x, y, button_to_str (button), _time, panel_position_to_str (panel_position));
 
         if (should_send_activate (icon, button))
         {
-            DEBUG ("XAppStatusIcon: native sending 'activate' for %s button", button_to_str (button));
+            DEBUG ("Native sending 'activate' for %s button", button_to_str (button));
             g_signal_emit (icon, signals[ACTIVATE], 0,
                            button,
                            _time);
@@ -469,7 +469,7 @@ handle_click_method (XAppStatusIconInterface *skeleton,
     else
     if (g_strcmp0 (name, "ButtonRelease") == 0)
     {
-        DEBUG ("XAppStatusIcon: received ButtonRelease from monitor %s: "
+        DEBUG ("Received ButtonRelease from monitor %s: "
                  "pos:%d,%d , button: %s , time: %u , orientation: %s",
                  g_dbus_method_invocation_get_sender (invocation),
                  x, y, button_to_str (button), _time, panel_position_to_str (panel_position));
@@ -512,7 +512,7 @@ handle_scroll_method (XAppStatusIconInterface *skeleton,
                       guint                    _time,
                       XAppStatusIcon          *icon)
 {
-    DEBUG ("XAppStatusIcon: received Scroll from monitor %s: "
+    DEBUG ("Received Scroll from monitor %s: "
              "delta: %d , direction: %s , time: %u",
              g_dbus_method_invocation_get_sender (invocation),
              delta, direction_to_str (direction), _time);
@@ -609,13 +609,13 @@ on_gtk_status_icon_button_press (GtkStatusIcon *status_icon,
     button = event->button.button;
     _time = event->button.time;
 
-    DEBUG ("XAppStatusIcon: GtkStatusIcon button-press-event with %s button", button_to_str (button));
+    DEBUG ("GtkStatusIcon button-press-event with %s button", button_to_str (button));
 
         /* We always send 'activate' for a button that has no corresponding menu,
          * and for middle clicks. */
     if (should_send_activate (icon, button))
     {
-        DEBUG ("XAppStatusIcon: GtkStatusIcon activated by %s button", button_to_str (button));
+        DEBUG ("GtkStatusIcon activated by %s button", button_to_str (button));
 
         g_signal_emit (icon, signals[ACTIVATE], 0,
                        button,
@@ -653,7 +653,7 @@ on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
     button = event->button.button;
     _time = event->button.time;
 
-    DEBUG ("XAppStatusIcon: GtkStatusIcon button-release-event with %s button", button_to_str (button));
+    DEBUG ("GtkStatusIcon button-release-event with %s button", button_to_str (button));
 
     /* Native icons can have two menus, so we must determine which to use based
      * on the gtk icon event's button. */
@@ -668,7 +668,7 @@ on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
 
     if (menu_to_use)
     {
-        DEBUG ("XAppStatusIcon: GtkStatusIcon popup menu for %s button", button_to_str (button));
+        DEBUG ("GtkStatusIcon popup menu for %s button", button_to_str (button));
 
         popup_menu (icon,
                     GTK_MENU (menu_to_use),
@@ -698,7 +698,7 @@ name_owner_changed (GDBusConnection *connection,
                     gpointer         user_data)
 {
     XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
-    DEBUG("XAppStatusIcon: NameOwnerChanged signal received, refreshing icon");
+    DEBUG("NameOwnerChanged signal received, refreshing icon");
 
     refresh_icon (self);
 }
@@ -706,7 +706,7 @@ name_owner_changed (GDBusConnection *connection,
 static void
 add_name_listener (XAppStatusIcon *self)
 {
-    DEBUG ("XAppStatusIcon: Adding NameOwnerChanged listener for status monitors");
+    DEBUG ("Adding NameOwnerChanged listener for status monitors");
 
     self->priv->listener_id = g_dbus_connection_signal_subscribe (self->priv->connection,
                                                                   FDO_DBUS_NAME,
@@ -766,7 +766,7 @@ on_name_acquired (GDBusConnection *connection,
 
     sync_skeleton (self);
 
-    DEBUG ("XAppStatusIcon: name acquired on dbus, syncing icon properties. State is now: %s",
+    DEBUG ("Name acquired on dbus, syncing icon properties. State is now: %s",
              state_to_str (self->priv->state));
     g_signal_emit (self, signals[STATE_CHANGED], 0, self->priv->state);
 }
@@ -788,7 +788,7 @@ static void
 obj_server_finalized (gpointer  data,
                       GObject  *object)
 {
-    DEBUG ("XAppStatusIcon: Final icon removed, clearing object manager (%s)", g_get_prgname ());
+    DEBUG ("Final icon removed, clearing object manager (%s)", g_get_prgname ());
 
     if (name_owner_id > 0)
     {
@@ -804,7 +804,7 @@ ensure_object_manager (XAppStatusIcon *self)
 {
     if (obj_server == NULL)
     {
-        DEBUG ("XAppStatusIcon: New object manager for (%s)", g_get_prgname ());
+        DEBUG ("New object manager for (%s)", g_get_prgname ());
 
         obj_server = g_dbus_object_manager_server_new (ICON_BASE_PATH);
         g_dbus_object_manager_server_set_connection (obj_server, self->priv->connection);
@@ -880,7 +880,7 @@ connect_with_status_applet (XAppStatusIcon *self)
 
     if (name_owner_id == 0)
     {
-        DEBUG ("XAppStatusIcon: Attempting to own name on bus '%s'", owner_name);
+        DEBUG ("Attempting to own name on bus '%s'", owner_name);
         name_owner_id = g_bus_own_name_on_connection (self->priv->connection,
                                                       owner_name,
                                                       G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE,
@@ -943,7 +943,7 @@ on_gtk_status_icon_embedded_changed (GtkStatusIcon *icon,
         priv->state = XAPP_STATUS_ICON_STATE_NO_SUPPORT;
     }
 
-    DEBUG ("XAppStatusIcon fallback icon embedded_changed. State is now %s",
+    DEBUG ("Fallback icon embedded_changed. State is now %s",
              state_to_str (priv->state));
     g_signal_emit (self, signals[STATE_CHANGED], 0, priv->state);
 }
@@ -953,7 +953,7 @@ use_gtk_status_icon (XAppStatusIcon *self)
 {
     XAppStatusIconPrivate *priv = self->priv;
 
-    DEBUG ("XAppStatusIcon: falling back to GtkStatusIcon");
+    DEBUG ("Falling back to GtkStatusIcon");
 
     remove_icon_path_from_bus (self);
 
@@ -1005,7 +1005,7 @@ on_list_names_completed (GObject      *source,
         }
         else
         {
-            DEBUG ("XAppStatusIcon: attempt to ListNames cancelled");
+            DEBUG ("Attempt to ListNames cancelled");
         }
 
         g_error_free (error);
@@ -1020,7 +1020,7 @@ on_list_names_completed (GObject      *source,
     {
         if (g_str_has_prefix (str, STATUS_ICON_MONITOR_MATCH))
         {
-            DEBUG ("XAppStatusIcon: Discovered active status monitor (%s)", str);
+            DEBUG ("Discovered active status monitor (%s)", str);
             found = TRUE;
         }
     }
@@ -1051,7 +1051,7 @@ static void
 look_for_status_applet (XAppStatusIcon *self)
 {
     // Check that there is at least one applet on DBUS
-    DEBUG("XAppStatusIcon: Looking for status monitors");
+    DEBUG("Looking for status monitors");
 
     cancellable_reset (self);
 
@@ -1116,7 +1116,7 @@ on_session_bus_connected (GObject      *source,
         }
         else
         {
-            DEBUG ("XAppStatusIcon: Cancelled session bus acquire");
+            DEBUG ("Cancelled session bus acquire");
         }
 
         g_error_free (error);
@@ -1131,7 +1131,7 @@ refresh_icon (XAppStatusIcon *self)
 {
     if (self->priv->connection == NULL)
     {
-        DEBUG ("XAppStatusIcon: Connecting to session bus");
+        DEBUG ("Connecting to session bus");
 
         cancellable_reset (self);
 
@@ -1220,7 +1220,7 @@ xapp_status_icon_init (XAppStatusIcon *self)
     self->priv->icon_size = FALLBACK_ICON_SIZE;
     self->priv->icon_name = g_strdup (" ");
 
-    DEBUG ("XAppStatusIcon: init: application name: '%s'", self->priv->name);
+    DEBUG ("Init: application name: '%s'", self->priv->name);
 
     // Default to visible (the same behavior as GtkStatusIcon)
     self->priv->visible = TRUE;
@@ -1238,7 +1238,7 @@ remove_icon_path_from_bus (XAppStatusIcon *self)
         const gchar *path;
         path = g_dbus_object_get_object_path (G_DBUS_OBJECT (self->priv->object_skeleton));
 
-        DEBUG ("XAppStatusIcon: removing interface at path '%s'", path);
+        DEBUG ("Removing interface at path '%s'", path);
 
         g_dbus_object_manager_server_unexport (obj_server, path);
         self->priv->interface_skeleton = NULL;
@@ -1525,7 +1525,7 @@ xapp_status_icon_set_name (XAppStatusIcon *icon, const gchar *name)
     g_clear_pointer (&icon->priv->name, g_free);
     icon->priv->name = g_strdup (name);
 
-    DEBUG ("XAppStatusIcon set_name: %s", name);
+    DEBUG ("set_name: %s", name);
 
     if (icon->priv->interface_skeleton)
     {
@@ -1564,7 +1564,7 @@ xapp_status_icon_set_icon_name (XAppStatusIcon *icon, const gchar *icon_name)
     g_clear_pointer (&icon->priv->icon_name, g_free);
     icon->priv->icon_name = g_strdup (icon_name);
 
-    DEBUG ("XAppStatusIcon set_icon_name: %s", icon_name);
+    DEBUG ("set_icon_name: %s", icon_name);
 
     if (icon->priv->interface_skeleton)
     {
@@ -1591,7 +1591,7 @@ xapp_status_icon_get_icon_size (XAppStatusIcon *icon)
 
     if (icon->priv->interface_skeleton == NULL)
     {
-        DEBUG ("XAppStatusIcon get_icon_size: %d (fallback)", FALLBACK_ICON_SIZE);
+        DEBUG ("get_icon_size: %d (fallback)", FALLBACK_ICON_SIZE);
 
         return FALLBACK_ICON_SIZE;
     }
@@ -1600,7 +1600,7 @@ xapp_status_icon_get_icon_size (XAppStatusIcon *icon)
 
     size = xapp_status_icon_interface_get_icon_size (icon->priv->interface_skeleton);
 
-    DEBUG ("XAppStatusIcon get_icon_size: %d", size);
+    DEBUG ("get_icon_size: %d", size);
 
     return size;
 }
@@ -1627,7 +1627,7 @@ xapp_status_icon_set_tooltip_text (XAppStatusIcon *icon, const gchar *tooltip_te
     g_clear_pointer (&icon->priv->tooltip_text, g_free);
     icon->priv->tooltip_text = g_strdup (tooltip_text);
 
-    DEBUG ("XAppStatusIcon set_tooltip_text: %s", tooltip_text);
+    DEBUG ("set_tooltip_text: %s", tooltip_text);
 
     if (icon->priv->interface_skeleton)
     {
@@ -1659,7 +1659,7 @@ xapp_status_icon_set_label (XAppStatusIcon *icon, const gchar *label)
     g_clear_pointer (&icon->priv->label, g_free);
     icon->priv->label = g_strdup (label);
 
-    DEBUG ("XAppStatusIcon set_label: '%s'", label);
+    DEBUG ("set_label: '%s'", label);
 
     if (icon->priv->interface_skeleton)
     {
@@ -1688,7 +1688,7 @@ xapp_status_icon_set_visible (XAppStatusIcon *icon, const gboolean visible)
 
     icon->priv->visible = visible;
 
-    DEBUG ("XAppStatusIcon set_visible: %s", visible ? "TRUE" : "FALSE");
+    DEBUG ("set_visible: %s", visible ? "TRUE" : "FALSE");
 
     if (icon->priv->interface_skeleton)
     {
@@ -1713,7 +1713,7 @@ xapp_status_icon_get_visible (XAppStatusIcon *icon)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), FALSE);
 
-    DEBUG ("XAppStatusIcon get_visible: %s", icon->priv->visible ? "TRUE" : "FALSE");
+    DEBUG ("get_visible: %s", icon->priv->visible ? "TRUE" : "FALSE");
 
     return icon->priv->visible;
 }
@@ -1778,7 +1778,7 @@ xapp_status_icon_set_primary_menu (XAppStatusIcon *icon,
 
     g_clear_object (&icon->priv->primary_menu);
 
-    DEBUG ("XAppStatusIcon set_primary_menu: %p", menu);
+    DEBUG ("set_primary_menu: %p", menu);
 
     if (menu)
     {
@@ -1802,7 +1802,7 @@ xapp_status_icon_get_primary_menu (XAppStatusIcon *icon)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), NULL);
 
-    DEBUG ("XAppStatusIcon get_menu: %p", icon->priv->primary_menu);
+    DEBUG ("get_menu: %p", icon->priv->primary_menu);
 
     return icon->priv->primary_menu;
 }
@@ -1830,7 +1830,7 @@ xapp_status_icon_set_secondary_menu (XAppStatusIcon *icon,
 
     g_clear_object (&icon->priv->secondary_menu);
 
-    DEBUG ("XAppStatusIcon set_secondary_menu: %p", menu);
+    DEBUG ("set_secondary_menu: %p", menu);
 
     if (menu)
     {
@@ -1854,7 +1854,7 @@ xapp_status_icon_get_secondary_menu (XAppStatusIcon *icon)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), NULL);
 
-    DEBUG ("XAppStatusIcon get_menu: %p", icon->priv->secondary_menu);
+    DEBUG ("get_menu: %p", icon->priv->secondary_menu);
 
     return icon->priv->secondary_menu;
 }
@@ -1910,7 +1910,7 @@ xapp_status_icon_get_state (XAppStatusIcon *icon)
 {
     g_return_val_if_fail (XAPP_IS_STATUS_ICON (icon), XAPP_STATUS_ICON_STATE_NO_SUPPORT);
 
-    DEBUG ("XAppStatusIcon get_state: %s", state_to_str (icon->priv->state));
+    DEBUG ("get_state: %s", state_to_str (icon->priv->state));
 
     return icon->priv->state;
 }
@@ -1933,7 +1933,7 @@ xapp_status_icon_set_metadata (XAppStatusIcon  *icon,
     g_return_if_fail (XAPP_IS_STATUS_ICON (icon));
     gchar *old_meta;
 
-    DEBUG ("XAppStatusIcon set_metadata: '%s'", metadata);
+    DEBUG ("set_metadata: '%s'", metadata);
 
     if (g_strcmp0 (metadata, icon->priv->metadata) == 0)
     {
@@ -1966,7 +1966,7 @@ xapp_status_icon_any_monitors (void)
     GError *error;
     gboolean found;
 
-    DEBUG("XAppStatusIcon: any_monitors: Looking for status monitors");
+    DEBUG("Looking for status monitors");
 
     error = NULL;
     found = FALSE;
@@ -2000,7 +2000,7 @@ xapp_status_icon_any_monitors (void)
             {
                 if (g_str_has_prefix (str, STATUS_ICON_MONITOR_MATCH))
                 {
-                    DEBUG ("XAppStatusIcon: any_monitors: discovered active status monitor (%s)", str);
+                    DEBUG ("Discovered active status monitor (%s)", str);
 
                     found = TRUE;
 
@@ -2018,11 +2018,11 @@ xapp_status_icon_any_monitors (void)
 
     if (error)
     {
-        g_warning ("XAppStatusIcon: any_monitors: Unable to check for monitors: %s", error->message);
+        g_warning ("Unable to check for monitors: %s", error->message);
         g_error_free (error);
     }
 
-    DEBUG ("XAppStatusIcon: any_monitors: %s", found ? "TRUE" : "FALSE");
+    DEBUG ("Monitors found: %s", found ? "TRUE" : "FALSE");
 
     return found;
 }

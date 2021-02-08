@@ -159,7 +159,7 @@ name_owner_changed_signal (GDBusConnection *connection,
 
     g_variant_get (parameters, "(&s&s&s)", &name, &old_owner, &new_owner);
 
-    DEBUG("XAppSnWatcher: NameOwnerChanged signal received (n: %s, old: %s, new: %s", name, old_owner, new_owner);
+    DEBUG("NameOwnerChanged signal received (n: %s, old: %s, new: %s", name, old_owner, new_owner);
 
     if (!name)
     {
@@ -179,7 +179,7 @@ name_owner_changed_signal (GDBusConnection *connection,
 static void
 add_name_listener (XAppSnWatcher *watcher)
 {
-    DEBUG ("XAppSnWatcher: Adding NameOwnerChanged listener for status monitor existence");
+    DEBUG ("Adding NameOwnerChanged listener for status monitor existence");
 
     watcher->name_listener_id = g_dbus_connection_signal_subscribe (watcher->connection,
                                                                     FDO_DBUS_NAME,
@@ -461,7 +461,7 @@ export_watcher_interface (XAppSnWatcher *watcher)
 
     watcher->skeleton = sn_watcher_interface_skeleton_new ();
 
-    DEBUG ("XAppSnWatcher: exporting StatusNotifierWatcher dbus interface to %s", NOTIFICATION_WATCHER_PATH);
+    DEBUG ("Exporting StatusNotifierWatcher dbus interface to %s", NOTIFICATION_WATCHER_PATH);
 
     g_signal_connect (watcher->skeleton,
                       "handle-register-status-notifier-item",
