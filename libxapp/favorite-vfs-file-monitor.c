@@ -2,6 +2,9 @@
 #include "favorite-vfs-file.h"
 #include "favorite-vfs-file-monitor.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_FAVORITE_VFS
+#include "xapp-debug.h"
+
 typedef struct
 {
     gulong changed_handler_id;
@@ -54,7 +57,7 @@ favorite_real_file_changed (GFileMonitor     *rfmonitor,
 //     FavoriteVfsFileMonitor *monitor = FAVORITE_VFS_FILE_MONITOR (user_data);
 //     FavoriteVfsFileMonitorPrivate *priv = favorite_vfs_file_monitor_get_instance_private (monitor);
 
-//     g_debug ("real file changed: %s: %d", g_file_get_uri (file), event_type);
+//     DEBUG ("real file changed: %s: %d", g_file_get_uri (file), event_type);
 
 //     switch (event_type)
 //     {
@@ -63,7 +66,7 @@ favorite_real_file_changed (GFileMonitor     *rfmonitor,
 //             {
 //                 gchar *uri = g_file_get_uri (file);
 
-//                 g_debug ("Deleted: %s\n", uri);
+//                 DEBUG ("Deleted: %s\n", uri);
 
 //                 xapp_favorites_remove (xapp_favorites_get_default (), uri);
 //                 g_free (uri);
@@ -75,7 +78,7 @@ favorite_real_file_changed (GFileMonitor     *rfmonitor,
 //             {
 //                 gchar *uri = g_file_get_uri (file);
 
-//                 g_debug ("Renamed: %s\n", uri);
+//                 DEBUG ("Renamed: %s\n", uri);
 
 //                 rename_favorite (file, other_file);
 //             }
@@ -99,7 +102,7 @@ favorite_real_file_changed (GFileMonitor     *rfmonitor,
 //                         uri = path_to_fav_uri (info->display_name);
 //                         fav_file = g_file_new_for_uri (uri);
 
-//                         g_debug ("Changed: %s", uri);
+//                         DEBUG ("Changed: %s", uri);
 //                         g_free (uri);
 
 //                         g_file_monitor_emit_event (G_FILE_MONITOR (monitor),
@@ -167,7 +170,7 @@ monitor_files (FavoriteVfsFileMonitor *monitor)
         GFile *real_file;
         GError *error;
 
-        g_debug ("Monitoring real file: %s\n", info->uri);
+        DEBUG ("Monitoring real file: %s\n", info->uri);
 
         error = NULL;
         real_file = g_file_new_for_uri (info->uri);

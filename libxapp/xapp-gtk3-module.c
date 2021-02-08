@@ -4,6 +4,9 @@
 #include "xapp-favorites.h"
 #include "favorite-vfs-file.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_MODULE
+#include "xapp-debug.h"
+
 #define ICON_OVERRIDE_VAR "XAPP_FORCE_GTKWINDOW_ICON"
 
 /* xapp-gtk3-module:
@@ -57,7 +60,7 @@ window_icon_changed (GtkWindow *window)
 
     if (anti_recursion_ptr && anti_recursion_ptr == gtk_window_get_icon (window))
     {
-        g_debug ("Window icon notify received, but anti-recurse pointer hasn't changed, returning.");
+        DEBUG ("Window icon notify received, but anti-recurse pointer hasn't changed, returning.");
         return;
     }
 
@@ -65,7 +68,7 @@ window_icon_changed (GtkWindow *window)
     {
         gboolean clear_pixbuf = FALSE;
 
-        g_debug ("Window icon changed, forcing back to '%s'", forced_icon_str);
+        DEBUG ("Window icon changed, forcing back to '%s'", forced_icon_str);
 
         g_signal_handlers_block_by_func (G_OBJECT (window), window_icon_changed, window);
 
@@ -103,7 +106,7 @@ overridden_window_realize (GtkWidget *widget)
 
     already_applied = 1;
 
-    g_debug ("Realize overridden window (%p).", widget);
+    DEBUG ("Realize overridden window (%p).", widget);
 
     const gchar *env_icon = g_getenv (ICON_OVERRIDE_VAR);
 
@@ -122,7 +125,7 @@ overridden_window_unrealize (GtkWidget *widget)
 {
     (* original_window_unrealize) (widget);
 
-    g_debug ("Unrealize overridden window (%p).", widget);
+    DEBUG ("Unrealize overridden window (%p).", widget);
 
     g_signal_handlers_disconnect_by_func (widget, window_icon_changed, widget);
 }
@@ -135,7 +138,7 @@ apply_window_icon_override (void)
     // I don't think these guards are necessary. This should only run once, but better off safe.
     if (!applied)
     {
-        g_debug ("XAPP_FORCE_GTKWINDOW_ICON found in environment, overriding the window icon with its contents");
+        DEBUG ("XAPP_FORCE_GTKWINDOW_ICON found in environment, overriding the window icon with its contents");
 
         applied = TRUE;
 
@@ -156,7 +159,7 @@ apply_sidebar_favorites_override (void)
 
     if (!applied)
     {
-        g_debug ("Adding a Favorites shortcut to GtkPlacesSideBars");
+        DEBUG ("Adding a Favorites shortcut to GtkPlacesSideBars");
 
         applied = TRUE;
 
@@ -169,7 +172,7 @@ apply_sidebar_favorites_override (void)
 }
 
 G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
-    g_debug ("Initializing XApp GtkModule");
+    DEBUG ("Initializing XApp GtkModule");
     // This won't instantiate XAppFavorites but will register the uri so
     // it can be used by apps (like pix which doesn't use the favorites api,
     // but just adds favorites:/// to its sidebar.)

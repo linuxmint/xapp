@@ -18,6 +18,11 @@ favorite_vfs_sources = [
   'favorite-vfs-file-monitor.c'
 ]
 
+xapp_debug = [
+    'xapp-debug.h',
+    'xapp-debug.c'
+]
+
 xapp_headers = [
     'xapp-favorites.h',
     'xapp-gtk-window.h',
@@ -95,7 +100,7 @@ xapp_enums = gnome.mkenums('xapp-enums',
 )
 
 libxapp = library('xapp',
-    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers + favorite_vfs_sources,
+    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers + favorite_vfs_sources + xapp_debug,
     include_directories: [top_inc],
     version: meson.project_version(),
     soversion: '1',

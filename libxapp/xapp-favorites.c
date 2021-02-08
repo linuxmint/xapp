@@ -19,6 +19,9 @@
 #include "xapp-favorites.h"
 #include "favorite-vfs-file.h"
 
+#define DEBUG_FLAG XAPP_DEBUG_FAVORITES
+#include "xapp-debug.h"
+
 #define FAVORITES_SCHEMA "org.x.apps.favorites"
 #define FAVORITES_KEY "list"
 #define SETTINGS_DELIMITER "::"
@@ -56,7 +59,7 @@ XAppFavorites *global_favorites;
 XAppFavoriteInfo *
 xapp_favorite_info_copy (const XAppFavoriteInfo *info)
 {
-    // g_debug ("XAppFavoriteInfo: copy");
+    // DEBUG ("XAppFavoriteInfo: copy");
     g_return_val_if_fail (info != NULL, NULL);
 
     XAppFavoriteInfo *_info = g_slice_dup (XAppFavoriteInfo, info);
@@ -78,7 +81,7 @@ xapp_favorite_info_copy (const XAppFavoriteInfo *info)
 void
 xapp_favorite_info_free (XAppFavoriteInfo *info)
 {
-    g_debug ("XAppFavoriteInfo free (%s)", info->uri);
+    DEBUG ("XAppFavoriteInfo free (%s)", info->uri);
     g_return_if_fail (info != NULL);
 
     g_free (info->uri);
@@ -125,7 +128,7 @@ changed_callback (gpointer data)
     XAppFavorites *favorites = XAPP_FAVORITES (data);
 
     XAppFavoritesPrivate *priv = xapp_favorites_get_instance_private (favorites);
-    g_debug ("XAppFavorites: list updated, emitting changed signal");
+    DEBUG ("XAppFavorites: list updated, emitting changed signal");
 
     priv->changed_timer_id = 0;
     g_signal_emit (favorites, signals[CHANGED], 0);
@@ -204,7 +207,7 @@ sync_file_metadata (XAppFavorites *favorites,
     GFileInfo *info;
     GFile *file;
 
-    g_debug ("Sync metadata: %s - Favorite? %d", uri, is_favorite);
+    DEBUG ("Sync metadata: %s - Favorite? %d", uri, is_favorite);
 
     info = g_file_info_new ();
 
@@ -264,7 +267,7 @@ store_favorites (XAppFavorites *favorites)
     g_settings_set_strv (priv->settings, FAVORITES_KEY, (const gchar* const*) new_settings);
     g_signal_handler_unblock (priv->settings, priv->settings_listener_id);
 
-    g_debug ("XAppFavorites: store_favorites: favorites saved");
+    DEBUG ("XAppFavorites: store_favorites: favorites saved");
 
     g_strfreev (new_settings);
 }
@@ -307,7 +310,7 @@ load_favorites (XAppFavorites *favorites,
 
     g_strfreev (raw_list);
 
-    g_debug ("XAppFavorites: load_favorite: favorites loaded (%d)", i);
+    DEBUG ("XAppFavorites: load_favorite: favorites loaded (%d)", i);
 
     if (signal_changed)
     {
@@ -404,7 +407,7 @@ remove_favorite (XAppFavorites *favorites,
 
     g_return_if_fail (real_uri != NULL);
 
-    g_debug ("XAppFavorites: remove favorite: %s", real_uri);
+    DEBUG ("XAppFavorites: remove favorite: %s", real_uri);
 
     // It may be orphaned for some reason.. even if it's not in gsettings, still try
     // to remove the favorite attribute.
@@ -412,7 +415,7 @@ remove_favorite (XAppFavorites *favorites,
 
     if (!g_hash_table_remove (priv->infos, real_uri))
     {
-        g_debug ("XAppFavorites: remove_favorite: could not find favorite for uri '%s'", real_uri);
+        DEBUG ("XAppFavorites: remove_favorite: could not find favorite for uri '%s'", real_uri);
         g_free (real_uri);
         return;
     }
@@ -596,7 +599,7 @@ finish_add_favorite (XAppFavorites *favorites,
     // Check if it's there again, in case it was added while we were getting mimetype.
     if (g_hash_table_contains (priv->infos, uri))
     {
-        g_debug ("XAppFavorites: favorite for '%s' exists, ignoring", uri);
+        DEBUG ("XAppFavorites: favorite for '%s' exists, ignoring", uri);
         return;
     }
 
@@ -611,7 +614,7 @@ finish_add_favorite (XAppFavorites *favorites,
 
     g_hash_table_insert (priv->infos, (gpointer) g_strdup (uri), (gpointer) info);
 
-    g_debug ("XAppFavorites: added favorite: %s", uri);
+    DEBUG ("XAppFavorites: added favorite: %s", uri);
 
     deduplicate_display_names (favorites, priv->infos);
 
@@ -644,7 +647,7 @@ on_content_type_info_received (GObject      *source,
 
     if (error)
     {
-        g_debug ("XAppFavorites: problem trying to figure out content type for uri '%s': %s",
+        DEBUG ("XAppFavorites: problem trying to figure out content type for uri '%s': %s",
                  uri, error->message);
         g_error_free (error);
     }
@@ -681,7 +684,7 @@ add_favorite (XAppFavorites *favorites,
 
     if (g_hash_table_contains (priv->infos, uri))
     {
-        g_debug ("XAppFavorites: favorite for '%s' exists, ignoring", uri);
+        DEBUG ("XAppFavorites: favorite for '%s' exists, ignoring", uri);
         return;
     }
 
@@ -711,7 +714,7 @@ xapp_favorites_init (XAppFavorites *favorites)
 {
     XAppFavoritesPrivate *priv = xapp_favorites_get_instance_private (favorites);
 
-    g_debug ("XAppFavorites: init:");
+    DEBUG ("XAppFavorites: init:");
 
     priv->settings = g_settings_new (FAVORITES_SCHEMA);
     priv->settings_listener_id = g_signal_connect (priv->settings,
@@ -728,7 +731,7 @@ xapp_favorites_dispose (GObject *object)
     XAppFavorites *favorites = XAPP_FAVORITES (object);
     XAppFavoritesPrivate *priv = xapp_favorites_get_instance_private (favorites);
 
-    g_debug ("XAppFavorites dispose (%p)", object);
+    DEBUG ("XAppFavorites dispose (%p)", object);
 
     g_clear_object (&priv->settings);
     g_clear_pointer (&priv->infos, g_hash_table_destroy);
@@ -739,7 +742,7 @@ xapp_favorites_dispose (GObject *object)
 static void
 xapp_favorites_finalize (GObject *object)
 {
-    g_debug ("XAppFavorites finalize (%p)", object);
+    DEBUG ("XAppFavorites finalize (%p)", object);
 
     G_OBJECT_CLASS (xapp_favorites_parent_class)->finalize (object);
 }
@@ -849,7 +852,7 @@ xapp_favorites_get_favorites (XAppFavorites  *favorites,
     ret = g_list_reverse (data.items);
 
     gchar *typestring = mimetypes ? g_strjoinv (", ", (gchar **) mimetypes) : NULL;
-    g_debug ("XAppFavorites: get_favorites returning list for mimetype '%s' (%d items)",
+    DEBUG ("XAppFavorites: get_favorites returning list for mimetype '%s' (%d items)",
              typestring, g_list_length (ret));
     g_free (typestring);
 
@@ -873,7 +876,7 @@ xapp_favorites_get_n_favorites (XAppFavorites *favorites)
 
     n = g_hash_table_size (priv->infos);
 
-    g_debug ("XAppFavorites: get_n_favorites returning number of items: %d.", n);
+    DEBUG ("XAppFavorites: get_n_favorites returning number of items: %d.", n);
 
     return n;
 }
@@ -1011,7 +1014,7 @@ launch_uri_callback (GObject      *source,
     {
         if (error)
         {
-            g_debug ("XAppFavorites: launch: error opening uri '%s': %s", uri, error->message);
+            DEBUG ("XAppFavorites: launch: error opening uri '%s': %s", uri, error->message);
             g_error_free (error);
         }
     }
