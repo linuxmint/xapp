@@ -1,3 +1,14 @@
+xapp (2.0.7) ulysa; urgency=medium
+
+  [ Michael Webster ]
+  * Don't build the gtk module for lib-only builds (flatpak).
+  * xapp-favorites.c: Don't crash trying to remove a previously-removed favorite.
+  * favorite-vfs-file-monitor.c: When handling folder updates, send out removals before additions.
+  * xapp-util: Add a function to check whether the session is fully active.
+  * xapp-sn-watcher.c: Skip the startup delay if the session has not finished loading.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 26 Feb 2021 10:59:48 +0000
+
 xapp (2.0.6) ulyssa; urgency=medium
 
   [ Michael Webster ]
