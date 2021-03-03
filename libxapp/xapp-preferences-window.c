@@ -61,6 +61,10 @@ xapp_preferences_window_init (XAppPreferencesWindow *window)
     gtk_box_pack_start (GTK_BOX (secondary_box), GTK_WIDGET (priv->side_switcher), FALSE, FALSE, 0);
     gtk_widget_set_no_show_all (GTK_WIDGET (priv->side_switcher), TRUE);
 
+    // XAppStackSidebar calls show_all on itself during its init, we need to hide
+    // it here so our single/multiple page mechanism here works properly.
+    gtk_widget_hide (GTK_WIDGET (priv->side_switcher));
+
     priv->stack = gtk_stack_new ();
     gtk_stack_set_transition_type (GTK_STACK (priv->stack), GTK_STACK_TRANSITION_TYPE_CROSSFADE);
     gtk_box_pack_start (GTK_BOX (secondary_box), priv->stack, TRUE, TRUE, 0);
