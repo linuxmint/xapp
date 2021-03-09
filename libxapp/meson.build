@@ -28,6 +28,7 @@ xapp_headers = [
     'xapp-stack-sidebar.h',
     'xapp-status-icon.h',
     'xapp-status-icon-monitor.h',
+    'xapp-style-manager.h',
     'xapp-util.h'
 ]
 
@@ -42,6 +43,7 @@ xapp_sources = [
     'xapp-stack-sidebar.c',
     'xapp-status-icon.c',
     'xapp-status-icon-monitor.c',
+    'xapp-style-manager.c',
     'xapp-util.c'
 ]
 
