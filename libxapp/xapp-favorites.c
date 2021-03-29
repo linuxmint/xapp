@@ -1191,6 +1191,8 @@ populate_menu (XAppFavorites *favorites,
                                data, (GClosureNotify) free_item_callback_data, 0);
     }
 
+    g_list_free_full (fav_list, (GDestroyNotify) xapp_favorite_info_free);
+
     gtk_widget_show_all (GTK_WIDGET (menu));
 }
 
