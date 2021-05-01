@@ -19,6 +19,9 @@ void               xapp_style_manager_set_style_property    (XAppStyleManager *s
 void               xapp_style_manager_remove_style_property (XAppStyleManager *style_manager,
                                                              const gchar      *name);
 
+void               xapp_style_manager_set_from_pango_font_string (XAppStyleManager *style_manager,
+                                                                  const gchar      *desc_string);
+
 G_END_DECLS
 
 #endif  /* __XAPP_STYLE_MANAGER_H__  */

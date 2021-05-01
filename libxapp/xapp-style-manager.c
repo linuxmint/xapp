@@ -1,4 +1,5 @@
 #include "xapp-style-manager.h"
+#include "xapp-util.h"
 
 /**
  * SECTION:xapp-style-manager
@@ -253,4 +254,23 @@ xapp_style_manager_remove_style_property (XAppStyleManager *style_manager,
     g_hash_table_remove (style_manager->properties, name);
 
     process_property_list_update (style_manager);
+}
+
+/**
+ * xapp_style_manager_set_from_pango_font_string:
+ * @style_manager: a #XAppStyleManager
+ * @desc_string: a pango font description string
+ *
+ * Sets the css font property on the widget based on the supplied pango font description string.
+ *
+ * Since: 2.2
+ */
+void
+xapp_style_manager_set_from_pango_font_string (XAppStyleManager *style_manager,
+                                                     const gchar      *desc_string)
+{
+    gchar *css_string = xapp_pango_font_string_to_css (desc_string);
+
+    xapp_style_manager_set_style_property (style_manager, "font", css_string);
+    g_free (css_string);
 }
