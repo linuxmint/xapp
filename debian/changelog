@@ -1,3 +1,16 @@
+xapp (2.2.0) uma; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-preferences-window.c: Hide the sidebar switcher initially to prevent it showing even with single-page views.
+  * all: Add debug topics.
+  * xapp-favorites.c: Free the favorite list when building a GtkMenu.
+
+  [ Stephen Collins ]
+  * Add a class to programmatically set styling on a particular widget.
+  * util: add a utility function to convert from a pango font string to css (#135)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 27 May 2021 09:36:10 +0100
+
 xapp (2.0.7) ulysa; urgency=medium
 
   [ Michael Webster ]
