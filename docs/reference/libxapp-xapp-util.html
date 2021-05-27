@@ -38,14 +38,32 @@
 <col width="150px" class="functions_proto_type">
 <col class="functions_proto_name">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="function_type">
 <a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 </td>
 <td class="function_name">
 <a class="link" href="libxapp-xapp-util.html#xapp-util-gpu-offload-supported" title="xapp_util_gpu_offload_supported ()">xapp_util_gpu_offload_supported</a> <span class="c_punctuation">()</span>
 </td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libxapp-xapp-util.html#xapp-util-get-session-is-running" title="xapp_util_get_session_is_running ()">xapp_util_get_session_is_running</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libxapp-xapp-util.html#xapp-pango-font-string-to-css" title="xapp_pango_font_string_to_css ()">xapp_pango_font_string_to_css</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -64,6 +82,45 @@ is supported.</p>
 <p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if supported.</p>
 </div>
 <p class="since">Since: 1.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-util-get-session-is-running"></a><h3>xapp_util_get_session_is_running ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_util_get_session_is_running (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Check if the Session Manager is currently in the "Running" phase.</p>
+<div class="refsect3">
+<a name="xapp-util-get-session-is-running.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session is running.</p>
+</div>
+<p class="since">Since: 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-pango-font-string-to-css"></a><h3>xapp_pango_font_string_to_css ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+xapp_pango_font_string_to_css (<em class="parameter"><code>const <span class="type">char</span> *pango_font_string</code></em>);</pre>
+<p>Converts a pango font description string to a string suitable for use with the css "font" tag. The font description must contain the font family and font size or conversion will fail and <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned</p>
+<div class="refsect3">
+<a name="xapp-pango-font-string-to-css.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>pango_font_string</p></td>
+<td class="parameter_description"><p>a pango font description string</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-pango-font-string-to-css.returns"></a><h4>Returns</h4>
+<p> (transfer full) the css compatible font string or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the conversion failed.</p>
+</div>
+<p class="since">Since: 2.2</p>
 </div>
 </div>
 </div>

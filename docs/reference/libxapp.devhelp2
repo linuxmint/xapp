@@ -229,6 +229,8 @@
     <keyword type="signal" name="The “handle-button-release” signal" link="XAppObjectManagerClient.html#XAppStatusIconInterface-handle-button-release"/>
     <keyword type="signal" name="The “handle-scroll” signal" link="XAppObjectManagerClient.html#XAppStatusIconInterface-handle-scroll"/>
     <keyword type="function" name="xapp_util_gpu_offload_supported ()" link="libxapp-xapp-util.html#xapp-util-gpu-offload-supported" since="1.8"/>
+    <keyword type="function" name="xapp_util_get_session_is_running ()" link="libxapp-xapp-util.html#xapp-util-get-session-is-running" since="2.0"/>
+    <keyword type="function" name="xapp_pango_font_string_to_css ()" link="libxapp-xapp-util.html#xapp-pango-font-string-to-css" since="2.2"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_16" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-16:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_22" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-22:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_24" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-24:CAPS"/>
