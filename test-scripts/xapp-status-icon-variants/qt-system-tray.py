@@ -5,71 +5,68 @@
 from PySide2.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QAction
 from PySide2.QtGui import QIcon, QPixmap
 
-icon_type = "theme"
-tic_toc = False
+class App(QApplication):
+    def __init__(self):
+        super(App, self).__init__([])
 
-app = QApplication([])
-app.setQuitOnLastWindowClosed(False)
+        self.icon_type = "theme"
+        self.tic_toc = False
 
-icon = QIcon.fromTheme("dialog-warning")
-tray = QSystemTrayIcon()
-tray.setIcon(icon)
+        self.setQuitOnLastWindowClosed(False)
 
-tray.setVisible(True)
+        self.tray = QSystemTrayIcon()
+        self.tray.setIcon(QIcon.fromTheme("dialog-warning"))
+        self.tray.setVisible(True)
 
+        self.menu = QMenu()
 
-def use_icon_theme(item):
-    global icon_type
-    icon_type = "theme"
+        entry = "Use icon name"
+        action = QAction(entry)
+        action.triggered.connect(self.use_icon_theme)
+        self.menu.addAction(action)
 
-def use_icon_file(item):
-    global icon_type
-    icon_type = "file"
+        entry = "Use icon file"
+        action2 = QAction(entry)
+        action2.triggered.connect(self.use_icon_file)
+        self.menu.addAction(action2)
 
-def use_icon_pixels(item):
-    global icon_type
-    icon_type = "pixels"
+        entry = "Use icon pixels"
+        action3 = QAction(entry)
+        action3.triggered.connect(self.use_icon_pixels)
+        self.menu.addAction(action3)
 
-def icon_activated(reason):
-    global tic_toc
-    global icon_type
-    if icon_type == "theme":
-        icon = QIcon.fromTheme("dialog-warning" if tic_toc else "dialog-error")
-        tic_toc = not tic_toc
-        tray.setIcon(icon)
-    elif icon_type == "file":
-        icon = QIcon("./dialog-warning.png" if tic_toc else "./dialog-error.png")
-        tic_toc = not tic_toc
-        tray.setIcon(icon)
-    else:
-        pixmap = QPixmap("./dialog-warning.png" if tic_toc else "./dialog-error.png")
-        tic_toc = not tic_toc
-        icon = QIcon(pixmap)
-        tray.setIcon(icon)
+        entry = "Quit"
+        action4 = QAction(entry)
+        action4.triggered.connect(self.quit)
+        self.menu.addAction(action4)
 
-menu = QMenu()
+        self.tray.setContextMenu(self.menu)
+        self.tray.activated.connect(self.icon_activated)
+        self.exec_()
 
-entry = "Use icon name"
-action = QAction(entry)
-action.triggered.connect(use_icon_theme)
-menu.addAction(action)
+    def use_icon_theme(self, item):
+        self.icon_type = "theme"
 
-entry = "Use icon file"
-action2 = QAction(entry)
-action2.triggered.connect(use_icon_file)
-menu.addAction(action2)
+    def use_icon_file(self, item):
+        self.icon_type = "file"
 
-entry = "Use icon pixels"
-action3 = QAction(entry)
-action3.triggered.connect(use_icon_pixels)
-menu.addAction(action3)
+    def use_icon_pixels(self, item):
+        self.icon_type = "pixels"
 
-entry = "Quit"
-action4 = QAction(entry)
-action4.triggered.connect(app.quit)
-menu.addAction(action4)
+    def icon_activated(self, reason):
+        if self.icon_type == "theme":
+            icon = QIcon.fromTheme("dialog-warning" if self.tic_toc else "dialog-error")
+            self.tray.setIcon(icon)
+            self.tic_toc = not self.tic_toc
+        elif self.icon_type == "file":
+            icon = QIcon("./dialog-warning.png" if self.tic_toc else "./dialog-error.png")
+            self.tray.setIcon(icon)
+            self.tic_toc = not self.tic_toc
+        else:
+            pixmap = QPixmap("./dialog-warning.png" if self.tic_toc else "./dialog-error.png")
+            icon = QIcon(pixmap)
+            self.tray.setIcon(icon)
+            self.tic_toc = not self.tic_toc
 
-tray.setContextMenu(menu)
-tray.activated.connect(icon_activated)
-
-app.exec_()
+if __name__ == '__main__':
+    app = App()
