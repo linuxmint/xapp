@@ -1,3 +1,17 @@
+xapp (2.2.1) uma; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update docs
+
+  [ Michael Webster ]
+  * test-scripts: Add a QSystemTrayIcon script.
+  * qt-system-tray.py: use a class.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 10 Jun 2021 11:02:16 +0100
+
 xapp (2.2.0) uma; urgency=medium
 
   [ Michael Webster ]
