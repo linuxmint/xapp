@@ -1,25 +1,26 @@
-# Berber (Other) translation for linuxmint
-# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
+# Latin translation for linuxmint
+# Copyright (c) 2021 Rosetta Contributors and Canonical Ltd 2021
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-09-19 07:20+0000\n"
-"Last-Translator: Hakim Oubouali <Unknown>\n"
-"Language-Team: Berber (Other) <ber@li.org>\n"
+"PO-Revision-Date: 2021-04-05 15:51+0000\n"
+"Last-Translator: Davide Novemila <Unknown>\n"
+"Language-Team: Latin <la@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2021-06-09 14:22+0000\n"
 "X-Generator: Launchpad (build b45bdbe3a00b6b668fa7f2069bd545c35c41f7f4)\n"
+"Language: la\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr ""
+msgstr "Praeposita"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,145 +29,145 @@ msgstr ""
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operatio non tolerata"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr ""
+msgstr "Amplitudo iconum"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr ""
+msgstr "Praeposita amplitudo iconum."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "ⵜⴰⵢⴽⵓⵏⵜ"
+msgstr "Icon"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "Stringa iconem figurans."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "ⴰⵙⵎⵉⵍ"
+msgstr "Genus"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Genus praedesignatum."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr ""
+msgstr "Actiones"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "ⵜⵉⵙⵏⵙⵉⵡⵉⵏ"
+msgstr "Applicationes"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "ⵉⵙⵎⵉⵍⵏ"
+msgstr "Genera"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "ⴰⵍⵍⴰⵍⵏ"
+msgstr "Apparatus"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr ""
+msgstr "Emblemata"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "ⵉⵎⵓⵊⵉ"
+msgstr "Emotica"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr ""
+msgstr "Mime typi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "ⵉⴷⵖⴰⵔⵏ"
+msgstr "Loci"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "ⴰⴷⴷⴰⴷ"
+msgstr "Status"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "ⵢⴰⴹⵏ"
+msgstr "Alia"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "ⴷⵖⵔ ⵢⴰⵜ ⵏ ⵜⴰⵢⴽⵓⵏⵜ"
+msgstr "Iconem elige"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "ⵔⵣⵓ"
+msgstr "Quaere"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr ""
+msgstr "Naviga"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr ""
+msgstr "Legens ..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr ""
+msgstr "Praedesignata"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "ⵙⵜⵢ"
+msgstr "Elige"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "ⵙⵔ"
+msgstr "Interrumpe"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr ""
+msgstr "Itinera Permitte"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Si itinera permittuntur."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr ""
+msgstr "Icon praedesignata"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Icon si alia non electa"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "ⵙⵜⵢ ⴰⴼⴰⵢⵍⵓ ⵏ ⵜⵡⵍⴰⴼⵜ"
+msgstr "Plica imaginis elige"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "ⵕⵥⵎ"
+msgstr "Aperi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "ⵜⴰⵡⵍⴰⴼⵜ"
+msgstr "Imago"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "ⵅⴼ"
+msgstr "Circa"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Area ubi XApp icon status apparet"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "Miniapplicationis XApp Status Officina"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "Miniapplicatio XApp Status"

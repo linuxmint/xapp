@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2019-05-07 11:39+0000\n"
+"PO-Revision-Date: 2021-01-04 21:21+0000\n"
 "Last-Translator: Silvara <Unknown>\n"
 "Language-Team: Interlingue <ie@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-01-02 14:18+0000\n"
-"X-Generator: Launchpad (build 34b3ffd45c9543b7f7aa5aa313925241e9e7ca3f)\n"
+"X-Launchpad-Export-Date: 2021-06-09 14:22+0000\n"
+"X-Generator: Launchpad (build b45bdbe3a00b6b668fa7f2069bd545c35c41f7f4)\n"
 "Language: ie\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr ""
+msgstr "Li preferet"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -29,7 +29,7 @@ msgstr ""
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "Li operation es ínsupportat"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
@@ -51,11 +51,11 @@ msgstr "Li catene representante li icone"
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr ""
+msgstr "Categorie"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Li predefinit categorie"
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
@@ -115,7 +115,7 @@ msgstr "Cargante..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr ""
+msgstr "Predefinit"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
@@ -136,11 +136,11 @@ msgstr "Ca permisser rutes."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr ""
+msgstr "Li predefinit icone"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Li predefinit icone."
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
@@ -156,7 +156,7 @@ msgstr "Image"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr ""
+msgstr "Pri"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7

@@ -1,16 +1,16 @@
-# Berber (Other) translation for linuxmint
-# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
+# Belarusian translation for linuxmint
+# Copyright (c) 2021 Rosetta Contributors and Canonical Ltd 2021
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-09-19 07:20+0000\n"
-"Last-Translator: Hakim Oubouali <Unknown>\n"
-"Language-Team: Berber (Other) <ber@li.org>\n"
+"PO-Revision-Date: 2021-05-23 11:49+0000\n"
+"Last-Translator: Anton Hryb <Unknown>\n"
+"Language-Team: Belarusian <be@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr ""
+msgstr "Абраныя"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,145 +28,145 @@ msgstr ""
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "Аперацыя не падтрымліваецца"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr ""
+msgstr "Памер значка"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr ""
+msgstr "Пераважны памер значка."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "ⵜⴰⵢⴽⵓⵏⵜ"
+msgstr "Значок"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "Радок, які прадстаўляе значок."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "ⴰⵙⵎⵉⵍ"
+msgstr "Катэгорыя"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Катэгорыя па змаўчанні."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr ""
+msgstr "Дзеянні"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "ⵜⵉⵙⵏⵙⵉⵡⵉⵏ"
+msgstr "Праграмы"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "ⵉⵙⵎⵉⵍⵏ"
+msgstr "Катэгорыі"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "ⴰⵍⵍⴰⵍⵏ"
+msgstr "Прылады"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr ""
+msgstr "Эмблемы"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "ⵉⵎⵓⵊⵉ"
+msgstr "Эмодзі"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr ""
+msgstr "Тыпы міма"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "ⵉⴷⵖⴰⵔⵏ"
+msgstr "Месцы"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "ⴰⴷⴷⴰⴷ"
+msgstr "Стан"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "ⵢⴰⴹⵏ"
+msgstr "Іншае"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "ⴷⵖⵔ ⵢⴰⵜ ⵏ ⵜⴰⵢⴽⵓⵏⵜ"
+msgstr "Выберыце значок"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "ⵔⵣⵓ"
+msgstr "Пошук"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr ""
+msgstr "Аглядзець"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr ""
+msgstr "Перадвызначана"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "ⵙⵜⵢ"
+msgstr "Выбраць"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "ⵙⵔ"
+msgstr "Скасаваць"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr ""
+msgstr "Дазволіць шляхі"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Ці дазваляць шляхі."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr ""
+msgstr "Перадвызначаны значок"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Значок выкарыстоўваецца па змаўчанні"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "ⵙⵜⵢ ⴰⴼⴰⵢⵍⵓ ⵏ ⵜⵡⵍⴰⴼⵜ"
+msgstr "Выбраць выяву"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "ⵕⵥⵎ"
+msgstr "Адчыніць"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "ⵜⴰⵡⵍⴰⴼⵜ"
+msgstr "Выява"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "ⵅⴼ"
+msgstr "Аб праграме"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Вобласць, у якой з'яўляецца XApp стан значка"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp Status Applet Factory"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp Status Applet"
