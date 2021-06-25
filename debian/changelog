@@ -1,3 +1,9 @@
+xapp (2.2.2) uma; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 25 Jun 2021 15:15:38 +0100
+
 xapp (2.2.1) uma; urgency=medium
 
   [ Clement Lefebvre ]
