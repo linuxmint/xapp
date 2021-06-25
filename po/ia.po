@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-08-02 07:18+0000\n"
+"PO-Revision-Date: 2021-06-25 04:45+0000\n"
 "Last-Translator: karm <melo@carmu.com>\n"
 "Language-Team: Interlingua <ia@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-06-09 14:21+0000\n"
-"X-Generator: Launchpad (build b45bdbe3a00b6b668fa7f2069bd545c35c41f7f4)\n"
+"X-Launchpad-Export-Date: 2021-06-25 10:43+0000\n"
+"X-Generator: Launchpad (build 40cc6dba4163ba9ca785b26ad91f43c87d70ba4d)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr ""
+msgstr "Favoritos"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,7 +28,7 @@ msgstr ""
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operation non supportate"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
@@ -161,11 +161,11 @@ msgstr "A  proposito"
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Area ubi appare le icone de stato de XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "Fabrica de applet XApp Status"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"

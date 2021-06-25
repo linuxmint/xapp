@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-01-10 09:50+0000\n"
+"PO-Revision-Date: 2021-06-15 14:14+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-06-09 14:22+0000\n"
-"X-Generator: Launchpad (build b45bdbe3a00b6b668fa7f2069bd545c35c41f7f4)\n"
+"X-Launchpad-Export-Date: 2021-06-25 10:43+0000\n"
+"X-Generator: Launchpad (build 40cc6dba4163ba9ca785b26ad91f43c87d70ba4d)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -28,17 +28,17 @@ msgstr "מועדפים"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "הפעלה לא נתמכת"
+msgstr "הפעולה לא נתמכת"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "גודל סמלים"
+msgstr "גודל סמל"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "גודל הסמלים המועדף."
+msgstr "גודל הסמל המועדף."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -50,11 +50,11 @@ msgstr "המחרוזת המייצגת את הסמל."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "קטגורייה"
+msgstr "סוג־אב"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "קטגוריית ברירת המחדל."
+msgstr "סוג־אב ברירת המחדל."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
@@ -62,19 +62,19 @@ msgstr "פעולות"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "אפליקציות"
+msgstr "יישומים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "קטגוריות"
+msgstr "סוגי-אב"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "מכשירים"
+msgstr "התקנים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "סמלונים"
+msgstr "סמלים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
@@ -86,7 +86,7 @@ msgstr "סוגי Mime"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "מיקומים"
+msgstr "מקומות"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
@@ -98,19 +98,19 @@ msgstr "אחר"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "בחר סמל"
+msgstr "בחירת סמל"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "חפש"
+msgstr "חיפוש"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "סייר"
+msgstr "דפדוף"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "טוען..."
+msgstr "טעינה…"
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
@@ -118,16 +118,16 @@ msgstr "ברירת מחדל"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "בחר"
+msgstr "בחירה"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "בטל"
+msgstr "ביטול"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "הרשה נתיבים"
+msgstr "אפשור נתיבים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
@@ -139,15 +139,15 @@ msgstr "סמל ברירת מחדל"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "סמל ברירת מחדל לשימוש"
+msgstr "סמל לשימוש כברירת מחדל"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "בחר קובץ תמונה"
+msgstr "בחירת קובץ תמונה"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "פתח"
+msgstr "פתיחה"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
@@ -161,7 +161,7 @@ msgstr "אודות"
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "אזור שבו יופיעו סמלי מצב של XApp"
+msgstr "אזור שבו יופיעו סמלי מצב XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
