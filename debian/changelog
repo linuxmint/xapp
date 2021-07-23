@@ -1,3 +1,11 @@
+xapp (2.2.3) uma; urgency=medium
+
+  [ Michael Webster ]
+  * mate status applet: Change icon name in applet definition file, and add a new icon to the xapp hicolor set.
+  * Fix mate status icon.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 23 Jul 2021 12:21:14 +0100
+
 xapp (2.2.2) uma; urgency=medium
 
   * l10n: Update translations
