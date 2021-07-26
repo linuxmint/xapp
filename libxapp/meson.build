@@ -129,6 +129,7 @@ gir = gnome.generate_gir(libxapp,
     sources: xapp_headers + xapp_sources + dbus_headers + xapp_enums,
     identifier_prefix: 'XApp',
     symbol_prefix: 'xapp_',
+    export_packages: 'xapp',
     includes: ['GObject-2.0', 'Gtk-3.0'],
     install: true
 )
