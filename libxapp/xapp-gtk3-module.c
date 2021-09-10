@@ -98,13 +98,12 @@ overridden_window_realize (GtkWidget *widget)
 {
     (* original_window_realize) (widget);
 
-    static gint already_applied = 0;
-    if (already_applied)
+    if (g_object_get_data (G_OBJECT (widget), "xapp-module-window-seen"))
     {
         return;
     }
 
-    already_applied = 1;
+    g_object_set_data (G_OBJECT (widget), "xapp-module-window-seen", GINT_TO_POINTER (1));
 
     DEBUG ("Realize overridden window (%p).", widget);
 
