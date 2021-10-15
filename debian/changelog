@@ -1,3 +1,13 @@
+xapp (2.2.4) uma; urgency=medium
+
+  [ Joshua Peisach ]
+  * meson gir: Export 'xapp' as a package
+
+  [ Michael Webster ]
+  * xapp-gtk3-module.c: Apply window icon override to all windows for an app.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 15 Oct 2021 15:43:58 +0100
+
 xapp (2.2.3) uma; urgency=medium
 
   [ Michael Webster ]
