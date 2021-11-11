@@ -112,7 +112,7 @@ xapp_util_get_session_is_running (void)
  *
  * Converts a pango font description string to a string suitable for use with the css "font" tag. The font description must contain the font family and font size or conversion will fail and %NULL will be returned
  *
- * Returns: (transfer full) the css compatible font string or %NULL if the conversion failed.
+ * Returns: (transfer full): the css compatible font string or %NULL if the conversion failed.
  *
  * Since: 2.2
  */

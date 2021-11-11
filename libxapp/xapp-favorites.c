@@ -844,7 +844,7 @@ xapp_favorites_get_favorites (XAppFavorites       *favorites,
     MatchData data;
 
     data.items = NULL;
-    data.mimetypes = mimetypes;
+    data.mimetypes = (const gchar **) mimetypes;
     g_hash_table_foreach (priv->infos,
                           (GHFunc) match_mimetypes,
                           &data);
