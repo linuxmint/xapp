@@ -824,7 +824,7 @@ match_mimetypes (gpointer key,
 /**
  * xapp_favorites_get_favorites:
  * @favorites: The #XAppFavorites
- * @mimetypes: (nullable): The mimetypes to filter by for results
+ * @mimetypes: (nullable) (array zero-terminated=1): The mimetypes to filter by for results
  *
  * Gets a list of all favorites.  If mimetype is not %NULL, the list will
  * contain only favorites with that mimetype.
@@ -835,8 +835,8 @@ match_mimetypes (gpointer key,
  * Since: 2.0
  */
 GList *
-xapp_favorites_get_favorites (XAppFavorites  *favorites,
-                              const gchar   **mimetypes)
+xapp_favorites_get_favorites (XAppFavorites       *favorites,
+                              const gchar * const *mimetypes)
 {
     g_return_val_if_fail (XAPP_IS_FAVORITES (favorites), NULL);
     XAppFavoritesPrivate *priv = xapp_favorites_get_instance_private (favorites);

@@ -16,8 +16,8 @@ typedef struct _XAppFavoriteInfo XAppFavoriteInfo;
 G_DECLARE_FINAL_TYPE (XAppFavorites, xapp_favorites, XAPP, FAVORITES, GObject)
 
 XAppFavorites        *xapp_favorites_get_default            (void);
-GList                *xapp_favorites_get_favorites          (XAppFavorites *favorites,
-                                                             const gchar  **mimetypes);
+GList                *xapp_favorites_get_favorites          (XAppFavorites       *favorites,
+                                                             const gchar * const *mimetypes);
 gint                  xapp_favorites_get_n_favorites        (XAppFavorites *favorites);
 XAppFavoriteInfo     *xapp_favorites_find_by_display_name   (XAppFavorites *favorites,
                                                              const gchar   *display_name);
