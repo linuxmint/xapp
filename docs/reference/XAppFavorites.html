@@ -230,7 +230,7 @@ xapp_favorites_get_default (<em class="parameter"><code><span class="type">void<
 <a name="xapp-favorites-get-favorites"></a><h3>xapp_favorites_get_favorites ()</h3>
 <pre class="programlisting"><a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
 xapp_favorites_get_favorites (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                              <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimetypes</code></em>);</pre>
+                              <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *mimetypes</code></em>);</pre>
 <p>Gets a list of all favorites.  If mimetype is not <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the list will
 contain only favorites with that mimetype.</p>
 <div class="refsect3">
@@ -250,7 +250,7 @@ contain only favorites with that mimetype.</p>
 <tr>
 <td class="parameter_name"><p>mimetypes</p></td>
 <td class="parameter_description"><p>The mimetypes to filter by for results. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></td>
 </tr>
 </tbody>
 </table></div>
