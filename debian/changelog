@@ -1,3 +1,11 @@
+xapp (2.2.5) una; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-favorites: Fix introspection notation for _get_favorites().
+  * Fix a couple of build warnings.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 22 Nov 2021 12:30:12 +0000
+
 xapp (2.2.4) uma; urgency=medium
 
   [ Joshua Peisach ]
