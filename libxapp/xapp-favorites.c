@@ -470,7 +470,7 @@ deduplicate_display_names (XAppFavorites *favorites,
     while (g_hash_table_iter_next (&iter, &key, &value))
     {
         GList *same_names_list, *uri_ptr;
-        const gchar *common_display_name;
+        gchar *common_display_name = NULL;
 
         if (((GList *) value)->next == NULL)
         {
@@ -480,7 +480,7 @@ deduplicate_display_names (XAppFavorites *favorites,
         }
         // Now we know we have a list of uris that would have identical display names
         // Add a part of the uri after each to distinguish them.
-        common_display_name = (const gchar *) key;
+        common_display_name = g_uri_unescape_string ((const gchar *) key, NULL);
         same_names_list = (GList *) value;
 
         for (uri_ptr = same_names_list; uri_ptr != NULL; uri_ptr = uri_ptr->next)
@@ -578,6 +578,7 @@ deduplicate_display_names (XAppFavorites *favorites,
             info->display_name = g_string_free (new_display_string, FALSE);
         }
 
+        g_free (common_display_name);
         g_list_free_full (same_names_list, g_free);
     }
 
