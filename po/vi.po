@@ -1,16 +1,16 @@
-# Occitan (post 1500) translation for linuxmint
-# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
+# Vietnamese translation for linuxmint
+# Copyright (c) 2021 Rosetta Contributors and Canonical Ltd 2021
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-12-05 15:48+0000\n"
-"Last-Translator: Quentin PAGÈS <Unknown>\n"
-"Language-Team: Occitan (post 1500) <oc@li.org>\n"
+"PO-Revision-Date: 2021-09-13 01:28+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Favorits"
+msgstr ""
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,134 +28,134 @@ msgstr "Favorits"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Operacion pas presa en carga"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Talha d'icòna"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "La talha d’icòna preferida."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Icòna"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Lo tèxt representant l’icòna."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Categoria"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Categoria per defaut."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Accions"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Aplicacions"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Categorias"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Periferics"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Emblèmas"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Emoji"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Tipes MIME"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Emplaçaments"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Estat"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Autre"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Causir una icòna"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Recercar"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Percórrer"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Cargament..."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Per defaut"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Seleccionar"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Anullar"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Permetre los camins"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Se cal permetre los camins."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Icòna per defaut"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "L’icòna d’utilizar per defaut"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Seleccionar un fichièr imatge"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Dobrir"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Imatge"
+msgstr ""
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "A prepaus"
+msgstr ""
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7

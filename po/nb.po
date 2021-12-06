@@ -1,16 +1,16 @@
-# Occitan (post 1500) translation for linuxmint
-# Copyright (c) 2020 Rosetta Contributors and Canonical Ltd 2020
+# Norwegian Bokmal translation for linuxmint
+# Copyright (c) 2021 Rosetta Contributors and Canonical Ltd 2021
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-12-05 15:48+0000\n"
-"Last-Translator: Quentin PAGÈS <Unknown>\n"
-"Language-Team: Occitan (post 1500) <oc@li.org>\n"
+"PO-Revision-Date: 2021-07-09 12:38+0000\n"
+"Last-Translator: André Savik <Unknown>\n"
+"Language-Team: Norwegian Bokmal <nb@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Favorits"
+msgstr "Favoritter"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,53 +28,53 @@ msgstr "Favorits"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Operacion pas presa en carga"
+msgstr "Operasjonen er ikke støttet"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Talha d'icòna"
+msgstr "Ikonstørrelse"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "La talha d’icòna preferida."
+msgstr "Foretrukket ikonstørrelse"
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Icòna"
+msgstr "Ikon"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Lo tèxt representant l’icòna."
+msgstr "Tekst som beskriver ikonet"
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Categoria"
+msgstr "Kategori"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Categoria per defaut."
+msgstr "Standardkategori"
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Accions"
+msgstr "Handlinger"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Aplicacions"
+msgstr "Applikasjoner"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Categorias"
+msgstr "Kategorier"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Periferics"
+msgstr "Enheter"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Emblèmas"
+msgstr "Emblemer"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
@@ -82,91 +82,91 @@ msgstr "Emoji"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Tipes MIME"
+msgstr "Mimetyper"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Emplaçaments"
+msgstr "Steder"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Estat"
+msgstr "Status"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Autre"
+msgstr "Annet"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Causir una icòna"
+msgstr "Velg et ikon"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Recercar"
+msgstr "Søk"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Percórrer"
+msgstr "Bla gjennom"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Cargament..."
+msgstr "Laster …"
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Per defaut"
+msgstr "Standard"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Seleccionar"
+msgstr "Velg"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Anullar"
+msgstr "Avbryt"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Permetre los camins"
+msgstr "Tillat filbaner"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Se cal permetre los camins."
+msgstr "Om filbaner skal tillates"
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Icòna per defaut"
+msgstr "Standardikon"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "L’icòna d’utilizar per defaut"
+msgstr "Ikonset som brukes som forvalg"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Seleccionar un fichièr imatge"
+msgstr "Velg bildefil"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Dobrir"
+msgstr "Åpne"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Imatge"
+msgstr "Bilde"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "A prepaus"
+msgstr "Om"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Området hvor XApps statusikoner vises"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "Kilde for XApp-status-app"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp-status-app"

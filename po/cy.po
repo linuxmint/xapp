@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-11-30 19:08+0000\n"
-"Last-Translator: Rhoslyn Prys <rprys@posteo.net>\n"
+"PO-Revision-Date: 2021-10-28 15:45+0000\n"
+"Last-Translator: Rhoslyn Prys <Unknown>\n"
 "Language-Team: Welsh <cy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-06-25 10:43+0000\n"
-"X-Generator: Launchpad (build 40cc6dba4163ba9ca785b26ad91f43c87d70ba4d)\n"
+"X-Launchpad-Export-Date: 2021-12-06 15:07+0000\n"
+"X-Generator: Launchpad (build f92b6e0bb2624f8a9125e3f45b7621c6e230c5ff)\n"
 "Language: cy\n"
 
 #: libxapp/favorite-vfs-file.c:463
@@ -111,7 +111,7 @@ msgstr "Pori"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Llwytho..."
+msgstr "Yn llwytho..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
@@ -136,7 +136,7 @@ msgstr "P'un ai i ganiatáu llwybrau."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Eicon rhaqgosodedig"
+msgstr "Eicon rhagosodedig"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-06-15 14:14+0000\n"
+"PO-Revision-Date: 2021-11-29 07:57+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-06-25 10:43+0000\n"
-"X-Generator: Launchpad (build 40cc6dba4163ba9ca785b26ad91f43c87d70ba4d)\n"
+"X-Launchpad-Export-Date: 2021-12-06 15:07+0000\n"
+"X-Generator: Launchpad (build f92b6e0bb2624f8a9125e3f45b7621c6e230c5ff)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -46,7 +46,7 @@ msgstr "סמל"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "המחרוזת המייצגת את הסמל."
+msgstr "המחרוזת שמייצגת את הסמל."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
@@ -78,11 +78,11 @@ msgstr "סמלים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "אימוג'י"
+msgstr "רגושון"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "סוגי Mime"
+msgstr "סוגי MIME"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
@@ -131,7 +131,7 @@ msgstr "אפשור נתיבים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "האם להרשות נתיבים"
+msgstr "האם לאפשר נתיבים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
@@ -155,7 +155,7 @@ msgstr "תמונה"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "אודות"
+msgstr "על אודות"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
@@ -165,8 +165,8 @@ msgstr "אזור שבו יופיעו סמלי מצב XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "מפעל יישומון מצב XApp"
+msgstr "מצב מפעל יישומוני־לוח XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "יישומון מצב XApp"
+msgstr "יישומון־לוח מצב XApp"
