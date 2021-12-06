@@ -1,3 +1,16 @@
+xapp (2.2.6) una; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update documentation
+
+  [ Michael Webster ]
+  * xapp-favorites.c: Unescape the file uri before using it for display.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 06 Dec 2021 15:54:47 +0000
+
 xapp (2.2.5) una; urgency=medium
 
   [ Michael Webster ]
