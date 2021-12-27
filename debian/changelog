@@ -1,3 +1,9 @@
+xapp (2.2.7) una; urgency=medium
+
+  * icons: Add xapp-view-fit-height-symbolic and xapp-view-fit-width-symbolic
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 27 Dec 2021 13:09:50 +0000
+
 xapp (2.2.6) una; urgency=medium
 
   [ Clement Lefebvre ]
