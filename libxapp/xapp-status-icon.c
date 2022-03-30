@@ -639,7 +639,7 @@ on_gtk_status_icon_button_press (GtkStatusIcon *status_icon,
     return GDK_EVENT_PROPAGATE;
 }
 
-static void
+static gboolean
 on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
                                    GdkEvent      *event,
                                    gpointer       user_data)
@@ -686,6 +686,62 @@ on_gtk_status_icon_button_release (GtkStatusIcon *status_icon,
                    button,
                    _time,
                    orientation);
+
+    return GDK_EVENT_PROPAGATE;
+}
+
+static gboolean
+on_gtk_status_icon_scroll (GtkStatusIcon *status_icon,
+                           GdkEvent      *event,
+                           gpointer       user_data)
+{
+    XAppStatusIcon *icon = user_data;
+    guint _time;
+
+    _time = event->scroll.time;
+    GdkScrollDirection direction;
+
+
+    if (gdk_event_get_scroll_direction (event, &direction))
+    {
+        XAppScrollDirection x_dir = XAPP_SCROLL_UP;
+        gint delta = 0;
+
+        if (direction != GDK_SCROLL_SMOOTH) {
+            if (direction == GDK_SCROLL_UP)
+            {
+                x_dir = XAPP_SCROLL_UP;
+                delta = -1;
+            }
+            else if (direction == GDK_SCROLL_DOWN)
+            {
+                x_dir = XAPP_SCROLL_DOWN;
+                delta = 1;
+            }
+            else if (direction == GDK_SCROLL_LEFT)
+            {
+                x_dir = XAPP_SCROLL_LEFT;
+                delta = -1;
+            }
+            else if (direction == GDK_SCROLL_RIGHT)
+            {
+                x_dir = XAPP_SCROLL_RIGHT;
+                delta = 1;
+            }
+        }
+
+        DEBUG ("Received Scroll from GtkStatusIcon %s: "
+               "delta: %d , direction: %s , time: %u",
+               gtk_status_icon_get_title (status_icon),
+               delta, direction_to_str (direction), _time);
+
+        g_signal_emit(icon, signals[SCROLL], 0,
+                      delta,
+                      x_dir,
+                      _time);
+    }
+
+    return GDK_EVENT_PROPAGATE;
 }
 
 static void
@@ -969,6 +1025,10 @@ use_gtk_status_icon (XAppStatusIcon *self)
     g_signal_connect (priv->gtk_status_icon,
                       "button-release-event",
                       G_CALLBACK (on_gtk_status_icon_button_release),
+                      self);
+    g_signal_connect (priv->gtk_status_icon,
+                      "scroll-event",
+                      G_CALLBACK (on_gtk_status_icon_scroll),
                       self);
     g_signal_connect (priv->gtk_status_icon,
                       "notify::embedded",
