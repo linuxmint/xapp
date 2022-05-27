@@ -54,6 +54,7 @@ typedef struct
     gboolean             update_tooltip;
     gboolean             update_menu;
     gboolean             update_icon;
+    gboolean             update_id;
 } SnItemPropertiesResult;
 
 struct _SnItem
@@ -890,6 +891,11 @@ get_all_properties_callback (GObject      *source_object,
                 new_props->update_icon = TRUE;
             }
         }
+        if (g_strcmp0 (name, "Id") == 0)
+        {
+            new_props->id = null_or_string_from_variant (value);
+            new_props->update_id = TRUE;
+        }
     }
 
     g_variant_iter_free (iter);
@@ -913,6 +919,11 @@ get_all_properties_callback (GObject      *source_object,
     if (new_props->update_icon || new_props->update_status)
     {
         update_icon (item, new_props);
+    }
+
+    if (new_props->update_id || new_props->update_status)
+    {
+        assign_sortable_name (item, new_props->id);
     }
 
     props_free (item->current_props);
@@ -971,6 +982,7 @@ sn_signal_received (GDBusProxy  *sn_item_proxy,
     }
 
     if (g_strcmp0 (signal_name, "NewIcon") == 0 ||
+        g_strcmp0 (signal_name, "Id") == 0 ||
         g_strcmp0 (signal_name, "NewAttentionIcon") == 0 ||
         g_strcmp0 (signal_name, "NewOverlayIcon") == 0 ||
         g_strcmp0 (signal_name, "NewToolTip") == 0 ||
@@ -1078,16 +1090,14 @@ xapp_icon_state_changed (XAppStatusIcon      *status_icon,
 
 static void
 assign_sortable_name (SnItem         *item,
-                      const gchar    *title)
+                      const gchar    *id)
 {
     gchar *init_name, *normalized;
     gchar *sortable_name, *old_sortable_name;
 
-    init_name = sn_item_interface_dup_id (SN_ITEM_INTERFACE (item->sn_item_proxy));
-
-    if (init_name == NULL && title != NULL)
+    if (id != NULL)
     {
-        init_name = g_strdup (title);
+        init_name = g_strdup (id);
     }
     else
     {
