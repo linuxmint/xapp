@@ -1837,7 +1837,7 @@ on_search_text_changed (GtkSearchEntry        *entry,
     else
     {
         g_free (priv->current_text);
-        priv->current_text = g_strdup (search_text);
+        priv->current_text = g_utf8_strdown (search_text, -1);
 
         gtk_widget_show (priv->loading_bar);
 
@@ -1847,12 +1847,12 @@ on_search_text_changed (GtkSearchEntry        *entry,
         {
             if (priv->allow_paths)
             {
-                search_path (dialog, search_text, priv->search_icon_store);
+                search_path (dialog, priv->current_text, priv->search_icon_store);
             }
         }
         else
         {
-            search_icon_name (dialog, search_text, priv->search_icon_store);
+            search_icon_name (dialog, priv->current_text, priv->search_icon_store);
         }
     }
 }
