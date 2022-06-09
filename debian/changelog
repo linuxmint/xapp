@@ -1,3 +1,12 @@
+xapp (2.2.9) vanessa; urgency=medium
+
+  [ Michael Webster ]
+  * Implement scroll events with the fallback icon (GtkStatusIcon).
+  * sn-item.c: Handle Id property updates.
+  * xapp-icon-chooser-dialog.c: Don't be case-sensitive when searching.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 09 Jun 2022 15:44:34 +0200
+
 xapp (2.2.8) una; urgency=medium
 
   * l10n: Update translations
