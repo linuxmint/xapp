@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>XAppObjectManagerClient: XApp Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XApp Reference Manual">
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor">
 <link rel="next" href="libxapp-xapp-util.html" title="xapp-util">
-<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -505,30 +505,30 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">char</span> *</td>
 <td class="property_name"><a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface--icon-name" title="The “icon-name” property">icon-name</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_type"><span class="type">int</span></td>
 <td class="property_name"><a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface--icon-size" title="The “icon-size” property">icon-size</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">char</span> *</td>
 <td class="property_name"><a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface--label" title="The “label” property">label</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">char</span> *</td>
 <td class="property_name"><a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface--metadata" title="The “metadata” property">metadata</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">char</span> *</td>
 <td class="property_name"><a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface--name" title="The “name” property">name</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -544,7 +544,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">char</span> *</td>
 <td class="property_name"><a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface--tooltip-text" title="The “tooltip-text” property">tooltip-text</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -615,7 +615,7 @@ xapp_status_icon_interface_interface_info
 <div class="refsect3">
 <a name="xapp-status-icon-interface-interface-info.returns"></a><h4>Returns</h4>
 <p>A <a href="../gio/gio-D-Bus-Introspection-Data.html#GDBusInterfaceInfo-struct"><span class="type">GDBusInterfaceInfo</span></a>. Do not free. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -681,7 +681,7 @@ xapp_status_icon_interface_complete_button_press
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
 <td class="parameter_description"><p>A <a href="../gio/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
@@ -714,7 +714,7 @@ xapp_status_icon_interface_complete_button_release
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
 <td class="parameter_description"><p>A <a href="../gio/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
@@ -747,7 +747,7 @@ xapp_status_icon_interface_complete_scroll
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
 <td class="parameter_description"><p>A <a href="../gio/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
@@ -870,7 +870,7 @@ xapp_status_icon_interface_call_button_press_finish
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-interface-call-button-press-finish.returns"></a><h4>Returns</h4>
-<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 </div>
@@ -945,7 +945,7 @@ xapp_status_icon_interface_call_button_press_sync
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-interface-call-button-press-sync.returns"></a><h4>Returns</h4>
-<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 </div>
@@ -1067,7 +1067,7 @@ xapp_status_icon_interface_call_button_release_finish
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-interface-call-button-release-finish.returns"></a><h4>Returns</h4>
-<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 </div>
@@ -1142,7 +1142,7 @@ xapp_status_icon_interface_call_button_release_sync
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-interface-call-button-release-sync.returns"></a><h4>Returns</h4>
-<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 </div>
@@ -1252,7 +1252,7 @@ xapp_status_icon_interface_call_scroll_finish
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-interface-call-scroll-finish.returns"></a><h4>Returns</h4>
-<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 </div>
@@ -1315,7 +1315,7 @@ xapp_status_icon_interface_call_scroll_sync
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-interface-call-scroll-sync.returns"></a><h4>Returns</h4>
-<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+<p><a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeeded, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 </div>
@@ -1349,7 +1349,7 @@ xapp_status_icon_interface_get_name (<em class="parameter"><code><a class="link"
 <a name="xapp-status-icon-interface-get-name.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1378,7 +1378,7 @@ xapp_status_icon_interface_dup_name (<em class="parameter"><code><a class="link"
 <div class="refsect3">
 <a name="xapp-status-icon-interface-dup-name.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1444,7 +1444,7 @@ xapp_status_icon_interface_get_icon_name
 <a name="xapp-status-icon-interface-get-icon-name.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1474,7 +1474,7 @@ xapp_status_icon_interface_dup_icon_name
 <div class="refsect3">
 <a name="xapp-status-icon-interface-dup-icon-name.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1541,7 +1541,7 @@ xapp_status_icon_interface_get_tooltip_text
 <a name="xapp-status-icon-interface-get-tooltip-text.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1571,7 +1571,7 @@ xapp_status_icon_interface_dup_tooltip_text
 <div class="refsect3">
 <a name="xapp-status-icon-interface-dup-tooltip-text.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1637,7 +1637,7 @@ xapp_status_icon_interface_get_label (<em class="parameter"><code><a class="link
 <a name="xapp-status-icon-interface-get-label.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1666,7 +1666,7 @@ xapp_status_icon_interface_dup_label (<em class="parameter"><code><a class="link
 <div class="refsect3">
 <a name="xapp-status-icon-interface-dup-label.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -1984,7 +1984,7 @@ xapp_status_icon_interface_get_metadata
 <a name="xapp-status-icon-interface-get-metadata.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -2014,7 +2014,7 @@ xapp_status_icon_interface_dup_metadata
 <div class="refsect3">
 <a name="xapp-status-icon-interface-dup-metadata.returns"></a><h4>Returns</h4>
 <p>The property value or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -2151,7 +2151,7 @@ xapp_status_icon_interface_proxy_new_finish
 <a name="xapp-status-icon-interface-proxy-new-finish.returns"></a><h4>Returns</h4>
 <p>The constructed proxy object or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
 </div>
 </div>
 <hr>
@@ -2215,7 +2215,7 @@ is not a message bus connection. </p></td>
 <a name="xapp-status-icon-interface-proxy-new-sync.returns"></a><h4>Returns</h4>
 <p>The constructed proxy object or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
 </div>
 </div>
 <hr>
@@ -2318,7 +2318,7 @@ xapp_status_icon_interface_proxy_new_for_bus_finish
 <a name="xapp-status-icon-interface-proxy-new-for-bus-finish.returns"></a><h4>Returns</h4>
 <p>The constructed proxy object or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
 </div>
 </div>
 <hr>
@@ -2381,7 +2381,7 @@ xapp_status_icon_interface_proxy_new_for_bus_sync
 <a name="xapp-status-icon-interface-proxy-new-for-bus-sync.returns"></a><h4>Returns</h4>
 <p>The constructed proxy object or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceProxy]</span></p>
 </div>
 </div>
 <hr>
@@ -2394,7 +2394,7 @@ xapp_status_icon_interface_skeleton_new
 <div class="refsect3">
 <a name="xapp-status-icon-interface-skeleton-new.returns"></a><h4>Returns</h4>
 <p>The skeleton object. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceSkeleton]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppStatusIconInterfaceSkeleton]</span></p>
 </div>
 </div>
 <hr>
@@ -2423,7 +2423,7 @@ xapp_object_get_status_icon_interface (<em class="parameter"><code><a class="lin
 <a name="xapp-object-get-status-icon-interface.returns"></a><h4>Returns</h4>
 <p>A <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface"><span class="type">XAppStatusIconInterface</span></a> that must be freed with <a href="../gobject/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em>
 does not implement the interface. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -2456,7 +2456,7 @@ xapp_object_peek_status_icon_interface
 <p>A <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface"><span class="type">XAppStatusIconInterface</span></a> or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>object</code></em>
 . </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -2491,7 +2491,7 @@ xapp_object_proxy_new (<em class="parameter"><code><a href="../gio/GDBusConnecti
 <div class="refsect3">
 <a name="xapp-object-proxy-new.returns"></a><h4>Returns</h4>
 <p>The proxy object. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -2518,7 +2518,7 @@ xapp_object_skeleton_new (<em class="parameter"><code>const <a href="../glib/gli
 <div class="refsect3">
 <a name="xapp-object-skeleton-new.returns"></a><h4>Returns</h4>
 <p>The skeleton object. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -2701,7 +2701,7 @@ xapp_object_manager_client_new_finish (<em class="parameter"><code><a href="../g
 <a name="xapp-object-manager-client-new-finish.returns"></a><h4>Returns</h4>
 <p>The constructed object manager client or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
 </div>
 </div>
 <hr>
@@ -2764,7 +2764,7 @@ is not a message bus connection. </p></td>
 <a name="xapp-object-manager-client-new-sync.returns"></a><h4>Returns</h4>
 <p>The constructed object manager client or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
 </div>
 </div>
 <hr>
@@ -2867,7 +2867,7 @@ xapp_object_manager_client_new_for_bus_finish
 <a name="xapp-object-manager-client-new-for-bus-finish.returns"></a><h4>Returns</h4>
 <p>The constructed object manager client or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
 </div>
 </div>
 <hr>
@@ -2930,7 +2930,7 @@ xapp_object_manager_client_new_for_bus_sync
 <a name="xapp-object-manager-client-new-for-bus-sync.returns"></a><h4>Returns</h4>
 <p>The constructed object manager client or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> XAppObjectManagerClient]</span></p>
 </div>
 </div>
 </div>
@@ -2947,7 +2947,7 @@ is set. </p>
 <hr>
 <div class="refsect2">
 <a name="XAppStatusIconInterface--icon-name"></a><h3>The <code class="literal">“icon-name”</code> property</h3>
-<pre class="programlisting">  “icon-name”                <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “icon-name”                <span class="type">char</span> *</pre>
 <p>Represents the D-Bus property "IconName".</p>
 <p>Since the D-Bus property for this <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Owner: XAppStatusIconInterface</p>
@@ -2957,7 +2957,7 @@ is set. </p>
 <hr>
 <div class="refsect2">
 <a name="XAppStatusIconInterface--icon-size"></a><h3>The <code class="literal">“icon-size”</code> property</h3>
-<pre class="programlisting">  “icon-size”                <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<pre class="programlisting">  “icon-size”                <span class="type">int</span></pre>
 <p>Represents the D-Bus property "IconSize".</p>
 <p>Since the D-Bus property for this <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is both readable and writable, it is meaningful to both read from it and write to it on both the service- and client-side.</p>
 <p>Owner: XAppStatusIconInterface</p>
@@ -2967,7 +2967,7 @@ is set. </p>
 <hr>
 <div class="refsect2">
 <a name="XAppStatusIconInterface--label"></a><h3>The <code class="literal">“label”</code> property</h3>
-<pre class="programlisting">  “label”                    <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “label”                    <span class="type">char</span> *</pre>
 <p>Represents the D-Bus property "Label".</p>
 <p>Since the D-Bus property for this <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Owner: XAppStatusIconInterface</p>
@@ -2977,7 +2977,7 @@ is set. </p>
 <hr>
 <div class="refsect2">
 <a name="XAppStatusIconInterface--metadata"></a><h3>The <code class="literal">“metadata”</code> property</h3>
-<pre class="programlisting">  “metadata”                 <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “metadata”                 <span class="type">char</span> *</pre>
 <p>Represents the D-Bus property "Metadata".</p>
 <p>Since the D-Bus property for this <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Owner: XAppStatusIconInterface</p>
@@ -2987,7 +2987,7 @@ is set. </p>
 <hr>
 <div class="refsect2">
 <a name="XAppStatusIconInterface--name"></a><h3>The <code class="literal">“name”</code> property</h3>
-<pre class="programlisting">  “name”                     <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “name”                     <span class="type">char</span> *</pre>
 <p>Represents the D-Bus property "Name".</p>
 <p>Since the D-Bus property for this <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Owner: XAppStatusIconInterface</p>
@@ -3017,7 +3017,7 @@ is set. </p>
 <hr>
 <div class="refsect2">
 <a name="XAppStatusIconInterface--tooltip-text"></a><h3>The <code class="literal">“tooltip-text”</code> property</h3>
-<pre class="programlisting">  “tooltip-text”             <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “tooltip-text”             <span class="type">char</span> *</pre>
 <p>Represents the D-Bus property "TooltipText".</p>
 <p>Since the D-Bus property for this <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Owner: XAppStatusIconInterface</p>
@@ -3042,15 +3042,15 @@ is set. </p>
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface"><span class="type">XAppStatusIconInterface</span></a> *object,
                <a href="../gio/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>   *invocation,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_x,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_y,
+               <span class="type">int</span>                      arg_x,
+               <span class="type">int</span>                      arg_y,
                <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                    arg_button,
                <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                    arg_time,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_panel_position,
+               <span class="type">int</span>                      arg_panel_position,
                <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                 user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="ButtonPress"><code class="function">ButtonPress()</code></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
- and eventually call <a class="link" href="XAppObjectManagerClient.html#xapp-status-icon-interface-complete-button-press" title="xapp_status_icon_interface_complete_button_press ()"><code class="function">xapp_status_icon_interface_complete_button_press()</code></a> or e.g. <a href="../gio/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="../gio/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
+ and eventually call <a class="link" href="XAppObjectManagerClient.html#xapp-status-icon-interface-complete-button-press" title="xapp_status_icon_interface_complete_button_press ()"><code class="function">xapp_status_icon_interface_complete_button_press()</code></a> or e.g. <a href="../gio/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no other signal handlers will run. If no signal handler handles the invocation, the <a href="../gio/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
 <a name="XAppStatusIconInterface-handle-button-press.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -3105,7 +3105,7 @@ user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIcon
 </div>
 <div class="refsect3">
 <a name="XAppStatusIconInterface-handle-button-press.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
+<p> <a href="../gio/GDBusMethodInvocation.html#G-DBUS-METHOD-INVOCATION-HANDLED:CAPS"><code class="literal">G_DBUS_METHOD_INVOCATION_HANDLED</code></a> or <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="../gio/GDBusMethodInvocation.html#G-DBUS-METHOD-INVOCATION-UNHANDLED:CAPS"><code class="literal">G_DBUS_METHOD_INVOCATION_UNHANDLED</code></a> or <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
@@ -3115,15 +3115,15 @@ user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIcon
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface"><span class="type">XAppStatusIconInterface</span></a> *object,
                <a href="../gio/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>   *invocation,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_x,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_y,
+               <span class="type">int</span>                      arg_x,
+               <span class="type">int</span>                      arg_y,
                <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                    arg_button,
                <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                    arg_time,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_panel_position,
+               <span class="type">int</span>                      arg_panel_position,
                <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                 user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="ButtonRelease"><code class="function">ButtonRelease()</code></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
- and eventually call <a class="link" href="XAppObjectManagerClient.html#xapp-status-icon-interface-complete-button-release" title="xapp_status_icon_interface_complete_button_release ()"><code class="function">xapp_status_icon_interface_complete_button_release()</code></a> or e.g. <a href="../gio/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="../gio/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
+ and eventually call <a class="link" href="XAppObjectManagerClient.html#xapp-status-icon-interface-complete-button-release" title="xapp_status_icon_interface_complete_button_release ()"><code class="function">xapp_status_icon_interface_complete_button_release()</code></a> or e.g. <a href="../gio/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no other signal handlers will run. If no signal handler handles the invocation, the <a href="../gio/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
 <a name="XAppStatusIconInterface-handle-button-release.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -3178,7 +3178,7 @@ user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIcon
 </div>
 <div class="refsect3">
 <a name="XAppStatusIconInterface-handle-button-release.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
+<p> <a href="../gio/GDBusMethodInvocation.html#G-DBUS-METHOD-INVOCATION-HANDLED:CAPS"><code class="literal">G_DBUS_METHOD_INVOCATION_HANDLED</code></a> or <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="../gio/GDBusMethodInvocation.html#G-DBUS-METHOD-INVOCATION-UNHANDLED:CAPS"><code class="literal">G_DBUS_METHOD_INVOCATION_UNHANDLED</code></a> or <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
@@ -3188,13 +3188,13 @@ user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIcon
 <pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterface"><span class="type">XAppStatusIconInterface</span></a> *object,
                <a href="../gio/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>   *invocation,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_delta,
-               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                     arg_orientation,
+               <span class="type">int</span>                      arg_delta,
+               <span class="type">int</span>                      arg_orientation,
                <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                    arg_time,
                <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                 user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Scroll"><code class="function">Scroll()</code></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
- and eventually call <a class="link" href="XAppObjectManagerClient.html#xapp-status-icon-interface-complete-scroll" title="xapp_status_icon_interface_complete_scroll ()"><code class="function">xapp_status_icon_interface_complete_scroll()</code></a> or e.g. <a href="../gio/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="../gio/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
+ and eventually call <a class="link" href="XAppObjectManagerClient.html#xapp-status-icon-interface-complete-scroll" title="xapp_status_icon_interface_complete_scroll ()"><code class="function">xapp_status_icon_interface_complete_scroll()</code></a> or e.g. <a href="../gio/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no other signal handlers will run. If no signal handler handles the invocation, the <a href="../gio/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
 <a name="XAppStatusIconInterface-handle-scroll.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -3239,13 +3239,13 @@ user_function (<a class="link" href="XAppObjectManagerClient.html#XAppStatusIcon
 </div>
 <div class="refsect3">
 <a name="XAppStatusIconInterface-handle-scroll.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
+<p> <a href="../gio/GDBusMethodInvocation.html#G-DBUS-METHOD-INVOCATION-HANDLED:CAPS"><code class="literal">G_DBUS_METHOD_INVOCATION_HANDLED</code></a> or <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="../gio/GDBusMethodInvocation.html#G-DBUS-METHOD-INVOCATION-UNHANDLED:CAPS"><code class="literal">G_DBUS_METHOD_INVOCATION_UNHANDLED</code></a> or <a href="../glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.32</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

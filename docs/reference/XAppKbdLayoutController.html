@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>XAppKbdLayoutController: XApp Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XApp Reference Manual">
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppIconChooserDialog.html" title="XAppIconChooserDialog">
 <link rel="next" href="XAppMonitorBlanker.html" title="XAppMonitorBlanker">
-<meta name="generator" content="GTK-Doc V1.32 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -241,7 +241,7 @@ xapp_kbd_layout_controller_new (<em class="parameter"><code><span class="type">v
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-new.returns"></a><h4>Returns</h4>
 <p>a new <a class="link" href="XAppKbdLayoutController.html" title="XAppKbdLayoutController"><span class="type">XAppKbdLayoutController</span></a> instance. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -392,7 +392,7 @@ xapp_kbd_layout_controller_get_current_name
 <a name="xapp-kbd-layout-controller-get-current-name.returns"></a><h4>Returns</h4>
 <p>the newly created string or NULL
 if something went wrong. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -420,7 +420,7 @@ xapp_kbd_layout_controller_get_all_names
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-all-names.returns"></a><h4>Returns</h4>
 <p>array of names. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></p>
 </div>
 </div>
 <hr>
@@ -448,7 +448,7 @@ xapp_kbd_layout_controller_get_current_icon_name
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-current-icon-name.returns"></a><h4>Returns</h4>
 <p>a new string with the icon name. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -484,7 +484,7 @@ xapp_kbd_layout_controller_get_icon_name_for_group
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-icon-name-for-group.returns"></a><h4>Returns</h4>
 <p>a new string with the icon name. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -547,7 +547,7 @@ xapp_kbd_layout_controller_get_current_short_group_label
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-current-short-group-label.returns"></a><h4>Returns</h4>
 <p>a new string or NULL. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -583,7 +583,7 @@ xapp_kbd_layout_controller_get_short_group_label_for_group
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-short-group-label-for-group.returns"></a><h4>Returns</h4>
 <p>a new string or NULL. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -611,7 +611,7 @@ xapp_kbd_layout_controller_get_current_variant_label
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-current-variant-label.returns"></a><h4>Returns</h4>
 <p>a new string or NULL. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -647,7 +647,7 @@ xapp_kbd_layout_controller_get_variant_label_for_group
 <div class="refsect3">
 <a name="xapp-kbd-layout-controller-get-variant-label-for-group.returns"></a><h4>Returns</h4>
 <p>a new string or NULL. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -655,7 +655,7 @@ xapp_kbd_layout_controller_get_variant_label_for_group
 <a name="xapp-kbd-layout-controller-render-cairo-subscript"></a><h3>xapp_kbd_layout_controller_render_cairo_subscript ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_kbd_layout_controller_render_cairo_subscript
-                               (<em class="parameter"><code><span class="type">cairo_t</span> *cr</code></em>,
+                               (<em class="parameter"><code><a href="../cairo/cairo-cairo-t.html#cairo-t"><span class="type">cairo_t</span></a> *cr</code></em>,
                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> width</code></em>,
@@ -675,7 +675,7 @@ where a valid cairo_t is provided to draw with.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>cr</p></td>
-<td class="parameter_description"><p>a <span class="type">cairo_t</span></p></td>
+<td class="parameter_description"><p>a <a href="../cairo/cairo-cairo-t.html#cairo-t"><span class="type">cairo_t</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -740,6 +740,6 @@ user_function (<a class="link" href="XAppKbdLayoutController.html" title="XAppKb
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.32</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>
