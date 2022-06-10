@@ -1,3 +1,13 @@
+xapp (2.2.10) vanessa; urgency=medium
+
+  [ Michael Webster ]
+  * Add a debian/ symbols file.
+
+  [ Clement Lefebvre ]
+  * CI: Update targets
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 10 Jun 2022 09:47:35 +0200
+
 xapp (2.2.9) vanessa; urgency=medium
 
   [ Michael Webster ]
