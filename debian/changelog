@@ -1,3 +1,11 @@
+xapp (2.2.11) vanessa; urgency=medium
+
+  * Update documentation
+  * CI: Fix target names
+  * Add a new icon xapp-edit-symbolic
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 15 Jun 2022 17:15:38 +0200
+
 xapp (2.2.10) vanessa; urgency=medium
 
   [ Michael Webster ]
