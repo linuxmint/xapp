@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-11-29 07:57+0000\n"
-"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
+"PO-Revision-Date: 2022-03-12 20:39+0000\n"
+"Last-Translator: Omer I.S. <Unknown>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-12-31 12:26+0000\n"
-"X-Generator: Launchpad (build adb364d6a74a28e7b95d51cd30446ec16160de6c)\n"
+"X-Launchpad-Export-Date: 2022-06-26 11:30+0000\n"
+"X-Generator: Launchpad (build 51a2e4fa2e9b8e45f00904ad7f53546f45ac48a5)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -50,11 +50,11 @@ msgstr "המחרוזת שמייצגת את הסמל."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "סוג־אב"
+msgstr "קטגוריה"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "סוג־אב ברירת המחדל."
+msgstr "קטגוריה ברירת מחדל."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
@@ -66,7 +66,7 @@ msgstr "יישומים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "סוגי-אב"
+msgstr "קטגוריות"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
@@ -74,11 +74,11 @@ msgstr "התקנים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "סמלים"
+msgstr "סמלונים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "רגושון"
+msgstr "אימוג׳י"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
@@ -106,11 +106,11 @@ msgstr "חיפוש"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "דפדוף"
+msgstr "עיון"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "טעינה…"
+msgstr "בהליכי טעינה..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
@@ -127,11 +127,11 @@ msgstr "ביטול"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "אפשור נתיבים"
+msgstr "לאפשר נתיבים"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "האם לאפשר נתיבים"
+msgstr "האם לאפשר נתיבים."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
@@ -165,8 +165,8 @@ msgstr "אזור שבו יופיעו סמלי מצב XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "מצב מפעל יישומוני־לוח XApp"
+msgstr "מצב מפעל יישומוני XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "יישומון־לוח מצב XApp"
+msgstr "יישומון מצב XApp"

@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-12-27 02:32+0000\n"
-"Last-Translator: Saidazim Nazirov <Unknown>\n"
+"PO-Revision-Date: 2022-05-03 10:20+0000\n"
+"Last-Translator: Umidjon Almasov <umidjon@almasov.uz>\n"
 "Language-Team: Uzbek <uz@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-12-31 12:26+0000\n"
-"X-Generator: Launchpad (build adb364d6a74a28e7b95d51cd30446ec16160de6c)\n"
+"X-Launchpad-Export-Date: 2022-06-26 11:30+0000\n"
+"X-Generator: Launchpad (build 51a2e4fa2e9b8e45f00904ad7f53546f45ac48a5)\n"
+"Language: uz\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Sevimli"
+msgstr "Sevimlilar"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,21 +29,21 @@ msgstr "Sevimli"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Operatsiya qo'llab-quvvatlanmaydi"
+msgstr "Amal qo‘llab-quvvatlanmaydi"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Nishoncha oʻlchami"
+msgstr "Belgi o‘lchami"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "Afzal ko'rilgan nishoncha o'lchami."
+msgstr "Tanlangan belgi o‘lchami."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Nishoncha"
+msgstr "Belgi"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
@@ -50,11 +51,11 @@ msgstr "Belgini ifodalovchi satr."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Kategoriya"
+msgstr "Turkum"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Standart kategoriya."
+msgstr "Standart turkum."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
@@ -66,7 +67,7 @@ msgstr "Ilovalar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Kategoriyalar"
+msgstr "Turkumlar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
@@ -78,7 +79,7 @@ msgstr "Emblemalar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Kulgichlar"
+msgstr "Emoji"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
@@ -90,7 +91,7 @@ msgstr "Joylar"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Xolat"
+msgstr "Holat"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
@@ -98,15 +99,15 @@ msgstr "Boshqa"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Nishonchani tanlash"
+msgstr "Belgini tanlang"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Izlash"
+msgstr "Qidirish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Ko'rish"
+msgstr "Ko‘rib chiqish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
@@ -127,19 +128,19 @@ msgstr "Bekor qilish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Ruxsat berilgan joylar"
+msgstr "Yoʻllarga ruxsat berish"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Joylarga ruxsat berilsinmi"
+msgstr "Yo‘llarga ruxsat berish yoki bermaslik."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Standart nishoncha"
+msgstr "Standart belgi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "Nishonchani ishlatish"
+msgstr "Standart bo‘yicha foydalanish uchun belgi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
@@ -155,17 +156,17 @@ msgstr "Rasm"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Haqida ma’lumot"
+msgstr "Haqida"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "XApp holat nishonchasi paydo bo'ladigan maydon"
+msgstr "XApp holati belgilari paydo bo‘ladigan hudud"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp holat appletining boshlang'ich holati"
+msgstr "XApp holat appleti fabrikasi"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
