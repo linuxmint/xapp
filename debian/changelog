@@ -1,3 +1,9 @@
+xapp (2.2.12) vanessa; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 27 Jun 2022 13:53:30 +0200
+
 xapp (2.2.11) vanessa; urgency=medium
 
   * Update documentation
