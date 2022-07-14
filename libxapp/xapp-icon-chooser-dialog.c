@@ -1752,8 +1752,9 @@ search_icon_name (XAppIconChooserDialog *dialog,
         if (priv->search_iter)
         {
             priv->current_category = NULL;
+            gchar *casefolded = g_utf8_casefold (priv->search_iter->data, -1);
 
-            if (g_strrstr (priv->search_iter->data, name_string))
+            if (g_strrstr (casefolded, name_string))
             {
                 NamedIconInfoLoadCallbackInfo *callback_info;
                 cairo_surface_t *surface;
@@ -1786,6 +1787,8 @@ search_icon_name (XAppIconChooserDialog *dialog,
 
                 chunk_count++;
             }
+
+            g_free (casefolded);
         }
         else
         {
@@ -1836,8 +1839,7 @@ on_search_text_changed (GtkSearchEntry        *entry,
     }
     else
     {
-        g_free (priv->current_text);
-        priv->current_text = g_utf8_strdown (search_text, -1);
+        g_clear_pointer (&priv->current_text, g_free);
 
         gtk_widget_show (priv->loading_bar);
 
@@ -1847,11 +1849,13 @@ on_search_text_changed (GtkSearchEntry        *entry,
         {
             if (priv->allow_paths)
             {
+                priv->current_text = g_strdup (search_text);
                 search_path (dialog, priv->current_text, priv->search_icon_store);
             }
         }
         else
         {
+            priv->current_text = g_utf8_casefold (search_text, -1);
             search_icon_name (dialog, priv->current_text, priv->search_icon_store);
         }
     }
