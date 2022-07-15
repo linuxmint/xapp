@@ -1,3 +1,10 @@
+xapp (2.2.13) vanessa; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-dialog: Don't lower-case paths.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 15 Jul 2022 15:23:04 +0200
+
 xapp (2.2.12) vanessa; urgency=medium
 
   * l10n: Update translations
