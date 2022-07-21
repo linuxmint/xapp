@@ -1,3 +1,10 @@
+xapp (2.2.14) vanessa; urgency=medium
+
+  [ Michael Webster ]
+  * mate status applet: Adjust icon relative sizes to the panel height.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 21 Jul 2022 21:11:46 +0200
+
 xapp (2.2.13) vanessa; urgency=medium
 
   [ Michael Webster ]
