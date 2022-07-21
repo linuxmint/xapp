@@ -23,9 +23,9 @@ gettext.install("xapp", applet_constants.LOCALEDIR)
 locale.bindtextdomain("xapp", applet_constants.LOCALEDIR)
 locale.textdomain("xapp")
 
-ICON_SIZE_REDUCTION = 2
+DEFAULT_ICON_SIZE = 22
+
 VISIBLE_LABEL_MARGIN = 5 # When an icon has a label, add a margin between icon and label
-SYMBOLIC_ICON_SIZE = 22
 
 statusicon_css_string = """
 .statuswidget-horizontal {
@@ -60,14 +60,16 @@ class StatusWidget(Gtk.ToggleButton):
         "re-sort": (GObject.SignalFlags.RUN_LAST, None, ())
     }
 
-    def __init__(self, icon, orientation, size):
+    def __init__(self, icon, orientation, size, symbolic_icon_offset, color_icon_offset):
         super(Gtk.ToggleButton, self).__init__()
         self.theme = Gtk.IconTheme.get_default()
         self.orientation = orientation
-        self.size = size
+        self.icon_size = DEFAULT_ICON_SIZE
+        self.symbolic_icon_offset = symbolic_icon_offset
+        self.color_icon_offset = color_icon_offset
 
         self.proxy = icon
-        self.proxy.props.icon_size = size
+        self.proxy.props.icon_size = DEFAULT_ICON_SIZE
 
         # this is the bus owned name
         self.name = self.proxy.get_name()
@@ -127,7 +129,7 @@ class StatusWidget(Gtk.ToggleButton):
         self.connect("leave-notify-event", self.on_leave_notify)
 
         self.update_orientation()
-        self.update_icon()
+        self.update_icon(size)
 
     def _on_icon_name_changed(self, proxy, gparamspec, data=None):
         self.update_icon()
@@ -135,9 +137,20 @@ class StatusWidget(Gtk.ToggleButton):
     def _on_name_changed(self, proxy, gparamspec, data=None):
         self.emit("re-sort")
 
-    def update_icon(self):
+    def update_icon_offsets(self, symbolic, color):
+        self.symbolic_icon_offset = symbolic
+        self.color_icon_offset = color
+        self.update_icon()
+
+    def update_icon(self, new_size=None):
+        if new_size != None and new_size == self.icon_size:
+            return
+
+        if new_size:
+            self.icon_size = new_size
+
+        self.proxy.props.icon_size = self.icon_size - self.symbolic_icon_offset
         string = self.proxy.props.icon_name
-        self.proxy.props.icon_size = self.size
 
         self.set_icon(string)
 
@@ -172,9 +185,9 @@ class StatusWidget(Gtk.ToggleButton):
 
         if string:
             if "symbolic" in string:
-                size = SYMBOLIC_ICON_SIZE
+                size = self.icon_size - self.symbolic_icon_offset
             else:
-                size = self.size - ICON_SIZE_REDUCTION
+                size = self.icon_size - self.color_icon_offset
 
             self.image.set_pixel_size(size)
 
@@ -196,7 +209,7 @@ class StatusWidget(Gtk.ToggleButton):
 
         #fallback
         if fallback:
-            self.image.set_pixel_size(self.size - ICON_SIZE_REDUCTION)
+            self.image.set_pixel_size(self.icon_size - self.symbolic_icon_offset)
             self.image.set_from_icon_name("image-missing", Gtk.IconSize.MENU)
 
     def menu_state_changed(self, proxy, pspec, data=None):
@@ -308,6 +321,9 @@ class MateXAppStatusApplet(object):
         self.applet.set_can_focus(False)
         self.applet.set_background_widget(self.applet)
 
+        self.settings = Gio.Settings(schema_id="org.x.apps.mate-panel-applet")
+        self.settings.connect("changed", self.icon_offsets_changed)
+
         self.add_about()
 
         button_css = Gtk.CssProvider()
@@ -365,6 +381,7 @@ class MateXAppStatusApplet(object):
 
     def on_applet_destroy(self, widget, data=None):
         self.destroy_monitor()
+        self.settings = None
         Gtk.main_quit()
 
     def setup_monitor (self):
@@ -389,7 +406,16 @@ class MateXAppStatusApplet(object):
     def on_icon_added(self, monitor, proxy):
         key = self.make_key(proxy)
 
-        self.indicators[key] = StatusWidget(proxy, self.applet.get_orient(), self.applet.get_size())
+        symbolic_icon_offset = self.settings.get_int("symbolic-icon-offset")
+        color_icon_offset = self.settings.get_int("color-icon-offset")
+
+
+        self.indicators[key] = StatusWidget(proxy,
+                                            self.applet.get_orient(),
+                                            self.applet.get_size(),
+                                            symbolic_icon_offset,
+                                            color_icon_offset)
+
         self.indicator_box.add(self.indicators[key])
         self.indicators[key].connect("re-sort", self.sort_icons)
 
@@ -410,9 +436,17 @@ class MateXAppStatusApplet(object):
     def on_applet_size_changed(self, applet, size, data=None):
         for key in self.indicators.keys():
             indicator = self.indicators[key]
+            indicator.update_icon(size)
 
-            indicator.size = applet.get_size()
-            indicator.update_icon()
+        self.applet.queue_resize()
+
+    def icon_offsets_changed(self, settings, key):
+        symbolic = self.settings.get_int("symbolic-icon-offset")
+        color = self.settings.get_int("color-icon-offset")
+
+        for key in self.indicators.keys():
+            indicator = self.indicators[key]
+            indicator.update_icon_offsets(symbolic, color)
 
         self.applet.queue_resize()
 
