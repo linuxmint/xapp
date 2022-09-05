@@ -1,3 +1,14 @@
+xapp (2.2.15) vanessa; urgency=medium
+
+  [ Bobby Rong ]
+  * libxapp: add missing gio-unix-2.0 dependency (#156)
+
+  [ Michael Webster ]
+  * xapp-status-icon-monitor.c: Fix copy/paste error.
+  * xapp-status-icon.c: Make XAppStatusIconState per-process.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 05 Sep 2022 15:37:59 +0100
+
 xapp (2.2.14) vanessa; urgency=medium
 
   [ Michael Webster ]
