@@ -19,6 +19,7 @@ Build-Depends:
  libxkbfile-dev,
  meson,
  python3,
+ python3-gi,
  python-gi-dev,
  valac,
 Standards-Version: 3.9.6
