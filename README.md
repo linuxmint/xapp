@@ -1,3 +1,5 @@
+![build](https://github.com/linuxmint/xapp/actions/workflows/build.yml/badge.svg)
+
 This project gathers the components which are common to multiple GTK desktop environments (Cinnamon, MATE and Xfce) and required to implement cross-DE solutions.
 
 # libxapp
