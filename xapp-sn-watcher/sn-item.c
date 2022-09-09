@@ -12,6 +12,7 @@
 #include <gtk/gtk.h>
 #include <cairo-gobject.h>
 #include <libxapp/xapp-status-icon.h>
+#include <libxapp/xapp-util.h>
 #include <libdbusmenu-gtk/menu.h>
 
 #include "sn-item-interface.h"
@@ -242,6 +243,19 @@ get_icon_id (SnItem *item)
     return item->current_icon_id;
 }
 
+static gchar *
+get_temp_file (SnItem *item)
+{
+    gchar *filename;
+    gchar *full_path;
+
+    filename = g_strdup_printf ("xapp-tmp-%p-%d.png", item, get_icon_id (item));
+    full_path = g_build_filename (xapp_get_tmp_dir (), filename, NULL);
+    g_free (filename);
+
+    return full_path;
+}
+
 static gint
 get_icon_size (SnItem *item)
 {
@@ -378,7 +392,7 @@ static void
 set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
 {
     cairo_surface_t *surface;
-    gchar *filename, *save_filename;
+    gchar *save_filename;
 
     DEBUG ("Trying to use icon pixmap for %s",
              item->sortable_name);
@@ -410,9 +424,7 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
     {
         item->last_png_path = item->png_path;
 
-        filename = g_strdup_printf ("xapp-tmp-%p-%d.png", item, get_icon_id (item));
-        save_filename = g_build_path ("/", g_get_tmp_dir (), filename, NULL);
-        g_free (filename);
+        save_filename = get_temp_file (item);
 
         cairo_status_t status = CAIRO_STATUS_SUCCESS;
         status = cairo_surface_write_to_png (surface, save_filename);

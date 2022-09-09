@@ -537,6 +537,17 @@ unref_proxy (gpointer data)
 }
 
 static void
+clean_tempfiles (XAppSnWatcher *watcher)
+{
+    gchar *cmd = g_strdup_printf ("rm -f %s/xapp-tmp-*.png", xapp_get_tmp_dir ());
+
+    // -Wunused-result
+    if (system(cmd)) ;
+
+    g_free (cmd);
+}
+
+static void
 watcher_startup (GApplication *application)
 {
     XAppSnWatcher *watcher = (XAppSnWatcher*) application;
@@ -623,6 +634,8 @@ watcher_shutdown (GApplication *application)
 
     g_clear_object (&watcher->connection);
     g_clear_object (&watcher->cancellable);
+
+    clean_tempfiles (watcher);
 
     G_APPLICATION_CLASS (xapp_sn_watcher_parent_class)->shutdown (application);
 }
