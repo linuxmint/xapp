@@ -36,7 +36,8 @@ xapp_headers = [
     'xapp-status-icon.h',
     'xapp-status-icon-monitor.h',
     'xapp-style-manager.h',
-    'xapp-util.h'
+    'xapp-util.h',
+    'xapp-visibility-group.h'
 ]
 
 xapp_sources = [
@@ -51,7 +52,8 @@ xapp_sources = [
     'xapp-status-icon.c',
     'xapp-status-icon-monitor.c',
     'xapp-style-manager.c',
-    'xapp-util.c'
+    'xapp-util.c',
+    'xapp-visibility-group.c'
 ]
 
 if not app_lib_only

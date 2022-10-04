@@ -37,7 +37,8 @@ typedef enum
   XAPP_DEBUG_FAVORITE_VFS = 1 << 3,
   XAPP_DEBUG_STATUS_ICON = 1 << 4,
   XAPP_DEBUG_SN_WATCHER = 1 << 5,
-  XAPP_DEBUG_MODULE = 1 << 6
+  XAPP_DEBUG_MODULE = 1 << 6,
+  XAPP_DEBUG_VISIBILITY_GROUP = 1 << 7
 } DebugFlags;
 
 void xapp_debug_set_flags (DebugFlags flags);

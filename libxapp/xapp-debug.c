@@ -38,6 +38,7 @@ static GDebugKey keys[] = {
   { "StatusIcon", XAPP_DEBUG_STATUS_ICON },
   { "SnWatcher", XAPP_DEBUG_SN_WATCHER },
   { "GtkModule", XAPP_DEBUG_MODULE},
+  { "VisibilityGroup", XAPP_DEBUG_VISIBILITY_GROUP},
   { 0, }
 };
 

@@ -28,6 +28,7 @@
     <xi:include href="xml/xapp-status-icon-monitor.xml"/>
     <xi:include href="xml/xapp-statusicon-interface.xml"/>
     <xi:include href="xml/xapp-util.xml"/>
+    <xi:include href="xml/xapp-visibility-group.xml"/>
 
   </chapter>
   <chapter id="object-tree">
