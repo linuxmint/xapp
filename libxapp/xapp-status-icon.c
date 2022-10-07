@@ -780,13 +780,27 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-    XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
-
     g_warning ("XAppStatusIcon: lost or could not acquire presence on dbus.  Refreshing.");
 
-    self->priv->fail_counter++;
+    GList *instances = g_dbus_object_manager_get_objects (G_DBUS_OBJECT_MANAGER (obj_server));
+    GList *l;
 
-    refresh_icon (self);
+    for (l = instances; l != NULL; l = l->next)
+    {
+        GObject *instance = G_OBJECT (l->data);
+        XAppStatusIcon *icon = XAPP_STATUS_ICON (g_object_get_data (instance, "xapp-status-icon-instance"));
+
+        if (icon == NULL)
+        {
+            g_warning ("on_name_lost: Could not retrieve xapp-status-icon-instance data: %s", name);
+            continue;
+        }
+
+        icon->priv->fail_counter++;
+        refresh_icon (icon);
+    }
+
+    g_list_free_full (instances, g_object_unref);
 }
 
 static void
@@ -816,15 +830,31 @@ on_name_acquired (GDBusConnection *connection,
                   const gchar     *name,
                   gpointer         user_data)
 {
-    XAppStatusIcon *self = XAPP_STATUS_ICON (user_data);
-
     process_icon_state = XAPP_STATUS_ICON_STATE_NATIVE;
 
-    sync_skeleton (self);
+    GList *instances = g_dbus_object_manager_get_objects (G_DBUS_OBJECT_MANAGER (obj_server));
+    GList *l;
 
-    DEBUG ("Name acquired on dbus, state is now: %s",
-             state_to_str (process_icon_state));
-    g_signal_emit (self, signals[STATE_CHANGED], 0, process_icon_state);
+    for (l = instances; l != NULL; l = l->next)
+    {
+        GObject *instance = G_OBJECT (l->data);
+        XAppStatusIcon *icon = XAPP_STATUS_ICON (g_object_get_data (instance, "xapp-status-icon-instance"));
+
+        if (icon == NULL)
+        {
+            g_warning ("on_name_aquired: Could not retrieve xapp-status-icon-instance data: %s", name);
+            continue;
+        }
+
+        sync_skeleton (icon);
+
+        DEBUG ("Name acquired on dbus, state is now: %s",
+               state_to_str (process_icon_state));
+
+        g_signal_emit (icon, signals[STATE_CHANGED], 0, process_icon_state);
+    }
+
+    g_list_free_full (instances, g_object_unref);
 }
 
 typedef struct
@@ -890,6 +920,8 @@ export_icon_interface (XAppStatusIcon *self)
     xapp_object_skeleton_set_status_icon_interface (self->priv->object_skeleton,
                                                     self->priv->interface_skeleton);
 
+    g_object_set_data (G_OBJECT (self->priv->object_skeleton), "xapp-status-icon-instance", self);
+
     g_dbus_object_manager_server_export_uniquely (obj_server,
                                                   G_DBUS_OBJECT_SKELETON (self->priv->object_skeleton));
 
@@ -942,7 +974,7 @@ connect_with_status_applet (XAppStatusIcon *self)
                                                       G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE,
                                                       on_name_acquired,
                                                       on_name_lost,
-                                                      self,
+                                                      NULL,
                                                       NULL);
     }
 
@@ -1298,7 +1330,9 @@ remove_icon_path_from_bus (XAppStatusIcon *self)
 
         DEBUG ("Removing interface at path '%s'", path);
 
+        g_object_set_data (G_OBJECT (self->priv->object_skeleton), "xapp-status-icon-instance", NULL);
         g_dbus_object_manager_server_unexport (obj_server, path);
+
         self->priv->interface_skeleton = NULL;
         self->priv->object_skeleton = NULL;
 
