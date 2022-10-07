@@ -932,8 +932,7 @@ get_all_properties_callback (GObject      *source_object,
     {
         update_icon (item, new_props);
     }
-
-    if (new_props->update_id || new_props->update_status)
+    if ((new_props->update_id || new_props->update_status) && !new_props->update_tooltip)
     {
         assign_sortable_name (item, new_props->id);
     }
