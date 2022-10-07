@@ -906,7 +906,10 @@ get_all_properties_callback (GObject      *source_object,
         if (g_strcmp0 (name, "Id") == 0)
         {
             new_props->id = null_or_string_from_variant (value);
-            new_props->update_id = TRUE;
+            if (g_strcmp0 (new_props->id, item->current_props->id) != 0)
+            {
+                new_props->update_id = TRUE;
+            }
         }
     }
 
