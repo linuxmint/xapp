@@ -42,6 +42,29 @@ static GDebugKey keys[] = {
   { 0, }
 };
 
+const gchar *
+debug_flag_to_string (DebugFlags flag)
+{
+    switch (flag)
+    {
+    case XAPP_DEBUG_WINDOW:
+        return "GtkWindow";
+    case XAPP_DEBUG_FAVORITES:
+        return "Favorites";
+    case XAPP_DEBUG_FAVORITE_VFS:
+        return "FavoriteVFS";
+    case XAPP_DEBUG_STATUS_ICON:
+        return "StatusIcon";
+    case XAPP_DEBUG_SN_WATCHER:
+        return "SnWatcher";
+    case XAPP_DEBUG_MODULE:
+        return "GtkModule";
+    case XAPP_DEBUG_VISIBILITY_GROUP:
+        return "VisibilityGroup";
+    }
+    return "";
+}
+
 static void
 xapp_debug_set_flags_from_env (void)
 {
