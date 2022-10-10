@@ -708,6 +708,11 @@ main (int argc, char **argv)
     if (g_settings_get_boolean (xapp_settings, DEBUG_KEY))
     {
         g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+
+        gchar *flags = g_settings_get_string (xapp_settings, DEBUG_FLAGS_KEY);
+        g_setenv ("XAPP_DEBUG", flags, TRUE);
+        g_free (flags);
+
     }
 
     whitelist = g_settings_get_strv (xapp_settings,

@@ -33,6 +33,10 @@
         <default>false</default>
         <summary>Print debug messages for the xapp-sn-watcher service</summary>
      </key>
+     <key name="sn-watcher-debug-flags" type="s">
+        <default>"SnWatcher,StatusIcon"</default>
+        <summary>Debug flags for sn-watcher debugging</summary>
+     </key>
      <key name="sn-watcher-replace-tooltip" type="as">
         <default>["qbittorrent"]</default>
         <summary>Use the Title property in place of the Tooltip for programs with these IDs.</summary>

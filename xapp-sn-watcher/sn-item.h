@@ -19,6 +19,7 @@ void    sn_item_update_menus (SnItem *item);
 #define WHITELIST_KEY "left-click-activate-apps"
 #define VALID_XDG_DESKTOPS_KEY "status-notifier-enabled-desktops"
 #define DEBUG_KEY "sn-watcher-debug"
+#define DEBUG_FLAGS_KEY "sn-watcher-debug-flags"
 #define REPLACE_TOOLTIP_KEY "sn-watcher-replace-tooltip"
 #define ADVERTISE_SNH_KEY "sn-watcher-advertise-host"
 extern GSettings *xapp_settings;
