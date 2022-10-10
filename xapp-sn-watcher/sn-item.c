@@ -733,12 +733,12 @@ get_all_properties_callback (GObject      *source_object,
     GVariantIter *iter = NULL;
     const gchar  *name;
     GVariant     *value;
-
     properties = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object), res, &error);
 
     if (error != NULL)
     {
-        if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
+            !g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
         {
             g_critical ("Could not get properties for %s: %s\n",
                         g_dbus_proxy_get_name (item->sn_item_proxy),
