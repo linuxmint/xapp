@@ -114,6 +114,10 @@ xapp_debug_valist (DebugFlags flag,
     xapp_debug_set_flags_from_env ();
 
   if (flag & flags)
-    g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, format, args);
+  {
+    // I would think this should be G_LOG_LEVEL_DEBUG, but I can't get it to show up
+    // in the journal/xsession-errors unless I drop it to message (even with G_MESSAGES_DEBUG=all)
+    g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, args);
+  }
 }
 
