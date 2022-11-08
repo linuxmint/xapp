@@ -588,6 +588,58 @@ deduplicate_display_names (XAppFavorites *favorites,
 }
 
 static void
+on_display_name_received (GObject      *source,
+                          GAsyncResult *res,
+                          gpointer      user_data)
+{
+    GFile *file;
+    GFileInfo *file_info;
+    GError *error;
+    gchar *display_name;
+    g_autofree gchar *uri = NULL;
+
+    file = G_FILE (source);
+    error = NULL;
+
+    uri = g_file_get_uri (file);
+    file_info = g_file_query_info_finish (file, res, &error);
+
+    if (error)
+    {
+        DEBUG ("XAppFavorites: problem trying to get real display name for uri '%s': %s",
+               uri, error->message);
+        g_error_free (error);
+        return;
+    }
+
+    g_return_if_fail (XAPP_IS_FAVORITES (user_data));
+
+    XAppFavorites *favorites = XAPP_FAVORITES (user_data);
+    XAppFavoritesPrivate *priv = xapp_favorites_get_instance_private (favorites);
+
+    display_name = NULL;
+
+    if (file_info)
+    {
+        XAppFavoriteInfo *info = g_hash_table_lookup (priv->infos,  uri);
+        const gchar *real_display_name = g_file_info_get_display_name (file_info);
+
+        if (info != NULL && g_strcmp0 (info->display_name, real_display_name) != 0)
+        {
+            gchar *old_name = info->display_name;
+            info->display_name = g_strdup (real_display_name);
+            g_free (old_name);
+
+            deduplicate_display_names (favorites, priv->infos);
+            queue_changed (favorites);
+        }
+    }
+
+    g_free (display_name);
+    g_clear_object (&file_info);
+}
+
+static void
 finish_add_favorite (XAppFavorites *favorites,
                      const gchar   *uri,
                      const gchar   *cached_mimetype,
@@ -618,6 +670,16 @@ finish_add_favorite (XAppFavorites *favorites,
     DEBUG ("XAppFavorites: added favorite: %s", uri);
 
     deduplicate_display_names (favorites, priv->infos);
+
+    GFile *gfile = g_file_new_for_uri (uri);
+    g_file_query_info_async (gfile,
+                             G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+                             G_FILE_QUERY_INFO_NONE,
+                             G_PRIORITY_LOW,
+                             NULL,
+                             on_display_name_received,
+                             favorites);
+    g_object_unref (gfile);
 
     if (from_saved)
     {
