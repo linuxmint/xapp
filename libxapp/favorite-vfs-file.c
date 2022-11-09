@@ -567,6 +567,7 @@ file_query_filesystem_info (GFile         *file,
         }
 
         g_object_unref (real_file);
+        g_file_attribute_matcher_unref (matcher);
         return info;
     }
 
