@@ -97,10 +97,8 @@ meson.add_install_script(join_paths(meson.source_root(), 'meson-scripts', 'insta
   'xapp-statusicon-interface.h'
 )
 
-xapp_enums = gnome.mkenums('xapp-enums',
+xapp_enums = gnome.mkenums_simple('xapp-enums',
     sources : xapp_headers,
-    c_template : 'xapp-enums.c.template',
-    h_template : 'xapp-enums.h.template',
     identifier_prefix : 'XApp',
     symbol_prefix : 'xapp'
 )
