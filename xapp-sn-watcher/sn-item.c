@@ -174,7 +174,6 @@ sn_item_dispose (GObject *object)
 
     g_clear_pointer (&item->sortable_name, g_free);
     g_clear_object (&item->status_icon);
-    g_clear_object (&item->menu);
     g_clear_object (&item->prop_proxy);
     g_clear_object (&item->sn_item_proxy);
     g_clear_object (&item->cancellable);
