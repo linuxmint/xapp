@@ -71,8 +71,8 @@ struct _SnItem
     GCancellable *cancellable;
 
     Status status;
-    gchar *last_png_path;
-    gchar *png_path;
+
+    gchar *png_paths[2];
 
     gint current_icon_id;
 
@@ -170,20 +170,6 @@ sn_item_dispose (GObject *object)
     SnItem *item = SN_ITEM (object);
     DEBUG ("SnItem dispose (%p)", object);
 
-    if (item->png_path != NULL)
-    {
-        g_unlink (item->png_path);
-        g_free (item->png_path);
-        item->png_path = NULL;
-    }
-
-    if (item->last_png_path != NULL)
-    {
-        g_unlink (item->last_png_path);
-        g_free (item->last_png_path);
-        item->last_png_path = NULL;
-    }
-
     g_clear_handle_id (&item->update_properties_timeout, g_source_remove);
 
     g_clear_pointer (&item->sortable_name, g_free);
@@ -202,6 +188,12 @@ static void
 sn_item_finalize (GObject *object)
 {
     DEBUG ("SnItem finalize (%p)", object);
+    SnItem *item = SN_ITEM (object);
+
+    g_unlink (item->png_paths[0]);
+    g_free (item->png_paths[0]);
+    g_unlink (item->png_paths[1]);
+    g_free (item->png_paths[1]);
 
     G_OBJECT_CLASS (sn_item_parent_class)->finalize (object);
 }
@@ -392,7 +384,6 @@ static void
 set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
 {
     cairo_surface_t *surface;
-    gchar *save_filename;
 
     DEBUG ("Trying to use icon pixmap for %s",
              item->sortable_name);
@@ -422,22 +413,19 @@ set_icon_from_pixmap (SnItem *item, SnItemPropertiesResult *new_props)
 
     if (surface != NULL)
     {
-        item->last_png_path = item->png_path;
-
-        save_filename = get_temp_file (item);
+        const gchar *current_png_path = item->png_paths[get_icon_id (item)];
 
         cairo_status_t status = CAIRO_STATUS_SUCCESS;
-        status = cairo_surface_write_to_png (surface, save_filename);
+        status = cairo_surface_write_to_png (surface, current_png_path);
 
-        DEBUG ("Saving tmp image file for '%s' to '%s'", item->sortable_name, save_filename);
+        DEBUG ("Saving tmp image file for '%s' to '%s'", item->sortable_name, current_png_path);
 
         if (status != CAIRO_STATUS_SUCCESS)
         {
             g_warning ("Failed to save png of status icon");
         }
 
-        xapp_status_icon_set_icon_name (item->status_icon, save_filename);
-        g_free (save_filename);
+        xapp_status_icon_set_icon_name (item->status_icon, current_png_path);
         return;
     }
 
@@ -1215,6 +1203,9 @@ sn_item_new (GDBusProxy *sn_item_proxy,
     item->sn_item_proxy = sn_item_proxy;
     item->is_ai = is_ai;
     item->cancellable = g_cancellable_new ();
+
+    item->png_paths[0] = get_temp_file (item);
+    item->png_paths[1] = get_temp_file (item);
 
     initialize_item (item);
     return item;
