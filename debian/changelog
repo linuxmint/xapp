@@ -1,3 +1,25 @@
+xapp (2.4.0) vera; urgency=medium
+
+  [ Michael Webster ]
+  * Add missing build dependency.
+  * Use github actions for CI builds.
+  * xapp-sn-watcher: Use /dev/shm for temp files if it's available, and clean them up when exiting.
+  * Add XAppVisibilityGroup.
+  * xapp-debug: Print the topic name in logging output.
+  * sn-item: Don't update the icon name if the tooltip was also updated.
+  * sn-item: Don't update the id property unless it has changed.
+  * xapp-status-icon.c: Update all icons when we lose or regain our identity on dbus.
+  * xapp-sn-watcher: Add a debug key to specify flags.
+  * sn-item: Silence warning caused when an app exits without notice.
+  * Use G_LOG_LEVEL_MESSAGE for debugging messages.
+  * favorites: Try to use a file's display name from file attributes when different than the its basename.
+  * favorite-vfs-file.c: Fix memory leak.
+  * build: Use gnome.mkenums_simple() to generate enum types.
+  * sn-item.c: Clean up temp files when finalizing.
+  * sn-item.c: Don't unref the menu during cleanup.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 15 Nov 2022 10:30:12 +0000
+
 xapp (2.2.15) vanessa; urgency=medium
 
   [ Bobby Rong ]
