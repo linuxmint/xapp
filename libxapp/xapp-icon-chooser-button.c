@@ -172,7 +172,7 @@ xapp_icon_chooser_button_init (XAppIconChooserButton *button)
 
     priv = xapp_icon_chooser_button_get_instance_private (button);
 
-    priv->image = gtk_image_new_from_icon_name ("unkown", XAPP_BUTTON_ICON_SIZE_DEFAULT);
+    priv->image = gtk_image_new_from_icon_name ("unknown", XAPP_BUTTON_ICON_SIZE_DEFAULT);
     gtk_button_set_image (GTK_BUTTON (button), priv->image);
 
     gtk_widget_set_hexpand (GTK_WIDGET (button), FALSE);
@@ -356,7 +356,7 @@ xapp_icon_chooser_button_set_icon (XAppIconChooserButton *button,
     if (icon == NULL)
     {
         priv->icon_string = NULL;
-        icon_string = "unkown";
+        icon_string = "unknown";
     }
     else
     {
