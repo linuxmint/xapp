@@ -1,3 +1,9 @@
+xapp (2.4.1) vera; urgency=medium
+
+  * Fix typo
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 16 Nov 2022 10:51:55 +0000
+
 xapp (2.4.0) vera; urgency=medium
 
   [ Michael Webster ]
