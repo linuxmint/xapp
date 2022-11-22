@@ -1,6 +1,6 @@
 # Specify filepatterns you want git to ignore.
 
-obj-x86_64-linux-gnu
+obj-*
 debian/tmp/
 debian/*.debhelper
 debian/gir1.2-xapp-1.0/
