@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Clement Lefebvre <root@linuxmint.com>
 Build-Depends:
  debhelper-compat (= 12),
- dh-python,
+ dh-sequence-gir,
+ dh-sequence-python3,
  dpkg-dev (>= 1.15.1),
  gobject-introspection (>= 0.10.2-1~),
  gtk-doc-tools (>= 1.4),
@@ -34,16 +35,6 @@ Depends:
  ${shlibs:Depends},
 Description: Introspection data for XApp
  This package contains the introspection data for XApp.
-
-Package: libxapp-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Multi-Arch: same
-Pre-Depends: ${misc:Pre-Depends}
-Depends: libxapp1 (= ${binary:Version}), ${misc:Depends}
-Description: XApp library - debug symbols
- This package contains the symbols files needed to debug the XApp library.
 
 Package: libxapp-dev
 Section: libdevel
