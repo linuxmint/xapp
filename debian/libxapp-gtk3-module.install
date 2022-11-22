@@ -1,2 +1,2 @@
-etc/X11
+etc/X11/xinit/xinitrc.d/80xapp-gtk3-module.sh etc/X11/Xsession.d/
 usr/lib/*/gtk-3.0/modules
