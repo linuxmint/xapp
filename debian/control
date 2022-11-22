@@ -50,6 +50,21 @@ Description: XApp library - development files
  This package provides the include files and static library for the XApp
  library functions.
 
+Package: libxapp-gtk3-module
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ xapps-common (>= ${source:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends},
+Breaks: libxapp1 (<< 2.4.2~)
+Replaces: libxapp1 (<< 2.4.2~)
+Description: GTK 3.0 module for the XApp library
+ This package contains a GTK 3.0 module to make features of the XApp library
+ available to GTK 3.0 applications.
+
 Package: libxapp1
 Section: libs
 Architecture: any
@@ -60,8 +75,23 @@ Depends:
  xapps-common (>= ${source:Version}),
  ${misc:Depends},
  ${shlibs:Depends},
+Recommends:
+ libxapp-gtk3-module (= ${binary:Version}),
+ xapp-sn-watcher (= ${binary:Version}),
 Description: XApp library
  This library is used by several Xapp apps.
+
+Package: xapp-sn-watcher
+Architecture: any
+Depends:
+ default-dbus-session-bus | dbus-session-bus,
+ xapps-common (>= ${source:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends},
+Breaks: libxapp1 (<< 2.4.2~), xapps-common (<< 2.4.2~)
+Replaces: libxapp1 (<< 2.4.2~), xapps-common (<< 2.4.2~)
+Description: D-Bus session bus service to support the XApp library
+ This package contains xapp-sn-watcher.
 
 Package: xapps-common
 Architecture: all

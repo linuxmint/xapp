@@ -1,0 +1,3 @@
+etc/xdg/autostart
+usr/libexec/xapps/sn-watcher
+usr/share/dbus-1/services/org.x.StatusNotifierWatcher.service

@@ -1,0 +1,1 @@
+rm_conffile /etc/xdg/autostart/xapp-sn-watcher.desktop 2.4.2~

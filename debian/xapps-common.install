@@ -4,5 +4,4 @@ usr/share/icons
 usr/share/locale
 usr/libexec/xapps/*.py
 usr/share/mate-panel/applets
-usr/share/dbus-1/services
-etc/xdg/autostart
+usr/share/dbus-1/services/org.mate.panel.applet.MateXAppStatusAppletFactory.service
