@@ -1,0 +1,2 @@
+# only uses functions from XApp, GTK3, GIO, GObject and GLib
+library-not-linked-against-libc [usr/lib/*/gtk-3.0/modules/libxapp-gtk3-module.so]

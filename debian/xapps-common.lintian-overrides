@@ -1,0 +1,2 @@
+no-manual-page [usr/bin/*]
+unknown-locale-code ber [usr/share/locale/ber/]

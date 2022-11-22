@@ -1,0 +1,2 @@
+# only contains variable definitions
+executable-not-elf-or-script [usr/libexec/xapps/applet_constants.py]
