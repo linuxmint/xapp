@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # This script is used to update the docs in docs/reference
-# which are served at http://developer.linuxmint.com/xapps/reference/index.html.
+# which are served at https://projects.linuxmint.com/xapp/reference/index.html.
 
 import os
 import sys
