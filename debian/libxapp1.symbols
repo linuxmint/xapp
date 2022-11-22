@@ -1,7 +1,9 @@
 libxapp.so.1 libxapp1 #MINVER#
+* Build-Depends-Package: libxapp-dev
  _favorite_vfs_file_new_for_info@Base 2.0.7
  _xapp_favorites_get_display_names@Base 2.0.7
  create_blanking_window@Base 1.4.9
+ debug_flag_to_string@Base 2.4.0
  fav_uri_to_display_name@Base 2.0.7
  favorite_vfs_file_enumerator_get_type@Base 2.0.7
  favorite_vfs_file_enumerator_new@Base 2.0.7
@@ -23,6 +25,7 @@ libxapp.so.1 libxapp1 #MINVER#
  init_favorite_vfs@Base 2.0.7
  match_mimetypes@Base 2.0.7
  path_to_fav_uri@Base 2.0.7
+ process_icon_state@Base 2.2.15
  xapp_debug@Base 2.2.8
  xapp_debug_flag_is_set@Base 2.2.8
  xapp_debug_set_flags@Base 2.2.8
@@ -42,6 +45,7 @@ libxapp.so.1 libxapp1 #MINVER#
  xapp_favorites_launch@Base 2.0.7
  xapp_favorites_remove@Base 2.0.7
  xapp_favorites_rename@Base 2.0.7
+ xapp_get_tmp_dir@Base 2.4.0
  xapp_glade_catalog_init@Base 1.4.9
  xapp_gtk_window_get_type@Base 1.4.9
  xapp_gtk_window_new@Base 1.4.9
@@ -208,3 +212,17 @@ libxapp.so.1 libxapp1 #MINVER#
  xapp_style_manager_set_widget@Base 2.2.8
  xapp_util_get_session_is_running@Base 2.0.7
  xapp_util_gpu_offload_supported@Base 1.8.8
+ xapp_visibility_group_add_widget@Base 2.4.0
+ xapp_visibility_group_copy@Base 2.4.0
+ xapp_visibility_group_free@Base 2.4.0
+ xapp_visibility_group_get_sensitive@Base 2.4.0
+ xapp_visibility_group_get_type@Base 2.4.0
+ xapp_visibility_group_get_visible@Base 2.4.0
+ xapp_visibility_group_get_widgets@Base 2.4.0
+ xapp_visibility_group_hide@Base 2.4.0
+ xapp_visibility_group_new@Base 2.4.0
+ xapp_visibility_group_remove_widget@Base 2.4.0
+ xapp_visibility_group_set_sensitive@Base 2.4.0
+ xapp_visibility_group_set_visible@Base 2.4.0
+ xapp_visibility_group_set_widgets@Base 2.4.0
+ xapp_visibility_group_show@Base 2.4.0
