@@ -1,3 +1,10 @@
+xapp (2.4.2~really2.4.1) UNRELEASED; urgency=medium
+
+  * Intermediate placeholder that will be replaced when version 2.4.2 is to
+    be released.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 22 Nov 2022 20:42:08 +0100
+
 xapp (2.4.1) vera; urgency=medium
 
   * Fix typo
