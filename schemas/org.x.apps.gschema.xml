@@ -48,15 +48,5 @@
         </description>
      </key>
   </schema>
-    <schema id="org.x.apps.mate-panel-applet" path="/org/x/apps/mate-panel-applet/" gettext-domain="xapps">
-    <key name="symbolic-icon-offset" type="i">
-      <default>8</default>
-      <summary>Pixels smaller than the panel height to make symbolic icons</summary>
-    </key>
-    <key name="color-icon-offset" type="i">
-      <default>8</default>
-      <summary>Pixels smaller than the panel height to make color icons</summary>
-    </key>
-  </schema>
 
 </schemalist>

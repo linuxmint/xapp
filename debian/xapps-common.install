@@ -1,7 +1,8 @@
-usr/share/glib-2.0/schemas
+usr/share/glib-2.0/schemas/org.x.apps.gschema.xml
 usr/bin/
-usr/share/icons
+usr/share/icons/hicolor/scalable/actions
+usr/share/icons/hicolor/scalable/apps/xapp-*.svg
+usr/share/icons/hicolor/scalable/categories
+usr/share/icons/hicolor/scalable/emblems
+usr/share/icons/hicolor/scalable/places
 usr/share/locale
-usr/libexec/xapps/*.py
-usr/share/mate-panel/applets
-usr/share/dbus-1/services/org.mate.panel.applet.MateXAppStatusAppletFactory.service

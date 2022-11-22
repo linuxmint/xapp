@@ -8,6 +8,6 @@ Description=Area where XApp status icons appear
 [MateXAppStatusApplet]
 Name=XApp Status Applet
 Description=Area where XApp status icons appear
-Icon=xapp-mate-status-applet
+Icon=mate-xapp-status-applet
 MateComponentId=OAFIID:MATE_MateXAppStatusApplet;
 

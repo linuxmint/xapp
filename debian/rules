@@ -12,5 +12,9 @@ override_dh_auto_configure:
 		-D deprecated_warnings=false \
 		--buildtype=debugoptimized
 
+override_dh_python3:
+	dh_python3
+	dh_python3 -p mate-xapp-status-applet /usr/libexec/xapps
+
 override_dh_strip:
 	dh_strip --dbgsym-migration="libxapp-dbg (<< 2.4.2~)"

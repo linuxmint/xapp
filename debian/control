@@ -81,6 +81,28 @@ Recommends:
 Description: XApp library
  This library is used by several Xapp apps.
 
+Package: mate-xapp-status-applet
+Architecture: all
+Multi-Arch: foreign
+Depends:
+ gir1.2-gdkpixbuf-2.0 (>= 2.22.0),
+ gir1.2-glib-2.0 (>= 2.44),
+ gir1.2-gtk-3.0 (>= 3.16),
+ gir1.2-matepanelapplet-4.0,
+ gir1.2-xapp-1.0 (>= ${source:Version}),
+ mate-panel,
+ python3,
+ python3-gi,
+ python3-setproctitle,
+ xapps-common (>= ${source:Version}),
+ ${misc:Depends},
+ ${python3:Depends},
+Breaks: xapps-common (<< 2.4.2~)
+Replaces: xapps-common (<< 2.4.2~)
+Description: XApp status icon applet for the MATE panel
+ This package contains the MATE panel applet to display XAppStatusIcon
+ indicators of several XApp apps.
+
 Package: xapp-sn-watcher
 Architecture: any
 Depends:
@@ -88,6 +110,9 @@ Depends:
  xapps-common (>= ${source:Version}),
  ${misc:Depends},
  ${shlibs:Depends},
+Suggests:
+ mate-xapp-status-applet,
+ xfce4-xapp-status-plugin,
 Breaks: libxapp1 (<< 2.4.2~), xapps-common (<< 2.4.2~)
 Replaces: libxapp1 (<< 2.4.2~), xapps-common (<< 2.4.2~)
 Description: D-Bus session bus service to support the XApp library
@@ -98,8 +123,6 @@ Architecture: all
 Multi-Arch: foreign
 Depends:
  inxi,
- python3,
- python3-gi,
  xdg-utils,
  ${misc:Depends},
  ${python3:Depends},

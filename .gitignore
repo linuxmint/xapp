@@ -7,6 +7,7 @@ debian/gir1.2-xapp-1.0/
 debian/libxapp-dev/
 debian/libxapp-gtk3-module/
 debian/libxapp1/
+debian/mate-xapp-status-applet/
 debian/xapp-sn-watcher/
 debian/xapps-common/
 debian/xapps-doc/

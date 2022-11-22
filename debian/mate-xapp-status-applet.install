@@ -1,0 +1,5 @@
+usr/libexec/xapps/*.py
+usr/share/dbus-1/services/org.mate.panel.applet.MateXAppStatusAppletFactory.service
+usr/share/glib-2.0/schemas/org.x.apps.mate-panel-applet.gschema.xml
+usr/share/icons/hicolor/scalable/apps/mate-xapp-status-applet.svg
+usr/share/mate-panel/applets/org.x.MateXAppStatusApplet.mate-panel-applet
