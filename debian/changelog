@@ -1,3 +1,9 @@
+xapp (2.4.2) vera; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 02 Dec 2022 17:40:03 +0000
+
 xapp (2.4.1) vera; urgency=medium
 
   * Fix typo
