@@ -4,12 +4,14 @@ gio_dep = dependency('gio-2.0', version: glib_min_ver, required: true)
 gio_unix_dep = dependency('gio-unix-2.0', version: glib_min_ver, required: true)
 glib_dep = dependency('glib-2.0', version: glib_min_ver, required: true)
 gtk3_dep = dependency('gtk+-3.0', version: '>=3.16', required: true)
+gmodule_dep = dependency('gmodule-2.0', version: glib_min_ver, required: true)
 
 libdeps = []
 libdeps += gio_dep
 libdeps += gio_unix_dep
 libdeps += glib_dep
 libdeps += gtk3_dep
+libdeps += gmodule_dep
 libdeps += dependency('gdk-pixbuf-2.0', version: '>=2.22.0', required: true)
 libdeps += dependency('cairo', required: true)
 libdeps += dependency('x11', required: true)
