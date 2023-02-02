@@ -64,40 +64,19 @@ if not app_lib_only
     xapp_sources += 'xapp-kbd-layout-controller.c'
 endif
 
-dbus_headers = []
-
-# FIXME: Ugly workaround that simulates the generation of
-#        two different targets, so headers can be included
-#        explicitly for introspection.
-# 
-# This can be removed once all platforms use meson >=.46
-# and replaced with gnome.gdbus_codegen
-xapp_statusicon_interface_sources = custom_target(
-    'xapp-statusicon-interface',
-    input: 'org.x.StatusIcon.xml',
-    output: ['xapp-statusicon-interface.h', 'xapp-statusicon-interface.c'],
-    command: [
-        codegen,
-        'org.x.StatusIcon',
-        'xapp-statusicon-interface',
-        'StatusIconInterface',
-        meson.current_build_dir(),
-        '@INPUT@', '@OUTPUT@'
-    ]
+xapp_statusicon_interface_sources = gnome.gdbus_codegen(
+  'xapp-statusicon-interface',
+  sources: 'org.x.StatusIcon.xml',
+  interface_prefix: 'org.x.StatusIcon',
+  namespace: 'XApp',
+  annotations: [[ 'org.x.StatusIcon', 'org.gtk.GDBus.C.Name', 'StatusIconInterface' ]],
+  object_manager: true,
+  install_header: true,
+  install_dir: join_paths(get_option('prefix'), get_option('includedir'), 'xapp/libxapp')
 )
 
-dbus_headers += xapp_statusicon_interface_sources[0]
-xapp_sources += xapp_statusicon_interface_sources[1]
-
-# You can't actually access the generated header udring the install_header command below,
-# because the command is evaluated prior to the files being generated.  So we need to manually
-# install the dbus header file (custom install scripts really *do* get evaluated after build,
-# during the install phase.)
-codegen = find_program(join_paths(meson.source_root(), 'meson-scripts', 'g-codegen.py'))
-
-meson.add_install_script(join_paths(meson.source_root(), 'meson-scripts', 'install_generated_header.py'),
-  'xapp-statusicon-interface.h'
-)
+dbus_headers = xapp_statusicon_interface_sources[1]
+xapp_sources += xapp_statusicon_interface_sources[0]
 
 xapp_enums = gnome.mkenums_simple('xapp-enums',
     sources : xapp_headers,

@@ -41,7 +41,6 @@ c = configure_file(output : 'config.h',
 )
 
 top_inc = include_directories('.')
-codegen = find_program(join_paths(meson.source_root(), 'meson-scripts', 'g-codegen.py'))
 
 subdir('libxapp')
 subdir('po')

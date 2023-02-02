@@ -17,7 +17,7 @@ Build-Depends:
  libdbusmenu-gtk3-dev,
  libx11-dev,
  libxkbfile-dev,
- meson,
+ meson (>= 0.46),
  python3,
  python-gi-dev,
  valac,

@@ -1,7 +1,7 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
                       "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <!-- GDBus 2.48.1 -->
-<node>
+<node name='/org/x/StatusIcon'>
   <interface name='org.x.StatusIcon'>
     <method name='ButtonPress'>
         <arg name='x' direction='in' type='i'/>
