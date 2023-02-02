@@ -12,6 +12,7 @@
 #define FAVORITE_DCONF_METADATA_KEY "root-metadata"
 
 static GSettings *settings = NULL;
+G_LOCK_DEFINE_STATIC (settings);
 
 typedef struct
 {
@@ -491,6 +492,8 @@ file_query_info (GFile               *file,
 
         if (g_file_attribute_matcher_enumerate_namespace (matcher, "metadata"))
         {
+            G_LOCK (settings);
+
             gchar **entries = g_settings_get_strv (settings, FAVORITE_DCONF_METADATA_KEY);
 
             if (entries != NULL)
@@ -525,6 +528,8 @@ file_query_info (GFile               *file,
             }
 
             g_strfreev (entries);
+
+            G_UNLOCK (settings);
         }
 
         g_file_attribute_matcher_unref (matcher);
@@ -687,6 +692,8 @@ remove_root_metadata (const gchar *attr_name)
     gchar **old_metadata, **new_metadata;
     gint i;
 
+    G_LOCK (settings);
+
     old_metadata = g_settings_get_strv (settings, FAVORITE_DCONF_METADATA_KEY);
 
     if (old_metadata == NULL)
@@ -717,6 +724,8 @@ remove_root_metadata (const gchar *attr_name)
 
     g_settings_set_strv (settings, FAVORITE_DCONF_METADATA_KEY, (const gchar * const *) new_metadata);
     g_strfreev (new_metadata);
+
+    G_UNLOCK (settings);
 }
 
 static void
@@ -729,6 +738,8 @@ set_or_update_root_metadata (const gchar        *attr_name,
     gint i;
     gchar *entry;
     gboolean exists;
+
+    G_LOCK (settings);
 
     old_metadata = g_settings_get_strv (settings, FAVORITE_DCONF_METADATA_KEY);
 
@@ -791,6 +802,8 @@ set_or_update_root_metadata (const gchar        *attr_name,
 
     g_settings_set_strv (settings, FAVORITE_DCONF_METADATA_KEY, (const gchar * const *) new_metadata);
     g_strfreev (new_metadata);
+
+    G_UNLOCK (settings);
 }
 
 gboolean
