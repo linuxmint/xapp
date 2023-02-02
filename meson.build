@@ -15,6 +15,7 @@ libexec_path = join_paths(get_option('prefix'), get_option('libexecdir'), 'xapps
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', 'xapp')
 cdata.set_quoted('XAPP_SN_WATCHER_PATH', join_paths([libexec_path, 'xapp-sn-watcher']))
+cdata.set('ENABLE_DEBUG', get_option('buildtype') in ['debug', 'debugoptimized'])
 
 add_global_arguments([
     '-Wunused',

@@ -30,6 +30,8 @@
 
 G_BEGIN_DECLS
 
+#ifdef ENABLE_DEBUG
+
 typedef enum
 {
   XAPP_DEBUG_WINDOW = 1 << 1,
@@ -71,6 +73,7 @@ void xapp_debug (DebugFlags flag, const gchar *format, ...)
 #define DEBUGGING 0
 
 #endif /* DEBUG_FLAG */
+#endif /* ENABLE_DEBUG */
 
 G_END_DECLS
 
