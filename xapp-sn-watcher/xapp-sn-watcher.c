@@ -682,6 +682,16 @@ watcher_new (const gchar *current_desktop)
   return watcher;
 }
 
+static void
+dbusmenu_log_handler (const char     *log_domain,
+                      GLogLevelFlags  log_level,
+                      const char     *message,
+                      gpointer        data)
+
+{
+    DEBUG ("%s", message);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -730,6 +740,11 @@ main (int argc, char **argv)
                  "'status-notifier-enabled-desktops' setting key.", current_desktop);
         exit(0);
     }
+
+    // libdbusmenu throws a lot of warnings for problems we already handle. They can be noisy in
+    // .xsession-errors, however. Redirect them to debug output.
+    g_log_set_handler ("LIBDBUSMENU-GTK", G_LOG_LEVEL_WARNING,
+                       dbusmenu_log_handler, NULL);
 
     watcher = watcher_new (current_desktop);
 
