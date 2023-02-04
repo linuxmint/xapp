@@ -75,7 +75,7 @@ xapp_statusicon_interface_sources = gnome.gdbus_codegen(
   install_dir: join_paths(get_option('prefix'), get_option('includedir'), 'xapp/libxapp')
 )
 
-dbus_headers = xapp_statusicon_interface_sources[1]
+dbus_headers = [ xapp_statusicon_interface_sources[1] ]
 xapp_sources += xapp_statusicon_interface_sources[0]
 
 xapp_enums = gnome.mkenums_simple('xapp-enums',
