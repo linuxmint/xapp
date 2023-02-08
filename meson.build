@@ -10,11 +10,11 @@ i18n = import('i18n')
 
 dbus_services_dir = dependency('dbus-1').get_pkgconfig_variable('session_bus_services_dir',
                                                                 define_variable: ['datadir', get_option('datadir')])
-libexec_path = join_paths(get_option('prefix'), get_option('libexecdir'), 'xapps', 'sn-watcher')
+sn_watcher_dir = join_paths(get_option('prefix'), get_option('libdir'), 'xapps')
 
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', 'xapp')
-cdata.set_quoted('XAPP_SN_WATCHER_PATH', join_paths([libexec_path, 'xapp-sn-watcher']))
+cdata.set_quoted('XAPP_SN_WATCHER_PATH', join_paths([sn_watcher_dir, 'xapp-sn-watcher']))
 cdata.set('ENABLE_DEBUG', get_option('buildtype') in ['debug', 'debugoptimized'])
 
 add_global_arguments([

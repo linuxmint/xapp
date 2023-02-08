@@ -12,7 +12,7 @@ sn_item_generated = gnome.gdbus_codegen(
 
 
 conf = configuration_data()
-conf.set('launch_folder', libexec_path)
+conf.set('launch_folder', sn_watcher_dir)
 
 ## DBus service file
 service_file = configure_file(
@@ -46,6 +46,6 @@ watcher = executable('xapp-sn-watcher',
   watcher_sources,
   include_directories: [ top_inc ],
   dependencies: [libxapp_dep, dbusmenu, cairo],
-  install_dir: libexec_path,
+  install_dir: sn_watcher_dir,
   install: true
 )
