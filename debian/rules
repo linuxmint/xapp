@@ -10,6 +10,7 @@ override_dh_auto_configure:
 		--libexecdir=/usr/libexec \
 		-D docs=true \
 		-D deprecated_warnings=false \
+		-D debian_derivative=true \
 		--buildtype=debugoptimized
 
 override_dh_strip:
