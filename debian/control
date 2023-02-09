@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Clement Lefebvre <root@linuxmint.com>
 Build-Depends:
  debhelper-compat (= 12),
- dh-python,
+ dh-sequence-gir,
+ dh-sequence-python3,
  dpkg-dev (>= 1.15.1),
  gobject-introspection (>= 0.10.2-1~),
  gtk-doc-tools (>= 1.4),
