@@ -23,4 +23,8 @@ option('app-lib-only',
     value: false,
     description: 'Limit build to core library only and without the keyboard layout controller. This is to allow flatpak bundlings.'
 )
-
+option('debian_derivative',
+    type: 'boolean',
+    value: false,
+    description: 'Use paths specific to Debian and derivatives.'
+)
