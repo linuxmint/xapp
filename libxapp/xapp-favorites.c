@@ -717,7 +717,7 @@ on_content_type_info_received (GObject      *source,
 
     if (file_info)
     {
-        cached_mimetype = g_strdup (g_file_info_get_content_type (file_info));
+        cached_mimetype = g_strdup (g_file_info_get_attribute_string (file_info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE));
 
         if (cached_mimetype == NULL)
         {
