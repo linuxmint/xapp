@@ -570,21 +570,27 @@ update_icon (SnItem *item, SnItemPropertiesResult *new_props)
 static void
 update_menu (SnItem *item, SnItemPropertiesResult *new_props)
 {
-    g_clear_object (&item->menu);
+    DEBUG ("Possible new menu for '%s' - current path: '%s', new: '%s'",
+           item->sortable_name, item->current_props->menu_path, new_props->menu_path);
 
     xapp_status_icon_set_primary_menu (item->status_icon, NULL);
     xapp_status_icon_set_secondary_menu (item->status_icon, NULL);
+    g_clear_object (&item->menu);
 
     if (new_props->menu_path == NULL)
     {
         return;
     }
 
+    if (g_strcmp0 (new_props->menu_path, "/NO_DBUSMENU") == 0)
+    {
+        DEBUG ("No menu set for '%s' (/NO_DBUSMENU)", item->sortable_name);
+        return;
+    }
+
     item->menu = GTK_WIDGET (dbusmenu_gtkmenu_new ((gchar *) g_dbus_proxy_get_name (item->sn_item_proxy),
                                                    new_props->menu_path));
     g_object_ref_sink (item->menu);
-
-    DEBUG ("New menu for '%s'", item->sortable_name);
 
     if (item->is_ai && !item->should_activate)
     {
@@ -981,6 +987,8 @@ sn_signal_received (GDBusProxy  *sn_item_proxy,
     {
         return;
     }
+
+    DEBUG ("Signal received from StatusNotifierItem: %s", signal_name);
 
     if (g_strcmp0 (signal_name, "NewIcon") == 0 ||
         g_strcmp0 (signal_name, "Id") == 0 ||

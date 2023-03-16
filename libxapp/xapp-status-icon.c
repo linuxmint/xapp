@@ -1870,7 +1870,7 @@ xapp_status_icon_set_primary_menu (XAppStatusIcon *icon,
 
     g_clear_object (&icon->priv->primary_menu);
 
-    DEBUG ("set_primary_menu: %p", menu);
+    DEBUG ("%s: %p", icon->priv->name, menu);
 
     if (menu)
     {
@@ -1922,7 +1922,7 @@ xapp_status_icon_set_secondary_menu (XAppStatusIcon *icon,
 
     g_clear_object (&icon->priv->secondary_menu);
 
-    DEBUG ("set_secondary_menu: %p", menu);
+    DEBUG ("%s: %p", icon->priv->name, menu);
 
     if (menu)
     {
