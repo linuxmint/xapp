@@ -365,6 +365,10 @@ popup_menu (XAppStatusIcon *self,
                               x, y, button, _time, panel_position,
                               &rect_window, &win_rect, &rect_anchor, &menu_anchor);
 
+    g_object_set_data_full (G_OBJECT (menu),
+                            "rect_window", rect_window,
+                            (GDestroyNotify) gdk_window_destroy);
+
     g_object_set (G_OBJECT (menu),
                   "anchor-hints", GDK_ANCHOR_SLIDE_X  | GDK_ANCHOR_SLIDE_Y  |
                                   GDK_ANCHOR_RESIZE_X | GDK_ANCHOR_RESIZE_Y,
@@ -378,7 +382,6 @@ popup_menu (XAppStatusIcon *self,
                             event);
 
     gdk_event_free (event);
-    gdk_window_destroy (rect_window);
 }
 
 static gboolean
