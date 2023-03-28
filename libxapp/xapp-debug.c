@@ -39,6 +39,7 @@ static GDebugKey keys[] = {
   { "SnWatcher", XAPP_DEBUG_SN_WATCHER },
   { "GtkModule", XAPP_DEBUG_MODULE},
   { "VisibilityGroup", XAPP_DEBUG_VISIBILITY_GROUP},
+  { "GpuOffload", XAPP_DEBUG_GPU_OFFLOAD},
   { 0, }
 };
 
@@ -61,6 +62,8 @@ debug_flag_to_string (DebugFlags flag)
         return "GtkModule";
     case XAPP_DEBUG_VISIBILITY_GROUP:
         return "VisibilityGroup";
+    case XAPP_DEBUG_GPU_OFFLOAD:
+        return "GpuOffload";
     }
     return "";
 }

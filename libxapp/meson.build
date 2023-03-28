@@ -30,6 +30,7 @@ xapp_debug = [
 xapp_headers = [
     'xapp-favorites.h',
     'xapp-gtk-window.h',
+    'xapp-gpu-offload-helper.h',
     'xapp-icon-chooser-button.h',
     'xapp-icon-chooser-dialog.h',
     'xapp-monitor-blanker.h',
@@ -46,6 +47,7 @@ xapp_sources = [
     'xapp-favorites.c',
     'xapp-glade-catalog.c',
     'xapp-gtk-window.c',
+    'xapp-gpu-offload-helper.c',
     'xapp-icon-chooser-button.c',
     'xapp-icon-chooser-dialog.c',
     'xapp-monitor-blanker.c',
@@ -57,6 +59,15 @@ xapp_sources = [
     'xapp-util.c',
     'xapp-visibility-group.c'
 ]
+
+switcheroo_sources = gnome.gdbus_codegen(
+  'xapp-switcheroo-interface',
+  sources: 'net.hadess.SwitcherooControl.xml',
+  interface_prefix: 'net.hadess',
+  namespace: 'XApp'
+)
+
+xapp_sources += switcheroo_sources
 
 if not app_lib_only
     libdeps += dependency('libgnomekbdui', required: true)
