@@ -1,0 +1,39 @@
+#! /usr/bin/python3
+
+"""
+A demo/test script for the XAppAppGtkWindow class
+"""
+import sys, os
+import signal
+
+import gi
+gi.require_version('XApp', '1.0')
+
+from gi.repository import GLib, Gio, XApp, GObject
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+class Main:
+    def __init__(self):
+        if len(sys.argv) > 1 and sys.argv[1] == "sync":
+            self.helper = XApp.GpuOffloadHelper.get_sync()
+            self.on_helper_ready(self.helper, self.helper.is_ready())
+        else:
+            self.helper = XApp.GpuOffloadHelper.get()
+            self.helper.connect("ready", self.on_helper_ready)
+
+    def on_helper_ready(self, helper, success):
+        print("Success:", success);
+        print("Default GPU:", helper.get_default_info().id, helper.get_default_info().display_name)
+        print("Number of GPUS:", helper.get_n_gpus())
+
+        for info in helper.get_offload_infos():
+            print(info.id, info.display_name, info.get_shell_env_prefix())
+
+if __name__ == "__main__":
+    main = Main()
+
+    if len(sys.argv) == 1:
+        GLib.MainLoop.new(None, True).run()
+
+    exit(0)
