@@ -1,3 +1,11 @@
+xapp (2.4.3) vera; urgency=medium
+
+  [ Michael Webster ]
+  * favorites: Use generic getter for content type check.
+  * xapp-status-icon.c: Don't destroy the dummy event window too early.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 28 Mar 2023 18:06:34 +0100
+
 xapp (2.4.2) vera; urgency=medium
 
   * l10n: Update translations
