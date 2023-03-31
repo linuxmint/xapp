@@ -24,11 +24,11 @@ class Main:
 
     def on_helper_ready(self, helper, success):
         print("Success:", success);
-        print("Default GPU:", helper.get_default_info().id, helper.get_default_info().display_name)
         print("Number of GPUS:", helper.get_n_gpus())
-
+        info = helper.get_default_info()
+        print("%d - %s -- '%s'" % (info.id, info.display_name, info.get_shell_env_prefix()))
         for info in helper.get_offload_infos():
-            print(info.id, info.display_name, info.get_shell_env_prefix())
+            print("%d - %s -- '%s'" % (info.id, info.display_name, info.get_shell_env_prefix()))
 
 if __name__ == "__main__":
     main = Main()
