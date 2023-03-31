@@ -93,7 +93,7 @@ xapp_gpu_info_get_shell_env_prefix(XAppGpuInfo *info)
     for (gint i = 0; i < g_strv_length (info->env_strv); i++)
     {
         g_string_append_printf (args, "%s=", info->env_strv[i++]);
-        g_string_append_printf (args, "%s", info->env_strv[i]);
+        g_string_append_printf (args, "%s ", info->env_strv[i]);
     }
 
     DEBUG ("%s", args->str);

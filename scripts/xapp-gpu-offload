@@ -1,0 +1,93 @@
+#!/usr/bin/python3
+
+import sys
+import os
+import argparse
+
+import gi
+gi.require_version('XApp', '1.0')
+from gi.repository import XApp
+
+helper = XApp.GpuOffloadHelper.get_sync()
+
+def list_gpus():
+    info = helper.get_default_info()
+    print("{: <1} {: <6} {: <20} [{: <20}]".format(info.id, "default" if info.is_default else "", info.get_shell_env_prefix(),  info.display_name))
+    for info in helper.get_offload_infos():
+        print("{: <1} {: <6} {: <20} [{: <20}]".format(info.id, "default" if info.is_default else "", info.get_shell_env_prefix(),  info.display_name))
+
+def check_id(_id):
+    if _id < 0 or _id >= helper.get_n_gpus():
+        print("A GPU with that ID does not exist", file=sys.stderr)
+        exit(1)
+
+def _get_correct_info(_id):
+    info = None
+
+    if _id == -1:
+        infos = helper.get_offload_infos()
+        if infos:
+            info = infos[0]
+    else:
+        info = helper.get_info_by_id(_id)
+
+    if info is None:
+        info = helper.get_default_info()
+
+    return info
+
+def print_env(_id):
+    info = _get_correct_info(_id)
+    print(info.get_shell_env_prefix(), end="")
+
+def exec_command(_id, command):
+    info = _get_correct_info(_id)
+
+    env = os.environ
+
+    if info:
+        i = 0
+        strv = info.env_strv
+        while i < len(strv):
+            env[strv[i]] = strv[i + 1]
+            i += 2
+
+    os.execvpe(command[0], command, env)
+
+parser = argparse.ArgumentParser(description="Launch a program using an alternate GPU, or if there are no others, like a normal program.",
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)# epilog=mode_help)
+parser.add_argument("command", type=str, nargs="*", help="The program to run and arguments.")
+parser.add_argument("-i", "--id", help="Specify the GPU to use. If omitted, the first non-default GPU will be used.",
+                    action="store", type=int, default=-1)
+parser.add_argument("-l", "--list-gpus", help="List available GPUs.",
+                    action="store_true")
+parser.add_argument("-p", "--print-env", help="Print the environment variables to be prepended to a shell command. A newline is omitted.",
+                    action="store_true")
+args = parser.parse_args()
+
+if not args.command and not args.list_gpus and not args.print_env:
+    parser.print_help()
+    exit(0)
+
+_id = -1
+
+if args.list_gpus:
+    list_gpus()
+    exit(0)
+
+if args.id > -1:
+    if (not args.print_env) and len(args.command) == 0:
+        print("The ID argument must be accompanied by --print-env or a command to run.", file=sys.stderr)
+        exit(1)
+
+    _id = args.id
+    check_id(_id)
+
+if args.print_env:
+    print_env(_id)
+    exit(0)
+
+if args.command:
+    exit(exec_command(_id, args.command))
+
+exit(0)
