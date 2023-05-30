@@ -16,6 +16,7 @@
 
   <chapter>
     <title>API reference</title>
+    <xi:include href="xml/xapp-dark-mode-manager.xml"/>
     <xi:include href="xml/xapp-favorites.xml"/>
     <xi:include href="xml/xapp-gtk-window.xml"/>
     <xi:include href="xml/xapp-gpu-offload-helper.xml"/>

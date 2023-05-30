@@ -40,6 +40,7 @@ static GDebugKey keys[] = {
   { "GtkModule", XAPP_DEBUG_MODULE},
   { "VisibilityGroup", XAPP_DEBUG_VISIBILITY_GROUP},
   { "GpuOffload", XAPP_DEBUG_GPU_OFFLOAD},
+  { "DarkModeManager", XAPP_DEBUG_DARK_MODE_MANAGER},
   { 0, }
 };
 
@@ -64,6 +65,8 @@ debug_flag_to_string (DebugFlags flag)
         return "VisibilityGroup";
     case XAPP_DEBUG_GPU_OFFLOAD:
         return "GpuOffload";
+    case XAPP_DEBUG_DARK_MODE_MANAGER:
+        return "DarkModeManager";
     }
     return "";
 }

@@ -3,6 +3,7 @@
   <schema id="org.x.apps" path="/org/x/apps/">
     <child name="status-icon" schema="org.x.apps.statusicon"/>
     <child name="favorites" schema="org.x.apps.favorites"/>
+    <child name="portal" schema="org.x.apps.portal"/>
   </schema>
 
   <schema id="org.x.apps.favorites" path="/org/x/apps/favorites/" gettext-domain="xapps">
@@ -59,4 +60,19 @@
     </key>
   </schema>
 
+  <enum id="org.x.apps.portal.ColorScheme">
+    <value nick="default" value="0"/>
+    <value nick="prefer-dark" value="1"/>
+    <value nick="prefer-light" value="2"/>
+  </enum>
+
+  <schema id="org.x.apps.portal" path="/org/x/apps/portal/" gettext-domain="xdg-desktop-portal-xapp">
+    <key name="color-scheme" enum="org.x.apps.portal.ColorScheme">
+      <default>'default'</default>
+      <summary>Color scheme</summary>
+      <description>
+        The preferred color scheme for the user interface. Valid values are “default”, “prefer-dark”, “prefer-light”.
+      </description>
+    </key>
+  </schema>
 </schemalist>

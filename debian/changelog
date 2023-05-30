@@ -1,3 +1,9 @@
+xapp (2.5.0) unstable; urgency=medium
+
+  * Dev bump.
+
+ -- Michael Webster <miketwebster@gmail.com>  Mon, 29 May 2023 12:29:08 -0400
+
 xapp (2.4.2) vera; urgency=medium
 
   * l10n: Update translations

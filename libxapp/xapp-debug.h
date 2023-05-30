@@ -41,7 +41,8 @@ typedef enum
   XAPP_DEBUG_SN_WATCHER = 1 << 5,
   XAPP_DEBUG_MODULE = 1 << 6,
   XAPP_DEBUG_VISIBILITY_GROUP = 1 << 7,
-  XAPP_DEBUG_GPU_OFFLOAD = 1 << 8
+  XAPP_DEBUG_GPU_OFFLOAD = 1 << 8,
+  XAPP_DEBUG_DARK_MODE_MANAGER = 1 << 9
 } DebugFlags;
 
 void xapp_debug_set_flags (DebugFlags flags);

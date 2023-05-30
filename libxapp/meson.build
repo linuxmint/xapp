@@ -28,6 +28,7 @@ xapp_debug = [
 ]
 
 xapp_headers = [
+    'xapp-dark-mode-manager.h',
     'xapp-favorites.h',
     'xapp-gtk-window.h',
     'xapp-gpu-offload-helper.h',
@@ -44,6 +45,7 @@ xapp_headers = [
 ]
 
 xapp_sources = [
+    'xapp-dark-mode-manager.c',
     'xapp-favorites.c',
     'xapp-glade-catalog.c',
     'xapp-gtk-window.c',
