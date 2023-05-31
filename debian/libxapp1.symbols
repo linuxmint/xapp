@@ -25,6 +25,8 @@ libxapp.so.1 libxapp1 #MINVER#
  match_mimetypes@Base 2.0.7
  path_to_fav_uri@Base 2.0.7
  process_icon_state@Base 2.4.2
+ xapp_dark_mode_manager_get_type@Base 2.6.0
+ xapp_dark_mode_manager_new@Base 2.6.0
  xapp_debug@Base 2.2.8
  xapp_debug_flag_is_set@Base 2.2.8
  xapp_debug_set_flags@Base 2.2.8
@@ -46,6 +48,19 @@ libxapp.so.1 libxapp1 #MINVER#
  xapp_favorites_rename@Base 2.0.7
  xapp_get_tmp_dir@Base 2.4.2
  xapp_glade_catalog_init@Base 1.4.9
+ xapp_gpu_info_copy@Base 2.6.0
+ xapp_gpu_info_free@Base 2.6.0
+ xapp_gpu_info_get_shell_env_prefix@Base 2.6.0
+ xapp_gpu_info_get_type@Base 2.6.0
+ xapp_gpu_offload_helper_get@Base 2.6.0
+ xapp_gpu_offload_helper_get_default_info@Base 2.6.0
+ xapp_gpu_offload_helper_get_info_by_id@Base 2.6.0
+ xapp_gpu_offload_helper_get_n_gpus@Base 2.6.0
+ xapp_gpu_offload_helper_get_offload_infos@Base 2.6.0
+ xapp_gpu_offload_helper_get_sync@Base 2.6.0
+ xapp_gpu_offload_helper_get_type@Base 2.6.0
+ xapp_gpu_offload_helper_is_offload_supported@Base 2.6.0
+ xapp_gpu_offload_helper_is_ready@Base 2.6.0
  xapp_gtk_window_get_type@Base 1.4.9
  xapp_gtk_window_new@Base 1.4.9
  xapp_gtk_window_set_icon_from_file@Base 1.4.9
@@ -209,6 +224,25 @@ libxapp.so.1 libxapp1 #MINVER#
  xapp_style_manager_set_from_pango_font_string@Base 2.2.8
  xapp_style_manager_set_style_property@Base 2.2.8
  xapp_style_manager_set_widget@Base 2.2.8
+ xapp_switcheroo_control_dup_gpus@Base 2.6.0
+ xapp_switcheroo_control_get_gpus@Base 2.6.0
+ xapp_switcheroo_control_get_has_dual_gpu@Base 2.6.0
+ xapp_switcheroo_control_get_num_gpus@Base 2.6.0
+ xapp_switcheroo_control_get_type@Base 2.6.0
+ xapp_switcheroo_control_interface_info@Base 2.6.0
+ xapp_switcheroo_control_override_properties@Base 2.6.0
+ xapp_switcheroo_control_proxy_get_type@Base 2.6.0
+ xapp_switcheroo_control_proxy_new@Base 2.6.0
+ xapp_switcheroo_control_proxy_new_finish@Base 2.6.0
+ xapp_switcheroo_control_proxy_new_for_bus@Base 2.6.0
+ xapp_switcheroo_control_proxy_new_for_bus_finish@Base 2.6.0
+ xapp_switcheroo_control_proxy_new_for_bus_sync@Base 2.6.0
+ xapp_switcheroo_control_proxy_new_sync@Base 2.6.0
+ xapp_switcheroo_control_set_gpus@Base 2.6.0
+ xapp_switcheroo_control_set_has_dual_gpu@Base 2.6.0
+ xapp_switcheroo_control_set_num_gpus@Base 2.6.0
+ xapp_switcheroo_control_skeleton_get_type@Base 2.6.0
+ xapp_switcheroo_control_skeleton_new@Base 2.6.0
  xapp_util_get_session_is_running@Base 2.0.7
  xapp_util_gpu_offload_supported@Base 1.8.8
  xapp_visibility_group_add_widget@Base 2.4.2
