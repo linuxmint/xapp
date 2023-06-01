@@ -2,8 +2,10 @@
 <book xmlns="http://www.devhelp.net/book" title="XApp Reference Manual" link="index.html" author="" name="libxapp" version="2" language="c">
   <chapters>
     <sub name="API reference" link="ch01.html">
+      <sub name="XAppDarkModeManager" link="XAppDarkModeManager.html"/>
       <sub name="XAppFavorites" link="XAppFavorites.html"/>
       <sub name="XAppGtkWindow" link="XAppGtkWindow.html"/>
+      <sub name="XAppGpuOffloadHelper" link="XAppGpuOffloadHelper.html"/>
       <sub name="XAppIconChooserButton" link="XAppIconChooserButton.html"/>
       <sub name="XAppIconChooserDialog" link="XAppIconChooserDialog.html"/>
       <sub name="XAppKbdLayoutController" link="XAppKbdLayoutController.html"/>
@@ -14,6 +16,7 @@
       <sub name="XAppStatusIconMonitor" link="XAppStatusIconMonitor.html"/>
       <sub name="XAppObjectManagerClient" link="XAppObjectManagerClient.html"/>
       <sub name="xapp-util" link="libxapp-xapp-util.html"/>
+      <sub name="XAppVisibilityGroup" link="XAppVisibilityGroup.html"/>
     </sub>
     <sub name="Object Hierarchy" link="object-tree.html"/>
     <sub name="API Index" link="api-index-full.html"/>
@@ -21,6 +24,9 @@
     <sub name="Annotation Glossary" link="annotation-glossary.html"/>
   </chapters>
   <functions>
+    <keyword type="function" name="xapp_dark_mode_manager_new ()" link="XAppDarkModeManager.html#xapp-dark-mode-manager-new" since="2.6"/>
+    <keyword type="macro" name="XAPP_TYPE_DARK_MODE_MANAGER" link="XAppDarkModeManager.html#XAPP-TYPE-DARK-MODE-MANAGER:CAPS"/>
+    <keyword type="struct" name="XAppDarkModeManager" link="XAppDarkModeManager.html#XAppDarkModeManager-struct"/>
     <keyword type="function" name="xapp_favorites_get_default ()" link="XAppFavorites.html#xapp-favorites-get-default" since="2.0"/>
     <keyword type="function" name="xapp_favorites_get_favorites ()" link="XAppFavorites.html#xapp-favorites-get-favorites" since="2.0"/>
     <keyword type="function" name="xapp_favorites_get_n_favorites ()" link="XAppFavorites.html#xapp-favorites-get-n-favorites" since="2.0"/>
@@ -55,6 +61,19 @@
     <keyword type="macro" name="XAPP_TYPE_GTK_WINDOW" link="XAppGtkWindow.html#XAPP-TYPE-GTK-WINDOW:CAPS"/>
     <keyword type="struct" name="struct XAppGtkWindowClass" link="XAppGtkWindow.html#XAppGtkWindowClass"/>
     <keyword type="struct" name="XAppGtkWindow" link="XAppGtkWindow.html#XAppGtkWindow-struct"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_get ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_get_sync ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-sync" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_is_ready ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-is-ready" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_is_offload_supported ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-is-offload-supported" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_get_n_gpus ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-n-gpus" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_get_offload_infos ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-offload-infos" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_get_default_info ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-default-info" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_offload_helper_get_info_by_id ()" link="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-info-by-id" since="2.6"/>
+    <keyword type="function" name="xapp_gpu_info_get_shell_env_prefix ()" link="XAppGpuOffloadHelper.html#xapp-gpu-info-get-shell-env-prefix"/>
+    <keyword type="macro" name="XAPP_TYPE_GPU_OFFLOAD_HELPER" link="XAppGpuOffloadHelper.html#XAPP-TYPE-GPU-OFFLOAD-HELPER:CAPS"/>
+    <keyword type="struct" name="struct XAppGpuInfo" link="XAppGpuOffloadHelper.html#XAppGpuInfo-struct"/>
+    <keyword type="struct" name="XAppGpuOffloadHelper" link="XAppGpuOffloadHelper.html#XAppGpuOffloadHelper-struct"/>
+    <keyword type="signal" name="The “ready” signal" link="XAppGpuOffloadHelper.html#XAppGpuOffloadHelper-ready"/>
     <keyword type="function" name="xapp_icon_chooser_button_new ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-new"/>
     <keyword type="function" name="xapp_icon_chooser_button_new_with_size ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-new-with-size"/>
     <keyword type="function" name="xapp_icon_chooser_button_set_icon_size ()" link="XAppIconChooserButton.html#xapp-icon-chooser-button-set-icon-size"/>
@@ -231,6 +250,19 @@
     <keyword type="function" name="xapp_util_gpu_offload_supported ()" link="libxapp-xapp-util.html#xapp-util-gpu-offload-supported" since="1.8"/>
     <keyword type="function" name="xapp_util_get_session_is_running ()" link="libxapp-xapp-util.html#xapp-util-get-session-is-running" since="2.0"/>
     <keyword type="function" name="xapp_pango_font_string_to_css ()" link="libxapp-xapp-util.html#xapp-pango-font-string-to-css" since="2.2"/>
+    <keyword type="function" name="xapp_get_tmp_dir ()" link="libxapp-xapp-util.html#xapp-get-tmp-dir" since="2.2.16"/>
+    <keyword type="function" name="xapp_visibility_group_new ()" link="XAppVisibilityGroup.html#xapp-visibility-group-new" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_add_widget ()" link="XAppVisibilityGroup.html#xapp-visibility-group-add-widget" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_remove_widget ()" link="XAppVisibilityGroup.html#xapp-visibility-group-remove-widget" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_hide ()" link="XAppVisibilityGroup.html#xapp-visibility-group-hide" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_show ()" link="XAppVisibilityGroup.html#xapp-visibility-group-show" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_set_visible ()" link="XAppVisibilityGroup.html#xapp-visibility-group-set-visible" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_get_visible ()" link="XAppVisibilityGroup.html#xapp-visibility-group-get-visible" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_set_sensitive ()" link="XAppVisibilityGroup.html#xapp-visibility-group-set-sensitive" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_get_sensitive ()" link="XAppVisibilityGroup.html#xapp-visibility-group-get-sensitive" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_get_widgets ()" link="XAppVisibilityGroup.html#xapp-visibility-group-get-widgets" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_set_widgets ()" link="XAppVisibilityGroup.html#xapp-visibility-group-set-widgets" since="2.2.15"/>
+    <keyword type="struct" name="struct XAppVisibilityGroup" link="XAppVisibilityGroup.html#XAppVisibilityGroup-struct"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_16" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-16:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_22" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-22:CAPS"/>
     <keyword type="constant" name="XAPP_ICON_SIZE_24" link="XAppIconChooserDialog.html#XAPP-ICON-SIZE-24:CAPS"/>
@@ -247,5 +279,12 @@
     <keyword type="member" name="XAppFavoriteInfo-struct.uri" link="XAppFavorites.html#XAppFavoriteInfo-struct.uri"/>
     <keyword type="member" name="XAppFavoriteInfo-struct.display-name" link="XAppFavorites.html#XAppFavoriteInfo-struct.display-name"/>
     <keyword type="member" name="XAppFavoriteInfo-struct.cached-mimetype" link="XAppFavorites.html#XAppFavoriteInfo-struct.cached-mimetype"/>
+    <keyword type="member" name="XAppGpuInfo-struct.id" link="XAppGpuOffloadHelper.html#XAppGpuInfo-struct.id"/>
+    <keyword type="member" name="XAppGpuInfo-struct.is-default" link="XAppGpuOffloadHelper.html#XAppGpuInfo-struct.is-default"/>
+    <keyword type="member" name="XAppGpuInfo-struct.display-name" link="XAppGpuOffloadHelper.html#XAppGpuInfo-struct.display-name"/>
+    <keyword type="member" name="XAppGpuInfo-struct.env-strv" link="XAppGpuOffloadHelper.html#XAppGpuInfo-struct.env-strv"/>
+    <keyword type="member" name="XAppVisibilityGroup-struct.widgets" link="XAppVisibilityGroup.html#XAppVisibilityGroup-struct.widgets"/>
+    <keyword type="member" name="XAppVisibilityGroup-struct.visible" link="XAppVisibilityGroup.html#XAppVisibilityGroup-struct.visible"/>
+    <keyword type="member" name="XAppVisibilityGroup-struct.sensitive" link="XAppVisibilityGroup.html#XAppVisibilityGroup-struct.sensitive"/>
   </functions>
 </book>

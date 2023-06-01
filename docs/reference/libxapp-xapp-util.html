@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="XApp Reference Manual">
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppObjectManagerClient.html" title="XAppObjectManagerClient">
-<link rel="next" href="object-tree.html" title="Object Hierarchy">
+<link rel="next" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup">
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -20,7 +20,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="XAppObjectManagerClient.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="object-tree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="XAppVisibilityGroup.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="libxapp-xapp-util"></a><div class="titlepage"></div>
@@ -61,6 +61,13 @@
 </td>
 <td class="function_name">
 <a class="link" href="libxapp-xapp-util.html#xapp-pango-font-string-to-css" title="xapp_pango_font_string_to_css ()">xapp_pango_font_string_to_css</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libxapp-xapp-util.html#xapp-get-tmp-dir" title="xapp_get_tmp_dir ()">xapp_get_tmp_dir</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -122,6 +129,20 @@ xapp_pango_font_string_to_css (<em class="parameter"><code>const <span class="ty
 <p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 2.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-get-tmp-dir"></a><h3>xapp_get_tmp_dir ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+xapp_get_tmp_dir (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Provides the path to the system's temporary files folder. This is identical to g_get_tmp_dir,
+but includes the /dev/shm ramdisk as the first choice for a temporary folder.</p>
+<div class="refsect3">
+<a name="xapp-get-tmp-dir.returns"></a><h4>Returns</h4>
+<p>the directory to use for temporary files. </p>
+<p><span class="annotation">[<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> filename][<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.2.16</p>
 </div>
 </div>
 </div>

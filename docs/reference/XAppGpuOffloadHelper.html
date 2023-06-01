@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XAppGpuOffloadHelper: XApp Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="XApp Reference Manual">
+<link rel="up" href="ch01.html" title="API reference">
+<link rel="prev" href="XAppGtkWindow.html" title="XAppGtkWindow">
+<link rel="next" href="XAppIconChooserButton.html" title="XAppIconChooserButton">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#XAppGpuOffloadHelper.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#XAppGpuOffloadHelper.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#XAppGpuOffloadHelper.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="XAppGtkWindow.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="XAppIconChooserButton.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="XAppGpuOffloadHelper"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="XAppGpuOffloadHelper.top_of_page"></a>XAppGpuOffloadHelper</span></h2>
+<p>XAppGpuOffloadHelper — Simple interface for Switcheroo.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="returnvalue">XAppGpuOffloadHelper</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get" title="xapp_gpu_offload_helper_get ()">xapp_gpu_offload_helper_get</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="returnvalue">XAppGpuOffloadHelper</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-sync" title="xapp_gpu_offload_helper_get_sync ()">xapp_gpu_offload_helper_get_sync</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-is-ready" title="xapp_gpu_offload_helper_is_ready ()">xapp_gpu_offload_helper_is_ready</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-is-offload-supported" title="xapp_gpu_offload_helper_is_offload_supported ()">xapp_gpu_offload_helper_is_offload_supported</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-n-gpus" title="xapp_gpu_offload_helper_get_n_gpus ()">xapp_gpu_offload_helper_get_n_gpus</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-offload-infos" title="xapp_gpu_offload_helper_get_offload_infos ()">xapp_gpu_offload_helper_get_offload_infos</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="returnvalue">XAppGpuInfo</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-default-info" title="xapp_gpu_offload_helper_get_default_info ()">xapp_gpu_offload_helper_get_default_info</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="returnvalue">XAppGpuInfo</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-get-info-by-id" title="xapp_gpu_offload_helper_get_info_by_id ()">xapp_gpu_offload_helper_get_info_by_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-info-get-shell-env-prefix" title="xapp_gpu_info_get_shell_env_prefix ()">xapp_gpu_info_get_shell_env_prefix</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody><tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="XAppGpuOffloadHelper.html#XAppGpuOffloadHelper-ready" title="The “ready” signal">ready</a></td>
+<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<a name="XAppGpuInfo"></a><div class="refsect1">
+<a name="XAppGpuOffloadHelper.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="XAppGpuOffloadHelper.html#XAPP-TYPE-GPU-OFFLOAD-HELPER:CAPS" title="XAPP_TYPE_GPU_OFFLOAD_HELPER">XAPP_TYPE_GPU_OFFLOAD_HELPER</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo-struct" title="struct XAppGpuInfo">XAppGpuInfo</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="XAppGpuOffloadHelper.html#XAppGpuOffloadHelper-struct" title="XAppGpuOffloadHelper">XAppGpuOffloadHelper</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> XAppGpuInfo
+    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> XAppGpuOffloadHelper
+</pre>
+</div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.description"></a><h2>Description</h2>
+<p><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> is class that provides a reliable property cache and simple return methods
+for getting offload_helper parameters and conditions from the Switcheroo interface.</p>
+<p>Since 2.6</p>
+</div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-get"></a><h3>xapp_gpu_offload_helper_get ()</h3>
+<pre class="programlisting"><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="returnvalue">XAppGpuOffloadHelper</span></a> *
+xapp_gpu_offload_helper_get (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a new <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> instance.</p>
+<p>The <a class="link" href="XAppGpuOffloadHelper.html#XAppGpuOffloadHelper-ready" title="The “ready” signal"><span class="type">“ready”</span></a> signal will be emitted when the helper is initialized (successfully or not).</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get.returns"></a><h4>Returns</h4>
+<p>a new <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>. </p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-get-sync"></a><h3>xapp_gpu_offload_helper_get_sync ()</h3>
+<pre class="programlisting"><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="returnvalue">XAppGpuOffloadHelper</span></a> *
+xapp_gpu_offload_helper_get_sync (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a new <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> instance. This performs initialization synchronously,
+and can potentially block.</p>
+<p>Use <a class="link" href="XAppGpuOffloadHelper.html#xapp-gpu-offload-helper-is-ready" title="xapp_gpu_offload_helper_is_ready ()"><code class="function">xapp_gpu_offload_helper_is_ready()</code></a> to see if the helper was initialized successfully.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-sync.returns"></a><h4>Returns</h4>
+<p>a new <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>, fully initialized. </p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-is-ready"></a><h3>xapp_gpu_offload_helper_is_ready ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_gpu_offload_helper_is_ready (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper</code></em>);</pre>
+<p>Checks if the helper is ready and valid. This does not mean
+offload support exists.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-is-ready.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-is-ready.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the helper has been successfully initialized.</p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-is-offload-supported"></a><h3>xapp_gpu_offload_helper_is_offload_supported ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_gpu_offload_helper_is_offload_supported
+                               (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper</code></em>);</pre>
+<p>Checks if there is a non-default GPU available for offloading.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-is-offload-supported.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-is-offload-supported.returns"></a><h4>Returns</h4>
+<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if there is an extra GPU available.</p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-get-n-gpus"></a><h3>xapp_gpu_offload_helper_get_n_gpus ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+xapp_gpu_offload_helper_get_n_gpus (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper</code></em>);</pre>
+<p>Gets the number of GPUs noticed by Switcheroo.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-n-gpus.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-n-gpus.returns"></a><h4>Returns</h4>
+<p> the total number of GPUs. A return value larger than
+1 implies there are offloadable GPUs available.</p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-get-offload-infos"></a><h3>xapp_gpu_offload_helper_get_offload_infos ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+xapp_gpu_offload_helper_get_offload_infos
+                               (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper</code></em>);</pre>
+<p>Generates a list of <a href="XAppGpuOffloadHelper.html#XAppGpuInfo-struct"><span class="type">XAppGpuInfos</span></a> that can be offloaded to, if there are any.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-offload-infos.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-offload-infos.returns"></a><h4>Returns</h4>
+<p>a list of <a href="XAppGpuOffloadHelper.html#XAppGpuInfo-struct"><span class="type">XAppGpuInfos</span></a> or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if there is only
+a single GPU. The elements are owned by <em class="parameter"><code>helper</code></em>
+but the container itself should be freed. </p>
+<p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> XAppGpuInfo][<acronym title="The caller owns the data container, but not the data inside it."><span class="acronym">transfer container</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-get-default-info"></a><h3>xapp_gpu_offload_helper_get_default_info ()</h3>
+<pre class="programlisting"><a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="returnvalue">XAppGpuInfo</span></a> *
+xapp_gpu_offload_helper_get_default_info
+                               (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper</code></em>);</pre>
+<p>Returns an <a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="type">XAppGpuInfo</span></a> for the default GPU.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-default-info.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-default-info.returns"></a><h4>Returns</h4>
+<p>the default <a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="type">XAppGpuInfo</span></a>. Do not free. </p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-offload-helper-get-info-by-id"></a><h3>xapp_gpu_offload_helper_get_info_by_id ()</h3>
+<pre class="programlisting"><a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="returnvalue">XAppGpuInfo</span></a> *
+xapp_gpu_offload_helper_get_info_by_id
+                               (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper</code></em>,
+                                <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> id</code></em>);</pre>
+<p>Returns an <a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="type">XAppGpuInfo</span></a> with the given ID.</p>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-info-by-id.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>The <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>id</p></td>
+<td class="parameter_description"><p>The ID of the info to retrieve.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-offload-helper-get-info-by-id.returns"></a><h4>Returns</h4>
+<p>the appropriate <a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="type">XAppGpuInfo</span></a>, or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>id</code></em>
+was invalid. </p>
+<p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-gpu-info-get-shell-env-prefix"></a><h3>xapp_gpu_info_get_shell_env_prefix ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+xapp_gpu_info_get_shell_env_prefix (<em class="parameter"><code><a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="type">XAppGpuInfo</span></a> *info</code></em>);</pre>
+<p>Creates a new string in a form intended to prefix a shell command, containing
+the appropriate name/values for this gpu. For example:</p>
+<p>__GLX_VENDOR_LIBRARY_NAME=nvidia __NV_PRIME_RENDER_OFFLOAD=1</p>
+<div class="refsect3">
+<a name="xapp-gpu-info-get-shell-env-prefix.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>An <a class="link" href="XAppGpuOffloadHelper.html#XAppGpuInfo"><span class="type">XAppGpuInfo</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-gpu-info-get-shell-env-prefix.returns"></a><h4>Returns</h4>
+<p>A new string, free with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</p>
+<p>Since 2.6. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="XAPP-TYPE-GPU-OFFLOAD-HELPER:CAPS"></a><h3>XAPP_TYPE_GPU_OFFLOAD_HELPER</h3>
+<pre class="programlisting">#define XAPP_TYPE_GPU_OFFLOAD_HELPER xapp_gpu_offload_helper_get_type ()
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XAppGpuInfo-struct"></a><h3>struct XAppGpuInfo</h3>
+<pre class="programlisting">struct XAppGpuInfo {
+    gint id;
+    gboolean is_default;
+    gchar *display_name;
+    gchar **env_strv;
+};
+</pre>
+<p>Information about a single GPU used for offloading. The length of <em class="parameter"><code>env_strv</code></em>
+ will always be an even number.</p>
+<div class="refsect3">
+<a name="XAppGpuInfo.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> <em class="structfield"><code><a name="XAppGpuInfo-struct.id"></a>id</code></em>;</p></td>
+<td class="struct_member_description"><p>An identifier that can be used to refer to this GPU.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="XAppGpuInfo-struct.is-default"></a>is_default</code></em>;</p></td>
+<td class="struct_member_description"><p>Whether this GPU is used by default.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="XAppGpuInfo-struct.display-name"></a>display_name</code></em>;</p></td>
+<td class="struct_member_description"><p>User-visible name of the GPU.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **<em class="structfield"><code><a name="XAppGpuInfo-struct.env-strv"></a>env_strv</code></em>;</p></td>
+<td class="struct_member_description"><p>A string array containing alternating environment variables names and values to use to enable the gpu. </p></td>
+<td class="struct_member_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XAppGpuOffloadHelper-struct"></a><h3>XAppGpuOffloadHelper</h3>
+<pre class="programlisting">typedef struct _XAppGpuOffloadHelper XAppGpuOffloadHelper;</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="XAppGpuOffloadHelper.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="XAppGpuOffloadHelper-ready"></a><h3>The <code class="literal">“ready”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a> *helper,
+               <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              success,
+               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)</pre>
+<p>This signal is emitted by the helper when it has completed
+gathering GPU information. It will only be sent once.</p>
+<div class="refsect3">
+<a name="XAppGpuOffloadHelper-ready.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>helper</p></td>
+<td class="parameter_description"><p>the <a class="link" href="XAppGpuOffloadHelper.html" title="XAppGpuOffloadHelper"><span class="type">XAppGpuOffloadHelper</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>success</p></td>
+<td class="parameter_description"><p>Whether or not the helper initialize successfully.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.33.1</div>
+</body>
+</html>

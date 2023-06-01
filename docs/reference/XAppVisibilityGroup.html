@@ -1,0 +1,548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XAppVisibilityGroup: XApp Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="XApp Reference Manual">
+<link rel="up" href="ch01.html" title="API reference">
+<link rel="prev" href="libxapp-xapp-util.html" title="xapp-util">
+<link rel="next" href="object-tree.html" title="Object Hierarchy">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#XAppVisibilityGroup.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#XAppVisibilityGroup.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="libxapp-xapp-util.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="object-tree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="XAppVisibilityGroup"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="XAppVisibilityGroup.top_of_page"></a>XAppVisibilityGroup</span></h2>
+<p>XAppVisibilityGroup — Groups widgets to have their visibility or sensitivity controlled as a group,
+independent of their positions in any widget hierarchy.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="XAppVisibilityGroup.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="returnvalue">XAppVisibilityGroup</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-new" title="xapp_visibility_group_new ()">xapp_visibility_group_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-add-widget" title="xapp_visibility_group_add_widget ()">xapp_visibility_group_add_widget</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-remove-widget" title="xapp_visibility_group_remove_widget ()">xapp_visibility_group_remove_widget</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-hide" title="xapp_visibility_group_hide ()">xapp_visibility_group_hide</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-show" title="xapp_visibility_group_show ()">xapp_visibility_group_show</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-set-visible" title="xapp_visibility_group_set_visible ()">xapp_visibility_group_set_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-get-visible" title="xapp_visibility_group_get_visible ()">xapp_visibility_group_get_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-set-sensitive" title="xapp_visibility_group_set_sensitive ()">xapp_visibility_group_set_sensitive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-get-sensitive" title="xapp_visibility_group_get_sensitive ()">xapp_visibility_group_get_sensitive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-get-widgets" title="xapp_visibility_group_get_widgets ()">xapp_visibility_group_get_widgets</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="XAppVisibilityGroup.html#xapp-visibility-group-set-widgets" title="xapp_visibility_group_set_widgets ()">xapp_visibility_group_set_widgets</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="XAppVisibilityGroup.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="XAppVisibilityGroup.html#XAppVisibilityGroup-struct" title="struct XAppVisibilityGroup">XAppVisibilityGroup</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="XAppVisibilityGroup.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> XAppVisibilityGroup
+</pre>
+</div>
+<div class="refsect1">
+<a name="XAppVisibilityGroup.description"></a><h2>Description</h2>
+<p>You can use this to hide and show groups of widgets all at once, without having to
+specify each one. They do not have to have the same parents, or even have the same toplevel
+window.</p>
+<p>If a widget is destroyed before the group is, it will be automatically removed from the 
+visibility group. You only ever need to free the XAppVisibilityGroup itself.</p>
+<p>Only the specific members of the group have their visibility and sensitivity set, not their
+descendants. No effort is made to track or prevent state changes made to individual widgets
+by outside influence.</p>
+</div>
+<div class="refsect1">
+<a name="XAppVisibilityGroup.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xapp-visibility-group-new"></a><h3>xapp_visibility_group_new ()</h3>
+<pre class="programlisting"><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="returnvalue">XAppVisibilityGroup</span></a> *
+xapp_visibility_group_new (<em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>,
+                           <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sensitive</code></em>,
+                           <em class="parameter"><code><a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *widgets</code></em>);</pre>
+<p>Creates a new <a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a>.</p>
+<p>If <em class="parameter"><code>widgets</code></em>
+ is not NULL, adds these widgets to the group with the starting visibility and
+sensitivity state.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>starting visibility state</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sensitive</p></td>
+<td class="parameter_description"><p>starting sensitivity state</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>widgets</p></td>
+<td class="parameter_description"><p>list of <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidgets</span></a> to add to the group. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GtkWidget][<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-visibility-group-new.returns"></a><h4>Returns</h4>
+<p>a new <a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a>. Use xapp_visibility_group_free when finished. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-add-widget"></a><h3>xapp_visibility_group_add_widget ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_visibility_group_add_widget (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>,
+                                  <em class="parameter"><code><a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>);</pre>
+<p>Adds widget to the visibility group.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-add-widget.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>widget</p></td>
+<td class="parameter_description"><p>the <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> to add to the group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-remove-widget"></a><h3>xapp_visibility_group_remove_widget ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_visibility_group_remove_widget (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>,
+                                     <em class="parameter"><code><a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *widget</code></em>);</pre>
+<div class="refsect3">
+<a name="xapp-visibility-group-remove-widget.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>widget</p></td>
+<td class="parameter_description"><p>the <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> to remove from the group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-visibility-group-remove-widget.returns"></a><h4>Returns</h4>
+<p> TRUE if the widget was found and removed.</p>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-hide"></a><h3>xapp_visibility_group_hide ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_visibility_group_hide (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>);</pre>
+<p>Hide all widgets in the group.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-hide.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-show"></a><h3>xapp_visibility_group_show ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_visibility_group_show (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>);</pre>
+<p>Show all widgets in the group.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-show.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-set-visible"></a><h3>xapp_visibility_group_set_visible ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_visibility_group_set_visible (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>,
+                                   <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+<p>Set the visibility of all widgets in the group.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-set-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>TRUE to make the widgets visible.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-get-visible"></a><h3>xapp_visibility_group_get_visible ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_visibility_group_get_visible (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>);</pre>
+<p>Get the visibility of the group.</p>
+<p>There is no guarantee that all widgets in the group actually are
+in the returned state, if they've had their visibility individually
+modified since the last time the group was set.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-get-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-visibility-group-get-visible.returns"></a><h4>Returns</h4>
+<p> The visibility state of the group.</p>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-set-sensitive"></a><h3>xapp_visibility_group_set_sensitive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_visibility_group_set_sensitive (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>,
+                                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sensitive</code></em>);</pre>
+<p>Set the sensitivity of all widgets in group.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-set-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sensitive</p></td>
+<td class="parameter_description"><p>TRUE to make the widgets sensitive.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-get-sensitive"></a><h3>xapp_visibility_group_get_sensitive ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+xapp_visibility_group_get_sensitive (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>);</pre>
+<p>Get the sensitivity of the group.</p>
+<p>There is no guarantee that all widgets in the group actually are
+in the returned state, if they've had their sensitivity individually
+modified since the last time the group was set.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-get-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-visibility-group-get-sensitive.returns"></a><h4>Returns</h4>
+<p> The sensitivity state of the group.</p>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-get-widgets"></a><h3>xapp_visibility_group_get_widgets ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *
+xapp_visibility_group_get_widgets (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>);</pre>
+<p>Returns the members of the group or NULL if the group is empty.</p>
+<div class="refsect3">
+<a name="xapp-visibility-group-get-widgets.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xapp-visibility-group-get-widgets.returns"></a><h4>Returns</h4>
+<p>a list of members of the group.</p>
+<p>The list is owned by XApp, do not free. </p>
+<p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GtkWidget][<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xapp-visibility-group-set-widgets"></a><h3>xapp_visibility_group_set_widgets ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+xapp_visibility_group_set_widgets (<em class="parameter"><code><a class="link" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup"><span class="type">XAppVisibilityGroup</span></a> *group</code></em>,
+                                   <em class="parameter"><code><a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *widgets</code></em>);</pre>
+<div class="refsect3">
+<a name="xapp-visibility-group-set-widgets.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>group</p></td>
+<td class="parameter_description"><p>the visibility group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>widgets</p></td>
+<td class="parameter_description"><p>The widgets to add to this group, replacing any existing ones. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GtkWidget][<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.2.15</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="XAppVisibilityGroup.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="XAppVisibilityGroup-struct"></a><h3>struct XAppVisibilityGroup</h3>
+<pre class="programlisting">struct XAppVisibilityGroup {
+    GSList *widgets;
+    gboolean visible;
+    gboolean sensitive;
+};
+</pre>
+<p>A group of widgets that can have their visibility and sensitivity controlled together.</p>
+<div class="refsect3">
+<a name="XAppVisibilityGroup.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *<em class="structfield"><code><a name="XAppVisibilityGroup-struct.widgets"></a>widgets</code></em>;</p></td>
+<td class="struct_member_description"><p>The <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> members of this group. </p></td>
+<td class="struct_member_annotations"><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> Gtk.Widget][<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="XAppVisibilityGroup-struct.visible"></a>visible</code></em>;</p></td>
+<td class="struct_member_description"><p>The current visible state of the group. There is no guarantee that all members are actually in this state.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> <em class="structfield"><code><a name="XAppVisibilityGroup-struct.sensitive"></a>sensitive</code></em>;</p></td>
+<td class="struct_member_description"><p>The current sensitive state of the group. There is no guarantee that all members are actually in this state.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.33.1</div>
+</body>
+</html>
