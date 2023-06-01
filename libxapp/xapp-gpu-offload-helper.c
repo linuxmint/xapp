@@ -34,8 +34,11 @@ xapp_gpu_info_copy (const XAppGpuInfo *info)
     DEBUG ("XAppGpuInfo copy");
     g_return_val_if_fail (info != NULL, NULL);
 
+#if GLIB_CHECK_VERSION(2, 68, 0)
     XAppGpuInfo *_info = g_memdup2 (info, sizeof(XAppGpuInfo));
-
+#else
+    XAppGpuInfo *_info = g_memdup (info, sizeof(XAppGpuInfo));
+#endif
     _info->id = info->id;
     _info->is_default = info->is_default;
     _info->display_name = g_strdup (info->display_name);
