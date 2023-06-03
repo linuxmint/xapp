@@ -28,6 +28,8 @@
 
 #include "xapp-debug.h"
 
+#ifdef ENABLE_DEBUG
+
 static DebugFlags flags = 0;
 static gboolean initialized = FALSE;
 
@@ -127,3 +129,4 @@ xapp_debug_valist (DebugFlags flag,
   }
 }
 
+#endif /* ENABLE_DEBUG */
