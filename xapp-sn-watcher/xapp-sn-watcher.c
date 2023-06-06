@@ -712,7 +712,6 @@ main (int argc, char **argv)
         sleep (2);
     }
 
-    current_desktop = g_getenv ("XDG_CURRENT_DESKTOP");
     xapp_settings = g_settings_new (STATUS_ICON_SCHEMA);
 
     if (g_settings_get_boolean (xapp_settings, DEBUG_KEY))
@@ -728,7 +727,17 @@ main (int argc, char **argv)
     whitelist = g_settings_get_strv (xapp_settings,
                                      VALID_XDG_DESKTOPS_KEY);
 
-    should_start = g_strv_contains ((const gchar * const *) whitelist, current_desktop);
+    current_desktop = g_getenv ("XDG_CURRENT_DESKTOP");
+
+    if (current_desktop != NULL)
+    {
+        should_start = g_strv_contains ((const gchar * const *) whitelist, current_desktop);
+    }
+    else
+    {
+        g_warning ("XDG_CURRENT_DESKTOP not set, unable to check against enabled desktop list. Starting anyway...");
+        should_start = TRUE;
+    }
 
     g_strfreev (whitelist);
     g_clear_object (&xapp_settings);
