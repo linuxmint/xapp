@@ -1,16 +1,16 @@
-# Estonian translation for linuxmint
-# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
+# Persian translation for linuxmint
+# Copyright (c) 2023 Rosetta Contributors and Canonical Ltd 2023
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-10-05 09:30+0000\n"
-"Last-Translator: vaba <Unknown>\n"
-"Language-Team: Estonian <et@li.org>\n"
+"PO-Revision-Date: 2023-03-23 16:11+0000\n"
+"Last-Translator: Mr.Ravi <Unknown>\n"
+"Language-Team: Persian <fa@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Lemmikud"
+msgstr "برگزیده‌ها"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,145 +28,145 @@ msgstr "Lemmikud"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Toiming ei ole toetatud"
+msgstr "عملیات پشتیبانی نمی‌شود"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Ikooni suurus"
+msgstr "اندازه نماد"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "Eelistatud ikooni suurus."
+msgstr "اندازه نماد ترجیحی"
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Ikoon"
+msgstr "نماد"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Sõne, mis viitab ikoonile."
+msgstr "رشته نشان دهنده نماد"
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Kategooria"
+msgstr "دسته‌بندی"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Vaikimisi kategooria."
+msgstr "دسته بندی پیش‌فرض"
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Tegevused"
+msgstr "اقدامات"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Rakendused"
+msgstr "برنامه‌ها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Kategooriad"
+msgstr "دسته‌بندی‌ها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Seadmed"
+msgstr "دستگاه‌ها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Embleemid"
+msgstr "نشانها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Emotikonid"
+msgstr "شکلک"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "MIME-tüübid"
+msgstr "انواع اداگر ها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Asukohad"
+msgstr "مکان‌ها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Olek"
+msgstr "وضعیت‌‌"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Muud"
+msgstr "موارد دیگر"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Ikooni valimine"
+msgstr "یک نماد انتخاب کنید"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Otsing"
+msgstr "جستجو"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Lehitse"
+msgstr "مرور کردن"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Laadimine..."
+msgstr "درحال بارگذاری..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Vaikimisi"
+msgstr "پیش‌فرض"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Vali"
+msgstr "انتخاب"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Loobu"
+msgstr "لغو"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Asukohtade lubamine"
+msgstr "مجاز کردن مسیر ها"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Kas asukohad lubada."
+msgstr "که آیا به مسیر ها اجازه داده شود."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Vaikeikoon"
+msgstr "نماد پیش‌فرض"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "Vaikimisi kasutatav ikoon"
+msgstr "نمادی که به عنوان پیش‌فرض استفاده شود"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Vali pildi fail"
+msgstr "فایل تصویر را انتخاب کنید"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Ava"
+msgstr "بازکردن"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Pilt"
+msgstr "تصویر"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Lähemalt"
+msgstr "درباره"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Piirkond, kus XApp olekuikoone näidatakse"
+msgstr "مکانی که نمادهای وضعیت XApp ها نمایان میشوند."
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp olekuikoonide rakend"
+msgstr "کارخانه برنامک وضعیت XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "XApp olekuikoonide rakend"
+msgstr "برنامک وضعیت XApp"
