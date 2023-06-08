@@ -1,3 +1,18 @@
+xapp (2.6.1) victoria; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Update documentation
+
+  [ Michael Webster ]
+  * xapp-gpu-offload-helper.c: Check the GLib version before using g_memdup2.
+  * xapp-debug.c: build only with ENABLE_DEBUG.
+  * xapp-sn-watcher.c: Don't exit if XDG_CURRENT_DESKTOP isn't set.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 08 Jun 2023 12:05:44 +0100
+
 xapp (2.6.0) victoria; urgency=medium
 
   [ Michael Webster ]
