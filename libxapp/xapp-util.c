@@ -7,9 +7,6 @@
 
 #include "xapp-util.h"
 
-#define PRIME_SUPPORTED_TEST_FILE "/var/lib/ubuntu-drivers-common/requires_offloading"
-#define PRIME_MODE_FILE "/etc/prime-discrete"
-
 /**
  * xapp_util_gpu_offload_supported:
  *
@@ -23,27 +20,49 @@
 gboolean
 xapp_util_gpu_offload_supported (void)
 {
-    g_autoptr(GFile) modefile = NULL;
-    g_autofree gchar *contents = NULL;
+    const gchar *SWITCHEROO_PATH   = "/net/hadess/SwitcherooControl";
+    const gchar *SWITCHEROO_OBJECT = "net.hadess.SwitcherooControl";
 
-    if (!g_file_test (PRIME_SUPPORTED_TEST_FILE, G_FILE_TEST_EXISTS))
-    {
-        return FALSE;
+    GDBusConnection *switcheroo_connection;
+    GDBusProxy *switcheroo_proxy;
+    GError *error;
+    GVariant* switcheroo_property;
+    gboolean has_dual_gpu;
+
+    error = NULL;
+
+    switcheroo_connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM,
+                            NULL,
+                            &error);
+
+    if (error != NULL) {
+        g_critical ("Unable to determine if GPU offload is supported, could not get system bus: %s\n", error->message);
+	g_clear_error (&error);
+	return FALSE;
     }
 
-    modefile = g_file_new_for_path (PRIME_MODE_FILE);
+    switcheroo_proxy = g_dbus_proxy_new_sync (switcheroo_connection,
+					      G_DBUS_PROXY_FLAGS_NONE,
+					      NULL,
+					      SWITCHEROO_OBJECT,
+					      SWITCHEROO_PATH,
+					      SWITCHEROO_OBJECT,
+					      NULL,
+					      &error);
 
-    if (!g_file_load_contents (modefile,
-                               NULL,
-                               &contents,
-                               NULL,
-                               NULL,
-                               NULL))
-    {
-        return FALSE;
+    if (error != NULL) {
+	g_debug ("Unable to determine if GPU offload is supported, could not create switcheroo-control dbus proxy: %s\n", error->message);
+	g_clear_error (&error);
+	return FALSE;
     }
 
-    return g_strstr_len (contents, -1, "on-demand") != NULL;
+    switcheroo_property = g_dbus_proxy_get_cached_property (switcheroo_proxy, "HasDualGpu");
+    has_dual_gpu = g_variant_get_boolean (switcheroo_property);
+
+    g_object_unref (switcheroo_connection);
+    g_object_unref (switcheroo_proxy);
+    g_object_unref (switcheroo_property);
+    return has_dual_gpu;
 }
 
 // Copied from cinnamon:main.c
