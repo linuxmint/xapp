@@ -24,13 +24,11 @@ static void (* original_window_realize) (GtkWidget *widget);
 static void (* original_window_unrealize) (GtkWidget *widget);
 
 static void
-xapp_sidebar_constructed (GObject *object)
+on_sidebar_realized (GtkWidget *widget, gpointer data)
 {
-    GtkPlacesSidebar *sidebar = GTK_PLACES_SIDEBAR (object);
+    GtkPlacesSidebar *sidebar = GTK_PLACES_SIDEBAR (widget);
     GSettings *fav_settings;
     gchar **list;
-
-    (* original_sidebar_constructed) (object);
 
     // This is better than initializing favorites to count.
     // That way if there aren't any favorites, fav_settings
@@ -47,6 +45,14 @@ xapp_sidebar_constructed (GObject *object)
 
     g_strfreev (list);
     g_object_unref (fav_settings);
+    g_signal_handlers_disconnect_by_func (widget, on_sidebar_realized, NULL);
+}
+
+static void
+xapp_sidebar_constructed (GObject *object)
+{
+    (* original_sidebar_constructed) (object);
+    g_signal_connect (object, "realize", G_CALLBACK (on_sidebar_realized), NULL);
 }
 
 static void
