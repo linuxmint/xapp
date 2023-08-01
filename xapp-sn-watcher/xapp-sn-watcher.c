@@ -683,13 +683,12 @@ watcher_new (const gchar *current_desktop)
 }
 
 static void
-dbusmenu_log_handler (const char     *log_domain,
-                      GLogLevelFlags  log_level,
-                      const char     *message,
-                      gpointer        data)
+muted_log_handler (const char     *log_domain,
+                   GLogLevelFlags  log_level,
+                   const char     *message,
+                   gpointer        data)
 
 {
-    DEBUG ("%s", message);
 }
 
 int
@@ -750,10 +749,18 @@ main (int argc, char **argv)
         exit(0);
     }
 
-    // libdbusmenu throws a lot of warnings for problems we already handle. They can be noisy in
-    // .xsession-errors, however. Redirect them to debug output.
-    g_log_set_handler ("LIBDBUSMENU-GTK", G_LOG_LEVEL_WARNING,
-                       dbusmenu_log_handler, NULL);
+    // libdbusmenu and gtk throw a lot of menu-related warnings for problems we already handle.
+    // They can be noisy in .xsession-errors, however. Redirect them to debug output only.
+    DEBUG (""); // Initialize the DEBUGGING flag
+    if (!DEBUGGING)
+    {
+        g_log_set_handler ("LIBDBUSMENU-GTK", G_LOG_LEVEL_WARNING,
+                           muted_log_handler, NULL);
+        g_log_set_handler ("LIBDBUSMENU-GLIB", G_LOG_LEVEL_WARNING,
+                           muted_log_handler, NULL);
+        g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL,
+                           muted_log_handler, NULL);
+    }
 
     watcher = watcher_new (current_desktop);
 
