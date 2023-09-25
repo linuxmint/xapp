@@ -157,6 +157,6 @@ if not app_lib_only
         include_directories: [top_inc],
         dependencies: [gtk3_dep, libxapp_dep],
         install: true,
-        install_dir: join_paths(gtk3_dep.get_pkgconfig_variable('libdir'),'gtk-3.0','modules')
+        install_dir: join_paths(gtk3_dep.get_variable(pkgconfig: 'libdir'),'gtk-3.0','modules')
     )
 endif
