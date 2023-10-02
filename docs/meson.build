@@ -3,8 +3,8 @@ subdir('xml')
 gnome.gtkdoc('libxapp',
     install: true,
     src_dir: [
-        join_paths(meson.source_root(), 'libxapp'),
-        join_paths(meson.build_root(), 'libxapp'),
+        join_paths(meson.project_source_root(), 'libxapp'),
+        join_paths(meson.project_build_root(), 'libxapp'),
     ],
     dependencies: libxapp_dep,
     gobject_typesfile: 'libxapp.types',

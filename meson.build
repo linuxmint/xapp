@@ -2,14 +2,15 @@ project('xapp',
     'c',
     version : '2.6.1',
     default_options : [ 'buildtype=debugoptimized' ],
+    meson_version : '>=0.56.0'
 )
 
 gnome = import('gnome')
 pkg = import('pkgconfig')
 i18n = import('i18n')
 
-dbus_services_dir = dependency('dbus-1').get_pkgconfig_variable('session_bus_services_dir',
-                                                                define_variable: ['datadir', get_option('datadir')])
+dbus_services_dir = dependency('dbus-1').get_variable(pkgconfig: 'session_bus_services_dir',
+                                                                pkgconfig_define: ['datadir', get_option('datadir')])
 sn_watcher_dir = join_paths(get_option('prefix'), get_option('libdir'), 'xapps')
 
 cdata = configuration_data()
