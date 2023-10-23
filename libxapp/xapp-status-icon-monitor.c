@@ -8,7 +8,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
 #include <glib/gi18n-lib.h>

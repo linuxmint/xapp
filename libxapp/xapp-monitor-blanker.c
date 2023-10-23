@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gdk/gdkx.h>
+#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
 #include <glib/gi18n-lib.h>
