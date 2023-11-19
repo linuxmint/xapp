@@ -1,3 +1,19 @@
+xapp (2.8.0) virginia; urgency=medium
+
+  [ Michael Webster ]
+  * Add github issue templates.
+  * xapp-gtk3-module.c: Use the 'realize' signal to trigger injecting the favorites:// uri into the sidebar places.
+  * xapp-sn-watcher.c: Mute some warning messages from more of dbus-menu, gtk.
+
+  [ Rick Calixte ]
+  * Fix meson.build deprecations up to 0.56.0 (#172)
+
+  [ Michael Webster ]
+  * Update issue template with a link to open and closed issues.
+  * Remove unused includes, bump required gtk version.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sun, 19 Nov 2023 10:39:22 +0000
+
 xapp (2.6.1) victoria; urgency=medium
 
   [ Clement Lefebvre ]
