@@ -1,3 +1,10 @@
+xapp (2.8.1) virginia; urgency=medium
+
+  * Update docs
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sun, 03 Dec 2023 15:18:24 +0000
+
 xapp (2.8.0) virginia; urgency=medium
 
   [ Michael Webster ]
