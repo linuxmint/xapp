@@ -28,3 +28,13 @@ option('debian_derivative',
     value: false,
     description: 'Use paths specific to Debian and derivatives.'
 )
+option('mate',
+    type: 'boolean',
+    value: true,
+    description: 'Install mate specific items.'
+)
+option('xfce',
+    type: 'boolean',
+    value: true,
+    description: 'Install xfce specific items.'
+)
