@@ -56,7 +56,7 @@ def exec_command(_id, command):
 
 parser = argparse.ArgumentParser(description="Launch a program using an alternate GPU, or if there are no others, like a normal program.",
                                  formatter_class=argparse.RawDescriptionHelpFormatter)# epilog=mode_help)
-parser.add_argument("command", type=str, nargs="*", help="The program to run and arguments.")
+parser.add_argument("command", type=str, nargs=argparse.REMAINDER, help="The program to run and arguments.")
 parser.add_argument("-i", "--id", help="Specify the GPU to use. If omitted, the first non-default GPU will be used.",
                     action="store", type=int, default=-1)
 parser.add_argument("-l", "--list-gpus", help="List available GPUs.",
