@@ -149,10 +149,12 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
         g_autoptr(GVariant) vname = NULL;
         g_autoptr(GVariant) venv = NULL;
         g_autoptr(GVariant) vdefault = NULL;
+        g_autoptr(GVariant) vdiscrete = NULL;
         const char *name;
         g_autofree const char **env_strv = NULL;
         gsize env_len;
         gboolean is_default;
+        gboolean is_discrete;
 
         gpu = g_variant_get_child_value (gpus, i);
         if (!gpu || !g_variant_is_of_type (gpu, G_VARIANT_TYPE ("a{s*}")))
@@ -163,6 +165,7 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
         vname = g_variant_lookup_value (gpu, "Name", NULL);
         venv = g_variant_lookup_value (gpu, "Environment", NULL);
         vdefault= g_variant_lookup_value (gpu, "Default", NULL);
+        vdiscrete = g_variant_lookup_value (gpu, "Discrete", NULL);
 
         if (!vname || !venv)
           continue;
@@ -180,6 +183,7 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
         }
 
         is_default = vdefault ? g_variant_get_boolean (vdefault) : FALSE;
+        is_discrete = vdefault ? g_variant_get_boolean (vdiscrete) : FALSE;
 
         if (is_default)
         {
@@ -191,6 +195,7 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
         info->display_name = g_strdup (name);
         info->env_strv = g_strdupv ((gchar **) env_strv);
         info->is_default = is_default;
+        info->is_discrete = is_discrete;
 
         infos = g_list_append (infos, info);
     }
@@ -625,6 +630,33 @@ xapp_gpu_offload_helper_get_offload_infos (XAppGpuOffloadHelper *helper)
     GList *retval = NULL;
 
     GList *l;
+
+    // add Default GPU first if its discrete
+    for (l = helper->gpu_infos; l != NULL; l = l->next)
+    {
+        XAppGpuInfo *info = l->data;
+
+        if (!info->is_default)
+            continue;
+
+        if (info->is_discrete)
+            retval = g_list_append (retval, info);
+        break;
+    }
+
+    // add any following discrete GPUs
+    for (l = helper->gpu_infos; l != NULL; l = l->next)
+    {
+        XAppGpuInfo *info = l->data;
+
+        if (!info->is_discrete)
+            continue;
+        
+        retval = g_list_append (retval, info);
+    }
+
+    // fallback to old behavior
+    // add non default GPUs to the list
     for (l = helper->gpu_infos; l != NULL; l = l->next)
     {
         XAppGpuInfo *info = l->data;
