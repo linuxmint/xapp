@@ -454,7 +454,7 @@ xapp_gtk_window_set_icon_from_file (XAppGtkWindow   *window,
  * between 0 and 100.
  *
  * Note: If a window will stick around after progress is complete, you will
- * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * probably need to set progress to 0 to remove any progress effects on taskbars
  * and window lists.
  *
  * Setting progress will also cancel the 'pulsing' flag on the window as
@@ -481,7 +481,7 @@ xapp_gtk_window_set_progress (XAppGtkWindow   *window,
  * ongoing progress in a task manager.
  *
  * Note: If a window will stick around after progress is complete, you will
- * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * probably need to set progress to 0 to remove any progress effects on taskbars
  * and window lists.  This will also remove the pulse state, if it is set.
  *
  * Setting an explicit progress value will unset this flag.
@@ -625,7 +625,7 @@ xapp_set_window_icon_from_file (GtkWindow   *window,
  * between 0 and 100.
  *
  * Note: If a window will stick around after progress is complete, you will
- * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * probably need to set progress to 0 to remove any progress effects on taskbars
  * and window lists.
  *
  * Setting progress will also cancel the 'pulsing' flag on the window as
@@ -659,7 +659,7 @@ xapp_set_window_progress (GtkWindow   *window,
  * ongoing progress in a task manager.
  *
  * Note: If a window will stick around after progress is complete, you will
- * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * probably need to set progress to 0 to remove any progress effects on taskbars
  * and window lists.  This will also remove the pulse state, if it is set.
  *
  * Setting an explicit progress value will unset this flag.
@@ -739,7 +739,7 @@ xapp_set_xid_icon_from_file (gulong       xid,
  * well, if it has been set.
  *
  * Note: If a window will stick around after progress is complete, you will
- * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * probably need to set progress to 0 to remove any progress effects on taskbars
  * and window lists.
  *
  * This is a function, not a method, for applying the progress property for
@@ -765,7 +765,7 @@ xapp_set_xid_progress (gulong       xid,
  * ongoing progress in a task manager.
  *
  * Note: If a window will stick around after progress is complete, you will
- * probaby need to set progress to 0 to remove any progress effects on taskbars
+ * probably need to set progress to 0 to remove any progress effects on taskbars
  * and window lists.
  *
  * Setting an explicit progress value will unset this flag.

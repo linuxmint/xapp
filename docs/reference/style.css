@@ -332,7 +332,7 @@ acronym,abbr
     position: relative;
     top: 0em ! important;
   }
-  /* this is needed so that the local anchors are displayed below the naviagtion */
+  /* this is needed so that the local anchors are displayed below the navigation */
   div.footnote a[name], div.refnamediv a[name], div.refsect1 a[name], div.refsect2 a[name], div.index a[name], div.glossary a[name], div.sect1 a[name]
   {
     display: inline-block;

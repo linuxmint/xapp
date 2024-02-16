@@ -34,7 +34,7 @@
 #define FALLBACK_ICON_SIZE 24
 
 // This gets reffed and unreffed according to individual icon presence.
-// For the first icon, it gets created when exporting the icon's inteface.
+// For the first icon, it gets created when exporting the icon's interface.
 // For each additional icon, it gets reffed again. On destruction, the
 // opposite occurs - unrefs, and the final unref calls a weak notify
 // function, which clears this pointer and unown's the process's bus name.

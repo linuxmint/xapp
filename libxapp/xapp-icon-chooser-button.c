@@ -306,7 +306,7 @@ xapp_icon_chooser_button_set_icon_size (XAppIconChooserButton *button,
     // We need to make sure the icon gets resized if it's a file path. Since
     // this means regenerating the pixbuf anyway, it's easier to just call
     // xapp_icon_chooser_button_set_icon, but we need to dup the string so
-    // it doens't get freed before it gets used.
+    // it doesn't get freed before it gets used.
     icon = g_strdup(priv->icon_string);
     xapp_icon_chooser_button_set_icon (button, icon);
     g_free (icon);

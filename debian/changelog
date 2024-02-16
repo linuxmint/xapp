@@ -418,7 +418,7 @@ xapp (1.8.6) ulyana; urgency=medium
 
   [ Michael Webster ]
   * xapp-status-icon.c: Add xapp_status_icon_popup_menu() and use a more reliable GtkMenu popup method.
-  * xapp-status-icon.c: Fix inadvertant verison change in doc string.
+  * xapp-status-icon.c: Fix inadvertent version change in doc string.
 
   [ NikoKrause ]
   * Icons: Add symbolic icons for xreaders annotation features (#92)
@@ -853,7 +853,7 @@ xapp (1.0.4) sylvia; urgency=medium
   * xapp-gtk-window: Add wrapper functions for GtkWindow subclasses.
   * xapp-gtk-window.*: Fix argument type for wrapper function.
   * xapp-gtk-window: Add progress features, refactor, add demo script for XAppGtkWindow.
-  * xapp-gtk-window test script: Add an animate button (to test real-world effects on system reponsiveness while an operation is running.)
+  * xapp-gtk-window test script: Add an animate button (to test real-world effects on system responsiveness while an operation is running.)
   * all: Fix build warnings, documentation.
   * xapp-gtk-window: Make xapp_gtk_window_new() handle the same arguments as gtk_window_new().
   * all: Allow XAppGtkWindows to be used in builder (ui) files and in Glade.

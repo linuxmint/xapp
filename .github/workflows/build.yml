@@ -22,5 +22,7 @@ jobs:
       commit_id: master
       ############################## Comma separated list - like 'linuxmint/xapp, linuxmint/cinnamon-desktop'
       dependencies:
-      ##############################
+      ############################## Comma separated lists of words and files to have codespell ignore.
+      codespell_ignore_words_list: nd
+      codespell_ignore_files_list:
 
