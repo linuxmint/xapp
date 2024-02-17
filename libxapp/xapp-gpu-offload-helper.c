@@ -183,7 +183,7 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
         }
 
         is_default = vdefault ? g_variant_get_boolean (vdefault) : FALSE;
-        is_discrete = vdefault ? g_variant_get_boolean (vdiscrete) : FALSE;
+        is_discrete = vdiscrete ? g_variant_get_boolean (vdiscrete) : FALSE;
 
         if (is_default)
         {
