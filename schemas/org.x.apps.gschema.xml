@@ -74,5 +74,13 @@
         The preferred color scheme for the user interface. Valid values are “default”, “prefer-dark”, “prefer-light”.
       </description>
     </key>
+    <key name="high-contrast" type="b">
+      <default>false</default>
+      <summary>Preferred contrast</summary>
+    </key>
+    <key name="accent-rgb" type="s">
+      <default></default>
+      <summary>hex format RGB accent color</summary>
+    </key>
   </schema>
 </schemalist>
