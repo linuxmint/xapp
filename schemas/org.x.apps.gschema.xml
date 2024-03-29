@@ -79,7 +79,7 @@
       <summary>Preferred contrast</summary>
     </key>
     <key name="accent-rgb" type="s">
-      <default></default>
+      <default>''</default>
       <summary>hex format RGB accent color</summary>
     </key>
   </schema>
