@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # This file is sourced by xinit(1) or a display manager's Xsession, not executed.
 
 if [ -z "$GTK3_MODULES" ] ; then
