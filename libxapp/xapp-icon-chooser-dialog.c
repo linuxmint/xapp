@@ -1645,12 +1645,15 @@ search_path (XAppIconChooserDialog *dialog,
         {
             priv->current_category = NULL;
 
-            gchar *content_type;
-            gboolean uncertain;
+            const gchar *content_type;
 
-            content_type = g_content_type_guess (child_name, NULL, 0, &uncertain);
+            content_type = g_file_info_get_attribute_string (child_info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+            if (content_type == NULL)
+            {
+                content_type = g_file_info_get_attribute_string (child_info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
+            }
 
-            if (content_type && g_str_has_prefix (content_type, "image") && !uncertain)
+            if (content_type && g_content_type_is_a (content_type, "image/*"))
             {
                 GFileInputStream         *stream;
 
@@ -1692,8 +1695,6 @@ search_path (XAppIconChooserDialog *dialog,
                     }
                 }
             }
-
-            g_free (content_type);
         }
 
         g_free (child_path);
