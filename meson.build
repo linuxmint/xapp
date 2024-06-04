@@ -1,7 +1,8 @@
-project('xapp',
+project(
+    'xapp',
     'c',
-    version : '2.8.2',
-    default_options : [ 'buildtype=debugoptimized' ],
+    version : '2.8.3',
+    default_options : ['buildtype=debugoptimized'],
     meson_version : '>=0.56.0'
 )
 

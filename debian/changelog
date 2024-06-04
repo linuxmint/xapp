@@ -1,3 +1,17 @@
+xapp (2.8.3) wilma; urgency=medium
+
+  [ Michael Webster ]
+  * Add new gsettings keys for xdg Settings portal v2.
+  * gsettings: Fix a default value.
+
+  [ Clement Lefebvre ]
+  * Remove accent-rgb setting
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-dialog.c: Fix mimetype test for browsed images.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 04 Jun 2024 15:30:42 +0100
+
 xapp (2.8.2) virginia; urgency=medium
 
   * l10n: Update translations
