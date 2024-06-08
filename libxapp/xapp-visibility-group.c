@@ -34,7 +34,7 @@ xapp_visibility_group_copy (const XAppVisibilityGroup *group)
     DEBUG ("XAppVisibilityGroup copy");
     g_return_val_if_fail (group != NULL, NULL);
 
-    XAppVisibilityGroup *_group = g_slice_dup (XAppVisibilityGroup, group);
+    XAppVisibilityGroup *_group = g_memdup2 (group, sizeof (XAppVisibilityGroup));
     _group->widgets = NULL;
     _group->visible = group->visible;
     _group->sensitive = group->sensitive;
@@ -128,7 +128,7 @@ xapp_visibility_group_free (XAppVisibilityGroup *group)
 
     remove_widgets (group);
 
-    g_slice_free (XAppVisibilityGroup, group);
+    g_free (group);
 }
 
 /**
@@ -153,7 +153,7 @@ xapp_visibility_group_new (gboolean  visible,
 {
     XAppVisibilityGroup *group;
 
-    group = g_slice_new0 (XAppVisibilityGroup);
+    group = g_new0 (XAppVisibilityGroup, 1);
     group->visible = visible;
     group->sensitive = sensitive;
 
