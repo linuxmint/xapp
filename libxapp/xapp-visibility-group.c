@@ -4,8 +4,6 @@
 #define DEBUG_FLAG XAPP_DEBUG_VISIBILITY_GROUP
 #include "xapp-debug.h"
 
-static void widget_destroyed (XAppVisibilityGroup *group, GObject *object);
-
 XAppVisibilityGroup  *xapp_visibility_group_copy     (const XAppVisibilityGroup *group);
 void                  xapp_visibility_group_free     (XAppVisibilityGroup *group);
 
@@ -43,8 +41,8 @@ xapp_visibility_group_copy (const XAppVisibilityGroup *group)
 }
 
 static void
-widget_destroyed (XAppVisibilityGroup *group,
-                  GObject             *object)
+widget_disposed (XAppVisibilityGroup *group,
+                 GObject             *object)
 {
     DEBUG ("Widget destroyed callback: %p", object);
     group->widgets = g_slist_remove (group->widgets, (gpointer) object);
@@ -61,8 +59,7 @@ add_one_widget (XAppVisibilityGroup *group,
     DEBUG ("Add one widget: %p", widget);
 
     group->widgets = g_slist_prepend (group->widgets, (gpointer) widget);
-
-    g_signal_connect (widget, "destroy", G_CALLBACK (widget_destroyed), group);
+    g_object_weak_ref (G_OBJECT (widget), (GWeakNotify) widget_disposed, group);
 
     g_object_set (widget,
                   "visible", group->visible,
@@ -93,7 +90,7 @@ remove_one_widget (XAppVisibilityGroup *group,
 
     DEBUG ("Remove one widget: %p", widget);
 
-    g_signal_handlers_disconnect_by_func (widget, widget_destroyed, group);
+    g_object_weak_unref (G_OBJECT (widget), (GWeakNotify) widget_disposed, group);
     group->widgets = g_slist_remove (group->widgets, ptr->data);
 
     return TRUE;
@@ -106,7 +103,7 @@ remove_widgets (XAppVisibilityGroup *group)
 
     for (l = group->widgets; l != NULL; l = l->next)
     {
-        g_signal_handlers_disconnect_by_func (GTK_WIDGET (l->data), widget_destroyed, group);
+        remove_one_widget (group, GTK_WIDGET (l->data));
     }
 
     g_clear_pointer (&group->widgets, g_slist_free);
