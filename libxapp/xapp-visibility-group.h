@@ -26,7 +26,7 @@ struct _XAppVisibilityGroup
 
 GType                 xapp_visibility_group_get_type             (void) G_GNUC_CONST;
 XAppVisibilityGroup  *xapp_visibility_group_new                  (gboolean visible, gboolean sensitive, GSList *widgets);
-
+void               xapp_visibility_group_free                    (XAppVisibilityGroup *group);
 void               xapp_visibility_group_add_widget              (XAppVisibilityGroup *group, GtkWidget *widget);
 gboolean           xapp_visibility_group_remove_widget           (XAppVisibilityGroup *group, GtkWidget *widget);
 void               xapp_visibility_group_hide                    (XAppVisibilityGroup *group);
