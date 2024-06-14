@@ -119,16 +119,18 @@ libxapp_dep = declare_dependency(
     sources: [ xapp_headers, dbus_headers ]
 )
 
-gir = gnome.generate_gir(libxapp,
-    namespace: 'XApp',
-    nsversion: '1.0',
-    sources: xapp_headers + xapp_sources + dbus_headers + xapp_enums,
-    identifier_prefix: 'XApp',
-    symbol_prefix: 'xapp_',
-    export_packages: 'xapp',
-    includes: ['GObject-2.0', 'Gtk-3.0'],
-    install: true
-)
+if get_option('introspection')
+    gir = gnome.generate_gir(libxapp,
+        namespace: 'XApp',
+        nsversion: '1.0',
+        sources: xapp_headers + xapp_sources + dbus_headers + xapp_enums,
+        identifier_prefix: 'XApp',
+        symbol_prefix: 'xapp_',
+        export_packages: 'xapp',
+        includes: ['GObject-2.0', 'Gtk-3.0'],
+        install: true
+    )
+endif
 
 pkg.generate(
     libraries: libxapp,
@@ -144,12 +146,16 @@ install_data(['xapp-glade-catalog.xml'],
     install_dir : join_paths(get_option('datadir'), 'glade/catalogs')
 )
 
-gnome.generate_vapi('xapp',
-    packages: ['glib-2.0', 'gio-unix-2.0', 'gtk+-3.0'],
-    sources: gir[0],
-    metadata_dirs: meson.current_source_dir(),
-    install: true
-)
+if get_option('vapi')
+    assert(is_variable('gir'), 'vapi requires introspection to be enabled')
+
+    gnome.generate_vapi('xapp',
+        packages: ['glib-2.0', 'gio-unix-2.0', 'gtk+-3.0'],
+        sources: gir[0],
+        metadata_dirs: meson.current_source_dir(),
+        install: true
+    )
+endif
 
 if not app_lib_only
     gtk3_module = shared_module(
