@@ -1,9 +1,9 @@
 project(
-    'xapp',
-    'c',
-    version : '2.8.3',
-    default_options : ['buildtype=debugoptimized'],
-    meson_version : '>=0.56.0'
+  'xapp',
+  'c',
+version : '2.8.4',
+default_options : ['buildtype=debugoptimized'],
+meson_version : '>=0.56.0'
 )
 
 gnome = import('gnome')

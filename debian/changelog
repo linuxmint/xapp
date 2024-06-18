@@ -1,3 +1,15 @@
+xapp (2.8.4) wilma; urgency=medium
+
+  [ Michael Webster ]
+  * visibility-group: Use g_new instead of deprecated g_slice.
+  * visibility-group: Use a GWeakNotify instead of the destroy signal for automatic widget removal.
+  * xapp-visibility-group: add missing declaration in header file.
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 18 Jun 2024 20:58:34 +0100
+
 xapp (2.8.3) wilma; urgency=medium
 
   [ Michael Webster ]
