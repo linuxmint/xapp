@@ -1,16 +1,16 @@
-# Swedish translation for linuxmint
-# Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
+# Kurdish, Central translation for linuxmint
+# Copyright (c) 2024 Rosetta Contributors and Canonical Ltd 2024
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-11-26 00:03+0000\n"
-"Last-Translator: Jan-Olof Svensson <jan-olof.svensson@abc.se>\n"
-"Language-Team: Swedish <sv@li.org>\n"
+"PO-Revision-Date: 2024-05-17 01:07+0000\n"
+"Last-Translator: rasti <Unknown>\n"
+"Language-Team: Kurdish, Central <ckb@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Favoriter"
+msgstr ""
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,145 +28,145 @@ msgstr "Favoriter"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Stöd saknas för denna åtgärd"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Ikonstorlek"
+msgstr "قەبارەی وێنۆچکە"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "Föredragen ikonstorlek."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Ikon"
+msgstr "وێنۆچکە"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Strängen som representerar ikonen."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Kategori"
+msgstr "هاوپۆل"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Förvald kategori"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Åtgärder"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Program"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Kategorier"
+msgstr "هاوپۆله‌كان"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Enheter"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Emblem"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Emojier"
+msgstr "بیچم"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Mimetyper"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Platser"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Annan"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Välj en ikon"
+msgstr "وێنۆچکەیەک هەڵبژێرە"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Sök"
+msgstr "گه‌ڕان"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Bläddra"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Hämtar..."
+msgstr "باردەکا..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Standardvärde"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Välj"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Tillåt sökvägar"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Om du vill tillåta sökvägar."
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Förvald ikon"
+msgstr "وێنۆچکەی بنەڕەت"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "Den ikon som används som standard"
+msgstr ""
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Välj bildfil"
+msgstr "پەڕگەیەکی وێنەیی دیاری بکە"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Öppna"
+msgstr "کردنەوە"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Bild"
+msgstr "وێنە"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Om"
+msgstr "دەربارە"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Det område där XApp visar status-ikoner"
+msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "Verktyg för status-appen XApp"
+msgstr ""
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "Status-appen XApp"
+msgstr ""
