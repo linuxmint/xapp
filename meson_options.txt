@@ -9,9 +9,14 @@ option('deprecated_warnings',
     description: 'Show build warnings for deprecations'
 )
 option('py-overrides-dir',
-    type : 'string',
-    value : '',
+    type : 'array',
+    value : [],
     description: 'Path to pygobject overrides directory'
+)
+option('python_target',
+    type: 'array',
+    value: ['python3'],
+    description: 'Python installation to target to lookup if py-overrides-dir not supplied'
 )
 option('status-notifier',
     type: 'boolean',
