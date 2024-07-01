@@ -47,7 +47,10 @@ top_inc = include_directories('.')
 subdir('libxapp')
 subdir('po')
 subdir('schemas')
-subdir('pygobject')
+
+if get_option('introspection')
+    subdir('pygobject')
+endif
 
 if not app_lib_only
     subdir('icons')
