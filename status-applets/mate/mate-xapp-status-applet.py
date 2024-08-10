@@ -328,8 +328,11 @@ class MateXAppStatusApplet(object):
 
         button_css = Gtk.CssProvider()
 
-        if button_css.load_from_data(statusicon_css_string.encode()):
+        try:
+            button_css.load_from_data(statusicon_css_string.encode())
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), button_css, 600)
+        except Exception as e:
+            print("Could not load style provider for icon box:", str(e))
 
         self.applet.connect("realize", self.on_applet_realized)
         self.applet.connect("destroy", self.on_applet_destroy)
