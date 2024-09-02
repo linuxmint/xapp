@@ -43,3 +43,13 @@ option('xfce',
     value: true,
     description: 'Install xfce specific items.'
 )
+option('introspection',
+    type: 'boolean',
+    value: true,
+    description: 'Enable GObject Introspection.'
+)
+option('vapi',
+    type: 'boolean',
+    value: true,
+    description: 'Enable Vala bindings.'
+)
