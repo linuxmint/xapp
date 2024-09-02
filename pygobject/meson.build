@@ -3,22 +3,31 @@ pygobject = dependency('pygobject-3.0',
     required: true,
 )
 
-override_dir = get_option('py-overrides-dir')
+override_dirs = get_option('py-overrides-dir')
 
-if override_dir == ''
-    exec = find_program(['python3', 'python'])
+if override_dirs.length() == 0 or override_dirs[0] == ''
+    override_dirs = []
 
-    r = run_command(exec, '-c', 'import gi;print(gi._overridesdir)', check: false)
+    pymod = import('python')
+    python_targets = get_option('python_target')
 
-    if r.returncode() != 0
-         error('Error getting the GObject Introspection override directory: ' + r.stderr())
-    endif
+    foreach python_target : python_targets
+        python_install = pymod.find_installation(python_target)
 
-    override_dir = r.stdout().strip()
+        r = run_command(python_install, '-c', 'import gi;print(gi._overridesdir)', check: false)
+
+        if r.returncode() != 0
+            error('Error getting the GObject Introspection override directory: ' + r.stderr())
+        endif
+
+        override_dirs += r.stdout().strip()
+    endforeach
 endif
 
-message('PyGObject overrides dir: ' + override_dir)
+message('PyGObject overrides dirs: @0@'.format(override_dirs))
 
-install_data(['XApp.py'],
-    install_dir: override_dir,
-)
+foreach override_dir : override_dirs
+    install_data(['XApp.py'],
+        install_dir: override_dir,
+    )
+endforeach
