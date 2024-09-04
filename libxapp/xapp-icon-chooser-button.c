@@ -160,7 +160,11 @@ xapp_icon_chooser_button_dispose (GObject *object)
     g_clear_pointer (&priv->icon_string, g_free);
     g_clear_pointer (&priv->category_string, g_free);
 
-    g_clear_object (&priv->dialog);
+    if (priv->dialog != NULL)
+    {
+        gtk_widget_destroy (priv->dialog);
+        priv->dialog = NULL;
+    }
 
     G_OBJECT_CLASS (xapp_icon_chooser_button_parent_class)->dispose (object);
 }
