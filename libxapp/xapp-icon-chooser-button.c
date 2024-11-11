@@ -162,7 +162,7 @@ xapp_icon_chooser_button_dispose (GObject *object)
 
     if (priv->dialog != NULL)
     {
-        gtk_widget_destroy (priv->dialog);
+        gtk_widget_destroy (GTK_WIDGET (priv->dialog));
         priv->dialog = NULL;
     }
 
