@@ -1,3 +1,18 @@
+xapp (2.8.6) xia; urgency=medium
+
+  [ Michael Webster ]
+  * mate-xapp-status-applet: Fix application theme provider due to PyGObject bug.
+
+  [ Matt Turnbull ]
+  * Allow installing gi override to multiple python installations (#183)
+  * Add option to disable building introspection and vala bindings. (#184)
+
+  [ Michael Webster ]
+  * xapp-icon-chooser-button.c: Use gtk_widget_destroy() to clean up the dialog window.
+  * xapp-icon-chooser-button.c: Fix a build warning.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 25 Nov 2024 10:17:31 +0000
+
 xapp (2.8.5) wilma; urgency=medium
 
   * l10n: Update translations
