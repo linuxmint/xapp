@@ -26,6 +26,7 @@ struct _XAppGpuInfo
 {
     gint id;
     gboolean is_default;
+    gboolean is_discrete;
     gchar *display_name;
     gchar **env_strv;
 };
