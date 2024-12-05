@@ -1,3 +1,9 @@
+xapp (2.8.7) xia; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 05 Dec 2024 10:56:38 +0000
+
 xapp (2.8.6) xia; urgency=medium
 
   [ Michael Webster ]
