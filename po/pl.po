@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-12-11 14:56+0000\n"
-"Last-Translator: Paweł Pańczyk <pawelppanczyk@gmail.com>\n"
+"PO-Revision-Date: 2024-11-28 21:57+0000\n"
+"Last-Translator: Marek Adamski <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2024-07-21 09:03+0000\n"
-"X-Generator: Launchpad (build bbfa2351d9d6a9ddfe262109428f7bf5516e65d1)\n"
+"X-Launchpad-Export-Date: 2024-12-05 10:19+0000\n"
+"X-Generator: Launchpad (build 1519c6efe8e9bd78e6c5ebf2eb5bcb040b95ad32)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -58,7 +58,7 @@ msgstr "Kategoria domyślna."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Akcje"
+msgstr "Czynności"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
@@ -82,7 +82,7 @@ msgstr "Emoji"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Typy Mime"
+msgstr "Typy MIME"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
@@ -90,7 +90,7 @@ msgstr "Miejsca"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Status"
+msgstr "Stan"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
@@ -127,7 +127,7 @@ msgstr "Anuluj"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Zezwól ścieżki"
+msgstr "Zezwalaj na ścieżki"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
@@ -165,7 +165,7 @@ msgstr "Obszar, w którym pokazują się ikony stanu XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp Status Applet Factory"
+msgstr "Generator apletu stanu XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"

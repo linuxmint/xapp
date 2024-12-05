@@ -1,16 +1,16 @@
-# German translation for linuxmint
-# Copyright (c) 2018 Rosetta Contributors and Canonical Ltd 2018
+# Telugu translation for linuxmint
+# Copyright (c) 2024 Rosetta Contributors and Canonical Ltd 2024
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-11-27 17:34+0000\n"
-"Last-Translator: Tobias Bannert <tobannert@gmail.com>\n"
-"Language-Team: German <de@li.org>\n"
+"PO-Revision-Date: 2024-09-17 15:43+0000\n"
+"Last-Translator: B.Laxmi koundinya <Unknown>\n"
+"Language-Team: Telugu <te@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Favoriten"
+msgstr "ఇష్టమైనవి"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,145 +28,145 @@ msgstr "Favoriten"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Vorgang wird nicht unterstützt"
+msgstr "ఆపరేషన్ మద్దతు లేదు"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Symbolgröße"
+msgstr "ఐకాన్ పరిమాణం"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "Die bevorzugte Symbolgröße."
+msgstr "ప్రాధాన్యత ఐకాన్ పరిమాణం."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Symbol"
+msgstr "ఐకాన్"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Die Zeichenfolge stellt das Symbol dar."
+msgstr "చిహ్నాన్ని సూచించే స్ట్రింగ్."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Kategorie"
+msgstr "వర్గం"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Die Vorgabekategorie"
+msgstr "డిఫాల్ట్ వర్గం."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Aktionen"
+msgstr "చర్యలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Anwendungen"
+msgstr "అనువర్తనాలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Kategorien"
+msgstr "వర్గాలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Geräte"
+msgstr "పరికరాలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Embleme"
+msgstr "చిహ్నాలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Emoji"
+msgstr "ఎమోజి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Mime-Typen"
+msgstr "మైమ్ రకాలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Orte"
+msgstr "స్థలాలు"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Zustand"
+msgstr "స్థితి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Andere"
+msgstr "ఇతర"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Ein Symbol auswählen"
+msgstr "చిహ్నాన్ని ఎంచుకోండి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Suchen"
+msgstr "శోధించండి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Durchsuchen"
+msgstr "అన్వేషించుము"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Wird geladen …"
+msgstr "లోడ్ అవుతోంది..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Vorgabe"
+msgstr "డిఫాల్ట్"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Auswählen"
+msgstr "ఎంచుకోండి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr "రద్దు చేయి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Pfade erlauben"
+msgstr "మార్గాలను అనుమతించండి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Ob Pfade erlaubt sind."
+msgstr "మార్గాలను అనుమతించాలా వద్దా."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Vorgabesymbol"
+msgstr "డిఫాల్ట్ చిహ్నం"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "Das Symbol, welches als Vorgabe verwendet wird"
+msgstr "డిఫాల్ట్‌గా ఉపయోగించాల్సిన చిహ్నం"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Bilddatei auswählen"
+msgstr "ఇమేజ్ ఫైల్‌ని ఎంచుకోండి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Öffnen"
+msgstr "తెరవండి"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Bild"
+msgstr "Image"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Über"
+msgstr "గురించి"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Bereich, in dem XApp-Statussymbole angezeigt werden."
+msgstr "XApp స్థితి చిహ్నాలు కనిపించే ప్రాంతం"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp-Status-Applet-Fabrik"
+msgstr "XApp స్థితి ఆప్లెట్ ఫ్యాక్టరీ"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "XApp-Status-Applet"
+msgstr "XApp స్థితి ఆప్లెట్"
