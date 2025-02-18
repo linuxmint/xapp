@@ -1276,8 +1276,8 @@ refresh_menu_items (XAppFavorites *favorites,
  * @favorites: The #XAppFavorites instance.
  * @mimetypes: (nullable): The mimetypes to filter for, or NULL to include all favorites.
  * @callback: (scope notified): (closure user_data): The callback to use when a menu item has been selected.
- * @user_data: (closure): The data to pass to the callback
- * @func: Destroy function for user_data
+ * @user_data: The data to pass to the callback.
+ * @func: Destroy function for user_data.
  *
  * Generates a GtkMenu widget populated with favorites. The callback will be called when
  * a menu item has been activated, and will include the uri of the respective item.
