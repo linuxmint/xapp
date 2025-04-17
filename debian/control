@@ -12,7 +12,7 @@ Build-Depends:
  libcairo2-dev,
  libdbus-1-dev,
  libdbusmenu-gtk3-dev,
- libgdk-pixbuf-2.0-dev | libgdk-pixbuf2.0-dev (>= 2.22.0),
+ libgdk-pixbuf-2.0-dev,
  libgirepository1.0-dev (>= 0.10.2-1~),
  libglib2.0-dev (>= 2.44),
  libgnomekbd-dev,
