@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppStackSidebar.html" title="XAppStackSidebar">
 <link rel="next" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor">
-<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -76,7 +76,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<span class="returnvalue">gint</span>
 </td>
 <td class="function_name">
 <a class="link" href="XAppStatusIcon.html#xapp-status-icon-get-icon-size" title="xapp_status_icon_get_icon_size ()">xapp_status_icon_get_icon_size</a> <span class="c_punctuation">()</span>
@@ -108,7 +108,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="XAppStatusIcon.html#xapp-status-icon-get-visible" title="xapp_status_icon_get_visible ()">xapp_status_icon_get_visible</a> <span class="c_punctuation">()</span>
@@ -172,7 +172,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="XAppStatusIcon.html#xapp-status-icon-any-monitors" title="xapp_status_icon_any_monitors ()">xapp_status_icon_any_monitors</a> <span class="c_punctuation">()</span>
@@ -228,27 +228,27 @@
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-activate" title="The “activate” signal">activate</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-button-press-event" title="The “button-press-event” signal">button-press-event</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-button-release-event" title="The “button-release-event” signal">button-release-event</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-scroll-event" title="The “scroll-event” signal">scroll-event</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIcon.html#XAppStatusIcon-state-changed" title="The “state-changed” signal">state-changed</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 </tbody>
 </table></div>
@@ -285,7 +285,7 @@
 <pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html">GEnum</a>
     <span class="lineart">├──</span> XAppScrollDirection
     <span class="lineart">╰──</span> XAppStatusIconState
-    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    GObject
     <span class="lineart">╰──</span> XAppStatusIcon
 </pre>
 </div>
@@ -315,7 +315,7 @@ xapp_status_icon_new (<em class="parameter"><code><span class="type">void</span>
 <div class="refsect2">
 <a name="xapp-status-icon-new-with-name"></a><h3>xapp_status_icon_new_with_name ()</h3>
 <pre class="programlisting"><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="returnvalue">XAppStatusIcon</span></a> *
-xapp_status_icon_new_with_name (<em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
+xapp_status_icon_new_with_name (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
 <p>Creates a new <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> instance and sets its name to <code class="literal">name</code>.</p>
 <div class="refsect3">
 <a name="xapp-status-icon-new-with-name.returns"></a><h4>Returns</h4>
@@ -329,7 +329,7 @@ xapp_status_icon_new_with_name (<em class="parameter"><code>const <a href="../gl
 <a name="xapp-status-icon-set-name"></a><h3>xapp_status_icon_set_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_set_name (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
-                           <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
 <p>Sets the status icon name. This is not shown to users.</p>
 <div class="refsect3">
 <a name="xapp-status-icon-set-name.parameters"></a><h4>Parameters</h4>
@@ -360,7 +360,7 @@ xapp_status_icon_set_name (<em class="parameter"><code><a class="link" href="XAp
 <a name="xapp-status-icon-set-icon-name"></a><h3>xapp_status_icon_set_icon_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_set_icon_name (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
-                                <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *icon_name</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>);</pre>
 <p>Sets the icon name or local path to use.</p>
 <div class="refsect3">
 <a name="xapp-status-icon-set-icon-name.parameters"></a><h4>Parameters</h4>
@@ -389,7 +389,7 @@ xapp_status_icon_set_icon_name (<em class="parameter"><code><a class="link" href
 <hr>
 <div class="refsect2">
 <a name="xapp-status-icon-get-icon-size"></a><h3>xapp_status_icon_get_icon_size ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><span class="returnvalue">gint</span>
 xapp_status_icon_get_icon_size (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>);</pre>
 <div class="refsect3">
 <a name="xapp-status-icon-get-icon-size.parameters"></a><h4>Parameters</h4>
@@ -419,7 +419,7 @@ receiving absolute icon paths from the client app.</p>
 <a name="xapp-status-icon-set-tooltip-text"></a><h3>xapp_status_icon_set_tooltip_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_set_tooltip_text (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
-                                   <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *tooltip_text</code></em>);</pre>
+                                   <em class="parameter"><code>const <span class="type">gchar</span> *tooltip_text</code></em>);</pre>
 <p>Sets the tooltip text</p>
 <div class="refsect3">
 <a name="xapp-status-icon-set-tooltip-text.parameters"></a><h4>Parameters</h4>
@@ -450,7 +450,7 @@ xapp_status_icon_set_tooltip_text (<em class="parameter"><code><a class="link" h
 <a name="xapp-status-icon-set-label"></a><h3>xapp_status_icon_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_set_label (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
-                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);</pre>
+                            <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
 <p>Sets a label, shown beside the icon</p>
 <div class="refsect3">
 <a name="xapp-status-icon-set-label.parameters"></a><h4>Parameters</h4>
@@ -481,7 +481,7 @@ xapp_status_icon_set_label (<em class="parameter"><code><a class="link" href="XA
 <a name="xapp-status-icon-set-visible"></a><h3>xapp_status_icon_set_visible ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_set_visible (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
-                              <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+                              <em class="parameter"><code>const <span class="type">gboolean</span> visible</code></em>);</pre>
 <p>Sets the visibility of the status icon</p>
 <div class="refsect3">
 <a name="xapp-status-icon-set-visible.parameters"></a><h4>Parameters</h4>
@@ -510,7 +510,7 @@ xapp_status_icon_set_visible (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="xapp-status-icon-get-visible"></a><h3>xapp_status_icon_get_visible ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 xapp_status_icon_get_visible (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>);</pre>
 <p>Returns whether or not the icon should currently be visible.</p>
 <div class="refsect3">
@@ -540,11 +540,11 @@ xapp_status_icon_get_visible (<em class="parameter"><code><a class="link" href="
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_popup_menu (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
                              <em class="parameter"><code><a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> *menu</code></em>,
-                             <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
-                             <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
-                             <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> button</code></em>,
-                             <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> _time</code></em>,
-                             <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> panel_position</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                             <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                             <em class="parameter"><code><span class="type">guint</span> button</code></em>,
+                             <em class="parameter"><code><span class="type">guint</span> _time</code></em>,
+                             <em class="parameter"><code><span class="type">gint</span> panel_position</code></em>);</pre>
 <p>Pop up <em class="parameter"><code>menu</code></em>
  using the positioning arguments. These arguments should be
 those provided by a <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-button-release-event" title="The “button-release-event” signal"><span class="type">“button-release-event”</span></a>.</p>
@@ -634,7 +634,7 @@ xapp_status_icon_set_primary_menu (<em class="parameter"><code><a class="link" h
 <pre class="programlisting"><a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
 xapp_status_icon_get_primary_menu (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>);</pre>
 <p>Returns a pointer to a <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> that was set previously for the
-primary mouse button.  If no menu was set, this returns <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p>
+primary mouse button.  If no menu was set, this returns <code class="literal">NULL</code>.</p>
 <div class="refsect3">
 <a name="xapp-status-icon-get-primary-menu.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -652,7 +652,7 @@ primary mouse button.  If no menu was set, this returns <a href="../glib/glib-St
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-get-primary-menu.returns"></a><h4>Returns</h4>
-<p>the <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none was set. </p>
+<p>the <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> or <code class="literal">NULL</code> if none was set. </p>
 <p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.6</p>
@@ -694,7 +694,7 @@ xapp_status_icon_set_secondary_menu (<em class="parameter"><code><a class="link"
 <pre class="programlisting"><a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
 xapp_status_icon_get_secondary_menu (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>);</pre>
 <p>Returns a pointer to a <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> that was set previously for the
-secondary mouse button.  If no menu was set, this returns <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p>
+secondary mouse button.  If no menu was set, this returns <code class="literal">NULL</code>.</p>
 <div class="refsect3">
 <a name="xapp-status-icon-get-secondary-menu.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -712,7 +712,7 @@ secondary mouse button.  If no menu was set, this returns <a href="../glib/glib-
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-get-secondary-menu.returns"></a><h4>Returns</h4>
-<p>the <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none was set. </p>
+<p>the <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> or <code class="literal">NULL</code> if none was set. </p>
 <p><span class="annotation">[<acronym title="The data is owned by the callee, which is responsible of freeing it."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.6</p>
@@ -752,7 +752,7 @@ or not being displayed at all.</p>
 <a name="xapp-status-icon-set-metadata"></a><h3>xapp_status_icon_set_metadata ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_status_icon_set_metadata (<em class="parameter"><code><a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon</code></em>,
-                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *metadata</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">gchar</span> *metadata</code></em>);</pre>
 <p>Sets metadata to pass to the icon proxy for an applet's use. Right now this is only so
 xapp-sn-watcher can tell the applets when the icon is originating from appindicator so panel
 button 'highlighting' can behave correctly.</p>
@@ -783,12 +783,12 @@ button 'highlighting' can behave correctly.</p>
 <hr>
 <div class="refsect2">
 <a name="xapp-status-icon-any-monitors"></a><h3>xapp_status_icon_any_monitors ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 xapp_status_icon_any_monitors (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Looks for the existence of any active <a href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-struct"><span class="type">XAppStatusIconMonitors</span></a> on the bus.</p>
 <div class="refsect3">
 <a name="xapp-status-icon-any-monitors.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if at least one monitor was found.</p>
+<p> <code class="literal">TRUE</code> if at least one monitor was found.</p>
 </div>
 <p class="since">Since: 1.6</p>
 </div>
@@ -916,7 +916,7 @@ this can be useful in sandboxed environments where a well-defined name is requir
 
 additional icons are created, only the name given to the initial one will be used for dbus,
 though different names can still affect the sort order. This is set to the value of
-<a href="../glib/glib-Miscellaneous-Utility-Functions.html#g-get-prgname"><code class="function">g_get_prgname()</code></a> if no other name is provided.</p>
+<code class="function">g_get_prgname()</code> if no other name is provided.</p>
 <p>Owner: XAppStatusIcon</p>
 <p>Flags: Read / Write / Construct</p>
 <p>Default value: NULL</p>
@@ -926,9 +926,9 @@ though different names can still affect the sort order. This is set to the value
 <a name="XAppStatusIcon--primary-menu"></a><h3>The <code class="literal">“primary-menu”</code> property</h3>
 <pre class="programlisting">  “primary-menu”             <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</pre>
 <p>A <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> to use when requested by the remote monitor via a left (or primary) click.</p>
-<p>When this property is not <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the menu will be automatically positioned and
+<p>When this property is not <code class="literal">NULL</code>, the menu will be automatically positioned and
 displayed during a primary button release.</p>
-<p>When this property IS <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-activate" title="The “activate” signal"><span class="type">“activate”</span></a> will be sent for primary
+<p>When this property IS <code class="literal">NULL</code>, the <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-activate" title="The “activate” signal"><span class="type">“activate”</span></a> will be sent for primary
 button presses.</p>
 <p>In both cases, the <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-button-press-event" title="The “button-press-event” signal"><span class="type">“button-press-event”</span></a> and <a href="XAppStatusIcon.html#XAppStatusIcon-button-release-event"><span class="type">“button-release-events”</span></a>
 will be fired like normal.</p>
@@ -945,9 +945,9 @@ simply call this method again with a new menu.</p>
 <a name="XAppStatusIcon--secondary-menu"></a><h3>The <code class="literal">“secondary-menu”</code> property</h3>
 <pre class="programlisting">  “secondary-menu”           <a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="type">GtkWidget</span></a> *</pre>
 <p>A <a href="../gtk3/GtkMenu.html#GtkMenu-struct"><span class="type">GtkMenu</span></a> to use when requested by the remote monitor via a right (or secondary) click.</p>
-<p>When this property is not <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the menu will be automatically positioned and
+<p>When this property is not <code class="literal">NULL</code>, the menu will be automatically positioned and
 displayed during a secondary button release.</p>
-<p>When this property IS <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-activate" title="The “activate” signal"><span class="type">“activate”</span></a> will be sent for secondary
+<p>When this property IS <code class="literal">NULL</code>, the <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-activate" title="The “activate” signal"><span class="type">“activate”</span></a> will be sent for secondary
 button presses.</p>
 <p>In both cases, the <a class="link" href="XAppStatusIcon.html#XAppStatusIcon-button-press-event" title="The “button-press-event” signal"><span class="type">“button-press-event”</span></a> and <a href="XAppStatusIcon.html#XAppStatusIcon-button-release-event"><span class="type">“button-release-events”</span></a>
 will be fired like normal.</p>
@@ -966,11 +966,11 @@ simply call this method again with a new menu.</p>
 <a name="XAppStatusIcon-activate"></a><h3>The <code class="literal">“activate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>           button,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>           time,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)</pre>
+               <span class="type">guint</span>           button,
+               <span class="type">guint</span>           time,
+               <span class="type">gpointer</span>        user_data)</pre>
 <p>Gets emitted when the user activates the status icon.  If the XAppStatusIcon:primary-menu or
-XAppStatusIcon:secondary-menu is not <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, this signal is skipped for the respective button
+XAppStatusIcon:secondary-menu is not <code class="literal">NULL</code>, this signal is skipped for the respective button
 presses.  A middle button click will always send this signal when pressed.</p>
 <div class="refsect3">
 <a name="XAppStatusIcon-activate.parameters"></a><h4>Parameters</h4>
@@ -1004,7 +1004,7 @@ presses.  A middle button click will always send this signal when pressed.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1013,10 +1013,10 @@ presses.  A middle button click will always send this signal when pressed.</p>
 user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon,
                <span class="type">int</span>             x,
                <span class="type">int</span>             y,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>           button,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>           time,
+               <span class="type">guint</span>           button,
+               <span class="type">guint</span>           time,
                <span class="type">int</span>             panel_position,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)</pre>
+               <span class="type">gpointer</span>        user_data)</pre>
 <p>Gets emitted when there is a button press received from an applet</p>
 <div class="refsect3">
 <a name="XAppStatusIcon-button-press-event.parameters"></a><h4>Parameters</h4>
@@ -1065,7 +1065,7 @@ user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1074,10 +1074,10 @@ user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"
 user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> *icon,
                <span class="type">int</span>             x,
                <span class="type">int</span>             y,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>           button,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>           time,
+               <span class="type">guint</span>           button,
+               <span class="type">guint</span>           time,
                <span class="type">int</span>             panel_position,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)</pre>
+               <span class="type">gpointer</span>        user_data)</pre>
 <p>Gets emitted when there is a button release received from an applet</p>
 <div class="refsect3">
 <a name="XAppStatusIcon-button-release-event.parameters"></a><h4>Parameters</h4>
@@ -1126,7 +1126,7 @@ user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1135,8 +1135,8 @@ user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"
 user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>     *icon,
                <span class="type">int</span>                 amount,
                <a class="link" href="XAppStatusIcon.html#XAppScrollDirection" title="enum XAppScrollDirection"><span class="type">XAppScrollDirection</span></a> direction,
-               <a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a>               time,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)</pre>
+               <span class="type">guint</span>               time,
+               <span class="type">gpointer</span>            user_data)</pre>
 <p>Gets emitted when the user uses the mouse scroll wheel over the status icon.
 For the most part, amounts will always be 1, unless an applet supports smooth
 scrolling.  Generally the direction value is most important.</p>
@@ -1177,7 +1177,7 @@ scrolling.  Generally the direction value is most important.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1185,7 +1185,7 @@ scrolling.  Generally the direction value is most important.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a>     *icon,
                <a class="link" href="XAppStatusIcon.html#XAppStatusIconState" title="enum XAppStatusIconState"><span class="type">XAppStatusIconState</span></a> new_state,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>            user_data)</pre>
+               <span class="type">gpointer</span>            user_data)</pre>
 <p>Gets emitted when the state of the icon changes. If you wish
 to react to changes in how the status icon is being handled
 (perhaps to alter the menu or other click behavior), you should
@@ -1217,11 +1217,11 @@ connect to this - see <a class="link" href="XAppStatusIcon.html#XAppStatusIconSt
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.33.1</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>
