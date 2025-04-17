@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppStatusIcon.html" title="XAppStatusIcon">
 <link rel="next" href="XAppObjectManagerClient.html" title="XAppObjectManagerClient">
-<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -52,7 +52,7 @@ info to an applet to represent the icons.</p>
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+<span class="returnvalue">GList</span> *
 </td>
 <td class="function_name">
 <a class="link" href="XAppStatusIconMonitor.html#xapp-status-icon-monitor-list-icons" title="xapp_status_icon_monitor_list_icons ()">xapp_status_icon_monitor_list_icons</a> <span class="c_punctuation">()</span>
@@ -73,12 +73,12 @@ info to an applet to represent the icons.</p>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-icon-added" title="The “icon-added” signal">icon-added</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppStatusIconMonitor.html#XAppStatusIconMonitor-icon-removed" title="The “icon-removed” signal">icon-removed</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr>
 </tbody>
 </table></div>
@@ -104,7 +104,7 @@ info to an applet to represent the icons.</p>
 </div>
 <div class="refsect1">
 <a name="XAppStatusIconMonitor.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    GObject
     <span class="lineart">╰──</span> XAppStatusIconMonitor
 </pre>
 </div>
@@ -137,7 +137,7 @@ xapp_status_icon_monitor_new (<em class="parameter"><code><span class="type">voi
 <hr>
 <div class="refsect2">
 <a name="xapp-status-icon-monitor-list-icons"></a><h3>xapp_status_icon_monitor_list_icons ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+<pre class="programlisting"><span class="returnvalue">GList</span> *
 xapp_status_icon_monitor_list_icons (<em class="parameter"><code><a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor"><span class="type">XAppStatusIconMonitor</span></a> *monitor</code></em>);</pre>
 <p>List known icon proxies.</p>
 <div class="refsect3">
@@ -157,7 +157,7 @@ xapp_status_icon_monitor_list_icons (<em class="parameter"><code><a class="link"
 </div>
 <div class="refsect3">
 <a name="xapp-status-icon-monitor-list-icons.returns"></a><h4>Returns</h4>
-<p>a <a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="type">GList</span></a> of icons. </p>
+<p>a <span class="type">GList</span> of icons. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> XAppStatusIconMonitor][<acronym title="The caller owns the data container, but not the data inside it."><span class="acronym">transfer container</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.6</p>
@@ -183,7 +183,7 @@ xapp_status_icon_monitor_list_icons (<em class="parameter"><code><a class="link"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor"><span class="type">XAppStatusIconMonitor</span></a>        *monitor,
                <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a> *proxy,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                      user_data)</pre>
+               <span class="type">gpointer</span>                      user_data)</pre>
 <p>This signal is emitted by the monitor when it has discovered a new
 <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> on the bus.</p>
 <div class="refsect3">
@@ -213,7 +213,7 @@ user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStat
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -221,7 +221,7 @@ user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStat
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppStatusIconMonitor.html" title="XAppStatusIconMonitor"><span class="type">XAppStatusIconMonitor</span></a>        *monitor,
                <a class="link" href="XAppObjectManagerClient.html#XAppStatusIconInterfaceProxy"><span class="type">XAppStatusIconInterfaceProxy</span></a> *proxy,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>                      user_data)</pre>
+               <span class="type">gpointer</span>                      user_data)</pre>
 <p>This signal is emitted by the monitor when an <a class="link" href="XAppStatusIcon.html" title="XAppStatusIcon"><span class="type">XAppStatusIcon</span></a> has disappeared
 from the bus.</p>
 <div class="refsect3">
@@ -251,11 +251,11 @@ from the bus.</p>
 </tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.33.1</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>
