@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppObjectManagerClient.html" title="XAppObjectManagerClient">
 <link rel="next" href="XAppVisibilityGroup.html" title="XAppVisibilityGroup">
-<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="libxapp-xapp-util.html#xapp-util-gpu-offload-supported" title="xapp_util_gpu_offload_supported ()">xapp_util_gpu_offload_supported</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="libxapp-xapp-util.html#xapp-util-get-session-is-running" title="xapp_util_get_session_is_running ()">xapp_util_get_session_is_running</a> <span class="c_punctuation">()</span>
@@ -57,14 +57,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libxapp-xapp-util.html#xapp-pango-font-string-to-css" title="xapp_pango_font_string_to_css ()">xapp_pango_font_string_to_css</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<td class="function_type">const <span class="returnvalue">gchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="libxapp-xapp-util.html#xapp-get-tmp-dir" title="xapp_get_tmp_dir ()">xapp_get_tmp_dir</a> <span class="c_punctuation">()</span>
@@ -80,34 +80,34 @@
 <a name="libxapp-xapp-util.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="xapp-util-gpu-offload-supported"></a><h3>xapp_util_gpu_offload_supported ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 xapp_util_gpu_offload_supported (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Performs a check to see if on-demand mode for discrete graphics
 is supported.</p>
 <div class="refsect3">
 <a name="xapp-util-gpu-offload-supported.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if supported.</p>
+<p> <code class="literal">TRUE</code> if supported.</p>
 </div>
 <p class="since">Since: 1.8</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xapp-util-get-session-is-running"></a><h3>xapp_util_get_session_is_running ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
 xapp_util_get_session_is_running (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Check if the Session Manager is currently in the "Running" phase.</p>
 <div class="refsect3">
 <a name="xapp-util-get-session-is-running.returns"></a><h4>Returns</h4>
-<p> <a href="../glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session is running.</p>
+<p> <code class="literal">TRUE</code> if the session is running.</p>
 </div>
 <p class="since">Since: 2.0</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xapp-pango-font-string-to-css"></a><h3>xapp_pango_font_string_to_css ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
 xapp_pango_font_string_to_css (<em class="parameter"><code>const <span class="type">char</span> *pango_font_string</code></em>);</pre>
-<p>Converts a pango font description string to a string suitable for use with the css "font" tag. The font description must contain the font family and font size or conversion will fail and <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned</p>
+<p>Converts a pango font description string to a string suitable for use with the css "font" tag. The font description must contain the font family and font size or conversion will fail and <code class="literal">NULL</code> will be returned</p>
 <div class="refsect3">
 <a name="xapp-pango-font-string-to-css.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -125,7 +125,7 @@ xapp_pango_font_string_to_css (<em class="parameter"><code>const <span class="ty
 </div>
 <div class="refsect3">
 <a name="xapp-pango-font-string-to-css.returns"></a><h4>Returns</h4>
-<p>the css compatible font string or <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the conversion failed. </p>
+<p>the css compatible font string or <code class="literal">NULL</code> if the conversion failed. </p>
 <p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 2.2</p>
@@ -133,7 +133,7 @@ xapp_pango_font_string_to_css (<em class="parameter"><code>const <span class="ty
 <hr>
 <div class="refsect2">
 <a name="xapp-get-tmp-dir"></a><h3>xapp_get_tmp_dir ()</h3>
-<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
 xapp_get_tmp_dir (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Provides the path to the system's temporary files folder. This is identical to g_get_tmp_dir,
 but includes the /dev/shm ramdisk as the first choice for a temporary folder.</p>
@@ -147,6 +147,6 @@ but includes the /dev/shm ramdisk as the first choice for a temporary folder.</p
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.33.1</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>
