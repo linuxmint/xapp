@@ -332,7 +332,7 @@ acronym,abbr
     position: relative;
     top: 0em ! important;
   }
-  /* this is needed so that the local anchors are displayed below the navigation */
+  /* this is needed so that the local anchors are displayed below the naviagtion */
   div.footnote a[name], div.refnamediv a[name], div.refsect1 a[name], div.refsect2 a[name], div.index a[name], div.glossary a[name], div.sect1 a[name]
   {
     display: inline-block;
@@ -473,6 +473,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .gd { color: #A00000 } /* Generic.Deleted */
 .ge { font-style: italic } /* Generic.Emph */
+.ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
 .gr { color: #E40000 } /* Generic.Error */
 .gh { color: #000080; font-weight: bold } /* Generic.Heading */
 .gi { color: #008400 } /* Generic.Inserted */
