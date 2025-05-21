@@ -1,3 +1,15 @@
+xapp (2.8.9) xia; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-favorites.c: Fix g-ir-scanner warning during build.
+  * debian/control: Clean up libgdk-pixbuf depends.
+  * Add xdg-desktop-portal accent-rgb setting. (#191)
+
+  [ Clement Lefebvre ]
+  * Revert "xapp-sn-watcher: Don't enable in MATE"
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 21 May 2025 12:51:08 +0100
+
 xapp (2.8.8) xia; urgency=medium
 
   * l10n: Update translations
