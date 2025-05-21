@@ -22,7 +22,6 @@
     <xi:include href="xml/xapp-gpu-offload-helper.xml"/>
     <xi:include href="xml/xapp-icon-chooser-button.xml"/>
     <xi:include href="xml/xapp-icon-chooser-dialog.xml"/>
-    <xi:include href="xml/xapp-kbd-layout-controller.xml"/>
     <xi:include href="xml/xapp-monitor-blanker.xml"/>
     <xi:include href="xml/xapp-preferences-window.xml"/>
     <xi:include href="xml/xapp-stack-sidebar.xml"/>

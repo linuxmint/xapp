@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="API reference">
 <link rel="prev" href="XAppDarkModeManager.html" title="XAppDarkModeManager">
 <link rel="next" href="XAppGtkWindow.html" title="XAppGtkWindow">
-<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -51,7 +51,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+<span class="returnvalue">GList</span> *
 </td>
 <td class="function_name">
 <a class="link" href="XAppFavorites.html#xapp-favorites-get-favorites" title="xapp_favorites_get_favorites ()">xapp_favorites_get_favorites</a> <span class="c_punctuation">()</span>
@@ -59,7 +59,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<span class="returnvalue">gint</span>
 </td>
 <td class="function_name">
 <a class="link" href="XAppFavorites.html#xapp-favorites-get-n-favorites" title="xapp_favorites_get_n_favorites ()">xapp_favorites_get_n_favorites</a> <span class="c_punctuation">()</span>
@@ -147,7 +147,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+<span class="returnvalue">GList</span> *
 </td>
 <td class="function_name">
 <a class="link" href="XAppFavorites.html#xapp-favorites-create-actions" title="xapp_favorites_create_actions ()">xapp_favorites_create_actions</a> <span class="c_punctuation">()</span>
@@ -167,7 +167,7 @@
 <tbody><tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="XAppFavorites.html#XAppFavorites-changed" title="The “changed” signal">changed</a></td>
-<td class="signal_flags"><a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></td>
+<td class="signal_flags">Action</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -198,7 +198,7 @@
 <a name="XAppFavorites.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html">GBoxed</a>
     <span class="lineart">╰──</span> XAppFavoriteInfo
-    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    GObject
     <span class="lineart">╰──</span> XAppFavorites
 </pre>
 </div>
@@ -228,10 +228,10 @@ xapp_favorites_get_default (<em class="parameter"><code><span class="type">void<
 <hr>
 <div class="refsect2">
 <a name="xapp-favorites-get-favorites"></a><h3>xapp_favorites_get_favorites ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+<pre class="programlisting"><span class="returnvalue">GList</span> *
 xapp_favorites_get_favorites (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                              <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> * const *mimetypes</code></em>);</pre>
-<p>Gets a list of all favorites.  If mimetype is not <a href="../glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the list will
+                              <em class="parameter"><code>const <span class="type">gchar</span> * const *mimetypes</code></em>);</pre>
+<p>Gets a list of all favorites.  If mimetype is not <code class="literal">NULL</code>, the list will
 contain only favorites with that mimetype.</p>
 <div class="refsect3">
 <a name="xapp-favorites-get-favorites.parameters"></a><h4>Parameters</h4>
@@ -258,7 +258,7 @@ contain only favorites with that mimetype.</p>
 <div class="refsect3">
 <a name="xapp-favorites-get-favorites.returns"></a><h4>Returns</h4>
 <p>a list of <a href="XAppFavorites.html#XAppFavoriteInfo-struct"><span class="type">XAppFavoriteInfos</span></a>.
-Free the list with <a href="../glib/glib-Doubly-Linked-Lists.html#g-list-free"><span class="type">g_list_free</span></a>, free elements with <a class="link" href="XAppFavorites.html#xapp-favorite-info-free" title="xapp_favorite_info_free ()"><span class="type">xapp_favorite_info_free</span></a>. </p>
+Free the list with <span class="type">g_list_free</span>, free elements with <a class="link" href="XAppFavorites.html#xapp-favorite-info-free" title="xapp_favorite_info_free ()"><span class="type">xapp_favorite_info_free</span></a>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> XAppFavoriteInfo][<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 2.0</p>
@@ -266,7 +266,7 @@ Free the list with <a href="../glib/glib-Doubly-Linked-Lists.html#g-list-free"><
 <hr>
 <div class="refsect2">
 <a name="xapp-favorites-get-n-favorites"></a><h3>xapp_favorites_get_n_favorites ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+<pre class="programlisting"><span class="returnvalue">gint</span>
 xapp_favorites_get_n_favorites (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>);</pre>
 <div class="refsect3">
 <a name="xapp-favorites-get-n-favorites.parameters"></a><h4>Parameters</h4>
@@ -294,7 +294,7 @@ xapp_favorites_get_n_favorites (<em class="parameter"><code><a class="link" href
 <a name="xapp-favorites-find-by-display-name"></a><h3>xapp_favorites_find_by_display_name ()</h3>
 <pre class="programlisting"><a class="link" href="XAppFavorites.html#XAppFavoriteInfo"><span class="returnvalue">XAppFavoriteInfo</span></a> *
 xapp_favorites_find_by_display_name (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *display_name</code></em>);</pre>
+                                     <em class="parameter"><code>const <span class="type">gchar</span> *display_name</code></em>);</pre>
 <p>Looks for an XAppFavoriteInfo that corresponds to <em class="parameter"><code>display_name</code></em>
 .</p>
 <div class="refsect3">
@@ -332,7 +332,7 @@ by the favorites manager and should not be freed. </p>
 <a name="xapp-favorites-find-by-uri"></a><h3>xapp_favorites_find_by_uri ()</h3>
 <pre class="programlisting"><a class="link" href="XAppFavorites.html#XAppFavoriteInfo"><span class="returnvalue">XAppFavoriteInfo</span></a> *
 xapp_favorites_find_by_uri (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                            <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
 <p>Looks for an XAppFavoriteInfo that corresponds to <em class="parameter"><code>uri</code></em>
 .</p>
 <div class="refsect3">
@@ -370,7 +370,7 @@ by the favorites manager and should not be freed. </p>
 <a name="xapp-favorites-add"></a><h3>xapp_favorites_add ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_favorites_add (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                    <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                    <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
 <p>Adds a new favorite.  If the uri already exists, this does nothing.</p>
 <div class="refsect3">
 <a name="xapp-favorites-add.parameters"></a><h4>Parameters</h4>
@@ -401,7 +401,7 @@ xapp_favorites_add (<em class="parameter"><code><a class="link" href="XAppFavori
 <a name="xapp-favorites-remove"></a><h3>xapp_favorites_remove ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_favorites_remove (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                       <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
 <p>Removes a favorite from the list.</p>
 <div class="refsect3">
 <a name="xapp-favorites-remove.parameters"></a><h4>Parameters</h4>
@@ -432,8 +432,8 @@ xapp_favorites_remove (<em class="parameter"><code><a class="link" href="XAppFav
 <a name="xapp-favorites-launch"></a><h3>xapp_favorites_launch ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_favorites_launch (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                       <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
-                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> timestamp</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                       <em class="parameter"><code><span class="type">guint32</span> timestamp</code></em>);</pre>
 <p>Opens a favorite in its default app.</p>
 <div class="refsect3">
 <a name="xapp-favorites-launch.parameters"></a><h4>Parameters</h4>
@@ -469,8 +469,8 @@ xapp_favorites_launch (<em class="parameter"><code><a class="link" href="XAppFav
 <a name="xapp-favorites-rename"></a><h3>xapp_favorites_rename ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 xapp_favorites_rename (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                       <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *old_uri</code></em>,
-                       <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *new_uri</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">gchar</span> *old_uri</code></em>,
+                       <em class="parameter"><code>const <span class="type">gchar</span> *new_uri</code></em>);</pre>
 <p>Removes old_uri and adds new_uri. This is mainly for file managers to use as
 a convenience instead of add/remove, and guarantees the result, without having to
 worry about multiple dbus calls (gsettings).</p>
@@ -554,18 +554,18 @@ xapp_favorite_info_free (<em class="parameter"><code><a class="link" href="XAppF
 <a name="XAppFavoritesItemSelectedCallback"></a><h3>XAppFavoritesItemSelectedCallback ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*XAppFavoritesItemSelectedCallback<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                                      <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
-                                      <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                      <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                      <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xapp-favorites-create-menu"></a><h3>xapp_favorites_create_menu ()</h3>
 <pre class="programlisting"><a href="../gtk3/GtkWidget.html#GtkWidget-struct"><span class="returnvalue">GtkWidget</span></a> *
 xapp_favorites_create_menu (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimetypes</code></em>,
+                            <em class="parameter"><code>const <span class="type">gchar</span> **mimetypes</code></em>,
                             <em class="parameter"><code><a class="link" href="XAppFavorites.html#XAppFavoritesItemSelectedCallback" title="XAppFavoritesItemSelectedCallback ()"><span class="type">XAppFavoritesItemSelectedCallback</span></a> callback</code></em>,
-                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>,
-                            <em class="parameter"><code><a href="../glib/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> func</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                            <em class="parameter"><code><span class="type">GDestroyNotify</span> func</code></em>);</pre>
 <p>Generates a GtkMenu widget populated with favorites. The callback will be called when
 a menu item has been activated, and will include the uri of the respective item.</p>
 <div class="refsect3">
@@ -594,12 +594,12 @@ a menu item has been activated, and will include the uri of the respective item.
 </tr>
 <tr>
 <td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>The data to pass to the callback. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="This parameter is a 'user_data', for callbacks; many bindings can pass NULL here."><span class="acronym">closure</span></acronym>]</span></td>
+<td class="parameter_description"><p>The data to pass to the callback.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>func</p></td>
-<td class="parameter_description"><p>Destroy function for user_data</p></td>
+<td class="parameter_description"><p>Destroy function for user_data.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -616,9 +616,9 @@ if there are no favorites. </p>
 <hr>
 <div class="refsect2">
 <a name="xapp-favorites-create-actions"></a><h3>xapp_favorites_create_actions ()</h3>
-<pre class="programlisting"><a href="../glib/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
+<pre class="programlisting"><span class="returnvalue">GList</span> *
 xapp_favorites_create_actions (<em class="parameter"><code><a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *favorites</code></em>,
-                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimetypes</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">gchar</span> **mimetypes</code></em>);</pre>
 <p>Generates a list of favorite GtkActions.</p>
 <div class="refsect3">
 <a name="xapp-favorites-create-actions.parameters"></a><h4>Parameters</h4>
@@ -678,18 +678,18 @@ if there are no favorites. </p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="XAppFavoriteInfo-struct.uri"></a>uri</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="XAppFavoriteInfo-struct.uri"></a>uri</code></em>;</p></td>
 <td class="struct_member_description"><p>The uri to the favorite file.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="XAppFavoriteInfo-struct.display-name"></a>display_name</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="XAppFavoriteInfo-struct.display-name"></a>display_name</code></em>;</p></td>
 <td class="struct_member_description"><p>The name for use when displaying the item. This may not exactly match
 the filename if there are files with the same name but in different folders.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="XAppFavoriteInfo-struct.cached-mimetype"></a>cached_mimetype</code></em>;</p></td>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="XAppFavoriteInfo-struct.cached-mimetype"></a>cached_mimetype</code></em>;</p></td>
 <td class="struct_member_description"><p>The mimetype calculated for the uri when it was added to favorites.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -709,7 +709,7 @@ the filename if there are files with the same name but in different folders.</p>
 <a name="XAppFavorites-changed"></a><h3>The <code class="literal">“changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="XAppFavorites.html" title="XAppFavorites"><span class="type">XAppFavorites</span></a> *xappfavorites,
-               <a href="../glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>       user_data)</pre>
+               <span class="type">gpointer</span>       user_data)</pre>
 <p>Notifies when the favorites list has changed.</p>
 <div class="refsect3">
 <a name="XAppFavorites-changed.parameters"></a><h4>Parameters</h4>
@@ -726,11 +726,11 @@ user_function (<a class="link" href="XAppFavorites.html" title="XAppFavorites"><
 </tr></tbody>
 </table></div>
 </div>
-<p>Flags: <a href="../gobject/gobject-Signals.html#G-SIGNAL-ACTION:CAPS">Action</a></p>
+<p>Flags: Action</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.33.1</div>
+<hr>Generated by GTK-Doc V1.34.0</div>
 </body>
 </html>

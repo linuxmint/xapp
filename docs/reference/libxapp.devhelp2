@@ -8,7 +8,6 @@
       <sub name="XAppGpuOffloadHelper" link="XAppGpuOffloadHelper.html"/>
       <sub name="XAppIconChooserButton" link="XAppIconChooserButton.html"/>
       <sub name="XAppIconChooserDialog" link="XAppIconChooserDialog.html"/>
-      <sub name="XAppKbdLayoutController" link="XAppKbdLayoutController.html"/>
       <sub name="XAppMonitorBlanker" link="XAppMonitorBlanker.html"/>
       <sub name="XAppPreferencesWindow" link="XAppPreferencesWindow.html"/>
       <sub name="XAppStackSidebar" link="XAppStackSidebar.html"/>
@@ -103,26 +102,6 @@
     <keyword type="property" name="The “icon-size” property" link="XAppIconChooserDialog.html#XAppIconChooserDialog--icon-size"/>
     <keyword type="signal" name="The “close” signal" link="XAppIconChooserDialog.html#XAppIconChooserDialog-close"/>
     <keyword type="signal" name="The “select” signal" link="XAppIconChooserDialog.html#XAppIconChooserDialog-select"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_new ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-new"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_enabled ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-enabled"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_current_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-current-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_set_current_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-set-current-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_next_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-next-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_previous_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-previous-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_current_name ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-current-name"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_all_names ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-all-names"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_current_icon_name ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-current-icon-name"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_icon_name_for_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-icon-name-for-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_current_flag_id ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-current-flag-id"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_flag_id_for_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-flag-id-for-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_current_short_group_label ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-current-short-group-label"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_short_group_label_for_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-short-group-label-for-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_current_variant_label ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-current-variant-label"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_get_variant_label_for_group ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-get-variant-label-for-group"/>
-    <keyword type="function" name="xapp_kbd_layout_controller_render_cairo_subscript ()" link="XAppKbdLayoutController.html#xapp-kbd-layout-controller-render-cairo-subscript"/>
-    <keyword type="property" name="The “enabled” property" link="XAppKbdLayoutController.html#XAppKbdLayoutController--enabled"/>
-    <keyword type="signal" name="The “config-changed” signal" link="XAppKbdLayoutController.html#XAppKbdLayoutController-config-changed"/>
-    <keyword type="signal" name="The “layout-changed” signal" link="XAppKbdLayoutController.html#XAppKbdLayoutController-layout-changed"/>
     <keyword type="function" name="xapp_monitor_blanker_new ()" link="XAppMonitorBlanker.html#xapp-monitor-blanker-new"/>
     <keyword type="function" name="xapp_monitor_blanker_blank_other_monitors ()" link="XAppMonitorBlanker.html#xapp-monitor-blanker-blank-other-monitors"/>
     <keyword type="function" name="xapp_monitor_blanker_unblank_monitors ()" link="XAppMonitorBlanker.html#xapp-monitor-blanker-unblank-monitors"/>
@@ -252,6 +231,7 @@
     <keyword type="function" name="xapp_pango_font_string_to_css ()" link="libxapp-xapp-util.html#xapp-pango-font-string-to-css" since="2.2"/>
     <keyword type="function" name="xapp_get_tmp_dir ()" link="libxapp-xapp-util.html#xapp-get-tmp-dir" since="2.2.16"/>
     <keyword type="function" name="xapp_visibility_group_new ()" link="XAppVisibilityGroup.html#xapp-visibility-group-new" since="2.2.15"/>
+    <keyword type="function" name="xapp_visibility_group_free ()" link="XAppVisibilityGroup.html#xapp-visibility-group-free"/>
     <keyword type="function" name="xapp_visibility_group_add_widget ()" link="XAppVisibilityGroup.html#xapp-visibility-group-add-widget" since="2.2.15"/>
     <keyword type="function" name="xapp_visibility_group_remove_widget ()" link="XAppVisibilityGroup.html#xapp-visibility-group-remove-widget" since="2.2.15"/>
     <keyword type="function" name="xapp_visibility_group_hide ()" link="XAppVisibilityGroup.html#xapp-visibility-group-hide" since="2.2.15"/>
