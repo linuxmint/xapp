@@ -1,3 +1,10 @@
+xapp (2.8.10) zara; urgency=medium
+
+  [ Jan ]
+  *  Improve discrete GPU detection using switcheroo-control (#178)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 30 Jul 2025 16:16:29 +0200
+
 xapp (2.8.9) xia; urgency=medium
 
   [ Michael Webster ]
