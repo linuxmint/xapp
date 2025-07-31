@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-06-13 08:25+0000\n"
-"Last-Translator: Romeo Khazalia <Unknown>\n"
+"PO-Revision-Date: 2025-06-15 12:31+0000\n"
+"Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-01-06 12:01+0000\n"
-"X-Generator: Launchpad (build 6394e03793719e8d73f5a60b5439440e693c92f1)\n"
+"X-Launchpad-Export-Date: 2025-07-31 09:24+0000\n"
+"X-Generator: Launchpad (build 647c49fc7f614412c17a151d8ba4fadd90c06a00)\n"
+"Language: ka\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr ""
+msgstr "სანიშნეები"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,7 +29,7 @@ msgstr ""
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "ოპერაცია მხარდაჭერილი არაა"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
@@ -38,7 +39,7 @@ msgstr "ხატულას ზომა"
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr ""
+msgstr "სასურველი ხატულას ზომა."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -46,7 +47,7 @@ msgstr "ხატულა"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "სტრიქონი, რომელიც ხატულას წარმოადგენს."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
@@ -54,7 +55,7 @@ msgstr "კატეგორია"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "ნაგულისხმევი კატეგორია."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
@@ -127,23 +128,23 @@ msgstr "გაუქმება"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr ""
+msgstr "ბილიკების დაშვება"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "მოხდება თუ არა ბილიკების დაშვება"
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr ""
+msgstr "ნაგულისხმევი ხატულა"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr ""
+msgstr "ხატულას ზომა ნაგულისხმევად"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr ""
+msgstr "აირჩიეთ გამოსახულების ფაილი"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
@@ -161,12 +162,12 @@ msgstr "შესახებ"
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "ადგილი, სადაც XApp სტატუსის ხატულა გამოჩნდება"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp სტატუსის აპლეტის ქარხანა"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp-ის სტატუსის აპლეტი"
