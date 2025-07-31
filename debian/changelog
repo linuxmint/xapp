@@ -1,3 +1,9 @@
+xapp (2.8.11) zara; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 31 Jul 2025 12:35:34 +0200
+
 xapp (2.8.10) zara; urgency=medium
 
   [ Jan ]
