@@ -114,6 +114,7 @@ struct _XAppGpuOffloadHelper
 
     GMutex gpu_infos_mutex;
     GList *gpu_infos; // XAppGpuInfos
+    GHashTable *discrete_infos;
 
     gboolean ready;
 
@@ -136,6 +137,7 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
 {
     GVariant *gpus;
     GList *infos = NULL;
+    GHashTable *discrete_infos = g_hash_table_new (g_direct_hash, g_direct_equal);
     gint num_children, i;
     gboolean default_found = FALSE;
 
@@ -195,9 +197,12 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
         info->display_name = g_strdup (name);
         info->env_strv = g_strdupv ((gchar **) env_strv);
         info->is_default = is_default;
-        info->is_discrete = is_discrete;
 
         infos = g_list_append (infos, info);
+        if (is_discrete)
+        {
+            g_hash_table_add (discrete_infos, info);
+        }
     }
 
     if (infos == NULL)
@@ -221,6 +226,7 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
     g_list_free_full (helper->gpu_infos, (GDestroyNotify) xapp_gpu_info_free);
     helper->gpu_infos = infos;
     helper->num_gpus = g_list_length (helper->gpu_infos);
+    helper->discrete_infos = discrete_infos;
 
     g_mutex_unlock (&helper->gpu_infos_mutex);
 }
@@ -440,6 +446,7 @@ xapp_gpu_offload_helper_dispose (GObject *object)
         helper->gpu_infos = NULL;
     }
 
+    g_clear_pointer (&helper->discrete_infos, g_hash_table_unref);
     g_clear_object (&helper->cancellable);
     g_clear_object (&helper->control);
 
@@ -639,7 +646,7 @@ xapp_gpu_offload_helper_get_offload_infos (XAppGpuOffloadHelper *helper)
         if (!info->is_default)
             continue;
 
-        if (info->is_discrete)
+        if (g_hash_table_contains (helper->discrete_infos, info))
             retval = g_list_append (retval, info);
         break;
     }
@@ -649,7 +656,7 @@ xapp_gpu_offload_helper_get_offload_infos (XAppGpuOffloadHelper *helper)
     {
         XAppGpuInfo *info = l->data;
 
-        if (!info->is_discrete)
+        if (!g_hash_table_contains (helper->discrete_infos, info))
             continue;
         
         retval = g_list_append (retval, info);
