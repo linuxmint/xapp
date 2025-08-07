@@ -19,6 +19,7 @@ GType xapp_gpu_info_get_type (void) G_GNUC_CONST;
  * @is_default: Whether this GPU is used by default.
  * @display_name: User-visible name of the GPU.
  * @env_strv: (array zero-terminated=1): A string array containing alternating environment variables names and values to use to enable the gpu.
+ * @is_discrete: Whether this GPU is a discrete GPU.
  *
  * Information about a single GPU used for offloading. The length of @env_strv will always be an even number.
  */
@@ -26,9 +27,9 @@ struct _XAppGpuInfo
 {
     gint id;
     gboolean is_default;
-    gboolean is_discrete;
     gchar *display_name;
     gchar **env_strv;
+    gboolean is_discrete;
 };
 
 XAppGpuOffloadHelper    *xapp_gpu_offload_helper_get                     (void);
