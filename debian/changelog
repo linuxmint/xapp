@@ -1,3 +1,11 @@
+xapp (2.8.12) zara; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-gpu-offload-helper.h: Move new GpuInfo member to the end.
+  * xapp-gpu-offload-helper: Remove XAppGpuInfo.is_discrete member.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Fri, 08 Aug 2025 16:21:49 +0200
+
 xapp (2.8.11) zara; urgency=medium
 
   * l10n: Update translations
