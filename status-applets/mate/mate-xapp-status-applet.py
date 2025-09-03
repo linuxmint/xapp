@@ -197,9 +197,8 @@ class StatusWidget(Gtk.ToggleButton):
                     icon = Gio.FileIcon.new(icon_file)
                     self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
                 else:
-                    if self.theme.has_icon(string):
-                        icon = Gio.ThemedIcon.new(string)
-                        self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
+                    icon = Gio.ThemedIcon.new(string)
+                    self.image.set_from_gicon(icon, Gtk.IconSize.MENU)
 
                 fallback = False
             except GLib.Error as e:
