@@ -1,3 +1,9 @@
+xapp (3.0.1) zara; urgency=medium
+
+  * icons: Prefix non-prefixed icons
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 13 Oct 2025 18:24:59 +0100
+
 xapp (3.0.0) zara; urgency=medium
 
   [ Clement Lefebvre ]
