@@ -18,7 +18,7 @@ class App(GObject.Object):
         self.status_icon = XApp.StatusIcon()
         self.status_icon.connect("state-changed", self.on_icon_state_changed)
 
-        self.status_icon.set_icon_name("folder-symbolic")
+        self.status_icon.set_icon_name("xapp-folder-symbolic")
         self.status_icon.set_tooltip_text("Testing primary and secondary menus")
         self.status_icon.set_label("label 1")
         self.status_icon.set_visible(True)
