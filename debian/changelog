@@ -1,3 +1,10 @@
+xapp (3.0.0) zara; urgency=medium
+
+  [ Clement Lefebvre ]
+  * Provide an alternative to Adwaita symbolic icons (#192)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 13 Oct 2025 17:27:51 +0100
+
 xapp (2.8.13) zara; urgency=medium
 
   [ Michael Webster ]
