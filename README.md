@@ -14,6 +14,8 @@ https://projects.linuxmint.com/xapp/reference/index.html
 
 A set of resources and tools.
 
+A set of symbolic icons which replaces the GNOME-specific Adwaita set (run "xapp-scan-code-for-adwaita-symbolic-icons" to search/replace adwaita icon names in your code).
+
 # Scope
 
 In the long term Xapps are there to provide applications to users in multiple DEs, but also to provide building blocks, resources and libraries to Linux developers who want to develop applications which work well in multiple DEs.
