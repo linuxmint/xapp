@@ -144,6 +144,7 @@ drive-harddisk-usb # devices # drive-harddisk-usb
 drive-multidisk # devices # drive-multidisk
 drive-optical # devices # drive-optical
 drive-removable-media # devices # drive-removable-media
+drive-removable-media-usb # nemo # usb-stick
 edit-clear # actions # edit-clear
 edit-clear-all # actions # edit-clear-all
 edit-copy # actions # edit-copy
@@ -321,6 +322,7 @@ microphone-sensitivity-low # status # microphone-sensitivity-low
 microphone-sensitivity-medium # status # microphone-sensitivity-medium
 microphone-sensitivity-muted # status # microphone-sensitivity-muted
 modem # devices # modem
+mount-archive # nemo # mount-archive
 multimedia-player # devices # multimedia-player
 multimedia-player-apple-ipod-touch # devices # multimedia-player-apple-ipod-touch
 multimedia-volume-control # legacy # audio-volume-control
@@ -500,6 +502,7 @@ video-single-display # devices # video-single-display
 video-x-generic # mimetypes # video-x-generic
 view-app-grid # actions # view-app-grid
 view-bottom-pane # xapp # view-bottom-pane
+view-compact # nemo # view-compact
 view-conceal # actions # view-conceal
 view-continuous # actions # view-continuous
 view-dual # actions # view-dual
