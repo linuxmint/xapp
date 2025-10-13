@@ -91,6 +91,24 @@ libxapp.so.1 libxapp1 #MINVER#
  xapp_icon_chooser_dialog_set_default_icon@Base 1.6.9
  xapp_icon_chooser_dialog_set_property@Base 1.4.9
  xapp_icon_size_get_type@Base 1.4.9
+ xapp_kbd_layout_controller_get_all_names@Base 1.4.9
+ xapp_kbd_layout_controller_get_current_flag_id@Base 1.4.9
+ xapp_kbd_layout_controller_get_current_group@Base 1.4.9
+ xapp_kbd_layout_controller_get_current_icon_name@Base 1.4.9
+ xapp_kbd_layout_controller_get_current_name@Base 1.4.9
+ xapp_kbd_layout_controller_get_current_short_group_label@Base 1.4.9
+ xapp_kbd_layout_controller_get_current_variant_label@Base 1.4.9
+ xapp_kbd_layout_controller_get_enabled@Base 1.4.9
+ xapp_kbd_layout_controller_get_flag_id_for_group@Base 1.4.9
+ xapp_kbd_layout_controller_get_icon_name_for_group@Base 1.4.9
+ xapp_kbd_layout_controller_get_short_group_label_for_group@Base 1.4.9
+ xapp_kbd_layout_controller_get_type@Base 1.4.9
+ xapp_kbd_layout_controller_get_variant_label_for_group@Base 1.4.9
+ xapp_kbd_layout_controller_new@Base 1.4.9
+ xapp_kbd_layout_controller_next_group@Base 1.4.9
+ xapp_kbd_layout_controller_previous_group@Base 1.4.9
+ xapp_kbd_layout_controller_render_cairo_subscript@Base 1.4.9
+ xapp_kbd_layout_controller_set_current_group@Base 1.4.9
  xapp_monitor_blanker_are_monitors_blanked@Base 1.4.9
  xapp_monitor_blanker_blank_other_monitors@Base 1.4.9
  xapp_monitor_blanker_get_type@Base 1.4.9

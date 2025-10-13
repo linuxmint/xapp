@@ -71,6 +71,12 @@ switcheroo_sources = gnome.gdbus_codegen(
 
 xapp_sources += switcheroo_sources
 
+if not app_lib_only
+    libdeps += dependency('libgnomekbdui', required: true)
+    xapp_headers += 'xapp-kbd-layout-controller.h'
+    xapp_sources += 'xapp-kbd-layout-controller.c'
+endif
+
 xapp_statusicon_interface_sources = gnome.gdbus_codegen(
   'xapp-statusicon-interface',
   sources: 'org.x.StatusIcon.xml',
@@ -132,7 +138,8 @@ pkg.generate(
     subdirs: 'xapp',
     description: 'Utility library',
     version: meson.project_version(),
-    requires: ['gtk+-3.0', 'gobject-2.0', 'cairo']
+    requires: ['gtk+-3.0', 'gobject-2.0', 'cairo'],
+    requires_private: 'xkbfile',
 )
 
 install_data(['xapp-glade-catalog.xml'],
