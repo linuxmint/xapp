@@ -115,6 +115,7 @@ computer-apple-ipad # devices # computer-apple-ipad
 computer-fail # status # computer-fail
 contact-new # actions # contact-new
 content-loading # status # content-loading
+cpu # cinnamon # cpu
 daytime-sunrise # status # daytime-sunrise
 daytime-sunset # status # daytime-sunset
 dialog-error # status # dialog-error
@@ -271,6 +272,7 @@ insert-object # actions # insert-object
 insert-text # actions # insert-text
 keyboard-brightness # status # keyboard-brightness
 list-add # actions # list-add
+list-edit # cinnamon # list-edit
 list-drag-handle # ui # list-drag-handle
 list-remove # actions # list-remove
 list-remove-all # actions # list-remove-all
@@ -323,6 +325,7 @@ microphone-sensitivity-medium # status # microphone-sensitivity-medium
 microphone-sensitivity-muted # status # microphone-sensitivity-muted
 modem # devices # modem
 mount-archive # nemo # mount-archive
+move # cinnamon # move
 multimedia-player # devices # multimedia-player
 multimedia-player-apple-ipod-touch # devices # multimedia-player-apple-ipod-touch
 multimedia-volume-control # legacy # audio-volume-control
