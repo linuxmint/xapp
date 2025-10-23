@@ -2,7 +2,6 @@ usr/share/glib-2.0/schemas
 usr/bin/
 usr/share/icons
 usr/share/locale
-usr/share/xapp
 usr/libexec/xapps/*.py
 usr/share/mate-panel/applets
 usr/share/dbus-1/services

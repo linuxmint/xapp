@@ -83,6 +83,7 @@ Multi-Arch: foreign
 Depends:
  inxi,
  netcat,
+ xapp-symbolic-icons,
  xdg-utils,
  ${misc:Depends},
  ${python3:Depends},
