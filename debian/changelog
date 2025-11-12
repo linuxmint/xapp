@@ -1,3 +1,13 @@
+xapp (3.2.0) zena; urgency=medium
+
+  * test-scripts: Switch to XApp symbolic icons
+  * Add some of the generic icons used in nemo
+  * Add some of the generic icons used in cinnamon
+  * icons: Add common device icons
+  * icons: Switch to xapp-symbolic-icons (XSI)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Wed, 12 Nov 2025 14:46:52 +0000
+
 xapp (3.0.1) zara; urgency=medium
 
   * icons: Prefix non-prefixed icons
