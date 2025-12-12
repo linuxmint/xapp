@@ -1,16 +1,16 @@
-# Slovenian translation for linuxmint
-# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
+# Albanian translation for linuxmint
+# Copyright (c) 2025 Rosetta Contributors and Canonical Ltd 2025
 # This file is distributed under the same license as the linuxmint package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-09-25 13:25+0000\n"
-"Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
-"Language-Team: Slovenian <sl@li.org>\n"
+"PO-Revision-Date: 2025-09-14 23:43+0000\n"
+"Last-Translator: Vilson Gjeci <vilsongjeci@gmail.com>\n"
+"Language-Team: Albanian <sq@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr "Priljubljeni"
+msgstr "Të preferuarat"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,145 +28,145 @@ msgstr "Priljubljeni"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr "Opravilo ni podprto"
+msgstr "Operacioni nuk mbështetet"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
 msgid "Icon size"
-msgstr "Velikost ikon"
+msgstr "Madhësia e ikonës"
 
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr "Željena velikost ikon."
+msgstr "Madhësia e preferuar e ikonës."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
-msgstr "Ikona"
+msgstr "Ikonë"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Niz ki predstavlja ikono."
+msgstr "Vargu që përfaqëson ikonën."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
-msgstr "Kategorija"
+msgstr "Kategoria"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr "Privzeta kategorija"
+msgstr "Kategoria e parazgjedhur."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr "Dejanja"
+msgstr "Veprime"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Aplikacije"
+msgstr "Aplikacionet"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
-msgstr "Kategorije"
+msgstr "Kategoria"
 
 #: libxapp/xapp-icon-chooser-dialog.c:107
 msgid "Devices"
-msgstr "Naprave"
+msgstr "Pajisjet"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr "Emblemi"
+msgstr "Emblemat"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Čustveni simboli"
+msgstr "Emoji"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "Vrste MIME"
+msgstr "Llojet e Mime-it"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr "Mesta"
+msgstr "Vende"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Status"
+msgstr "Statusi"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr "Drugo"
+msgstr "Të tjera"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Izberi ikono"
+msgstr "Zgjidhni një ikonë"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
-msgstr "Iskanje"
+msgstr "Kërko"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Brskaj"
+msgstr "Shfleto"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Nalaganje ..."
+msgstr "Duke u ngarkuar..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
-msgstr "Privzeto"
+msgstr "Parazgjedhur"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Izberi"
+msgstr "Zgjidh"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
 msgid "Cancel"
-msgstr "Prekliči"
+msgstr "Anulo"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr "Dovoli Poti"
+msgstr "Lejo Shtigjet"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr "Ali želite dovoliti poti."
+msgstr "Nëse do të lejohen shtigjet."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Privzeta ikona"
+msgstr "Ikona e parazgjedhur"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr "Ikona, ki se bo uporabila privzeto"
+msgstr "Ikona që do të përdoret si parazgjedhje"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Izberi slikovno datoteko"
+msgstr "Zgjidh skedarin e imazhit"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
-msgstr "Odpri"
+msgstr "Hap"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1953
 msgid "Image"
-msgstr "Slika"
+msgstr "Imazh"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "O Programu"
+msgstr "Rreth"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Prostor, kjer se  pojavi statusna ikona  XApp"
+msgstr "Zona ku shfaqen ikonat e statusit të XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "Tovarna programčkov stanja XApp"
+msgstr "Fabrika e Applet-eve të Statusit XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "Programček stanja XApp"
+msgstr "Apleti i Statusit XApp"

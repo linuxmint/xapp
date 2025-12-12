@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2025-07-02 16:01+0000\n"
-"Last-Translator: Dimitrija Nacev <Unknown>\n"
+"PO-Revision-Date: 2025-11-30 22:38+0000\n"
+"Last-Translator: Bojan Stojanoski <Unknown>\n"
 "Language-Team: Macedonian <mk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-07-31 09:24+0000\n"
-"X-Generator: Launchpad (build 647c49fc7f614412c17a151d8ba4fadd90c06a00)\n"
+"X-Launchpad-Export-Date: 2025-12-12 13:32+0000\n"
+"X-Generator: Launchpad (build 379e22b8475e3402088a4cdb4a6e7936a4d28414)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -38,7 +38,7 @@ msgstr "Големина на икона"
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr ""
+msgstr "Преферирана големина на икона."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -46,7 +46,7 @@ msgstr "Икона"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "Низата што ја претставува иконата."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
@@ -54,15 +54,15 @@ msgstr "Категорија"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Стандардната категорија."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr ""
+msgstr "Дејства"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr ""
+msgstr "Апликации"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
@@ -74,15 +74,15 @@ msgstr "Уреди"
 
 #: libxapp/xapp-icon-chooser-dialog.c:110
 msgid "Emblems"
-msgstr ""
+msgstr "Амблеми"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr ""
+msgstr "Емоџиња"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr ""
+msgstr "Mime-типови"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
@@ -90,11 +90,11 @@ msgstr "Места"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr ""
+msgstr "Состојба"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
-msgstr ""
+msgstr "Друго"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
@@ -106,7 +106,7 @@ msgstr "Пребарувај"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr ""
+msgstr "Прелистај"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
@@ -127,11 +127,11 @@ msgstr "Откажи"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr ""
+msgstr "Дозволeни патеки"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Дали да се дозволат патеки."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
@@ -139,7 +139,7 @@ msgstr "Стандардна Икона"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Иконата што ќе се користи по дифолт"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
@@ -161,12 +161,12 @@ msgstr "Информации"
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "Област каде што се појавуваат иконите за статус на XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "Фабрика за аплети за статус на XApp"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "Аплет за статус на XApp"

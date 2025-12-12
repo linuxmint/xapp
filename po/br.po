@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2024-07-14 14:45+0000\n"
+"PO-Revision-Date: 2025-09-15 12:43+0000\n"
 "Last-Translator: Anthony Guechoum <a.guechoum@proton.me>\n"
 "Language-Team: Breton <br@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-07-31 09:24+0000\n"
-"X-Generator: Launchpad (build 647c49fc7f614412c17a151d8ba4fadd90c06a00)\n"
+"X-Launchpad-Export-Date: 2025-12-12 13:32+0000\n"
+"X-Generator: Launchpad (build 379e22b8475e3402088a4cdb4a6e7936a4d28414)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -28,7 +28,7 @@ msgstr "Ma re well ganin"
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "Gwezhiadur anskor"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
@@ -58,7 +58,7 @@ msgstr "Ar rummad dre ziouer"
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
-msgstr ""
+msgstr "Gweredoù"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
@@ -78,15 +78,15 @@ msgstr "Sielloù"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr ""
+msgstr "Fromlun"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr ""
+msgstr "Rizhoù Mime"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
-msgstr ""
+msgstr "Plasoù"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"

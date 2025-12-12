@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2021-05-15 08:00+0000\n"
+"PO-Revision-Date: 2025-10-11 11:40+0000\n"
 "Last-Translator: Mykola Tkach <chistomov@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-07-31 09:24+0000\n"
-"X-Generator: Launchpad (build 647c49fc7f614412c17a151d8ba4fadd90c06a00)\n"
+"X-Launchpad-Export-Date: 2025-12-12 13:32+0000\n"
+"X-Generator: Launchpad (build 379e22b8475e3402088a4cdb4a6e7936a4d28414)\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -62,7 +62,7 @@ msgstr "Дії"
 
 #: libxapp/xapp-icon-chooser-dialog.c:101
 msgid "Applications"
-msgstr "Додатки"
+msgstr "Застосунки"
 
 #: libxapp/xapp-icon-chooser-dialog.c:104
 msgid "Categories"
@@ -98,7 +98,7 @@ msgstr "Інше"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Оберіть піктограму"
+msgstr "Виберіть піктограму"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
@@ -118,7 +118,7 @@ msgstr "Типово"
 
 #: libxapp/xapp-icon-chooser-dialog.c:596
 msgid "Select"
-msgstr "Обрати"
+msgstr "Вибрати"
 
 #: libxapp/xapp-icon-chooser-dialog.c:605
 #: libxapp/xapp-icon-chooser-dialog.c:1936
@@ -143,7 +143,7 @@ msgstr "Піктограма, яка використовується устал
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Обрати файл зображення"
+msgstr "Вибрати файл-зображення"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
@@ -155,7 +155,7 @@ msgstr "Зображення"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Про"
+msgstr "Про застосунок"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
