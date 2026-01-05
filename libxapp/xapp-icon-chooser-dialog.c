@@ -935,6 +935,8 @@ xapp_icon_chooser_dialog_close (XAppIconChooserDialog *dialog,
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
     priv->response = response;
+    g_cancellable_cancel (priv->cancellable);
+    
     gtk_widget_hide (GTK_WIDGET (dialog));
 
     gtk_main_quit ();
