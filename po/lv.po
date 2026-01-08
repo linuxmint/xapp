@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2025-09-14 16:39+0000\n"
+"PO-Revision-Date: 2025-12-27 13:27+0000\n"
 "Last-Translator: Klavs Petersons <Unknown>\n"
 "Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-12-12 13:32+0000\n"
-"X-Generator: Launchpad (build 379e22b8475e3402088a4cdb4a6e7936a4d28414)\n"
+"X-Launchpad-Export-Date: 2026-01-08 15:43+0000\n"
+"X-Generator: Launchpad (build 99c00f518760bdd50fc6e353e7736d2fff8fba4a)\n"
+"Language: lv\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
@@ -143,7 +144,7 @@ msgstr "Ikona, ko izmantot pēc noklusējuma"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr "Izvēlieties attēla failu"
+msgstr "Izvēlies attēla failu"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
@@ -161,12 +162,12 @@ msgstr "Par"
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr "Apkārtne, kur parādās XApp statusa ikonas."
+msgstr "Apgabals, kurā tiek rādītas xApp statusa ikonas"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr "XApp Status Applet Fabrika"
+msgstr "XApp statusa sīklietotnes fabrika"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr "XApp statusa lietotne"
+msgstr "XApp statusa sīklietotne"
