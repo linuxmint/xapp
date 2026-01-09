@@ -15,6 +15,7 @@ libdeps += gmodule_dep
 libdeps += dependency('gdk-pixbuf-2.0', version: '>=2.22.0', required: true)
 libdeps += dependency('cairo', required: true)
 libdeps += dependency('x11', required: true)
+libdeps += dependency('dbusmenu-gtk3-0.4', required: true)
 
 favorite_vfs_sources = [
   'favorite-vfs-file.c',
@@ -56,6 +57,10 @@ xapp_sources = [
     'xapp-preferences-window.c',
     'xapp-stack-sidebar.c',
     'xapp-status-icon.c',
+    'xapp-status-icon-common.c',
+    'xapp-status-icon-native.c',
+    'xapp-status-icon-fallback.c',
+    'xapp-status-icon-sni.c',
     'xapp-status-icon-monitor.c',
     'xapp-style-manager.c',
     'xapp-util.c',
@@ -90,6 +95,18 @@ xapp_statusicon_interface_sources = gnome.gdbus_codegen(
 
 dbus_headers = [ xapp_statusicon_interface_sources[1] ]
 xapp_sources += xapp_statusicon_interface_sources[0]
+
+sn_item_interface_sources = gnome.gdbus_codegen(
+  'sn-item-interface',
+  sources: 'sn-item.xml',
+  interface_prefix: 'org.kde',
+  namespace: 'Sn',
+  annotations: [[ 'org.kde.StatusNotifierItem', 'org.gtk.GDBus.C.Name', 'ItemInterface' ]],
+  install_header: true,
+  install_dir: join_paths(get_option('prefix'), get_option('includedir'), 'xapp/libxapp')
+)
+
+xapp_sources += sn_item_interface_sources[0]
 
 xapp_enums = gnome.mkenums_simple('xapp-enums',
     sources : xapp_headers,

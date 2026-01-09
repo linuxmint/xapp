@@ -51,6 +51,7 @@ GSettings *xapp_settings;
 
 static void continue_startup (XAppSnWatcher *watcher);
 static void update_published_items (XAppSnWatcher *watcher);
+static void sn_item_removed (XAppSnWatcher *watcher, SnItem *item);
 
 static void
 handle_status_applet_name_owner_appeared (XAppSnWatcher *watcher,
@@ -83,6 +84,23 @@ handle_status_applet_name_owner_appeared (XAppSnWatcher *watcher,
 }
 
 static void
+remove_item_by_key (XAppSnWatcher *watcher,
+                   const gchar   *key,
+                   const gchar   *reason)
+{
+    DEBUG ("%s: %s", reason, key);
+    g_hash_table_remove (watcher->items, key);
+    update_published_items (watcher);
+}
+
+static void
+sn_item_removed (XAppSnWatcher *watcher,
+                SnItem        *item)
+{
+    remove_item_by_key (watcher, sn_item_get_key (item), "SNI item removed (interface unexported)");
+}
+
+static void
 handle_sn_item_name_owner_lost (XAppSnWatcher *watcher,
                                 const gchar   *name,
                                 const gchar   *old_owner)
@@ -97,10 +115,7 @@ handle_sn_item_name_owner_lost (XAppSnWatcher *watcher,
 
         if (g_str_has_prefix (key, name))
         {
-            DEBUG ("Client %s has exited, removing status icon", key);
-            g_hash_table_remove (watcher->items, key);
-
-            update_published_items (watcher);
+            remove_item_by_key (watcher, key, "Client has exited");
             break;
         }
     }
@@ -374,7 +389,14 @@ sn_item_proxy_new_completed (GObject      *source,
     }
 
     item = sn_item_new ((GDBusProxy *) proxy,
+                        stolen_ptr,
                         g_str_has_prefix (data->path, APPINDICATOR_PATH_PREFIX));
+
+    /* Connect to removed signal to handle interface removal/unexport */
+    g_signal_connect_swapped (item,
+                             "removed",
+                             G_CALLBACK (sn_item_removed),
+                             watcher);
 
     g_hash_table_insert (watcher->items,
                          stolen_ptr,
