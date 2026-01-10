@@ -1,0 +1,203 @@
+#!/usr/bin/python3
+
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('XApp', '1.0')
+
+from gi.repository import Gtk, XApp, GLib
+
+import signal
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+
+class TestWindow(Gtk.Window):
+    def __init__(self):
+        super().__init__(title="XAppIconChooserDialog Test")
+        self.set_default_size(400, 300)
+        self.set_border_width(10)
+        self.connect("destroy", Gtk.main_quit)
+
+        self.selected_icon = None
+
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        self.add(main_box)
+
+        result_frame = Gtk.Frame(label="Selected Icon")
+        main_box.pack_start(result_frame, False, False, 0)
+
+        result_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        result_box.set_margin_start(10)
+        result_box.set_margin_end(10)
+        result_box.set_margin_top(5)
+        result_box.set_margin_bottom(5)
+        result_frame.add(result_box)
+
+        self.result_image = Gtk.Image()
+        self.result_image.set_size_request(48, 48)
+        result_box.pack_start(self.result_image, False, False, 0)
+
+        self.result_label = Gtk.Label(label="(none)")
+        self.result_label.set_xalign(0)
+        self.result_label.set_line_wrap(True)
+        self.result_label.set_selectable(True)
+        result_box.pack_start(self.result_label, True, True, 0)
+
+        # Test sections
+        # Section 1: Blocking run() methods
+        section1 = Gtk.Frame(label="1. Blocking run() Methods")
+        main_box.pack_start(section1, False, False, 0)
+
+        box1 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+        box1.set_margin_start(10)
+        box1.set_margin_end(10)
+        box1.set_margin_top(5)
+        box1.set_margin_bottom(5)
+        section1.add(box1)
+
+        btn_run = Gtk.Button(label="run()")
+        btn_run.connect("clicked", self.on_test_run)
+        box1.pack_start(btn_run, False, False, 0)
+
+        hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box1.pack_start(hbox1, False, False, 0)
+
+        btn_run_icon = Gtk.Button(label="run_with_icon()")
+        btn_run_icon.connect("clicked", self.on_test_run_with_icon)
+        hbox1.pack_start(btn_run_icon, True, True, 0)
+
+        self.icon_entry = Gtk.Entry()
+        self.icon_entry.set_text("folder")
+        self.icon_entry.set_placeholder_text("icon name or path")
+        hbox1.pack_start(self.icon_entry, True, True, 0)
+
+        hbox2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box1.pack_start(hbox2, False, False, 0)
+
+        btn_run_cat = Gtk.Button(label="run_with_category()")
+        btn_run_cat.connect("clicked", self.on_test_run_with_category)
+        hbox2.pack_start(btn_run_cat, True, True, 0)
+
+        self.category_entry = Gtk.Entry()
+        self.category_entry.set_text("Places")
+        self.category_entry.set_placeholder_text("category name")
+        hbox2.pack_start(self.category_entry, True, True, 0)
+
+        # Section 2: Non-blocking (response signal)
+        section2 = Gtk.Frame(label="2. Non-blocking (show + response signal)")
+        main_box.pack_start(section2, False, False, 0)
+
+        box2 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+        box2.set_margin_start(10)
+        box2.set_margin_end(10)
+        box2.set_margin_top(5)
+        box2.set_margin_bottom(5)
+        section2.add(box2)
+
+        btn_async = Gtk.Button(label="Show Dialog (async)")
+        btn_async.connect("clicked", self.on_test_async)
+        box2.pack_start(btn_async, False, False, 0)
+
+        section3 = Gtk.Frame(label="3. XAppIconChooserButton")
+        main_box.pack_start(section3, False, False, 0)
+
+        box3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        box3.set_margin_start(10)
+        box3.set_margin_end(10)
+        box3.set_margin_top(5)
+        box3.set_margin_bottom(5)
+        section3.add(box3)
+
+        label3 = Gtk.Label(label="Icon Button:")
+        box3.pack_start(label3, False, False, 0)
+
+        self.icon_button = XApp.IconChooserButton()
+        self.icon_button.set_icon("application-x-executable")
+        self.icon_button.connect("notify::icon", self.on_icon_button_changed)
+        box3.pack_start(self.icon_button, False, False, 0)
+
+        self.icon_button_label = Gtk.Label(label="(click button to choose)")
+        self.icon_button_label.set_xalign(0)
+        box3.pack_start(self.icon_button_label, True, True, 0)
+
+    def update_result(self, icon_string, source):
+        if icon_string:
+            self.result_label.set_text(f"{icon_string}\n(from {source})")
+            if icon_string.startswith("/"):
+                self.result_image.set_from_file(icon_string)
+            else:
+                self.result_image.set_from_icon_name(icon_string, Gtk.IconSize.DIALOG)
+        else:
+            self.result_label.set_text("(canceled)")
+            self.result_image.clear()
+
+    def on_test_run(self, button):
+        dialog = XApp.IconChooserDialog()
+        dialog.set_transient_for(self)
+        dialog.set_default_icon("folder")
+
+        response = dialog.run()
+
+        if response == Gtk.ResponseType.OK:
+            self.update_result(dialog.get_icon_string(), "run()")
+        else:
+            self.update_result(None, "run()")
+
+        dialog.destroy()
+
+    def on_test_run_with_icon(self, button):
+        icon = self.icon_entry.get_text()
+        dialog = XApp.IconChooserDialog()
+        dialog.set_transient_for(self)
+
+        response = dialog.run_with_icon(icon)
+
+        if response == Gtk.ResponseType.OK:
+            self.update_result(dialog.get_icon_string(), f"run_with_icon('{icon}')")
+        else:
+            self.update_result(None, f"run_with_icon('{icon}')")
+
+        dialog.destroy()
+
+    def on_test_run_with_category(self, button):
+        category = self.category_entry.get_text()
+        dialog = XApp.IconChooserDialog()
+        dialog.set_transient_for(self)
+
+        response = dialog.run_with_category(category)
+
+        if response == Gtk.ResponseType.OK:
+            self.update_result(dialog.get_icon_string(), f"run_with_category('{category}')")
+        else:
+            self.update_result(None, f"run_with_category('{category}')")
+
+        dialog.destroy()
+
+    def on_test_async(self, button):
+        dialog = XApp.IconChooserDialog()
+        dialog.set_transient_for(self)
+        dialog.set_modal(True)
+        dialog.set_default_icon("folder")
+
+        dialog.connect("response", self.on_async_response)
+        dialog.show_all()
+
+    def on_async_response(self, dialog, response):
+        if response == Gtk.ResponseType.OK:
+            self.update_result(dialog.get_icon_string(), "async (response signal)")
+        else:
+            self.update_result(None, "async (response signal)")
+
+        dialog.hide()
+        GLib.idle_add(dialog.destroy)
+
+    def on_icon_button_changed(self, button, pspec):
+        icon = button.get_icon()
+        self.icon_button_label.set_text(icon if icon else "(none)")
+        if icon:
+            self.update_result(icon, "XAppIconChooserButton")
+
+
+if __name__ == '__main__':
+    win = TestWindow()
+    win.show_all()
+    Gtk.main()
