@@ -296,6 +296,8 @@ helper_init_thread (GTask        *task,
 {
     XAppGpuOffloadHelper *helper = XAPP_GPU_OFFLOAD_HELPER (source_object);
     XAppSwitcherooControl *control;
+    g_autofree gchar *name_owner = NULL;
+
     GError *error = NULL;
 
     control = xapp_switcheroo_control_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
@@ -316,7 +318,9 @@ helper_init_thread (GTask        *task,
         g_task_return_error (task, error);
     }
 
-    if (g_dbus_proxy_get_name_owner (G_DBUS_PROXY (control)) != NULL)
+    name_owner = g_dbus_proxy_get_name_owner (G_DBUS_PROXY (control));
+
+    if (name_owner != NULL)
     {
         DEBUG ("Got switcheroo-control proxy successfully");
 
