@@ -4,11 +4,8 @@ sn_watcher_generated = gnome.gdbus_codegen(
   interface_prefix: 'org.x.'
 )
 
-sn_item_generated = gnome.gdbus_codegen(
-  'sn-item-interface',
-  'sn-item.xml',
-  interface_prefix: 'org.x.'
-)
+# sn-item-interface is now generated in libxapp and shared
+# (libxapp generates it with org.kde prefix which is correct for org.kde.StatusNotifierItem)
 
 
 conf = configuration_data()
@@ -37,7 +34,6 @@ cairo = dependency('cairo-gobject', required: true)
 
 watcher_sources = [
   sn_watcher_generated,
-  sn_item_generated,
   'xapp-sn-watcher.c',
   'sn-item.c'
 ]

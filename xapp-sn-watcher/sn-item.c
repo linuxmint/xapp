@@ -34,6 +34,7 @@ typedef struct
 {
     gchar               *id;
     gchar               *title;
+    gchar               *label;
     gchar               *status;
     gchar               *tooltip_heading;
     gchar               *tooltip_body;
@@ -56,6 +57,7 @@ typedef struct
     gboolean             update_menu;
     gboolean             update_icon;
     gboolean             update_id;
+    gboolean             update_label;
 } SnItemPropertiesResult;
 
 struct _SnItem
@@ -78,6 +80,7 @@ struct _SnItem
 
     guint update_properties_timeout;
     gchar *sortable_name;
+    gchar *key; // Hash table key (busname + path)
 
     gboolean should_activate;
     gboolean should_replace_tooltip;
@@ -92,7 +95,9 @@ static void update_menu (SnItem *item, SnItemPropertiesResult *new_props);
 static void update_status (SnItem *item, SnItemPropertiesResult *new_props);
 static void update_tooltip (SnItem *item, SnItemPropertiesResult *new_props);
 static void update_icon (SnItem *item, SnItemPropertiesResult *new_props);
+static void update_label (SnItem *item, SnItemPropertiesResult *new_props);
 static void assign_sortable_name (SnItem *item, const gchar *title);
+static void sn_item_proxy_name_owner_changed (SnItem *item);
 
 static void
 props_free (SnItemPropertiesResult *props)
@@ -104,6 +109,7 @@ props_free (SnItemPropertiesResult *props)
 
     g_free (props->id);
     g_free (props->title);
+    g_free (props->label);
     g_free (props->status);
     g_free (props->tooltip_heading);
     g_free (props->tooltip_body);
@@ -173,6 +179,7 @@ sn_item_dispose (GObject *object)
     g_clear_handle_id (&item->update_properties_timeout, g_source_remove);
 
     g_clear_pointer (&item->sortable_name, g_free);
+    g_clear_pointer (&item->key, g_free);
     g_clear_object (&item->status_icon);
     g_clear_object (&item->prop_proxy);
     g_clear_object (&item->sn_item_proxy);
@@ -197,6 +204,8 @@ sn_item_finalize (GObject *object)
     G_OBJECT_CLASS (sn_item_parent_class)->finalize (object);
 }
 
+static guint sn_item_signals[1] = {0, };
+
 static void
 sn_item_class_init (SnItemClass *klass)
 {
@@ -205,6 +214,19 @@ sn_item_class_init (SnItemClass *klass)
     gobject_class->dispose = sn_item_dispose;
     gobject_class->finalize = sn_item_finalize;
 
+    /**
+     * SnItem::removed:
+     * @item: the #SnItem
+     *
+     * Emitted when the item's D-Bus interface is removed/unexported
+     */
+    sn_item_signals[0] = g_signal_new ("removed",
+                                       SN_TYPE_ITEM,
+                                       G_SIGNAL_RUN_LAST,
+                                       0,
+                                       NULL, NULL, NULL,
+                                       G_TYPE_NONE,
+                                       0);
 }
 
 static guint
@@ -260,6 +282,23 @@ get_icon_size (SnItem *item)
     }
 
     return FALLBACK_ICON_SIZE;
+}
+
+static void
+sn_item_proxy_name_owner_changed (SnItem *item)
+{
+    gchar *name_owner;
+
+    name_owner = g_dbus_proxy_get_name_owner (item->sn_item_proxy);
+
+    if (name_owner == NULL)
+    {
+        /* The interface has been removed/unexported - notify the watcher to remove this item */
+        DEBUG ("SNI proxy lost its name owner - interface was removed");
+        g_signal_emit_by_name (item, "removed");
+    }
+
+    g_free (name_owner);
 }
 
 static cairo_surface_t *
@@ -703,6 +742,20 @@ update_status (SnItem *item, SnItemPropertiesResult *new_props)
     DEBUG ("Status for '%s' is now '%s'", item->sortable_name, new_props->status);
 }
 
+static void
+update_label (SnItem *item, SnItemPropertiesResult *new_props)
+{
+    if (new_props->label != NULL)
+    {
+        xapp_status_icon_set_label (item->status_icon, new_props->label);
+        DEBUG ("Label for '%s' set to: %s", item->sortable_name, new_props->label);
+    }
+    else
+    {
+        xapp_status_icon_set_label (item->status_icon, "");
+    }
+}
+
 static gchar *
 null_or_string_from_string (const gchar *str)
 {
@@ -828,6 +881,16 @@ get_all_properties_callback (GObject      *source_object,
             }
         }
         else
+        if (g_strcmp0 (name, "XAyatanaLabel") == 0)
+        {
+            new_props->label = null_or_string_from_variant (value);
+
+            if (g_strcmp0 (new_props->label, item->current_props->label) != 0)
+            {
+                new_props->update_label = TRUE;
+            }
+        }
+        else
         if (g_strcmp0 (name, "IconThemePath") == 0)
         {
             new_props->icon_theme_path = null_or_string_from_variant (value);
@@ -924,6 +987,11 @@ get_all_properties_callback (GObject      *source_object,
         update_menu (item, new_props);
     }
 
+    if (new_props->update_label)
+    {
+        update_label (item, new_props);
+    }
+
     if (new_props->update_icon || new_props->update_status)
     {
         update_icon (item, new_props);
@@ -997,7 +1065,8 @@ sn_signal_received (GDBusProxy  *sn_item_proxy,
         g_strcmp0 (signal_name, "NewToolTip") == 0 ||
         g_strcmp0 (signal_name, "NewTitle") == 0 ||
         g_strcmp0 (signal_name, "NewStatus") == 0 ||
-        g_strcmp0 (signal_name, "NewMenu") == 0)
+        g_strcmp0 (signal_name, "NewMenu") == 0 ||
+        g_strcmp0 (signal_name, "XAyatanaNewLabel") == 0)
     {
         queue_update_properties (item, FALSE);
     }
@@ -1169,6 +1238,12 @@ property_proxy_acquired (GObject      *source,
                       G_CALLBACK (sn_signal_received),
                       item);
 
+    /* Monitor for when the proxy loses its name owner (interface removed/unexported) */
+    g_signal_connect_swapped (item->sn_item_proxy,
+                             "notify::g-name-owner",
+                             G_CALLBACK (sn_item_proxy_name_owner_changed),
+                             item);
+
     item->status_icon = xapp_status_icon_new ();
 
     json = g_strdup_printf ("{ \"highlight-both-menus\": %s }", item->is_ai ? "true" : "false");
@@ -1201,13 +1276,21 @@ initialize_item (SnItem *item)
                       item);
 }
 
+const gchar *
+sn_item_get_key (SnItem *item)
+{
+    return item->key;
+}
+
 SnItem *
-sn_item_new (GDBusProxy *sn_item_proxy,
-             gboolean    is_ai)
+sn_item_new (GDBusProxy  *sn_item_proxy,
+             const gchar *key,
+             gboolean     is_ai)
 {
     SnItem *item = g_object_new (sn_item_get_type (), NULL);
 
     item->sn_item_proxy = sn_item_proxy;
+    item->key = g_strdup (key);
     item->is_ai = is_ai;
     item->cancellable = g_cancellable_new ();
 

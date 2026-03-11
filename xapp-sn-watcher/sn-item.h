@@ -12,7 +12,8 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (SnItem, sn_item, SN, ITEM, GObject)
 
-SnItem *sn_item_new (GDBusProxy *sn_item_proxy, gboolean is_ai);
+const gchar *sn_item_get_key (SnItem *item);
+SnItem *sn_item_new (GDBusProxy *sn_item_proxy, const gchar *key, gboolean is_ai);
 void    sn_item_update_menus (SnItem *item);
 
 #define STATUS_ICON_SCHEMA "org.x.apps.statusicon"
