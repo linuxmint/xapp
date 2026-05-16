@@ -172,6 +172,9 @@ sn_item_dispose (GObject *object)
 
     g_clear_handle_id (&item->update_properties_timeout, g_source_remove);
 
+    if (item->cancellable != NULL)
+        g_cancellable_cancel (item->cancellable);
+
     g_clear_pointer (&item->sortable_name, g_free);
     g_clear_object (&item->status_icon);
     g_clear_object (&item->prop_proxy);
@@ -731,7 +734,7 @@ get_all_properties_callback (GObject      *source_object,
                              GAsyncResult *res,
                              gpointer      user_data)
 {
-    SnItem *item = SN_ITEM (user_data);
+    SnItem *item;
     SnItemPropertiesResult *new_props;
     GError       *error = NULL;
     GVariant     *properties;
@@ -740,10 +743,17 @@ get_all_properties_callback (GObject      *source_object,
     GVariant     *value;
     properties = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object), res, &error);
 
+    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+        g_error_free (error);
+        return;
+    }
+
+    item = SN_ITEM (user_data);
+
     if (error != NULL)
     {
-        if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
-            !g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        if (!g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
         {
             g_critical ("Could not get properties for %s: %s\n",
                         g_dbus_proxy_get_name (item->sn_item_proxy),
