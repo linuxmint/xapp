@@ -16,6 +16,13 @@ libdeps += dependency('gdk-pixbuf-2.0', version: '>=2.22.0', required: true)
 libdeps += dependency('cairo', required: true)
 libdeps += dependency('x11', required: true)
 
+gtk_layer_shell_dep = dependency('gtk-layer-shell-0', version: '>=0.8', required: false)
+libxapp_c_args = ['-Wno-declaration-after-statement', '-DG_LOG_DOMAIN="XApp"']
+if gtk_layer_shell_dep.found()
+    libdeps += gtk_layer_shell_dep
+    libxapp_c_args += '-DHAVE_GTK_LAYER_SHELL=1'
+endif
+
 favorite_vfs_sources = [
   'favorite-vfs-file.c',
   'favorite-vfs-file-enumerator.c',
@@ -103,7 +110,7 @@ libxapp = library('xapp',
     version: meson.project_version(),
     soversion: '1',
     dependencies: libdeps,
-    c_args: ['-Wno-declaration-after-statement', '-DG_LOG_DOMAIN="XApp"'],
+    c_args: libxapp_c_args,
     link_args: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', '-lm'],
     install: true
 )

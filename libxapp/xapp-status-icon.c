@@ -10,6 +10,11 @@
 
 #include <gtk/gtk.h>
 
+#ifdef HAVE_GTK_LAYER_SHELL
+#include <gdk/gdkwayland.h>
+#include <gtk-layer-shell/gtk-layer-shell.h>
+#endif
+
 #include <glib/gi18n-lib.h>
 
 #include "xapp-status-icon.h"
@@ -299,6 +304,149 @@ secondary_menu_unmapped (GtkWidget  *widget,
     g_signal_handlers_disconnect_by_func (widget, secondary_menu_unmapped, icon);
 }
 
+#ifdef HAVE_GTK_LAYER_SHELL
+static gboolean
+should_use_layer_shell (void)
+{
+    GdkDisplay *display = gdk_display_get_default ();
+
+    if (display == NULL || !GDK_IS_WAYLAND_DISPLAY (display))
+        return FALSE;
+
+    return gtk_layer_is_supported ();
+}
+
+static void
+layer_host_menu_unmapped (GtkWidget *toplevel,
+                          gpointer   user_data)
+{
+    /* user_data is the GtkMenu. Clearing the slot fires the destroy notifier
+     * (gtk_widget_destroy) set when the host was attached, which tears down
+     * the layer surface so it stops intercepting input over the icon. */
+    g_signal_handlers_disconnect_by_func (toplevel, layer_host_menu_unmapped, user_data);
+    g_object_set_data_full (G_OBJECT (user_data), "xapp-layer-host", NULL, NULL);
+}
+
+static gboolean
+layer_host_draw (GtkWidget *widget,
+                 cairo_t   *cr,
+                 gpointer   user_data)
+{
+    cairo_save (cr);
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.0);
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    cairo_paint (cr);
+    cairo_restore (cr);
+    return FALSE;
+}
+
+/* Wayland clients can't position popups at arbitrary screen coordinates — popups
+ * must be anchored to one of the client's own surfaces. The icon-owner has no
+ * toplevel at the panel location, so we create an invisible layer-shell surface
+ * placed exactly where the icon is and parent the menu's xdg_popup to that.
+ * Muffin's 605bb83c handles xdg_popup parented to a layer-shell surface. */
+static GtkWidget *
+build_wayland_layer_host (XAppStatusIcon *self,
+                          GtkMenu        *menu,
+                          gint            x,
+                          gint            y,
+                          gint            position,
+                          GdkWindow     **rect_window,
+                          GdkRectangle   *win_rect,
+                          GdkGravity     *rect_anchor,
+                          GdkGravity     *menu_anchor)
+{
+    GtkWidget *host;
+    GdkDisplay *display;
+    GdkMonitor *monitor;
+    GdkRectangle monitor_geom = { 0, 0, 0, 0 };
+    GdkVisual *visual;
+    gint fx, fy;
+    gint icon_size = self->priv->icon_size;
+
+    switch (position)
+    {
+        case GTK_POS_TOP:
+            fx = x;
+            fy = y - icon_size;
+            *rect_anchor = GDK_GRAVITY_SOUTH_WEST;
+            *menu_anchor = GDK_GRAVITY_NORTH_WEST;
+            break;
+        case GTK_POS_LEFT:
+            fx = x - icon_size;
+            fy = y;
+            *rect_anchor = GDK_GRAVITY_NORTH_EAST;
+            *menu_anchor = GDK_GRAVITY_NORTH_WEST;
+            break;
+        case GTK_POS_RIGHT:
+            fx = x;
+            fy = y;
+            *rect_anchor = GDK_GRAVITY_NORTH_WEST;
+            *menu_anchor = GDK_GRAVITY_NORTH_EAST;
+            break;
+        case GTK_POS_BOTTOM:
+        default:
+            fx = x;
+            fy = y;
+            *rect_anchor = GDK_GRAVITY_NORTH_WEST;
+            *menu_anchor = GDK_GRAVITY_SOUTH_WEST;
+            break;
+    }
+
+    host = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_widget_set_app_paintable (host, TRUE);
+    gtk_widget_set_size_request (host, icon_size, icon_size);
+    g_signal_connect (host, "draw", G_CALLBACK (layer_host_draw), NULL);
+
+    visual = gdk_screen_get_rgba_visual (gtk_widget_get_screen (host));
+    if (visual != NULL)
+    {
+        gtk_widget_set_visual (host, visual);
+    }
+
+    display = gdk_display_get_default ();
+    monitor = gdk_display_get_monitor_at_point (display, x, y);
+    if (monitor != NULL)
+    {
+        gdk_monitor_get_geometry (monitor, &monitor_geom);
+    }
+
+    gtk_layer_init_for_window (GTK_WINDOW (host));
+    gtk_layer_set_namespace (GTK_WINDOW (host), "xapp-status-icon-popup");
+    gtk_layer_set_layer (GTK_WINDOW (host), GTK_LAYER_SHELL_LAYER_TOP);
+    /* The icon-owner's screen position is inside the panel/strut area, so we
+     * need to opt out of being moved into the workarea. -1 means "don't shift
+     * me to avoid struts" — the margin we set IS the final position. */
+    gtk_layer_set_exclusive_zone (GTK_WINDOW (host), -1);
+    gtk_layer_set_anchor (GTK_WINDOW (host), GTK_LAYER_SHELL_EDGE_TOP, TRUE);
+    gtk_layer_set_anchor (GTK_WINDOW (host), GTK_LAYER_SHELL_EDGE_LEFT, TRUE);
+    gtk_layer_set_margin (GTK_WINDOW (host), GTK_LAYER_SHELL_EDGE_TOP,
+                          fy - monitor_geom.y);
+    gtk_layer_set_margin (GTK_WINDOW (host), GTK_LAYER_SHELL_EDGE_LEFT,
+                          fx - monitor_geom.x);
+    gtk_layer_set_keyboard_mode (GTK_WINDOW (host),
+                                 GTK_LAYER_SHELL_KEYBOARD_MODE_ON_DEMAND);
+    if (monitor != NULL)
+    {
+        gtk_layer_set_monitor (GTK_WINDOW (host), monitor);
+    }
+
+    gtk_widget_realize (host);
+    gtk_widget_show (host);
+
+    gtk_window_set_transient_for (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (menu))),
+                                  GTK_WINDOW (host));
+
+    *rect_window = gtk_widget_get_window (host);
+    win_rect->x = 0;
+    win_rect->y = 0;
+    win_rect->width = icon_size;
+    win_rect->height = icon_size;
+
+    return host;
+}
+#endif /* HAVE_GTK_LAYER_SHELL */
+
 static void
 popup_menu (XAppStatusIcon *self,
             GtkMenu        *menu,
@@ -308,12 +456,22 @@ popup_menu (XAppStatusIcon *self,
             guint           _time,
             gint            panel_position)
 {
-    GdkWindow *rect_window;
+    GdkWindow *rect_window = NULL;
     GdkEvent *event;
     GdkRectangle win_rect;
     GdkGravity rect_anchor, menu_anchor;
+    gboolean use_layer_shell = FALSE;
 
     DEBUG ("Popup menu on behalf of application");
+
+#ifdef HAVE_GTK_LAYER_SHELL
+    /* Probe layer-shell early. The first call into gtk-layer-shell installs a
+     * class-wide override on GtkWindow's "realize" handler that tags each
+     * GdkWindow with its owning GtkWindow. gtk-layer-shell's popup-parenting
+     * logic depends on that tag, so the override has to be in place BEFORE
+     * the menu's internal toplevel is realized below. */
+    use_layer_shell = should_use_layer_shell ();
+#endif
 
     if (!gtk_widget_get_realized (GTK_WIDGET (menu)))
     {
@@ -360,13 +518,66 @@ popup_menu (XAppStatusIcon *self,
                           self);
     }
 
-    event = synthesize_event (self,
-                              x, y, button, _time, panel_position,
-                              &rect_window, &win_rect, &rect_anchor, &menu_anchor);
+#ifdef HAVE_GTK_LAYER_SHELL
+    if (use_layer_shell)
+    {
+        GtkWidget *layer_host;
+        GtkWidget *menu_toplevel;
+        GdkWindow *menu_gdk_window;
+        GdkDisplay *display = gdk_display_get_default ();
+        GdkSeat *seat = gdk_display_get_default_seat (display);
 
-    g_object_set_data_full (G_OBJECT (menu),
-                            "rect_window", rect_window,
-                            (GDestroyNotify) gdk_window_destroy);
+        /* Make sure the menu's internal toplevel is realized so the transient
+         * parent set inside build_wayland_layer_host() actually reaches the
+         * GDK level. gtk-layer-shell's move_to_rect override reads GDK-level
+         * transient_for to find the layer-shell ancestor. */
+        menu_toplevel = gtk_widget_get_toplevel (GTK_WIDGET (menu));
+        gtk_widget_realize (menu_toplevel);
+
+        layer_host = build_wayland_layer_host (self, menu,
+                                               x, y, panel_position,
+                                               &rect_window,
+                                               &win_rect,
+                                               &rect_anchor,
+                                               &menu_anchor);
+
+        menu_gdk_window = gtk_widget_get_window (menu_toplevel);
+        if (menu_gdk_window != NULL)
+        {
+            gdk_window_move_to_rect (menu_gdk_window,
+                                     &win_rect,
+                                     rect_anchor,
+                                     menu_anchor,
+                                     GDK_ANCHOR_SLIDE_X  | GDK_ANCHOR_SLIDE_Y  |
+                                     GDK_ANCHOR_RESIZE_X | GDK_ANCHOR_RESIZE_Y,
+                                     0, 0);
+        }
+
+        event = gdk_event_new (GDK_BUTTON_RELEASE);
+        event->any.window = g_object_ref (rect_window);
+        event->button.device = gdk_seat_get_pointer (seat);
+
+        g_object_set_data_full (G_OBJECT (menu),
+                                "xapp-layer-host",
+                                layer_host,
+                                (GDestroyNotify) gtk_widget_destroy);
+
+        g_signal_connect_after (gtk_widget_get_toplevel (GTK_WIDGET (menu)),
+                                "unmap",
+                                G_CALLBACK (layer_host_menu_unmapped),
+                                menu);
+    }
+    else
+#endif
+    {
+        event = synthesize_event (self,
+                                  x, y, button, _time, panel_position,
+                                  &rect_window, &win_rect, &rect_anchor, &menu_anchor);
+
+        g_object_set_data_full (G_OBJECT (menu),
+                                "rect_window", rect_window,
+                                (GDestroyNotify) gdk_window_destroy);
+    }
 
     g_object_set (G_OBJECT (menu),
                   "anchor-hints", GDK_ANCHOR_SLIDE_X  | GDK_ANCHOR_SLIDE_Y  |
