@@ -53,3 +53,8 @@ option('vapi',
     value: true,
     description: 'Enable Vala bindings.'
 )
+option('gtk-layer-shell',
+    type: 'feature',
+    value: 'auto',
+    description: 'Use gtk-layer-shell to allow correct popup and event handling under Wayland.'
+)

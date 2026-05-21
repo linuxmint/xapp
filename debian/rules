@@ -12,6 +12,7 @@ override_dh_auto_configure:
 		-D docs=true \
 		-D deprecated_warnings=false \
 		-D debian_derivative=true \
+		-D gtk-layer-shell=enabled \
 		--buildtype=debugoptimized
 
 override_dh_strip:

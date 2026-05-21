@@ -16,7 +16,7 @@ libdeps += dependency('gdk-pixbuf-2.0', version: '>=2.22.0', required: true)
 libdeps += dependency('cairo', required: true)
 libdeps += dependency('x11', required: true)
 
-gtk_layer_shell_dep = dependency('gtk-layer-shell-0', version: '>=0.8', required: false)
+gtk_layer_shell_dep = dependency('gtk-layer-shell-0', version: '>=0.8', required: get_option('gtk-layer-shell'))
 libxapp_c_args = ['-Wno-declaration-after-statement', '-DG_LOG_DOMAIN="XApp"']
 if gtk_layer_shell_dep.found()
     libdeps += gtk_layer_shell_dep

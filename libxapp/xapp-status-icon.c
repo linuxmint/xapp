@@ -472,6 +472,7 @@ popup_menu (XAppStatusIcon *self,
      * logic depends on that tag, so the override has to be in place BEFORE
      * the menu's internal toplevel is realized below. */
     use_layer_shell = should_use_layer_shell ();
+    DEBUG ("Using gtk-layer-shell for popup: %s", use_layer_shell ? "Yes" : "No");
 #endif
 
     if (!gtk_widget_get_realized (GTK_WIDGET (menu)))
