@@ -118,6 +118,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (XAppStatusIcon, xapp_status_icon, G_TYPE_OBJECT)
 static void refresh_icon        (XAppStatusIcon *self);
 static void use_gtk_status_icon (XAppStatusIcon *self);
 static void remove_icon_path_from_bus (XAppStatusIcon *self);
+static void hide_and_defer_unref_status_icon (XAppStatusIcon *self, GtkStatusIcon *status_icon);
 
 static void
 cancellable_reset (XAppStatusIcon *self)
@@ -1016,6 +1017,30 @@ on_name_lost (GDBusConnection *connection,
     g_list_free_full (instances, g_object_unref);
 }
 
+static gboolean
+return_false_cb (gpointer user_data)
+{
+    (void) user_data;
+
+    return G_SOURCE_REMOVE;
+}
+
+static void
+hide_and_defer_unref_status_icon (XAppStatusIcon *self, GtkStatusIcon *status_icon)
+{
+    if (status_icon == NULL)
+        return;
+
+    g_signal_handlers_disconnect_by_data (status_icon, self);
+
+    gtk_status_icon_set_visible (status_icon, FALSE);
+
+    g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+                     return_false_cb,
+                     status_icon,
+                     g_object_unref);
+}
+
 static void
 sync_skeleton (XAppStatusIcon *self)
 {
@@ -1024,7 +1049,8 @@ sync_skeleton (XAppStatusIcon *self)
 
     priv->fail_counter = 0;
 
-    g_clear_object (&self->priv->gtk_status_icon);
+    hide_and_defer_unref_status_icon (self, self->priv->gtk_status_icon);
+    self->priv->gtk_status_icon = NULL;
 
     g_object_set (G_OBJECT (priv->interface_skeleton),
                   "name", priv->name,
@@ -1258,7 +1284,8 @@ use_gtk_status_icon (XAppStatusIcon *self)
     remove_icon_path_from_bus (self);
 
     // Make sure there wasn't already one
-    g_clear_object (&self->priv->gtk_status_icon);
+    hide_and_defer_unref_status_icon (self, self->priv->gtk_status_icon);
+    self->priv->gtk_status_icon = NULL;
 
     self->priv->gtk_status_icon = gtk_status_icon_new ();
 
@@ -1573,9 +1600,7 @@ xapp_status_icon_dispose (GObject *object)
 
     if (self->priv->gtk_status_icon != NULL)
     {
-        g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_press, self);
-        g_signal_handlers_disconnect_by_func (self->priv->gtk_status_icon, on_gtk_status_icon_button_release, self);
-        g_object_unref (self->priv->gtk_status_icon);
+        hide_and_defer_unref_status_icon (self, self->priv->gtk_status_icon);
         self->priv->gtk_status_icon = NULL;
     }
 
