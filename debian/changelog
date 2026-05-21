@@ -1,3 +1,14 @@
+xapp (3.3.1) unstable; urgency=medium
+
+  [ Leigh Scott ]
+  * xapp-status-icon: unrealize GtkStatusIcon before clearing to prevent stale GdkWindow XID mappings crashing during Cinnamon restart (#200)
+  * sn-item:  Fix error handling to address SIGSEGV (#201)
+
+  [ Michael Webster ]
+  * build: Add gtk-layer-shell to depends, make it a requirement for debian builds.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Thu, 21 May 2026 17:12:53 +0100
+
 xapp (3.3.0) unstable; urgency=medium
 
   [ Rohan2460 ]
