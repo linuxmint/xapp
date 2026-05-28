@@ -59,6 +59,7 @@ Depends:
  libglib2.0-dev (>= 2.44),
  libgnomekbd-dev,
  libgtk-3-dev (>= 3.16),
+ libgtk-layer-shell-dev (>= 0.8),
  libxapp1 (= ${binary:Version}),
  libxkbfile-dev,
  ${misc:Depends},
