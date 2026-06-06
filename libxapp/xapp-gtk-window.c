@@ -4,19 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include "xapp-gtk-window.h"
+#include "xapp-gtk-window-backend.h"
 
 #define DEBUG_FLAG XAPP_DEBUG_WINDOW
 #include "xapp-debug.h"
-
-#define ICON_NAME_HINT "_NET_WM_XAPP_ICON_NAME"
-#define PROGRESS_HINT  "_NET_WM_XAPP_PROGRESS"
-#define PROGRESS_PULSE_HINT  "_NET_WM_XAPP_PROGRESS_PULSE"
 
 /**
  * SECTION:xapp-gtk-window
@@ -91,121 +86,38 @@ clear_icon_strings (XAppGtkWindowPrivate *priv)
 }
 
 static void
-set_window_hint_utf8 (Window       xid,
-                      const gchar *atom_name,
-                      const gchar *str)
-{
-    GdkDisplay *display;
-
-    display = gdk_display_get_default ();
-
-    if (str != NULL)
-    {
-        XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-                         xid,
-                         gdk_x11_get_xatom_by_name_for_display (display, atom_name),
-                         gdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING"), 8,
-                         PropModeReplace, (guchar *) str, strlen (str));
-    }
-    else
-    {
-        XDeleteProperty (GDK_DISPLAY_XDISPLAY (display),
-                         xid,
-                         gdk_x11_get_xatom_by_name_for_display (display, atom_name));
-    }
-}
-
-static void
-set_window_hint_cardinal (Window       xid,
-                          const gchar *atom_name,
-                          gulong       cardinal)
-{
-    GdkDisplay *display;
-
-    display = gdk_display_get_default ();
-
-    gdk_error_trap_push ();
-
-    if (cardinal > 0)
-    {
-        XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-                         xid,
-                         gdk_x11_get_xatom_by_name_for_display (display, atom_name),
-                         XA_CARDINAL, 32,
-                         PropModeReplace,
-                         (guchar *) &cardinal, 1);
-    }
-    else
-    {
-        XDeleteProperty (GDK_DISPLAY_XDISPLAY (display),
-                         xid,
-                         gdk_x11_get_xatom_by_name_for_display (display, atom_name));
-    }
-
-    gdk_error_trap_pop_ignored ();
-}
-
-static Window
-get_window_xid (GtkWindow *window)
-{
-    GdkWindow *gdk_window;
-
-    gdk_window = gtk_widget_get_window (GTK_WIDGET (window));
-
-    if (gdk_window_get_effective_toplevel (gdk_window) != gdk_window)
-    {
-        g_warning ("Window is not toplevel");
-        return 0;
-    }
-
-    return GDK_WINDOW_XID (gdk_window);
-}
-
-static void
 update_window_icon (GtkWindow            *window,
                     XAppGtkWindowPrivate *priv)
 {
-    if (!is_x11_session ()) {
-        return;
-    }
+    /* Either an icon name or an icon path may be set; never both. */
+    const gchar *icon_str = priv->icon_name ? priv->icon_name : priv->icon_path;
 
-    /* Icon name/path */
-    if (priv->icon_name != NULL)
+    if (is_x11_session ())
     {
-        set_window_hint_utf8 (get_window_xid (window),
-                              ICON_NAME_HINT,
-                              priv->icon_name);
+        _xapp_x11_update_icon_name (window, icon_str);
     }
-    else if (priv->icon_path != NULL)
-    {
-        set_window_hint_utf8 (get_window_xid (window),
-                              ICON_NAME_HINT,
-                              priv->icon_path);
-    }
+#ifdef HAVE_WAYLAND
     else
     {
-        set_window_hint_utf8 (get_window_xid (window),
-                              ICON_NAME_HINT,
-                              NULL);
+        _xapp_wayland_update_icon_name (window, icon_str);
     }
+#endif
 }
 
 static void
 update_window_progress (GtkWindow            *window,
                         XAppGtkWindowPrivate *priv)
 {
-    if (!is_x11_session ()) {
-        return;
+    if (is_x11_session ())
+    {
+        _xapp_x11_update_progress (window, priv->progress, priv->progress_pulse);
     }
-
-    /* Progress: 0 - 100 */
-    set_window_hint_cardinal (get_window_xid (window),
-                              PROGRESS_HINT,
-                              (gulong) priv->progress);
-
-    set_window_hint_cardinal (get_window_xid (window),
-                              PROGRESS_PULSE_HINT,
-                              (gulong) (priv->progress_pulse ? 1 : 0));
+#ifdef HAVE_WAYLAND
+    else
+    {
+        _xapp_wayland_update_progress (window, priv->progress, priv->progress_pulse);
+    }
+#endif
 }
 
 static void
@@ -347,6 +259,14 @@ xapp_gtk_window_realize (GtkWidget *widget)
 static void
 xapp_gtk_window_unrealize (GtkWidget *widget)
 {
+    /* Drops the Wayland surface for XAppGtkWindow instances. Plain GtkWindows
+     * decorated via the xapp_set_window_* helpers are covered separately by
+     * on_gtk_window_unrealized(); a window driven by both paths gets called
+     * twice, which is harmless. */
+#ifdef HAVE_WAYLAND
+    _xapp_wayland_window_unrealized (GTK_WINDOW (widget));
+#endif
+
     GTK_WIDGET_CLASS (xapp_gtk_window_parent_class)->unrealize (widget);
 }
 
@@ -513,6 +433,15 @@ on_gtk_window_realized (GtkWidget *widget,
 }
 
 static void
+on_gtk_window_unrealized (GtkWidget *widget,
+                          gpointer   user_data)
+{
+#ifdef HAVE_WAYLAND
+    _xapp_wayland_window_unrealized (GTK_WINDOW (widget));
+#endif
+}
+
+static void
 destroy_xapp_struct (gpointer user_data)
 {
     XAppGtkWindowPrivate *priv = (XAppGtkWindowPrivate *) user_data;
@@ -547,6 +476,11 @@ get_xapp_struct (GtkWindow *window)
                             "realize",
                             G_CALLBACK (on_gtk_window_realized),
                             priv);
+
+    g_signal_connect (GTK_WIDGET (window),
+                      "unrealize",
+                      G_CALLBACK (on_gtk_window_unrealized),
+                      priv);
 
     return priv;
 }
@@ -700,7 +634,7 @@ xapp_set_xid_icon_name (gulong           xid,
 {
     g_return_if_fail (xid > 0);
 
-    set_window_hint_utf8 (xid, ICON_NAME_HINT, icon_name);
+    _xapp_x11_set_xid_icon_name (xid, icon_name);
 }
 
 /**
@@ -722,7 +656,7 @@ xapp_set_xid_icon_from_file (gulong       xid,
 
     g_return_if_fail (xid > 0);
 
-    set_window_hint_utf8 (xid, ICON_NAME_HINT, file_name);
+    _xapp_x11_set_xid_icon_name (xid, file_name);
 }
 
 /**
@@ -751,8 +685,7 @@ xapp_set_xid_progress (gulong       xid,
 {
     g_return_if_fail (xid > 0);
 
-    set_window_hint_cardinal (xid, PROGRESS_HINT, (gulong) (CLAMP (progress, 0, 100)));
-    set_window_hint_cardinal (xid, PROGRESS_PULSE_HINT, (gulong) 0);
+    _xapp_x11_set_xid_progress (xid, progress);
 }
 
 /**
@@ -776,5 +709,5 @@ xapp_set_xid_progress_pulse (gulong       xid,
 {
     g_return_if_fail (xid > 0);
 
-    set_window_hint_cardinal (xid, PROGRESS_PULSE_HINT, (gulong) (pulse ? 1 : 0));
+    _xapp_x11_set_xid_progress_pulse (xid, pulse);
 }

@@ -1,6 +1,14 @@
 libxapp.so.1 libxapp1 #MINVER#
  _favorite_vfs_file_new_for_info@Base 2.0.7
  _xapp_favorites_get_display_names@Base 2.0.7
+ (optional)_xapp_wayland_update_icon_name@Base 3.3.1
+ (optional)_xapp_wayland_update_progress@Base 3.3.1
+ (optional)_xapp_wayland_window_unrealized@Base 3.3.1
+ _xapp_x11_set_xid_icon_name@Base 3.3.1
+ _xapp_x11_set_xid_progress@Base 3.3.1
+ _xapp_x11_set_xid_progress_pulse@Base 3.3.1
+ _xapp_x11_update_icon_name@Base 3.3.1
+ _xapp_x11_update_progress@Base 3.3.1
  create_blanking_window@Base 1.4.9
  debug_flag_to_string@Base 2.4.2
  fav_uri_to_display_name@Base 2.0.7
