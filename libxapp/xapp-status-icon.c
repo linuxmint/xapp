@@ -473,6 +473,17 @@ popup_menu (XAppStatusIcon *self,
      * the menu's internal toplevel is realized below. */
     use_layer_shell = should_use_layer_shell ();
     DEBUG ("Using gtk-layer-shell for popup: %s", use_layer_shell ? "Yes" : "No");
+
+    /* Under gtk-layer-shell the menu's xdg_popup is parented to a throwaway
+     * layer-shell host surface that we rebuild for each popup. Reusing the
+     * menu's already-realized toplevel across popups leaves stale grab state
+     * behind. Unrealizing first forces a fresh toplevel every time which
+     * sidesteps the stale state. */
+    if (use_layer_shell && gtk_widget_get_realized (GTK_WIDGET (menu)))
+    {
+        gtk_widget_unrealize (gtk_widget_get_toplevel (GTK_WIDGET (menu)));
+        gtk_widget_unrealize (GTK_WIDGET (menu));
+    }
 #endif
 
     if (!gtk_widget_get_realized (GTK_WIDGET (menu)))
