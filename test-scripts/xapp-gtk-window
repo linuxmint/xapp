@@ -1,7 +1,17 @@
 #! /usr/bin/python3
 
 """
-A demo/test script for the XAppAppGtkWindow class
+A demo/test script for the XAppAppGtkWindow class.
+
+XAppGtkWindow forwards its icon-name/icon-path and progress hints to the window
+manager. Under X11 this is done via the _NET_WM_XAPP_* window properties (watch
+them with 'xprop -spy'). Under Wayland it is done via the private xapp-shell
+protocol (run this script with WAYLAND_DEBUG=1 to watch the xapp_shell_v1 and
+xapp_surface_v1 requests on the wire).
+
+Use the "New window" button to open additional windows - each one gets its own
+Wayland surface (and its own xapp_surface_v1), so you can confirm that setting an
+icon or progress on one window doesn't affect the others.
 """
 import sys, os
 import signal
@@ -12,17 +22,74 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('XApp', '1.0')
 
-from gi.repository import GLib, Gtk, XApp, GObject
+from gi.repository import GLib, Gtk, Gdk, XApp, GObject
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-class Main:
+windows = []
+
+def display_backend():
+    display = Gdk.Display.get_default()
+
+    if display is None:
+        return "none", "(no display)"
+
+    gtype_name = display.__gtype__.name
+
+    if "X11" in gtype_name:
+        return "X11", gtype_name
+    if "Wayland" in gtype_name:
+        return "Wayland", gtype_name
+
+    return gtype_name, gtype_name
+
+def window_surface_info(gtk_window):
+    gdk_window = gtk_window.get_window()
+
+    if gdk_window is None:
+        return "not realized yet"
+
+    backend, _ = display_backend()
+    win_type = gdk_window.__gtype__.name
+
+    if backend == "X11":
+        try:
+            gi.require_version('GdkX11', '3.0')
+            from gi.repository import GdkX11
+            return "%s (xid 0x%x)" % (win_type, GdkX11.X11Window.get_xid(gdk_window))
+        except Exception:
+            return win_type
+
+    return win_type
+
+def print_environment_summary():
+    backend, gtype_name = display_backend()
+    print("--- xapp-gtk-window test ---")
+    print("  XApp backend in use : %s (%s)" % (backend, gtype_name))
+    print("  XDG_SESSION_TYPE    : %s" % os.environ.get("XDG_SESSION_TYPE", "(unset)"))
+    print("  WAYLAND_DISPLAY     : %s" % os.environ.get("WAYLAND_DISPLAY", "(unset)"))
+    print("  DISPLAY             : %s" % os.environ.get("DISPLAY", "(unset)"))
+    if backend == "Wayland":
+        print("  Tip: re-run with WAYLAND_DEBUG=1 to watch xapp_shell_v1 / "
+              "xapp_surface_v1 traffic.")
+    elif backend == "X11":
+        print("  Tip: use 'xprop -spy' on a window to watch the _NET_WM_XAPP_* "
+              "properties.")
+    print("----------------------------")
+
+
+class TestWindow:
+    count = 0
+
     def __init__(self):
-        self.win = XApp.GtkWindow()
+        TestWindow.count += 1
+        self.index = TestWindow.count
 
         self._animate_progress = 0
 
-        self.win.set_default_size(320, 200)
+        self.win = XApp.GtkWindow()
+        self.win.set_title("XAppGtkWindow test #%d" % self.index)
+        self.win.set_default_size(360, 280)
 
         frame = Gtk.Frame()
         frame.set_margin_start(2)
@@ -40,13 +107,30 @@ class Main:
 
         frame.add(box)
 
+        backend, _ = display_backend()
+        if backend == "X11":
+            tip = ("Use '<span font_family='mono' weight='bold'>xprop -spy</span>' "
+                   "to monitor _NET_WM_XAPP_* changes")
+        elif backend == "Wayland":
+            tip = ("Run with '<span font_family='mono' weight='bold'>WAYLAND_DEBUG=1</span>' "
+                   "to watch xapp-shell traffic")
+        else:
+            tip = "Set icon name/path and progress below"
+
         heading = Gtk.Label()
-        heading.set_markup("Use '<span font_family='mono' weight='bold'>xprop -spy</span>' to monitor changes")
-        box.pack_start(heading, True, True, 4)
+        heading.set_markup(tip)
+        heading.set_line_wrap(True)
+        box.pack_start(heading, False, False, 4)
+
+        # Backend / surface debug info, refreshed once the window is realized.
+        self.info_label = Gtk.Label(xalign=0.0)
+        self.info_label.set_selectable(True)
+        self.info_label.set_line_wrap(True)
+        box.pack_start(self.info_label, False, False, 4)
 
         hbox = Gtk.HBox()
         self.icon_name_entry = Gtk.Entry()
-        self.icon_name_setter = Gtk.Button("Set icon name")
+        self.icon_name_setter = Gtk.Button(label="Set icon name")
         self.icon_name_setter.connect("clicked", self.on_icon_name_setter_clicked)
         hbox.pack_start(self.icon_name_entry, True, True, 4)
         hbox.pack_start(self.icon_name_setter, False, False, 4)
@@ -54,14 +138,14 @@ class Main:
 
         hbox = Gtk.HBox()
         self.icon_path_entry = Gtk.Entry()
-        self.icon_path_setter = Gtk.Button("Set icon path")
+        self.icon_path_setter = Gtk.Button(label="Set icon path")
         self.icon_path_setter.connect("clicked", self.on_icon_path_setter_clicked)
         hbox.pack_start(self.icon_path_entry, True, True, 4)
         hbox.pack_start(self.icon_path_setter, False, False, 4)
         box.pack_start(hbox, True, True, 4)
 
         hbox = Gtk.HBox()
-        self.progress_label = Gtk.Label("Progress:")
+        self.progress_label = Gtk.Label(label="Progress:")
         self.progress = Gtk.Scale()
         self.progress.connect("value-changed", self.on_progress_value_changed)
         self.progress.set_draw_value(True)
@@ -73,7 +157,7 @@ class Main:
         box.pack_start(hbox, True, True, 4)
 
         hbox = Gtk.HBox()
-        self.pulse_label = Gtk.Label("Progress pulse:")
+        self.pulse_label = Gtk.Label(label="Progress pulse:")
         self.pulse_switch = Gtk.Switch()
         self.pulse_switch.set_halign(Gtk.Align.CENTER)
         self.pulse_switch.connect("notify::active", self.on_pulse_switch_changed)
@@ -82,17 +166,56 @@ class Main:
         box.pack_start(hbox, True, True, 4)
 
         hbox = Gtk.HBox()
-        self.animate_button = Gtk.Button("Simulate progress over time")
+        self.animate_button = Gtk.Button(label="Simulate progress over time")
         self.animate_button.connect("clicked", self.on_animate_progress_clicked)
         hbox.pack_start(self.animate_button, True, True, 4)
+        box.pack_start(hbox, True, True, 4)
 
+        hbox = Gtk.HBox()
+        self.new_window_button = Gtk.Button(label="New window")
+        self.new_window_button.connect("clicked", self.on_new_window_clicked)
+        self.debug_button = Gtk.Button(label="Print debug info")
+        self.debug_button.connect("clicked", self.on_debug_clicked)
+        hbox.pack_start(self.new_window_button, True, True, 4)
+        hbox.pack_start(self.debug_button, True, True, 4)
         box.pack_start(hbox, True, True, 4)
 
         frame.show_all()
-        self.win.connect("delete-event", lambda w, e: Gtk.main_quit())
+
+        windows.append(self)
+        self.win.connect("delete-event", self.on_delete_event)
+        self.win.connect("realize", lambda w: self.refresh_info())
         self.win.present()
 
-        Gtk.main()
+        self.refresh_info()
+
+    def refresh_info(self):
+        backend, gtype_name = display_backend()
+        surface = window_surface_info(self.win)
+        self.info_label.set_markup(
+            "<b>Window #%d</b>\n"
+            "Backend: <b>%s</b> (%s)\n"
+            "Surface: %s"
+            % (self.index, backend, gtype_name, GLib.markup_escape_text(surface)))
+
+    def on_delete_event(self, window, event):
+        if self in windows:
+            windows.remove(self)
+        if not windows:
+            Gtk.main_quit()
+        return False
+
+    def on_new_window_clicked(self, button, data=None):
+        TestWindow()
+
+    def on_debug_clicked(self, button, data=None):
+        backend, gtype_name = display_backend()
+        print("[window #%d] backend=%s (%s) surface=%s icon_name=%r progress=%d pulse=%s"
+              % (self.index, backend, gtype_name,
+                 window_surface_info(self.win),
+                 self.icon_name_entry.get_text(),
+                 int(self.progress.get_value()),
+                 self.pulse_switch.get_active()))
 
     def on_animate_progress_clicked(self, button, data=None):
         self.progress.set_sensitive(False)
@@ -133,6 +256,14 @@ class Main:
 
     def on_pulse_switch_changed(self, switch, pspec, data=None):
         self.win.set_progress_pulse(self.pulse_switch.get_active())
+
+
+class Main:
+    def __init__(self):
+        print_environment_summary()
+        TestWindow()
+        Gtk.main()
+
 
 if __name__ == "__main__":
     main = Main()

@@ -23,6 +23,39 @@ if gtk_layer_shell_dep.found()
     libxapp_c_args += '-DHAVE_GTK_LAYER_SHELL=1'
 endif
 
+# XAppGtkWindow display-server backends. The X11 backend (the _NET_WM_XAPP_*
+# window properties) is always built; the Wayland backend (the private
+# xapp-shell protocol) is built when the wayland tooling is available. Kept out
+# of the introspected sources below - they expose no public API.
+xapp_backend_sources = [ 'xapp-gtk-window-x11.c' ]
+xapp_wayland_generated = []
+
+wayland_scanner_dep = dependency('wayland-scanner', required: false, native: true)
+wayland_client_dep = dependency('wayland-client', required: false)
+gdk_wayland_dep = dependency('gdk-wayland-3.0', required: false)
+
+if wayland_scanner_dep.found() and wayland_client_dep.found() and gdk_wayland_dep.found()
+    wayland_scanner = find_program(wayland_scanner_dep.get_variable(pkgconfig: 'wayland_scanner'),
+                                   native: true)
+
+    xapp_shell_client_header = custom_target('xapp-shell client header',
+        input: 'xapp-shell.xml',
+        output: 'xapp-shell-client-protocol.h',
+        command: [wayland_scanner, 'client-header', '@INPUT@', '@OUTPUT@'])
+
+    xapp_shell_code = custom_target('xapp-shell code',
+        input: 'xapp-shell.xml',
+        output: 'xapp-shell-protocol.c',
+        command: [wayland_scanner, 'private-code', '@INPUT@', '@OUTPUT@'])
+
+    xapp_wayland_generated = [ xapp_shell_client_header, xapp_shell_code ]
+    xapp_backend_sources += 'xapp-gtk-window-wayland.c'
+
+    libdeps += wayland_client_dep
+    libdeps += gdk_wayland_dep
+    libxapp_c_args += '-DHAVE_WAYLAND=1'
+endif
+
 favorite_vfs_sources = [
   'favorite-vfs-file.c',
   'favorite-vfs-file-enumerator.c',
@@ -105,7 +138,7 @@ xapp_enums = gnome.mkenums_simple('xapp-enums',
 )
 
 libxapp = library('xapp',
-    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers + favorite_vfs_sources + xapp_debug,
+    sources  : xapp_headers + xapp_sources + xapp_enums + dbus_headers + favorite_vfs_sources + xapp_debug + xapp_backend_sources + xapp_wayland_generated,
     include_directories: [top_inc],
     version: meson.project_version(),
     soversion: '1',
