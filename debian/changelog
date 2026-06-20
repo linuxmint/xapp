@@ -1,3 +1,10 @@
+xapp (3.3.3) alfa; urgency=medium
+
+  [ Michael Webster ]
+  * Add xapp-shell protocol, to support XAppGtkWindow in wayland sessions.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 20 Jun 2026 15:37:13 +0200
+
 xapp (3.3.2) alfa; urgency=medium
 
   [ Leigh Scott ]
