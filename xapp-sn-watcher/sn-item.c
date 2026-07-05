@@ -608,20 +608,20 @@ capitalize (const gchar *string)
 {
     gchar *utf8;
     gunichar first;
-    gchar *remaining;
+    gchar first_utf8[7];
     gchar *ret;
 
     utf8 = g_utf8_make_valid (string, -1);
 
-    first = g_utf8_get_char (utf8);
-    first = g_unichar_toupper (first);
+    if (*utf8 == '\0')
+        return utf8;
 
-    remaining = g_utf8_substring (utf8, 1, g_utf8_strlen (utf8, -1));
+    first = g_unichar_toupper (g_utf8_get_char (utf8));
+    first_utf8[g_unichar_to_utf8 (first, first_utf8)] = '\0';
 
-    ret = g_strdup_printf ("%s%s", (gchar *) &first, remaining);
+    ret = g_strconcat (first_utf8, g_utf8_next_char (utf8), NULL);
 
     g_free (utf8);
-    g_free (remaining);
 
     return ret;
 }
