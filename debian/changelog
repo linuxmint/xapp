@@ -1,3 +1,10 @@
+xapp (3.3.4) alfa; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-sn-watcher: Fix capitalize() mangling non-ASCII titles.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 15 Aug 2026 12:37:36 +0200
+
 xapp (3.3.3) alfa; urgency=medium
 
   [ Michael Webster ]
