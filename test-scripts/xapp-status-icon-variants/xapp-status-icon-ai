@@ -12,6 +12,8 @@ This variant tests behavior of a program using mint-patched AppIndicator, which 
 back to XAppStatusIcon if there is no AppIndicator support in the desktop environment.
 AppIndicator expects both left- and right-click to display the menu, so internally, AppIndicator
 sets both primary and secondary menus on the XAppStatusIcon.
+
+The menu contains a two-level submenu, to exercise nested menu handling.
 """
 
 class App(GObject.Object):
@@ -35,6 +37,7 @@ class App(GObject.Object):
 
         self.menu.append(secondary_activation_item)
         self.menu.append(Gtk.MenuItem.new_with_label("Engage the hyperdrive"))
+        self.menu.append(self.make_submenu_item("More options"))
         self.menu.append(Gtk.SeparatorMenuItem())
         self.menu.append(Gtk.MenuItem.new_with_label("It's a trap!"))
         self.menu.show_all()
@@ -43,6 +46,33 @@ class App(GObject.Object):
 
         self.indicator.connect("scroll-event", self.handle_scroll_event)
         GLib.timeout_add_seconds(2, self.on_timeout_cb)
+
+    def make_submenu_item(self, label):
+        item = Gtk.MenuItem.new_with_label(label)
+        submenu = Gtk.Menu()
+
+        for text in ("Submenu item 1", "Submenu item 2"):
+            submenu.append(self.make_item(text))
+
+        submenu.append(Gtk.SeparatorMenuItem())
+
+        nested_item = Gtk.MenuItem.new_with_label("Deeper still")
+        nested_menu = Gtk.Menu()
+        nested_menu.append(self.make_item("Submenu item 3"))
+        nested_menu.append(self.make_item("Submenu item 4"))
+        nested_item.set_submenu(nested_menu)
+        submenu.append(nested_item)
+
+        item.set_submenu(submenu)
+        return item
+
+    def make_item(self, label):
+        item = Gtk.MenuItem.new_with_label(label)
+        item.connect("activate", self.on_menu_item_activate)
+        return item
+
+    def on_menu_item_activate(self, item, data=None):
+        print("Menu item activated: %s" % item.get_label())
 
     def activate_window(self, item, data=None):
         w = Gtk.Window(default_width=300, default_height=130)
