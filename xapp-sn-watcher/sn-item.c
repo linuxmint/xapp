@@ -743,13 +743,14 @@ get_all_properties_callback (GObject      *source_object,
     GVariant     *value;
     properties = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object), res, &error);
 
+    item = SN_ITEM (user_data);
+
     if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
         g_error_free (error);
+        g_object_unref (item);
         return;
     }
-
-    item = SN_ITEM (user_data);
 
     if (error != NULL)
     {
@@ -761,11 +762,13 @@ get_all_properties_callback (GObject      *source_object,
         }
 
         g_error_free (error);
+        g_object_unref (item);
         return;
     }
 
     if (properties == NULL)
     {
+        g_object_unref (item);
         return;
     }
 
@@ -945,6 +948,8 @@ get_all_properties_callback (GObject      *source_object,
 
     props_free (item->current_props);
     item->current_props = new_props;
+
+    g_object_unref (item);
 }
 
 static gboolean
@@ -952,6 +957,9 @@ update_all_properties (gpointer data)
 {
     SnItem *item = SN_ITEM (data);
 
+    /* The callback holds a reference across the async call. A client that
+     * exits while the call is in flight would otherwise have the item
+     * disposed out from under the callback. */
     g_dbus_proxy_call (item->prop_proxy,
                        "GetAll",
                        g_variant_new ("(s)",
@@ -960,7 +968,7 @@ update_all_properties (gpointer data)
                        5 * 1000,
                        item->cancellable,
                        get_all_properties_callback,
-                       item);
+                       g_object_ref (item));
 
     item->update_properties_timeout = 0;
 
