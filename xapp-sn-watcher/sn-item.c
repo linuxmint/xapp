@@ -1157,10 +1157,11 @@ property_proxy_acquired (GObject      *source,
                          gpointer      user_data)
 {
     SnItem *item = SN_ITEM (user_data);
+    GDBusProxy *proxy;
     GError *error = NULL;
     gchar *json = NULL;
 
-    item->prop_proxy = g_dbus_proxy_new_finish (res, &error);
+    proxy = g_dbus_proxy_new_finish (res, &error);
 
     if (error != NULL)
     {
@@ -1169,10 +1170,14 @@ property_proxy_acquired (GObject      *source,
             g_critical ("Could not get property proxy for %s: %s\n",
                         g_dbus_proxy_get_name (item->sn_item_proxy),
                         error->message);
-            g_error_free (error);
-            return;
         }
+
+        g_error_free (error);
+        g_object_unref (item);
+        return;
     }
+
+    item->prop_proxy = proxy;
 
     g_signal_connect (item->sn_item_proxy,
                       "g-signal",
@@ -1195,11 +1200,16 @@ property_proxy_acquired (GObject      *source,
     update_conditionals (item);
 
     queue_update_properties (item, TRUE);
+
+    g_object_unref (item);
 }
 
 static void
 initialize_item (SnItem *item)
 {
+    /* The callback holds a reference across the async call. A client that
+     * registers and exits again before it completes would otherwise have the
+     * item disposed out from under the callback. */
     g_dbus_proxy_new (g_dbus_proxy_get_connection (item->sn_item_proxy),
                       G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
                       NULL,
@@ -1208,7 +1218,7 @@ initialize_item (SnItem *item)
                       "org.freedesktop.DBus.Properties",
                       item->cancellable,
                       property_proxy_acquired,
-                      item);
+                      g_object_ref (item));
 }
 
 SnItem *
