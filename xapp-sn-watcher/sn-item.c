@@ -738,7 +738,7 @@ get_all_properties_callback (GObject      *source_object,
     GVariantIter *iter = NULL;
     const gchar  *name;
     GVariant     *value;
-    properties = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object), res, &error);
+    properties = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object), res, &error);
 
     if (error != NULL)
     {
@@ -942,15 +942,22 @@ update_all_properties (gpointer data)
 {
     SnItem *item = SN_ITEM (data);
 
-    g_dbus_proxy_call (item->prop_proxy,
-                       "GetAll",
-                       g_variant_new ("(s)",
-                                      g_dbus_proxy_get_interface_name (item->sn_item_proxy)),
-                       G_DBUS_CALL_FLAGS_NONE,
-                       5 * 1000,
-                       item->cancellable,
-                       get_all_properties_callback,
-                       item);
+    /* Address the item by the bus name it registered with. A GDBusProxy would
+     * resolve that to the client's unique name, and some clients only answer
+     * property requests sent to the well-known name. */
+    g_dbus_connection_call (g_dbus_proxy_get_connection (item->sn_item_proxy),
+                            g_dbus_proxy_get_name (item->sn_item_proxy),
+                            g_dbus_proxy_get_object_path (item->sn_item_proxy),
+                            "org.freedesktop.DBus.Properties",
+                            "GetAll",
+                            g_variant_new ("(s)",
+                                           g_dbus_proxy_get_interface_name (item->sn_item_proxy)),
+                            G_VARIANT_TYPE ("(a{sv})"),
+                            G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                            5 * 1000,
+                            item->cancellable,
+                            get_all_properties_callback,
+                            item);
 
     item->update_properties_timeout = 0;
 
