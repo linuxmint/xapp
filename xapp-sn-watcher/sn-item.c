@@ -63,7 +63,6 @@ struct _SnItem
     GObject parent_instance;
 
     GDBusProxy *sn_item_proxy; // SnItemProxy
-    GDBusProxy *prop_proxy; // dbus properties (we can't trust SnItemProxy)
 
     XAppStatusIcon *status_icon;
 
@@ -177,7 +176,6 @@ sn_item_dispose (GObject *object)
 
     g_clear_pointer (&item->sortable_name, g_free);
     g_clear_object (&item->status_icon);
-    g_clear_object (&item->prop_proxy);
     g_clear_object (&item->sn_item_proxy);
     g_clear_object (&item->cancellable);
 
@@ -1000,11 +998,6 @@ sn_signal_received (GDBusProxy  *sn_item_proxy,
 {
     SnItem *item = SN_ITEM (user_data);
 
-    if (item->prop_proxy == NULL)
-    {
-        return;
-    }
-
     DEBUG ("Signal received from StatusNotifierItem: %s", signal_name);
 
     if (g_strcmp0 (signal_name, "NewIcon") == 0 ||
@@ -1159,27 +1152,9 @@ assign_sortable_name (SnItem         *item,
 }
 
 static void
-property_proxy_acquired (GObject      *source,
-                         GAsyncResult *res,
-                         gpointer      user_data)
+initialize_item (SnItem *item)
 {
-    SnItem *item = SN_ITEM (user_data);
-    GError *error = NULL;
-    gchar *json = NULL;
-
-    item->prop_proxy = g_dbus_proxy_new_finish (res, &error);
-
-    if (error != NULL)
-    {
-        if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        {
-            g_critical ("Could not get property proxy for %s: %s\n",
-                        g_dbus_proxy_get_name (item->sn_item_proxy),
-                        error->message);
-            g_error_free (error);
-            return;
-        }
-    }
+    gchar *json;
 
     g_signal_connect (item->sn_item_proxy,
                       "g-signal",
@@ -1202,20 +1177,6 @@ property_proxy_acquired (GObject      *source,
     update_conditionals (item);
 
     queue_update_properties (item, TRUE);
-}
-
-static void
-initialize_item (SnItem *item)
-{
-    g_dbus_proxy_new (g_dbus_proxy_get_connection (item->sn_item_proxy),
-                      G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
-                      NULL,
-                      g_dbus_proxy_get_name (item->sn_item_proxy),
-                      g_dbus_proxy_get_object_path (item->sn_item_proxy),
-                      "org.freedesktop.DBus.Properties",
-                      item->cancellable,
-                      property_proxy_acquired,
-                      item);
 }
 
 SnItem *
