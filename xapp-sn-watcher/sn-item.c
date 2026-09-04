@@ -23,6 +23,10 @@
 
 #define FALLBACK_ICON_SIZE 24
 
+/* Sanity cap for client-supplied pixmap dimensions. Keeps the size math
+ * well inside the range of a gint. */
+#define MAX_PIXMAP_DIMENSION 4096
+
 typedef enum
 {
     STATUS_PASSIVE,
@@ -313,7 +317,7 @@ get_icon_surface (SnItem    *item,
                   GVariant  *pixmaps,
                   gchar    **md5)
 {
-    GVariantIter *iter;
+    GVariantIter *iter = NULL;
     cairo_surface_t *surface;
     gint width, height;
     gint largest_width, largest_height;
@@ -326,6 +330,17 @@ get_icon_surface (SnItem    *item,
 
     *md5 = NULL;
 
+    /* This comes straight off the bus. g_variant_get() with a mismatched
+     * format string leaves 'iter' untouched, so check the type before
+     * unpacking rather than after. */
+    if (!g_variant_is_of_type (pixmaps, G_VARIANT_TYPE ("a(iiay)")))
+    {
+        g_warning ("Ignoring icon pixmap for '%s': expected type 'a(iiay)' but got '%s'",
+                   item->sortable_name,
+                   g_variant_get_type_string (pixmaps));
+        return NULL;
+    }
+
     g_variant_get (pixmaps, "a(iiay)", &iter);
 
     if (iter == NULL)
@@ -335,12 +350,14 @@ get_icon_surface (SnItem    *item,
 
     while (g_variant_iter_loop (iter, "(ii@ay)", &width, &height, &byte_array_var))
     {
-        if (width > 0 && height > 0 && byte_array_var != NULL &&
+        if (width > 0 && height > 0 &&
+            width <= MAX_PIXMAP_DIMENSION && height <= MAX_PIXMAP_DIMENSION &&
+            byte_array_var != NULL &&
             ((width * height) > (largest_width * largest_height)))
         {
             gsize data_size = g_variant_get_size (byte_array_var);
 
-            if (data_size == width * height * 4)
+            if (data_size == (gsize) width * (gsize) height * 4)
             {
                 data = g_variant_get_data (byte_array_var);
 
@@ -351,7 +368,11 @@ get_icon_surface (SnItem    *item,
                         g_free (best_image_array);
                     }
 
+#if GLIB_CHECK_VERSION (2, 68, 0)
+                    best_image_array = g_memdup2 (data, data_size);
+#else
                     best_image_array = g_memdup (data, data_size);
+#endif
 
                     largest_data_size = data_size;
                     largest_width = width;
