@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <gtk/gtk.h>
 
@@ -88,21 +89,32 @@ handle_sn_item_name_owner_lost (XAppSnWatcher *watcher,
                                 const gchar   *old_owner)
 {
     GList *keys, *l;
+    gsize name_len;
+    gboolean removed_any = FALSE;
 
     keys = g_hash_table_get_keys (watcher->items);
+    name_len = strlen (name);
 
     for (l = keys; l != NULL; l = l->next)
     {
         const gchar *key = l->data;
 
-        if (g_str_has_prefix (key, name))
+        /* Keys are bus name + object path. A plain prefix test matches too
+         * much (":1.5" is a prefix of ":1.50/StatusNotifierItem"), so require
+         * the object path separator right after the name, and keep going, as
+         * one client may have registered more than one item. */
+        if (strncmp (key, name, name_len) == 0 && key[name_len] == '/')
         {
             DEBUG ("Client %s has exited, removing status icon", key);
             g_hash_table_remove (watcher->items, key);
 
-            update_published_items (watcher);
-            break;
+            removed_any = TRUE;
         }
+    }
+
+    if (removed_any)
+    {
+        update_published_items (watcher);
     }
 
     g_list_free (keys);
