@@ -410,7 +410,7 @@ handle_register_item (SnWatcherInterface     *skeleton,
                              "Invalid bus name from: %s, %s", service, sender);
         g_dbus_method_invocation_return_gerror (invocation, error);
 
-        return FALSE;
+        return TRUE;
     }
 
     if (!g_hash_table_contains (watcher->items, (const gchar *) key))
