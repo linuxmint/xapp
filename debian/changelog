@@ -1,3 +1,20 @@
+xapp (3.3.5) alfa; urgency=medium
+
+  [ Michael Webster ]
+  * test-scripts: Add submenus to some of our status icon clients.
+  * sn-item.c: Address status notifier items by their registered bus name.
+  * sn-item.c: Remove unused prop_proxy.
+
+  [ Josh Ellithorpe ]
+  * sn-item.c: Validate client-supplied icon pixmaps instead of crashing on a bad IconPixmap type. (#210)
+  * xapp-sn-watcher.c: Match bus names exactly when removing an exiting client's items. (#211)
+
+  [ Michael Webster ]
+  * test-scripts: Add a pure StatusNotifer client test.
+  * xapp-sn-watcher.c: Fix dbus invocation return value.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 05 Sep 2026 15:01:07 +0100
+
 xapp (3.3.4) alfa; urgency=medium
 
   [ Michael Webster ]
