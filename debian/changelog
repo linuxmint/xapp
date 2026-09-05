@@ -1,3 +1,11 @@
+xapp (3.2.3) zena; urgency=medium
+
+  [ Michael Webster ]
+  * sn-item.c: Address status notifier items by their registered bus name.
+  * xapp-sn-watcher.c: Fix dbus invocation return value.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Sat, 05 Sep 2026 16:47:28 +0100
+
 xapp (3.2.2) zena; urgency=medium
 
   * l10n: Update translations
