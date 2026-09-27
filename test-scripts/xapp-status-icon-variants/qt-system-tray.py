@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-# install python3-pyside2.qtgui, .qtwidgets
+# install python3-pyside6.qtgui, .qtwidgets
 
-from PySide2.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QAction
-from PySide2.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PySide6.QtGui import QIcon, QPixmap, QAction
 
 class App(QApplication):
     def __init__(self):
@@ -42,7 +42,7 @@ class App(QApplication):
 
         self.tray.setContextMenu(self.menu)
         self.tray.activated.connect(self.icon_activated)
-        self.exec_()
+        self.exec()
 
     def use_icon_theme(self, item):
         self.icon_type = "theme"
