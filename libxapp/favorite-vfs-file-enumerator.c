@@ -44,38 +44,31 @@ next_file (GFileEnumerator *enumerator,
 
     while (priv->current_pos != NULL && info == NULL)
     {
+        const gchar *display_name = priv->current_pos->data;
+        GError *local_error = NULL;
+        GFile *file;
         gchar *uri;
 
-        uri = path_to_fav_uri ((const gchar *) priv->current_pos->data);
-        if (!xapp_favorites_find_by_display_name (xapp_favorites_get_default (), (gchar *) priv->current_pos->data))
-        {
-            if (error)
-            {
-                *error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "File not found");
-            }
-
-            g_warn_if_reached ();
-        }
-        else
-        {
-            GFile *file;
-
-            file = g_file_new_for_uri (uri);
-            info = g_file_query_info (file,
-                                      priv->attributes,
-                                      priv->flags,
-                                      cancellable,
-                                      error);
-
-            g_object_unref (file);
-        }
-
-        g_free (uri);
-    }
-
-    if (priv->current_pos)
-    {
         priv->current_pos = priv->current_pos->next;
+
+        if (xapp_favorites_find_by_display_name (xapp_favorites_get_default (), display_name) == NULL)
+        {
+            DEBUG ("Favorite '%s' no longer exists, skipping", display_name);
+            continue;
+        }
+
+        uri = path_to_fav_uri (display_name);
+        file = g_file_new_for_uri (uri);
+        info = g_file_query_info (file, priv->attributes, priv->flags, cancellable, &local_error);
+        g_object_unref (file);
+        g_free (uri);
+
+        if (info == NULL)
+        {
+            DEBUG ("Could not query favorite '%s', skipping: %s",
+                   display_name, local_error ? local_error->message : "unknown");
+            g_clear_error (&local_error);
+        }
     }
 
     return info;
