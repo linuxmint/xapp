@@ -1,3 +1,12 @@
+xapp (3.3.7) adrien; urgency=medium
+
+  [ Michael Webster ]
+  * test-scripts: Update qt-system-tray and add -pixmap variant.
+  * favorite-vfs-file-enumerator.c: Fix infinite loop in next_file().
+  * test-scripts: Add test for file-based symbolic icons.
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 13 Oct 2026 13:34:25 +0100
+
 xapp (3.3.6) adrien; urgency=medium
 
   [ Michael Webster ]
