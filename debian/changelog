@@ -1,3 +1,10 @@
+xapp (3.2.4) zena; urgency=medium
+
+  [ climashscape ]
+  * sn-item:  Fix error handling to address SIGSEGV (#201) (#214)
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 27 Oct 2026 12:04:58 +0000
+
 xapp (3.2.3) zena; urgency=medium
 
   [ Michael Webster ]
