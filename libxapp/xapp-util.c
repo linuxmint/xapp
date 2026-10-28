@@ -250,9 +250,15 @@ xapp_pango_font_string_to_css (const char *pango_font_string)
 /**
  * xapp_get_tmp_dir:
  *
- * Provides the path to the system's temporary files folder. This is identical to g_get_tmp_dir,
- * but includes the /dev/shm ramdisk as the first choice for a temporary folder.
- * 
+ * Provides the path to the system's temporary files folder.
+ *
+ * The first writable location among the following is used:
+ *
+ * 1. the `TMPDIR` environment variable, if set and non-empty
+ * 2. the `XDG_RUNTIME_DIR` environment variable
+ * 3. `/dev/shm`
+ * 4. the result of g_get_tmp_dir()
+ *
  * Returns: (type filename) (transfer none): the directory to use for temporary files.
  * Since: 2.2.16
  */
@@ -263,9 +269,20 @@ xapp_get_tmp_dir (void)
 
     if (tmp_dir == NULL)
     {
-        if (access ("/dev/shm", W_OK) == 0)
+        const gchar *env_dir = g_getenv ("TMPDIR");
+
+        if (env_dir == NULL || env_dir[0] == '\0')
         {
-            tmp_dir = "/dev/shm";
+            env_dir = g_getenv ("XDG_RUNTIME_DIR");
+        }
+
+        if (env_dir != NULL && env_dir[0] != '\0' && access (env_dir, W_OK) == 0)
+        {
+            tmp_dir = g_strdup (env_dir);
+        }
+        else if (access ("/dev/shm", W_OK) == 0)
+        {
+            tmp_dir = g_strdup ("/dev/shm");
         }
         else
         {
