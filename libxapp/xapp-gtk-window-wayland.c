@@ -200,9 +200,9 @@ _xapp_wayland_update_progress (GtkWindow *window,
 }
 
 void
-_xapp_wayland_window_unrealized (GtkWindow *window)
+_xapp_wayland_window_drop_surface (GtkWindow *window)
 {
-    /* Drops the cached xapp_surface_v1 (destroying it via its GDestroyNotify) so
-     * a fresh one is created against the new wl_surface on the next realize. */
+    /* The GDestroyNotify destroys the xapp_surface_v1; the next update binds a
+     * new one to the current wl_surface. */
     g_object_set_data (G_OBJECT (window), SURFACE_DATA_KEY, NULL);
 }

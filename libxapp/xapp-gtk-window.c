@@ -140,8 +140,7 @@ set_icon_name_internal (GtkWindow            *window,
         priv->icon_name = g_strdup (icon_name);
     }
 
-    /* If the window is realized, set the icon name immediately.
-     * If it's not, it will be set by xapp_gtk_window_realize(). */
+    /* If not realized yet, this is sent on realize, and again on map. */
     if (gtk_widget_get_realized (GTK_WIDGET (window)))
     {
         update_window_icon (window, priv);
@@ -172,8 +171,7 @@ set_icon_from_file_internal (GtkWindow            *window,
         priv->icon_path = g_strdup (file_name);
     }
 
-    /* If the window is realized, set the icon path immediately.
-     * If it's not, it will be set by xapp_gtk_window_realize(). */
+    /* If not realized yet, this is sent on realize, and again on map. */
     if (gtk_widget_get_realized (GTK_WIDGET (window)))
     {
         update_window_icon (window, priv);
@@ -206,8 +204,7 @@ set_progress_internal (GtkWindow            *window,
         update = TRUE;
     }
 
-    /* If the window is realized, set the progress immediately.
-     * If it's not, it will be set by xapp_gtk_window_realize(). */
+    /* If not realized yet, this is sent on realize, and again on map. */
     if (gtk_widget_get_realized (GTK_WIDGET (window)))
     {
         if (update)
@@ -233,8 +230,7 @@ set_progress_pulse_internal (GtkWindow            *window,
         update = TRUE;
     }
 
-    /* If the window is realized, set the progress immediately.
-     * If it's not, it will be set by xapp_gtk_window_realize(). */
+    /* If not realized yet, this is sent on realize, and again on map. */
     if (gtk_widget_get_realized (GTK_WIDGET (window)))
     {
         if (update)
@@ -256,16 +252,40 @@ xapp_gtk_window_realize (GtkWidget *widget)
     update_window_progress (GTK_WINDOW (window), priv);
 }
 
+/* A hidden-then-shown Wayland toplevel gets a new wl_surface without being
+ * re-realized, so the hints are re-sent once the window is mapped again. */
+static void
+xapp_gtk_window_map (GtkWidget *widget)
+{
+    XAppGtkWindow *window = XAPP_GTK_WINDOW (widget);
+    XAppGtkWindowPrivate *priv = xapp_gtk_window_get_instance_private (window);
+
+    GTK_WIDGET_CLASS (xapp_gtk_window_parent_class)->map (widget);
+
+    update_window_icon (GTK_WINDOW (window), priv);
+    update_window_progress (GTK_WINDOW (window), priv);
+}
+
+static void
+drop_wayland_surface (GtkWidget *widget)
+{
+#ifdef HAVE_WAYLAND
+    _xapp_wayland_window_drop_surface (GTK_WINDOW (widget));
+#endif
+}
+
+static void
+xapp_gtk_window_unmap (GtkWidget *widget)
+{
+    drop_wayland_surface (widget);
+
+    GTK_WIDGET_CLASS (xapp_gtk_window_parent_class)->unmap (widget);
+}
+
 static void
 xapp_gtk_window_unrealize (GtkWidget *widget)
 {
-    /* Drops the Wayland surface for XAppGtkWindow instances. Plain GtkWindows
-     * decorated via the xapp_set_window_* helpers are covered separately by
-     * on_gtk_window_unrealized(); a window driven by both paths gets called
-     * twice, which is harmless. */
-#ifdef HAVE_WAYLAND
-    _xapp_wayland_window_unrealized (GTK_WINDOW (widget));
-#endif
+    drop_wayland_surface (widget);
 
     GTK_WIDGET_CLASS (xapp_gtk_window_parent_class)->unrealize (widget);
 }
@@ -299,6 +319,8 @@ xapp_gtk_window_class_init (XAppGtkWindowClass *klass)
 
     gobject_class->finalize = xapp_gtk_window_finalize;
     wclass->realize = xapp_gtk_window_realize;
+    wclass->map = xapp_gtk_window_map;
+    wclass->unmap = xapp_gtk_window_unmap;
     wclass->unrealize = xapp_gtk_window_unrealize;
 }
 
@@ -421,8 +443,8 @@ xapp_gtk_window_set_progress_pulse (XAppGtkWindow   *window,
 /* Wrappers (for GtkWindow subclasses like GtkDialog)
  * window must be a GtkWindow or descendant */
 static void
-on_gtk_window_realized (GtkWidget *widget,
-                        gpointer   user_data)
+on_gtk_window_update_hints (GtkWidget *widget,
+                            gpointer   user_data)
 {
     XAppGtkWindowPrivate *priv;
 
@@ -433,12 +455,10 @@ on_gtk_window_realized (GtkWidget *widget,
 }
 
 static void
-on_gtk_window_unrealized (GtkWidget *widget,
-                          gpointer   user_data)
+on_gtk_window_drop_surface (GtkWidget *widget,
+                            gpointer   user_data)
 {
-#ifdef HAVE_WAYLAND
-    _xapp_wayland_window_unrealized (GTK_WINDOW (widget));
-#endif
+    drop_wayland_surface (widget);
 }
 
 static void
@@ -474,12 +494,22 @@ get_xapp_struct (GtkWindow *window)
 
     g_signal_connect_after (GTK_WIDGET (window),
                             "realize",
-                            G_CALLBACK (on_gtk_window_realized),
+                            G_CALLBACK (on_gtk_window_update_hints),
+                            priv);
+
+    g_signal_connect_after (GTK_WIDGET (window),
+                            "map",
+                            G_CALLBACK (on_gtk_window_update_hints),
                             priv);
 
     g_signal_connect (GTK_WIDGET (window),
+                      "unmap",
+                      G_CALLBACK (on_gtk_window_drop_surface),
+                      priv);
+
+    g_signal_connect (GTK_WIDGET (window),
                       "unrealize",
-                      G_CALLBACK (on_gtk_window_unrealized),
+                      G_CALLBACK (on_gtk_window_drop_surface),
                       priv);
 
     return priv;

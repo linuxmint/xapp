@@ -28,7 +28,7 @@ void _xapp_wayland_update_icon_name    (GtkWindow   *window,
 void _xapp_wayland_update_progress     (GtkWindow   *window,
                                         guint        progress,
                                         gboolean     pulse);
-void _xapp_wayland_window_unrealized    (GtkWindow   *window);
+void _xapp_wayland_window_drop_surface (GtkWindow   *window);
 #endif
 
 G_END_DECLS

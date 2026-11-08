@@ -3,7 +3,7 @@ libxapp.so.1 libxapp1 #MINVER#
  _xapp_favorites_get_display_names@Base 2.0.7
  (optional)_xapp_wayland_update_icon_name@Base 3.3.2
  (optional)_xapp_wayland_update_progress@Base 3.3.2
- (optional)_xapp_wayland_window_unrealized@Base 3.3.2
+ (optional)_xapp_wayland_window_drop_surface@Base 3.4.0
  _xapp_x11_set_xid_icon_name@Base 3.3.2
  _xapp_x11_set_xid_progress@Base 3.3.2
  _xapp_x11_set_xid_progress_pulse@Base 3.3.2
