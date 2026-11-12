@@ -265,7 +265,7 @@ synthesize_event (XAppStatusIcon *self,
   *rect_window = window;
 
   GdkEvent *event = gdk_event_new (GDK_BUTTON_RELEASE);
-  event->any.window = window;
+  event->any.window = g_object_ref (window);
   event->button.device = gdk_seat_get_pointer (seat);
 
   return event;
