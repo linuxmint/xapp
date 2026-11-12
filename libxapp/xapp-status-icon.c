@@ -114,6 +114,45 @@ static void refresh_icon        (XAppStatusIcon *self);
 static void use_gtk_status_icon (XAppStatusIcon *self);
 static void remove_icon_path_from_bus (XAppStatusIcon *self);
 
+/* Async callbacks must not keep the icon alive: the SnItem owning it may be
+ * removed while the call is in flight.  A weak ref lets the callback detect
+ * that case instead of dereferencing freed memory. */
+typedef struct
+{
+    GWeakRef icon;
+} XAppStatusIconAsyncRef;
+
+static XAppStatusIconAsyncRef *
+xapp_status_icon_async_ref_new (XAppStatusIcon *icon)
+{
+    XAppStatusIconAsyncRef *async_ref = g_new0 (XAppStatusIconAsyncRef, 1);
+
+    g_weak_ref_init (&async_ref->icon, G_OBJECT (icon));
+
+    return async_ref;
+}
+
+static XAppStatusIcon *
+xapp_status_icon_async_ref_get (XAppStatusIconAsyncRef *async_ref)
+{
+    XAppStatusIcon *icon = g_weak_ref_get (&async_ref->icon);
+
+    if (icon == NULL)
+    {
+        g_weak_ref_clear (&async_ref->icon);
+        g_free (async_ref);
+    }
+
+    return icon;
+}
+
+static void
+xapp_status_icon_async_ref_free (XAppStatusIconAsyncRef *async_ref)
+{
+    g_weak_ref_clear (&async_ref->icon);
+    g_free (async_ref);
+}
+
 static void
 cancellable_reset (XAppStatusIcon *self)
 {
@@ -1076,7 +1115,8 @@ on_list_names_completed (GObject      *source,
                          GAsyncResult *res,
                          gpointer      user_data)
 {
-    XAppStatusIcon *self = XAPP_STATUS_ICON(user_data);
+    XAppStatusIconAsyncRef *async_ref = user_data;
+    XAppStatusIcon *self;
     GVariant *result;
     GVariantIter *iter;
     gchar *str;
@@ -1088,6 +1128,18 @@ on_list_names_completed (GObject      *source,
     result = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source),
                                             res,
                                             &error);
+    self = xapp_status_icon_async_ref_get (async_ref);
+
+    if (self == NULL)
+    {
+        if (error != NULL)
+            g_error_free (error);
+
+        if (result != NULL)
+            g_variant_unref (result);
+
+        return;
+    }
 
     if (error != NULL)
     {
@@ -1102,6 +1154,8 @@ on_list_names_completed (GObject      *source,
         }
 
         g_error_free (error);
+        g_object_unref (self);
+        xapp_status_icon_async_ref_free (async_ref);
         return;
     }
 
@@ -1130,6 +1184,8 @@ on_list_names_completed (GObject      *source,
         else
         {
             connect_with_status_applet (self);
+            g_object_unref (self);
+            xapp_status_icon_async_ref_free (async_ref);
 
             return;
         }
@@ -1138,6 +1194,9 @@ on_list_names_completed (GObject      *source,
     {
         use_gtk_status_icon (self);
     }
+
+    g_object_unref (self);
+    xapp_status_icon_async_ref_free (async_ref);
 }
 
 static void
@@ -1159,7 +1218,7 @@ look_for_status_applet (XAppStatusIcon *self)
                             3000, /* 3 secs */
                             self->priv->cancellable,
                             on_list_names_completed,
-                            self);
+                            xapp_status_icon_async_ref_new (self));
 }
 
 static void
