@@ -94,6 +94,46 @@ static void update_tooltip (SnItem *item, SnItemPropertiesResult *new_props);
 static void update_icon (SnItem *item, SnItemPropertiesResult *new_props);
 static void assign_sortable_name (SnItem *item, const gchar *title);
 
+/* Async callbacks must not keep the item alive: the watcher's hash table is
+ * its only owner, and an exiting client removes the item while a proxy call
+ * may still be in flight.  A weak ref lets the callback detect that case
+ * instead of dereferencing freed memory. */
+typedef struct
+{
+    GWeakRef item;
+} SnItemAsyncRef;
+
+static SnItemAsyncRef *
+sn_item_async_ref_new (SnItem *item)
+{
+    SnItemAsyncRef *async_ref = g_new0 (SnItemAsyncRef, 1);
+
+    g_weak_ref_init (&async_ref->item, G_OBJECT (item));
+
+    return async_ref;
+}
+
+static SnItem *
+sn_item_async_ref_get (SnItemAsyncRef *async_ref)
+{
+    SnItem *item = g_weak_ref_get (&async_ref->item);
+
+    if (item == NULL)
+    {
+        g_weak_ref_clear (&async_ref->item);
+        g_free (async_ref);
+    }
+
+    return item;
+}
+
+static void
+sn_item_async_ref_free (SnItemAsyncRef *async_ref)
+{
+    g_weak_ref_clear (&async_ref->item);
+    g_free (async_ref);
+}
+
 static void
 props_free (SnItemPropertiesResult *props)
 {
@@ -734,6 +774,7 @@ get_all_properties_callback (GObject      *source_object,
                              GAsyncResult *res,
                              gpointer      user_data)
 {
+    SnItemAsyncRef *async_ref = user_data;
     SnItem *item;
     SnItemPropertiesResult *new_props;
     GError       *error = NULL;
@@ -741,19 +782,25 @@ get_all_properties_callback (GObject      *source_object,
     GVariantIter *iter = NULL;
     const gchar  *name;
     GVariant     *value;
-    properties = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object), res, &error);
 
-    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    properties = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object), res, &error);
+    item = sn_item_async_ref_get (async_ref);
+
+    if (item == NULL)
     {
-        g_error_free (error);
+        if (error != NULL)
+            g_error_free (error);
+
+        if (properties != NULL)
+            g_variant_unref (properties);
+
         return;
     }
 
-    item = SN_ITEM (user_data);
-
     if (error != NULL)
     {
-        if (!g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
+            !g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
         {
             g_critical ("Could not get properties for %s: %s\n",
                         g_dbus_proxy_get_name (item->sn_item_proxy),
@@ -761,11 +808,15 @@ get_all_properties_callback (GObject      *source_object,
         }
 
         g_error_free (error);
+        g_object_unref (item);
+        sn_item_async_ref_free (async_ref);
         return;
     }
 
     if (properties == NULL)
     {
+        g_object_unref (item);
+        sn_item_async_ref_free (async_ref);
         return;
     }
 
@@ -945,6 +996,9 @@ get_all_properties_callback (GObject      *source_object,
 
     props_free (item->current_props);
     item->current_props = new_props;
+
+    g_object_unref (item);
+    sn_item_async_ref_free (async_ref);
 }
 
 static gboolean
@@ -967,7 +1021,7 @@ update_all_properties (gpointer data)
                             5 * 1000,
                             item->cancellable,
                             get_all_properties_callback,
-                            item);
+                            sn_item_async_ref_new (item));
 
     item->update_properties_timeout = 0;
 
@@ -1163,11 +1217,24 @@ property_proxy_acquired (GObject      *source,
                          GAsyncResult *res,
                          gpointer      user_data)
 {
-    SnItem *item = SN_ITEM (user_data);
+    SnItemAsyncRef *async_ref = user_data;
+    SnItem *item;
+    GDBusProxy *proxy;
     GError *error = NULL;
     gchar *json = NULL;
 
-    item->prop_proxy = g_dbus_proxy_new_finish (res, &error);
+    proxy = g_dbus_proxy_new_finish (res, &error);
+    item = sn_item_async_ref_get (async_ref);
+
+    if (item == NULL)
+    {
+        if (error != NULL)
+            g_error_free (error);
+
+        g_clear_object (&proxy);
+
+        return;
+    }
 
     if (error != NULL)
     {
@@ -1176,10 +1243,17 @@ property_proxy_acquired (GObject      *source,
             g_critical ("Could not get property proxy for %s: %s\n",
                         g_dbus_proxy_get_name (item->sn_item_proxy),
                         error->message);
-            g_error_free (error);
-            return;
         }
+
+        g_error_free (error);
+        g_clear_object (&proxy);
+        g_object_unref (item);
+        sn_item_async_ref_free (async_ref);
+
+        return;
     }
+
+    item->prop_proxy = proxy;
 
     g_signal_connect (item->sn_item_proxy,
                       "g-signal",
@@ -1202,6 +1276,9 @@ property_proxy_acquired (GObject      *source,
     update_conditionals (item);
 
     queue_update_properties (item, TRUE);
+
+    g_object_unref (item);
+    sn_item_async_ref_free (async_ref);
 }
 
 static void
@@ -1215,7 +1292,7 @@ initialize_item (SnItem *item)
                       "org.freedesktop.DBus.Properties",
                       item->cancellable,
                       property_proxy_acquired,
-                      item);
+                      sn_item_async_ref_new (item));
 }
 
 SnItem *
