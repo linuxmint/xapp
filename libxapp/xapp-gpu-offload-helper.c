@@ -212,13 +212,24 @@ process_gpus_property (XAppGpuOffloadHelper  *helper,
                               "GPUs property didn't contain any valid gpu info.");
     }
 
-    if (!default_found)
+    else if (!default_found)
     {
-        *error = g_error_new (g_dbus_error_quark (),
-                              G_DBUS_ERROR_FAILED,
-                              "No default GPU exists.");
-        g_list_free_full (infos, (GDestroyNotify) xapp_gpu_info_free);
-        infos = NULL;
+        // Switcheroo relies on boot_vga, which integrated GPUs that aren't
+        // VGA-class devices don't have. Assume the first non-discrete one.
+        XAppGpuInfo *fallback = infos->data;
+        GList *l;
+
+        for (l = infos; l != NULL; l = l->next)
+        {
+            if (!g_hash_table_contains (discrete_infos, l->data))
+            {
+                fallback = l->data;
+                break;
+            }
+        }
+
+        DEBUG ("No default GPU reported by switcheroo, assuming '%s'", fallback->display_name);
+        fallback->is_default = TRUE;
     }
 
     g_mutex_lock (&helper->gpu_infos_mutex);
