@@ -300,6 +300,19 @@ on_bus_connection_closed (GDBusConnection *connection,
 }
 
 static void
+fail_init (GTask       *task,
+           GError      *error,
+           const gchar *message)
+{
+    if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+        g_critical ("%s: (%d): %s", message, error->code, error->message);
+    }
+
+    g_task_return_error (task, error);
+}
+
+static void
 helper_init_thread (GTask        *task,
                     gpointer      source_object,
                     gpointer      task_data,
@@ -320,13 +333,8 @@ helper_init_thread (GTask        *task,
 
     if (error != NULL)
     {
-        if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        {
-            g_task_return_boolean (task, TRUE);
-        }
-
-        g_critical ("Could not create switcheroo proxy: (%d): %s", error->code, error->message);
-        g_task_return_error (task, error);
+        fail_init (task, error, "Could not create switcheroo proxy");
+        return;
     }
 
     name_owner = g_dbus_proxy_get_name_owner (G_DBUS_PROXY (control));
@@ -342,13 +350,8 @@ helper_init_thread (GTask        *task,
 
         if (error != NULL)
         {
-            if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-            {
-                g_task_return_boolean (task, TRUE);
-            }
-
-            g_critical ("Could not get gpu info from switcheroo proxy: (%d): %s", error->code, error->message);
-            g_task_return_error (task, error);
+            fail_init (task, error, "Could not get gpu info from switcheroo proxy");
+            return;
         }
     }
     else
@@ -671,9 +674,9 @@ xapp_gpu_offload_helper_get_offload_infos (XAppGpuOffloadHelper *helper)
     {
         XAppGpuInfo *info = l->data;
 
-        if (!g_hash_table_contains (helper->discrete_infos, info))
+        if (info->is_default || !g_hash_table_contains (helper->discrete_infos, info))
             continue;
-        
+
         retval = g_list_append (retval, info);
     }
 
@@ -683,7 +686,7 @@ xapp_gpu_offload_helper_get_offload_infos (XAppGpuOffloadHelper *helper)
     {
         XAppGpuInfo *info = l->data;
 
-        if (info->is_default)
+        if (info->is_default || g_hash_table_contains (helper->discrete_infos, info))
             continue;
 
         retval = g_list_append (retval, info);
