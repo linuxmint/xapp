@@ -1,3 +1,14 @@
+xapp (3.4.1) adrien; urgency=medium
+
+  [ Michael Webster ]
+  * xapp-gtk-window: Re-bind the Wayland xapp_surface after hide/show
+  * xapp-status-icon.c: Take a ref on the dummy window for the popup event
+
+  [ Clement Lefebvre ]
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 16 Nov 2026 14:14:09 +0000
+
 xapp (3.4.0) adrien; urgency=medium
 
   * 3.4.0
