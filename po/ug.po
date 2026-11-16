@@ -1,0 +1,173 @@
+# Uyghur translation for linuxmint
+# Copyright (c) 2026 Rosetta Contributors and Canonical Ltd 2026
+# This file is distributed under the same license as the linuxmint package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: linuxmint\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-11-25 11:16+0000\n"
+"PO-Revision-Date: 2026-06-17 19:06+0000\n"
+"Last-Translator: Abduqadir Abliz <Unknown>\n"
+"Language-Team: Uyghur <ug@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2026-11-16 12:00+0000\n"
+"X-Generator: Launchpad (build 72ba15af7e009b17d4aa1467977127ac8392a4de)\n"
+"Language: ug\n"
+
+#: libxapp/favorite-vfs-file.c:463
+msgid "Favorites"
+msgstr "يىغقۇچ"
+
+#: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
+#: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
+#: libxapp/favorite-vfs-file.c:1053 libxapp/favorite-vfs-file.c:1082
+#: libxapp/favorite-vfs-file.c:1115 libxapp/favorite-vfs-file.c:1142
+#: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
+#: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
+msgid "Operation not supported"
+msgstr "مەشغۇلاتنى قوللىمايدۇ"
+
+#: libxapp/xapp-icon-chooser-button.c:207
+#: libxapp/xapp-icon-chooser-dialog.c:639
+msgid "Icon size"
+msgstr "سىنبەلگە چوڭلۇقى"
+
+#: libxapp/xapp-icon-chooser-button.c:208
+#: libxapp/xapp-icon-chooser-dialog.c:640
+msgid "The preferred icon size."
+msgstr "مايىللىقتىكى سىنبەلگە چوڭلۇقى."
+
+#: libxapp/xapp-icon-chooser-button.c:222
+msgid "Icon"
+msgstr "سىنبەلگە"
+
+#: libxapp/xapp-icon-chooser-button.c:223
+msgid "The string representing the icon."
+msgstr "سىنبەلگە ۋەكىللىك قىلىدىغان ھەرپ تىزىقى."
+
+#: libxapp/xapp-icon-chooser-button.c:234
+msgid "Category"
+msgstr "سەھىپە"
+
+#: libxapp/xapp-icon-chooser-button.c:235
+msgid "The default category."
+msgstr "كۆڭۈلدىكى سەھىپە."
+
+#: libxapp/xapp-icon-chooser-dialog.c:98
+msgid "Actions"
+msgstr "مەشغۇلات"
+
+#: libxapp/xapp-icon-chooser-dialog.c:101
+msgid "Applications"
+msgstr "پىروگرامما"
+
+#: libxapp/xapp-icon-chooser-dialog.c:104
+msgid "Categories"
+msgstr "سەھىپە"
+
+#: libxapp/xapp-icon-chooser-dialog.c:107
+msgid "Devices"
+msgstr "ئۈسكۈنە"
+
+#: libxapp/xapp-icon-chooser-dialog.c:110
+msgid "Emblems"
+msgstr "كاكار"
+
+#: libxapp/xapp-icon-chooser-dialog.c:113
+msgid "Emoji"
+msgstr "چىراي ئىپادە"
+
+#: libxapp/xapp-icon-chooser-dialog.c:116
+msgid "Mime types"
+msgstr "Mime تۈرى"
+
+#: libxapp/xapp-icon-chooser-dialog.c:119
+msgid "Places"
+msgstr "ئورۇن"
+
+#: libxapp/xapp-icon-chooser-dialog.c:122
+msgid "Status"
+msgstr "ھالەت"
+
+#: libxapp/xapp-icon-chooser-dialog.c:125
+msgid "Other"
+msgstr "باشقا"
+
+#: libxapp/xapp-icon-chooser-dialog.c:454
+msgid "Choose an icon"
+msgstr "سىنبەلگە تاللىنىدۇ"
+
+#: libxapp/xapp-icon-chooser-dialog.c:476
+msgid "Search"
+msgstr "ئىزدە"
+
+#: libxapp/xapp-icon-chooser-dialog.c:483
+msgid "Browse"
+msgstr "كۆز يۈگۈرت"
+
+#: libxapp/xapp-icon-chooser-dialog.c:539
+msgid "Loading..."
+msgstr "يۈكلەۋاتىدۇ…"
+
+#: libxapp/xapp-icon-chooser-dialog.c:586
+msgid "Default"
+msgstr "كۆڭۈلدىكى"
+
+#: libxapp/xapp-icon-chooser-dialog.c:596
+msgid "Select"
+msgstr "تاللا"
+
+#: libxapp/xapp-icon-chooser-dialog.c:605
+#: libxapp/xapp-icon-chooser-dialog.c:1936
+msgid "Cancel"
+msgstr "ۋاز كەچ"
+
+#: libxapp/xapp-icon-chooser-dialog.c:652
+msgid "Allow Paths"
+msgstr "يول قويىدىغان يول"
+
+#: libxapp/xapp-icon-chooser-dialog.c:653
+msgid "Whether to allow paths."
+msgstr "يولغا يول قويامدۇ يوق."
+
+#: libxapp/xapp-icon-chooser-dialog.c:664
+msgid "Default Icon"
+msgstr "كۆڭۈلدىكى سىنبەلگە"
+
+#: libxapp/xapp-icon-chooser-dialog.c:665
+msgid "The icon to use by default"
+msgstr "كۆڭۈلدىكى ئەھۋالدا ئىشلىتىدىغان سىنبەلگە"
+
+#: libxapp/xapp-icon-chooser-dialog.c:1933
+msgid "Select image file"
+msgstr "سۈرەت ھۆججىتى تاللىنىدۇ"
+
+#: libxapp/xapp-icon-chooser-dialog.c:1938
+msgid "Open"
+msgstr "ئاچ"
+
+#: libxapp/xapp-icon-chooser-dialog.c:1953
+msgid "Image"
+msgstr "سۈرەت"
+
+#: status-applets/mate/mate-xapp-status-applet.py:330
+msgid "About"
+msgstr "ھەققىدە"
+
+#: status-applets/mate/mate-xapp-status-applet.py:350
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
+msgid "Area where XApp status icons appear"
+msgstr "XApp ھالەت سىنبەلگىسى كۆرۈنىدىغان جاي"
+
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
+msgid "XApp Status Applet Factory"
+msgstr "AccessX ھالەت قوللانچاق زاۋۇتى"
+
+#: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
+msgid "XApp Status Applet"
+msgstr "AccessX ھالەت قوللانچاق"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2022-05-03 10:20+0000\n"
-"Last-Translator: Umidjon Almasov <umutelmas.uz@gmail.com>\n"
+"PO-Revision-Date: 2026-09-20 15:43+0000\n"
+"Last-Translator: Nodirbek Nuraliyev <Unknown>\n"
 "Language-Team: Uzbek <uz@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2026-01-08 15:43+0000\n"
-"X-Generator: Launchpad (build 99c00f518760bdd50fc6e353e7736d2fff8fba4a)\n"
+"X-Launchpad-Export-Date: 2026-11-16 12:00+0000\n"
+"X-Generator: Launchpad (build 72ba15af7e009b17d4aa1467977127ac8392a4de)\n"
 "Language: uz\n"
 
 #: libxapp/favorite-vfs-file.c:463
@@ -47,7 +47,7 @@ msgstr "Belgi"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr "Belgini ifodalovchi satr."
+msgstr "Belgini ifodalovchi qator."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"

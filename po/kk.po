@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: linuxmint\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2020-11-25 11:16+0000\n"
-"PO-Revision-Date: 2020-03-18 03:19+0000\n"
-"Last-Translator: Murat Käribay <Unknown>\n"
+"PO-Revision-Date: 2026-01-24 17:27+0000\n"
+"Last-Translator: Baurzhan Muftakhidinov <Unknown>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2026-01-08 15:43+0000\n"
-"X-Generator: Launchpad (build 99c00f518760bdd50fc6e353e7736d2fff8fba4a)\n"
+"X-Launchpad-Export-Date: 2026-11-16 12:00+0000\n"
+"X-Generator: Launchpad (build 72ba15af7e009b17d4aa1467977127ac8392a4de)\n"
+"Language: kk\n"
 
 #: libxapp/favorite-vfs-file.c:463
 msgid "Favorites"
-msgstr ""
+msgstr "Таңдамалылар"
 
 #: libxapp/favorite-vfs-file.c:933 libxapp/favorite-vfs-file.c:963
 #: libxapp/favorite-vfs-file.c:992 libxapp/favorite-vfs-file.c:1026
@@ -28,7 +29,7 @@ msgstr ""
 #: libxapp/favorite-vfs-file.c:1204 libxapp/favorite-vfs-file.c:1239
 #: libxapp/favorite-vfs-file.c:1269 libxapp/favorite-vfs-file.c:1308
 msgid "Operation not supported"
-msgstr ""
+msgstr "Операцияға қолдау көрсетілмейді"
 
 #: libxapp/xapp-icon-chooser-button.c:207
 #: libxapp/xapp-icon-chooser-dialog.c:639
@@ -38,7 +39,7 @@ msgstr "Таңбаша өлшемі"
 #: libxapp/xapp-icon-chooser-button.c:208
 #: libxapp/xapp-icon-chooser-dialog.c:640
 msgid "The preferred icon size."
-msgstr ""
+msgstr "Таңдаулы таңбаша өлшемі."
 
 #: libxapp/xapp-icon-chooser-button.c:222
 msgid "Icon"
@@ -46,7 +47,7 @@ msgstr "Таңбаша"
 
 #: libxapp/xapp-icon-chooser-button.c:223
 msgid "The string representing the icon."
-msgstr ""
+msgstr "Таңбашаны білдіретін мәтіндік жол."
 
 #: libxapp/xapp-icon-chooser-button.c:234
 msgid "Category"
@@ -54,7 +55,7 @@ msgstr "Санат"
 
 #: libxapp/xapp-icon-chooser-button.c:235
 msgid "The default category."
-msgstr ""
+msgstr "Әдепкі санат."
 
 #: libxapp/xapp-icon-chooser-dialog.c:98
 msgid "Actions"
@@ -78,11 +79,11 @@ msgstr "Эмблемалар"
 
 #: libxapp/xapp-icon-chooser-dialog.c:113
 msgid "Emoji"
-msgstr "Эмоджи"
+msgstr "Эмодзи"
 
 #: libxapp/xapp-icon-chooser-dialog.c:116
 msgid "Mime types"
-msgstr "MIME түрлері"
+msgstr "Mime түрлері"
 
 #: libxapp/xapp-icon-chooser-dialog.c:119
 msgid "Places"
@@ -90,7 +91,7 @@ msgstr "Орындар"
 
 #: libxapp/xapp-icon-chooser-dialog.c:122
 msgid "Status"
-msgstr "Қалып-күйі"
+msgstr "Күй"
 
 #: libxapp/xapp-icon-chooser-dialog.c:125
 msgid "Other"
@@ -98,7 +99,7 @@ msgstr "Басқа"
 
 #: libxapp/xapp-icon-chooser-dialog.c:454
 msgid "Choose an icon"
-msgstr "Таңбашаны таңдаңыз"
+msgstr "Таңбашаны таңдау"
 
 #: libxapp/xapp-icon-chooser-dialog.c:476
 msgid "Search"
@@ -106,11 +107,11 @@ msgstr "Іздеу"
 
 #: libxapp/xapp-icon-chooser-dialog.c:483
 msgid "Browse"
-msgstr "Қарап шығу"
+msgstr "Шолу"
 
 #: libxapp/xapp-icon-chooser-dialog.c:539
 msgid "Loading..."
-msgstr "Жүктеу..."
+msgstr "Жүктелуде..."
 
 #: libxapp/xapp-icon-chooser-dialog.c:586
 msgid "Default"
@@ -127,23 +128,23 @@ msgstr "Бас тарту"
 
 #: libxapp/xapp-icon-chooser-dialog.c:652
 msgid "Allow Paths"
-msgstr ""
+msgstr "Жолдарға рұқсат ету"
 
 #: libxapp/xapp-icon-chooser-dialog.c:653
 msgid "Whether to allow paths."
-msgstr ""
+msgstr "Жолдарға рұқсат ету керек пе."
 
 #: libxapp/xapp-icon-chooser-dialog.c:664
 msgid "Default Icon"
-msgstr "Әдепкі таңба"
+msgstr "Әдепкі таңбаша"
 
 #: libxapp/xapp-icon-chooser-dialog.c:665
 msgid "The icon to use by default"
-msgstr ""
+msgstr "Әдепкі бойынша қолданылатын таңбаша"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1933
 msgid "Select image file"
-msgstr ""
+msgstr "Сурет файлын таңдау"
 
 #: libxapp/xapp-icon-chooser-dialog.c:1938
 msgid "Open"
@@ -155,18 +156,18 @@ msgstr "Сурет"
 
 #: status-applets/mate/mate-xapp-status-applet.py:330
 msgid "About"
-msgstr "Бағдарлама туралы"
+msgstr "Туралы"
 
 #: status-applets/mate/mate-xapp-status-applet.py:350
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:7
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:11
 msgid "Area where XApp status icons appear"
-msgstr ""
+msgstr "XApp күй таңбашалары пайда болатын аймақ"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:6
 msgid "XApp Status Applet Factory"
-msgstr ""
+msgstr "XApp күй апплеттер фабрикасы"
 
 #: status-applets/mate/org.x.MateXAppStatusApplet.mate-panel-applet.in.in:10
 msgid "XApp Status Applet"
-msgstr ""
+msgstr "XApp күй апплеті"
