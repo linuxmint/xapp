@@ -1,3 +1,11 @@
+xapp (3.4.2) adrien; urgency=medium
+
+  [ Michael Webster ]
+  * gpu-offload-helper: Pick a default GPU when switcheroo reports none
+  * gpu-offload-helper: Fix duplicate offload entries and init error paths
+
+ -- Clement Lefebvre <root@linuxmint.com>  Mon, 16 Nov 2026 20:42:42 +0000
+
 xapp (3.4.1) adrien; urgency=medium
 
   [ Michael Webster ]
