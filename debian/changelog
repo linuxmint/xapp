@@ -1,3 +1,9 @@
+xapp (3.4.3) adrien; urgency=medium
+
+  * l10n: Update translations
+
+ -- Clement Lefebvre <root@linuxmint.com>  Tue, 24 Nov 2026 16:54:27 +0000
+
 xapp (3.4.2) adrien; urgency=medium
 
   [ Michael Webster ]
