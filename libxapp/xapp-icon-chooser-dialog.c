@@ -413,6 +413,7 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     GtkStyleContext              *style;
     GtkSizeGroup                 *button_size_group;
     GtkWidget                    *scrolled_window;
+    GtkWidget                    *action_area;
 
     priv = xapp_icon_chooser_dialog_get_instance_private (dialog);
 
@@ -578,9 +579,9 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     style = gtk_widget_get_style_context (GTK_WIDGET (priv->default_button));
     gtk_style_context_add_class (style, "text-button");
     gtk_size_group_add_widget (button_size_group, priv->default_button);
-    gtk_dialog_add_action_widget (GTK_DIALOG (dialog), priv->default_button, GTK_RESPONSE_NONE);
-    gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dialog))),
-                                        priv->default_button, TRUE);
+    action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
+    gtk_container_add (GTK_CONTAINER (action_area), priv->default_button);
+    gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (action_area), priv->default_button, TRUE);
     g_signal_connect (priv->default_button, "clicked",
                       G_CALLBACK (on_default_button_clicked), dialog);
 
@@ -591,6 +592,13 @@ xapp_icon_chooser_dialog_init (XAppIconChooserDialog *dialog)
     gtk_widget_grab_default (priv->select_button);
 
     load_categories (dialog);
+}
+
+static void
+xapp_icon_chooser_dialog_response (GtkDialog *dialog,
+                                   gint       response_id)
+{
+    gtk_widget_hide (GTK_WIDGET (dialog));
 }
 
 static void
@@ -605,6 +613,8 @@ xapp_icon_chooser_dialog_class_init (XAppIconChooserDialogClass *klass)
     object_class->dispose = xapp_icon_chooser_dialog_dispose;
 
     widget_class->delete_event = on_delete_event;
+
+    GTK_DIALOG_CLASS (klass)->response = xapp_icon_chooser_dialog_response;
 
     /**
      * XAppIconChooserDialog:icon-size:
@@ -910,8 +920,6 @@ xapp_icon_chooser_dialog_close (XAppIconChooserDialog *dialog,
 
     priv->response = response;
     gtk_dialog_response (GTK_DIALOG (dialog), response);
-
-    gtk_widget_hide (GTK_WIDGET (dialog));
 }
 
 /**
