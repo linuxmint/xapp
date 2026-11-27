@@ -1,5 +1,8 @@
 #include <config.h>
 #include <gtk/gtk.h>
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
+#endif
 
 #include "xapp-favorites.h"
 #include "favorite-vfs-file.h"
@@ -16,7 +19,13 @@
  *
  * - Overrides the window icon for any GtkWindows when an environment
  *   variable is set with an icon path or name.
+ *
+ * - In Cinnamon on Wayland, applies Cinnamon's dialogs-use-header setting
+ *   (dialog buttons at the bottom by default), as XSettings do on X11.
  */
+
+#define CINNAMON_XSETTINGS_SCHEMA "org.cinnamon.settings-daemon.plugins.xsettings"
+#define DIALOGS_USE_HEADER_KEY "dialogs-use-header"
 
 void gtk_module_init (gint *argc, gchar ***argv[]);
 static void (* original_sidebar_constructed) (GObject *object);
@@ -176,6 +185,124 @@ apply_sidebar_favorites_override (void)
     }
 }
 
+#ifdef GDK_WINDOWING_WAYLAND
+/* Dialog header bars: on X11 cinnamon-settings-daemon gives applications
+ * Cinnamon's dialogs-use-header setting through XSettings. GTK's Wayland
+ * backend has no XSettings and supplies gtk-dialogs-use-header itself, as
+ * TRUE, over settings.ini; only a value the application sets outranks it, so
+ * the module sets Cinnamon's value in each application. */
+static GSettings *xsettings_settings = NULL;
+
+static void
+apply_dialogs_use_header (GtkSettings *settings)
+{
+    gboolean wanted, current;
+
+    wanted = g_settings_get_boolean (xsettings_settings, DIALOGS_USE_HEADER_KEY);
+    g_object_get (settings, "gtk-dialogs-use-header", &current, NULL);
+
+    if (current != wanted)
+    {
+        DEBUG ("Setting gtk-dialogs-use-header to %d", wanted);
+        g_object_set (settings, "gtk-dialogs-use-header", wanted, NULL);
+    }
+}
+
+static void
+on_dialogs_use_header_changed (GObject    *object,
+                               GParamSpec *pspec,
+                               gpointer    user_data)
+{
+    apply_dialogs_use_header (GTK_SETTINGS (user_data));
+}
+
+static void
+on_xsettings_changed (GSettings   *gsettings,
+                      const gchar *key,
+                      gpointer     user_data)
+{
+    apply_dialogs_use_header (GTK_SETTINGS (user_data));
+}
+
+static void
+apply_dialogs_override_for_display (GdkDisplay *display)
+{
+    GtkSettings *settings;
+
+    if (xsettings_settings != NULL || !GDK_IS_WAYLAND_DISPLAY (display))
+    {
+        return;
+    }
+
+    settings = gtk_settings_get_for_screen (gdk_display_get_default_screen (display));
+    if (settings == NULL)
+    {
+        return;
+    }
+
+    xsettings_settings = g_settings_new (CINNAMON_XSETTINGS_SCHEMA);
+    g_signal_connect_object (xsettings_settings, "changed::" DIALOGS_USE_HEADER_KEY,
+                             G_CALLBACK (on_xsettings_changed), settings, 0);
+    /* The backend can supply its value again later (when GTK reads its
+     * settings while starting): put Cinnamon's back */
+    g_signal_connect (settings, "notify::gtk-dialogs-use-header",
+                      G_CALLBACK (on_dialogs_use_header_changed), settings);
+
+    apply_dialogs_use_header (settings);
+}
+
+static void
+on_display_opened (GdkDisplayManager *manager,
+                   GdkDisplay        *display,
+                   gpointer           user_data)
+{
+    apply_dialogs_override_for_display (display);
+}
+
+static void
+apply_dialogs_override (void)
+{
+    GSettingsSchemaSource *source;
+    GSettingsSchema *schema;
+    GdkDisplayManager *manager;
+    GdkDisplay *display;
+    const gchar *desktop;
+
+    /* Only in Cinnamon: other desktops have their own defaults */
+    desktop = g_getenv ("XDG_CURRENT_DESKTOP");
+    if (desktop == NULL || !g_regex_match_simple ("(^|:)X-Cinnamon(:|$)", desktop, 0, 0))
+    {
+        return;
+    }
+
+    source = g_settings_schema_source_get_default ();
+    schema = source ? g_settings_schema_source_lookup (source, CINNAMON_XSETTINGS_SCHEMA, TRUE) : NULL;
+    if (schema == NULL)
+    {
+        return;
+    }
+    if (!g_settings_schema_has_key (schema, DIALOGS_USE_HEADER_KEY))
+    {
+        g_settings_schema_unref (schema);
+        return;
+    }
+    g_settings_schema_unref (schema);
+
+    /* Modules from GTK3_MODULES load before GTK opens its display */
+    manager = gdk_display_manager_get ();
+    display = gdk_display_manager_get_default_display (manager);
+    if (display != NULL)
+    {
+        apply_dialogs_override_for_display (display);
+    }
+    else
+    {
+        g_signal_connect (manager, "display-opened",
+                          G_CALLBACK (on_display_opened), NULL);
+    }
+}
+#endif
+
 G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
     DEBUG ("Initializing XApp GtkModule");
     // This won't instantiate XAppFavorites but will register the uri so
@@ -188,6 +315,10 @@ G_MODULE_EXPORT void gtk_module_init (gint *argc, gchar ***argv[]) {
     {
         apply_window_icon_override ();
     }
+
+#ifdef GDK_WINDOWING_WAYLAND
+    apply_dialogs_override ();
+#endif
 }
 
 G_MODULE_EXPORT gchar* g_module_check_init (GModule *module);
